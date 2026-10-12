@@ -1,0 +1,12 @@
+--- a/gcc/config/arm/arm.md
++++ b/gcc/config/arm/arm.md
+@@ -12312,7 +12312,8 @@
+ 
+ ;; Doesn't clobber R1-R3.  Must use r0 for the first operand.
+ (define_insn "load_tp_soft_fdpic"
+-  [(set (reg:SI 0) (unspec:SI [(const_int 0)] UNSPEC_TLS))
++  [(set (reg:SI 0) (unspec:SI [(const_int 0)] UNSPEC_TLS))
++   (use (reg:SI FDPIC_REGNUM))
+    (clobber (reg:SI FDPIC_REGNUM))
+    (clobber (reg:SI LR_REGNUM))
+    (clobber (reg:SI IP_REGNUM))

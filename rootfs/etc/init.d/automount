@@ -1,0 +1,34 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Start the mdev hotplug daemon and coldplug what is already present.
+#
+# mdev -d listens on the uevent netlink socket itself (this kernel has no
+# CONFIG_UEVENT_HELPER); rules come from /etc/mdev.conf, which auto-mounts
+# removable SD/MMC through /usr/sbin/mdev-automount.
+#
+# no-MMU hush: mdev -d is a real executable, so it is safe to start here.
+export PATH=/bin:/sbin:/usr/sbin
+
+case "${1:-start}" in
+start)
+	if ! command -v mdev >/dev/null 2>&1; then
+		echo 'WARNING: AUTOMOUNT_NO_MDEV; busybox was built without mdev'
+		exit 0
+	fi
+	# -d daemonises (unless -f); the call returns once the listener is up.
+	mdev -d || { echo 'WARNING: AUTOMOUNT_DAEMON_FAILED'; exit 1; }
+		# Coldplug a card already in the slot.  Done directly instead of
+		# "mdev -s" so it does not chmod every devtmpfs node to 0660.
+	for d in /sys/class/block/mmcblk*; do
+		[ -e "$d/dev" ] || continue
+		n=${d##*/}
+		ACTION=add MDEV="$n" /usr/sbin/mdev-automount
+	done
+	echo AUTOMOUNT_STARTED
+	;;
+stop)
+	# mdev has no stop signal; the daemon exits with the system.
+	;;
+*) echo 'Usage: automount start' >&2; exit 2;;
+esac

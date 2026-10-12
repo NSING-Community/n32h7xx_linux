@@ -1,0 +1,159 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+# One stable entry point for building and exercising the H787 board.
+
+set -eu
+
+TOOLS=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+H787_ROOT=$(CDPATH= cd -- "$TOOLS/.." && pwd)
+export H787_ROOT
+. "$TOOLS/env.sh"
+
+usage()
+{
+	cat <<'EOF'
+Usage: tools/h787ctl COMMAND [ARGS...]
+
+Commands:
+  doctor                 Show paths, tool availability, and board state.
+  boot-build             Build the SPI-backed CM7 bootloader.
+  boot-image             Print the current bootloader binary path.
+  kernel-build           Build and stage the Linux kernel image.
+  kernel-image           Print the separate Linux zImage and DTB paths.
+  openocd ACTION         Talk to OpenOCD through tools/openocd_tcl.py.
+  msc-enter [--no-reset] Set the DAP MSC flag and reset-run the bootloader.
+  reboot-msc             Ask a running Linux to reboot into USB MSC mode.
+  msc-write IMAGE        Write a partition image or boot-region image to MSC.
+  serial ACTION          Use tools/serial_console.py.
+
+Examples:
+  tools/h787ctl boot-build
+  tools/h787ctl kernel-build
+  tools/h787ctl openocd set-msc-flag
+  tools/h787ctl openocd reset-run
+  tools/h787ctl msc-write out/dist/spi-nor-boot.img
+  tools/h787ctl serial expect 'eth0: NSING N32H7xx Ethernet' --timeout 40
+EOF
+}
+
+command=${1:-help}
+shift || true
+
+case "$command" in
+	help|-h|--help)
+		usage
+		;;
+	doctor)
+		printf 'H787_ROOT=%s\n' "$H787_ROOT"
+		printf 'out=%s\n' "$H787_OUT_DIR"
+		printf 'bootloader=%s\n' "$H787_BOOT_BIN"
+		printf 'kernel=%s\n' "$H787_KERNEL_ZIMAGE"
+		printf 'dtb=%s\n' "$H787_KERNEL_DTB"
+		printf 'openocd_cfg=%s\n' "$H787_OPENOCD_CFG"
+		if [ -n "$H787_DAP_SERIAL" ]; then
+			printf 'dap_serial=%s\n' "$H787_DAP_SERIAL"
+		else
+			printf 'dap_serial=(auto: the only attached CMSIS-DAP)\n'
+		fi
+		printf 'serial=%s @ %s (%s)\n' "$H787_SERIAL" "$H787_SERIAL_BAUD" "$H787_SERIAL_SOURCE"
+		if [ "$H787_SERIAL_SOURCE" = fallback ]; then
+			printf 'note: no CMSIS-DAP by-id symlink found; %s may be the\n' "$H787_SERIAL"
+			printf '      wrong port if another USB serial is attached.\n'
+		fi
+		for tool in make python3 arm-none-eabi-gcc openocd; do
+			if command -v "$tool" >/dev/null 2>&1; then
+				printf 'tool %-18s OK\n' "$tool"
+			else
+				printf 'tool %-18s MISSING\n' "$tool"
+			fi
+		done
+		if [ -e /dev/serial/by-id ]; then
+			printf 'serial-by-id:\n'
+			find /dev/serial/by-id -maxdepth 1 -type l -printf '  %p -> %l\n' 2>/dev/null || true
+		fi
+		msc=$(python3 "$TOOLS/msc_image.py" --find-only 2>/dev/null || true)
+		if [ -n "$msc" ]; then
+			printf 'msc=%s\n' "$msc"
+		else
+			printf 'msc=(none: the board is not in MSC mode)\n'
+		fi
+		# Capture first: a pipeline's status is the last command's, so a
+		# failing python call would look like success.
+		targets=$(python3 "$TOOLS/openocd_tcl.py" targets 2>/dev/null) || targets=""
+		if [ -n "$targets" ]; then
+			printf '%s\n' "$targets" | sed 's/^/openocd: /'
+		else
+			printf 'openocd=(not reachable on %s:%s; start it as shown in doc/tools.md)\n' \
+				"$H787_OPENOCD_HOST" "$H787_OPENOCD_TCL_PORT"
+		fi
+		;;
+	boot-build)
+		make -C "$H787_BOOTLOADER_DIR" OUT_DIR="$H787_OUT_DIR/bootloader" \
+			STORAGE=spi "$@"
+		;;
+	boot-image)
+		printf '%s\n' "$H787_BOOT_BIN"
+		;;
+	kernel-build)
+		# The combined project builds the kernel out-of-tree into out/kernel;
+		# pass that explicitly so this entry point and the top-level make agree
+		# on where the staged artifacts land.
+		BUILD_DIR="$H787_KERNEL_OUT/build" STAGE_DIR="$H787_KERNEL_OUT" \
+			"$H787_LINUX_ROOT/scripts/nsing/release.sh" "$@"
+		;;
+	kernel-image)
+		printf '%s\n' "$H787_KERNEL_ZIMAGE" "$H787_KERNEL_DTB"
+		;;
+	openocd)
+		exec python3 "$TOOLS/openocd_tcl.py" "$@"
+		;;
+	msc-enter)
+		no_reset=false
+		if [ "${1:-}" = "--no-reset" ]; then
+			no_reset=true
+		fi
+		python3 "$TOOLS/openocd_tcl.py" set-msc-flag
+		if [ "$no_reset" = false ]; then
+			python3 "$TOOLS/openocd_tcl.py" reset-run
+		fi
+		;;
+	reboot-msc)
+		# Board-side partner of msc-enter: a running Linux writes the same MSC
+		# request flag itself ("reboot msc" -> n32h7xx_restart) and resets, so this
+		# exercises the kernel path and needs no probe.  Confirmed by watching the
+		# board's own USB device appear, which works before usbipd attaches it.
+		python3 "$TOOLS/serial_console.py" run 'reboot msc' --seconds 3 \
+			-o "${H787_REBOOT_MSC_LOG:-/tmp/h787-reboot-msc.log}" >/dev/null 2>&1 || true
+		if ! command -v powershell.exe >/dev/null 2>&1; then
+			printf 'reboot msc sent; watch for the 19f5:5780 MSC device\n'
+			exit 0
+		fi
+		i=0
+		while [ "$i" -lt 30 ]; do
+			if powershell.exe -NoProfile -Command "usbipd list" 2>/dev/null \
+				| grep -q '19f5:5780'; then
+				powershell.exe -NoProfile -Command "usbipd list" 2>/dev/null \
+					| grep '19f5:5780'
+				printf 'board is in USB MSC mode; attach it with:\n'
+				printf '  powershell.exe -NoProfile -Command "usbipd attach --wsl --busid BUSID"\n'
+				exit 0
+			fi
+			i=$((i + 1))
+			sleep 1
+			done
+		printf 'the 19f5:5780 MSC device did not appear within 30 s; see %s\n' \
+			"${H787_REBOOT_MSC_LOG:-/tmp/h787-reboot-msc.log}" >&2
+		exit 1
+		;;
+	msc-write)
+		exec python3 "$TOOLS/msc_image.py" "$@"
+		;;
+	serial)
+		exec python3 "$TOOLS/serial_console.py" "$@"
+		;;
+	*)
+		printf 'unknown command: %s\n\n' "$command" >&2
+		usage >&2
+		exit 2
+		;;
+esac

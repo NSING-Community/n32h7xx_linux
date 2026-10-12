@@ -1,0 +1,9 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+export PATH=/bin:/sbin
+echo N32_SHUTDOWN_BEGIN
+/etc/init.d/network stop
+sync
+if mountpoint -q /system; then umount /system || echo 'WARNING: /system busy'; fi
+sync
+echo N32_SHUTDOWN_COMPLETE

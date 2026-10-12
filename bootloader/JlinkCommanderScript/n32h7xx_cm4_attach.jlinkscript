@@ -1,0 +1,229 @@
+
+__constant U32 _AIRCR_ADDR         = 0xE000ED0C; // Application Interrupt and Reset Control Register
+__constant U32 _DHCSR_ADDR         = 0xE000EDF0; // Debug Halting Control and Status Register
+__constant U32 _DEMCR_ADDR         = 0xE000EDFC; // Debug Exception and Monitor Control Register
+
+//
+// Bits & Shifts (ARM)
+//
+__constant U32 _DP_CTRL_STAT_BIT_STICKYERR = (1 <<  5);
+
+__constant U32 _DHCSR_DBGKEY               = (0xA05F << 16);
+__constant U32 _DHCSR_C_DEBUGEN            = (1 <<  0);
+__constant U32 _DHCSR_C_HALT               = (1 <<  1);
+__constant U32 _DHCSR_S_HALT               = (1 << 17);
+__constant U32 _DHCSR_S_RESET_ST           = (1 << 25);
+
+__constant U32 _DEMCR_VC_CORERESET         = (1 <<  0);
+__constant U32 _DEMCR_TRCENA               = (1 << 24);
+
+__constant U32 _AIRCR_VECTKEY              = (0x05FA << 16);
+__constant U32 _AIRCR_VECTRESETREQ         = (1 <<  0);
+__constant U32 _AIRCR_PRIGROUP             = (5 <<  8);  
+
+/*********************************************************************
+*
+*       Constants, configurable
+*
+**********************************************************************
+*/
+
+__constant U32 _DEF_BUSY_TIMEOUT = 250;
+void __Write32(U32 addr,U32 data)
+{
+    int v;
+	v=JLINK_CORESIGHT_WriteAP(JLINK_CORESIGHT_AP_REG_ADDR, addr);
+	if (v < 0) {
+         Report1("write register fail v=",v);
+    }
+    v=JLINK_CORESIGHT_WriteAP(JLINK_CORESIGHT_AP_REG_DATA, data);
+    if (v < 0) {
+         Report1("write register fail v=",v);
+    }
+}
+
+
+void InitTarget(void) {
+  int v;
+  int Ctrl;
+  int CSGPR_ADDR;
+  int DP_REG_CTRL_STAT;
+  int DP_REG_SELECT;
+  int APBAP_REG_CTRL;
+  int APBAP_REG_ADDR;
+  int APBAP_REG_DATA;
+
+  CSGPR_ADDR         = 0x80070000;
+  DP_REG_CTRL_STAT   = 1;
+  DP_REG_SELECT      = 2;
+  APBAP_REG_CTRL     = 0;
+  APBAP_REG_ADDR     = 1;
+  APBAP_REG_DATA     = 3;
+
+  Report("***************************************************");
+  Report("J-Link script: NationsTech Cortex-M4  J-Link script");
+  Report("***************************************************");
+  JLINK_CORESIGHT_Configure("IRPre=0;DRPre=0;IRPost=0;DRPost=0;IRLenDevice=4");
+  CPU = CORTEX_M7;                                                              // Pre-select that we have a Cortex-M4 connected
+  JTAG_AllowTAPReset = 0;                                                       // J-Link is allowed to use a TAP reset for JTAG-chain auto-detection
+
+  //
+  // Power-up complete DAP
+  //
+  Ctrl = 0
+       | (1 << 30)    // System power-up
+       | (1 << 28)    // Debug popwer-up
+       | (1 << 5)     // Clear STICKYERR
+       ;
+  JLINK_CORESIGHT_WriteDP(DP_REG_CTRL_STAT, Ctrl);
+
+  //
+  // Select AHB-AP and configure it
+  //
+  JLINK_CORESIGHT_WriteDP(DP_REG_SELECT, 0x00000000);
+  JLINK_CORESIGHT_WriteAP(APBAP_REG_CTRL, (2 << 0) | (1 << 31));
+
+  // Kick off M4_0
+  JLINK_CORESIGHT_WriteAP(APBAP_REG_ADDR, CSGPR_ADDR);
+  v = JLINK_CORESIGHT_ReadAP(APBAP_REG_DATA);
+  v |= 1 << 6;
+  JLINK_CORESIGHT_WriteAP(APBAP_REG_ADDR, CSGPR_ADDR);
+  JLINK_CORESIGHT_WriteAP(APBAP_REG_DATA, v);
+
+  // Wait 100ms to make sure M4_0 wakeup
+  SYS_Sleep(100);
+
+  //
+  // Manually configure which APs are present on the CoreSight device
+  //
+  JTAG_SetDeviceId(0, 0x5BA00477);  // 4-bits IRLen
+  CORESIGHT_AddAP(0, CORESIGHT_AHB_AP);  // AXI-AP
+  CORESIGHT_AddAP(1, CORESIGHT_AHB_AP);  // SCU-AP
+  CORESIGHT_AddAP(2, CORESIGHT_AHB_AP);  // CM4-0-AP
+  //CORESIGHT_AddAP(3, CORESIGHT_AHB_AP);  // CM0+
+  //CORESIGHT_AddAP(4, CORESIGHT_APB_AP);  // APB-AP for CA53
+
+  CORESIGHT_IndexAHBAPToUse = 0;   
+  if (MAIN_IsFirstIdentify = 1)
+  {
+  //realse M4
+
+  Report("J-Link script: N32H7xxx release M4");
+  __Write32(0x58030174, 1); 
+    //halt M7
+  Report("J-Link script: N32H7xxx Halt M7");
+  JLINK_CORESIGHT_WriteAP(0x00, 0x23000012); 
+  __Write32(0xE000EDF0, 0xA05F0003); 
+  }
+
+  CPU = CORTEX_M4;   
+  JLINK_CORESIGHT_WriteDP(DP_REG_SELECT, 0x02000000);
+  CORESIGHT_IndexAHBAPToUse = 2; 
+
+}
+
+/*********************************************************************
+*
+*       SetupTarget
+*/
+void SetupTarget(void)
+{
+  // Configure LMEM Parity/ECC Control Register
+  //
+  // Note: ECC Multi-bit IRQ should be disabled
+  //       prior to list/dump of locations that
+  //       have not been written to avoid vectoring
+  //       to the NMI
+  //
+  // 31:22 RESERVED
+  // 21    Enable Cache Parity IRQ
+  // 20    Enable Cache Parity Report
+  // 19:17 RESERVED
+  // 16    Enable RAM Parity Reporting
+  // 15:10 RESERVED
+  // 9     Enable RAM ECC 1-bit IRQ
+  // 8     Enable RAM ECC 1-bit Report
+  // 7:2   RESERVED
+  // 1     Enable RAM ECC Multi-bit IRQ
+  // 0     Enable RAM ECC Multi-bit
+  JLINK_MEM_WriteU32(0xE0080480, 0x0);
+}
+
+/*********************************************************************
+*
+*       _DAPClrStickyErr
+*
+*  Function description
+*    Clears the DAP sticky error flags.
+*/
+static void _DAPClrStickyErr(void) {
+  U32 v;
+  //
+  // The DP is slightly different for JTAG and SWD regarding clearing sticky error bits.
+  //
+  if (JLINK_ActiveTIF == JLINK_TIF_SWD) {
+    JLINK_CORESIGHT_WriteDP(JLINK_CORESIGHT_DP_REG_ABORT, 0x1E);
+  } else {
+    v  = JLINK_CORESIGHT_ReadDP(JLINK_CORESIGHT_DP_REG_CTRL_STAT);
+    v |= _DP_CTRL_STAT_BIT_STICKYERR;
+    JLINK_CORESIGHT_WriteDP(JLINK_CORESIGHT_DP_REG_CTRL_STAT, v);
+  }  
+}
+
+/*********************************************************************
+*
+*       ResetTarget()
+*
+*  Function description
+*    Replaces reset strategies of DLL. No matter what reset type is selected in the DLL, if this function is present, it will be called instead of the DLL internal reset.
+*
+*  Notes
+*    (1) DLL expects target CPU to be halted / in debug mode, when leaving this function
+*    (2) May use MEM_ API functions
+*/
+int ResetTarget(void) {
+int t;
+  int r;
+  U32 v;
+ // JLINK_SYS_Sleep(50000); 
+  JLINK_SYS_Report("Reset NS32h7xx_CM4: Halt core after reset via DEMCR.VC_CORERESET.");
+  v=JLINK_MEM_WriteU32(_DHCSR_ADDR, (_DHCSR_DBGKEY | _DHCSR_C_HALT | _DHCSR_C_DEBUGEN)); // Halt the CPU
+  JLINK_MEM_WriteU32(_DEMCR_ADDR, (_DEMCR_VC_CORERESET | _DEMCR_TRCENA));              // Set vector catch on reset (to halt the CPU immediately after reset)
+  _DAPClrStickyErr();                                                                  // Make sure that no sticky error bits are set on the DP
+  JLINK_SYS_Report("Reset: Reset device via AIRCR.VECTRESETREQ.");
+  JLINK_MEM_WriteU32(_AIRCR_ADDR, (_AIRCR_VECTKEY | _AIRCR_VECTRESETREQ));              // Issue reset request via SFR
+  JLINK_SYS_Sleep(50);                                                                 // The spec. does not guarantee that the reset takes place immediately, so we give the target some time.
+  //
+  // Wait until S_RESET_ST is set
+  //
+  t = JLINK_GetTime() + _DEF_BUSY_TIMEOUT;
+  do {
+    v  = JLINK_MEM_ReadU32(_DHCSR_ADDR);
+    v &= _DHCSR_S_RESET_ST;
+    if (v) {
+      break;
+    }
+    if ((t - JLINK_GetTime()) < 0) {
+      JLINK_SYS_Report("Reset: CPU may not have been reset (DHCSR.S_RESET_ST never gets set).");
+      
+      return -1;
+    }
+  } while (1);
+  //
+  // Wait until S_RESET_ST is cleared
+  //
+  t = JLINK_GetTime() + _DEF_BUSY_TIMEOUT;
+  do {
+    v  = JLINK_MEM_ReadU32(_DHCSR_ADDR);
+    v &= _DHCSR_S_RESET_ST;
+    if (v == 0) {
+      break;
+    }
+    if ((t - JLINK_GetTime()) < 0) {
+      JLINK_SYS_Report("Reset: S_RESET_ST never gets cleared. CPU seems to be kept in reset forever.");
+      return -1;
+    }
+  } while (1);
+
+  return 0;
+}

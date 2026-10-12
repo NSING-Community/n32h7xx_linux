@@ -1,0 +1,74 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+export PATH=/bin:/sbin
+
+# Read-only board defaults (/etc/defaults.conf).  Data-only scan; see
+# boot-services for the rationale.
+conf_get()
+{
+	if grep -q "^$1=" /etc/defaults.conf 2>/dev/null; then
+		sed -n "s/^$1=//p" /etc/defaults.conf | tail -n 1
+	else
+		printf '%s' "$2"
+	fi
+}
+
+iface=$(conf_get NETWORK_IFACE eth0)
+case "$iface" in ''|*[!a-zA-Z0-9_.:-]*) echo 'Invalid network interface' >&2; exit 1;; esac
+case "${1:-start}" in
+start)
+  mode=$(conf_get NETWORK_MODE off)
+  # IPv6 has its own knob, independent of the IPv4 mode: slaac = kernel RA
+  # client (default), dhcp6 = stateful client applying the address through
+  # default6.script, off = no IPv6 on this interface.
+  mode6=$(conf_get NETWORK_IPV6 slaac)
+  case "$mode6" in
+  slaac|dhcp6|off) ;;
+  *) echo 'Invalid NETWORK_IPV6' >&2; exit 1;;
+  esac
+  if [ "$mode6" = off ]; then
+    # Before the link comes up, or the kernel may already have installed
+    # addresses.  A kernel without IPv6 has no knob, which is not an error.
+    echo 1 > /proc/sys/net/ipv6/conf/"$iface"/disable_ipv6 2>/dev/null ||
+      echo 'WARNING: IPv6 could not be disabled'
+  else
+    # The flag survives a restart, so clear it before the link comes back up.
+    echo 0 > /proc/sys/net/ipv6/conf/"$iface"/disable_ipv6 2>/dev/null
+  fi
+  case "$mode" in
+  off) echo NETWORK_DISABLED;;
+  static)
+    ip link set "$iface" up || exit 1
+    ip addr replace "$(conf_get IPV4_ADDRESS)" dev "$iface" || exit 1
+    gateway=$(conf_get IPV4_GATEWAY)
+    if [ -n "$gateway" ]; then ip route replace default via "$gateway" dev "$iface" || exit 1; fi
+    dns=$(conf_get DNS1)
+    if [ -n "$dns" ]; then printf 'nameserver %s\n' "$dns" > /etc/resolv.conf; fi;;
+  dhcp)
+    ip link set "$iface" up || exit 1
+    # No -b: compiled out on no-MMU (USE_FOR_MMU), so it fails option parsing.
+    # udhcpc re-execs into the background anyway, so boot never waits.
+    udhcpc -i "$iface" -p /run/udhcpc.pid -s /usr/share/udhcpc/default.script;;
+  *) echo 'Invalid NETWORK_MODE' >&2; exit 1;;
+  esac
+  if [ "$mode6" = dhcp6 ]; then
+    # No -b, same reason as udhcpc above.
+    udhcpc6 -i "$iface" -p /run/udhcpc6.pid -s /usr/share/udhcpc/default6.script
+  fi;;
+stop)
+  # The PID is not kept across the no-MMU re-exec, so check the name first.
+  for client in udhcpc udhcpc6; do
+    [ -f /run/"$client".pid ] || continue
+    pid=$(cat /run/"$client".pid)
+    case "$pid" in ''|*[!0-9]*) ;; *)
+      if [ "$(cat /proc/"$pid"/comm 2>/dev/null)" = "$client" ]; then kill "$pid"; fi;; esac
+    rm -f /run/"$client".pid
+  done
+  # Killing the client skips its deconfig callback, so the DHCPv6 address would
+  # outlive it; hand the interface to the script instead.
+  if [ -f /run/udhcpc6.addr ]; then
+    env interface="$iface" /usr/share/udhcpc/default6.script deconfig
+  fi;;
+restart) "$0" stop; "$0" start;;
+*) echo 'Usage: network start|stop|restart' >&2; exit 2;;
+esac

@@ -1,0 +1,4 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+# BusyBox init sets up the controlling tty that rcS-as-PID-1 never gets.
+exec /sbin/init

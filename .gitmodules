@@ -1,0 +1,9 @@
+[submodule "kernel"]
+	path = kernel
+	url = https://github.com/NSING-Community/linux.git
+	branch = n32h7xx
+	# A full Linux history is ~10 GiB; nobody building this board needs it.
+	# This makes the default `git clone --recurse-submodules` fetch the
+	# kernel at depth 1.  Deepen later with:
+	#   git -C kernel fetch --deepen=200        (or --unshallow)
+	shallow = true

@@ -1,0 +1,5 @@
+r
+loadfile ../out/CM7/h787_linux_CM7.hex
+r
+g
+qc

@@ -1,0 +1,2 @@
+# proc/sys/dev/devpts/ramfs are mounted by rcS; /system by /etc/init.d/system.
+# Nothing is auto-formatted, so this file is empty on purpose.

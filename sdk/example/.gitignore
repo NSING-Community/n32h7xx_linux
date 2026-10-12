@@ -1,0 +1,11 @@
+# Build output of `make` in this directory.  The examples are the sources;
+# these binaries are what `make` / `make clean` create and delete, so they
+# must not end up in the released tree.
+hello
+hello-cxx
+libgreeting.so
+shared-app
+pthread-app
+leds
+net-echo
+*.o

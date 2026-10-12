@@ -1,0 +1,19 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+export PATH=/bin:/sbin
+[ -n "${interface:-}" ] || exit 1
+case "${1:-}" in
+deconfig) ifconfig "$interface" 0.0.0.0;;
+bound|renew)
+  if [ -n "${subnet:-}" ]; then
+    ifconfig "$interface" "$ip" netmask "$subnet" up || exit 1
+  else
+    ifconfig "$interface" "$ip" up || exit 1
+  fi
+  while ip route del default dev "$interface" 2>/dev/null; do :; done
+  for gateway in ${router:-}; do ip route add default via "$gateway" dev "$interface" && break; done
+  : > /etc/resolv.conf
+  for server in ${dns:-}; do printf 'nameserver %s\n' "$server" >> /etc/resolv.conf; done
+  # Backgrounded by now, so stdout is /dev/null; log to the kernel log.
+  echo "udhcpc: $interface lease $ip/${subnet:-?} gw=${router:-none} dns=${dns:-none}" >/dev/kmsg 2>/dev/null;;
+esac

@@ -1,0 +1,11 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Mount whatever /etc/fstab lists.  Nothing is auto-formatted here.
+export PATH=/bin:/sbin
+case "${1:-start}" in
+start)
+  mount -a || echo 'WARNING: an fstab mount failed; no formatting attempted'
+  ;;
+*) echo 'Usage: storage start' >&2; exit 2;;
+esac

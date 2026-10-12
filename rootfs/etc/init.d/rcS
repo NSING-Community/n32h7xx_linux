@@ -1,0 +1,48 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Runs under BusyBox hush on no-MMU: a background shell compound "( ... ) &"
+# shares the caller's memory and clobbers it.  Keep this strictly sequential.
+exec </dev/console >/dev/console 2>&1
+export PATH=/bin:/sbin
+umask 022
+
+mount -t proc proc /proc || echo 'WARNING: proc mount failed'
+mount -t sysfs sysfs /sys || echo 'WARNING: sysfs mount failed'
+
+if ! mountpoint -q /dev; then
+  mount -t devtmpfs devtmpfs /dev || echo 'WARNING: using initial device nodes'
+fi
+
+# Static nodes so the console comes up even without devtmpfs.
+[ -e /dev/null ]    || mknod /dev/null    c 1 3
+[ -e /dev/console ] || mknod /dev/console c 5 1
+[ -e /dev/ttyS0 ]   || mknod /dev/ttyS0   c 4 64
+
+mkdir -p /dev/pts /run /tmp /var/log /system
+mount -t devpts devpts /dev/pts -o mode=0620,ptmxmode=0666 || echo 'WARNING: devpts unavailable'
+
+# no SHMEM/tmpfs on no-MMU; ramfs has no quota.
+mount -t ramfs ramfs /run -o nosuid,nodev,noexec || echo 'WARNING: /run remains on rootfs'
+mount -t ramfs ramfs /tmp -o nosuid,nodev || echo 'WARNING: /tmp remains on rootfs'
+mount -t ramfs ramfs /var/log -o nosuid,nodev,noexec || echo 'WARNING: log directory remains on rootfs'
+
+chmod 1777 /tmp
+chmod 700 /run
+chmod 755 /var/log
+: > /run/resolv.conf
+ln -sf /proc/self/fd /dev/fd
+ln -sf /proc/self/fd/0 /dev/stdin
+ln -sf /proc/self/fd/1 /dev/stdout
+ln -sf /proc/self/fd/2 /dev/stderr
+
+# Conveniences, not console prerequisites: run before the handoff so a broken
+# service at worst delays boot.  If a step blocks, drop it rather than
+# backgrounding it.
+/etc/init.d/boot-services
+echo 'Development board: serial console is a passwordless root shell.'
+
+# Return to BusyBox init so the ttyS0 respawn action opens the real UART and
+# gives the shell a controlling terminal.  Execing a shell on /dev/console here
+# would leave tty_nr=0/tpgid=-1: Ctrl-C could not signal foreground jobs.
+exit 0

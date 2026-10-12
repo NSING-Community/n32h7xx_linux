@@ -1,0 +1,70 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# mdev rule handler: mount a removable card on insert, unmount on remove.
+# Wired up from /etc/mdev.conf; see /etc/init.d/automount.
+#
+# mdev runs this through system() with ACTION, MDEV (preferred over DEVNAME)
+# and DEVPATH in the environment; in coldplug only ACTION and MDEV are set.
+#
+# no-MMU hush: nothing here is backgrounded.
+
+export PATH=/bin:/sbin:/usr/sbin
+
+mp=/mnt/sd
+
+# Normalise the node name to an absolute /dev path.
+node=${MDEV:-}
+[ -n "$node" ] || node=${DEVNAME:-}
+[ -n "$node" ] || exit 0
+case "$node" in
+/dev/*) ;;
+*) node=/dev/$node ;;
+esac
+name=${node##*/}
+
+# Only removable storage: SD/MMC and USB mass storage.
+case "$name" in
+mmcblk[0-9]*) ;;
+sd[a-z][0-9]*) ;;
+*) exit 0 ;;
+esac
+
+# A whole disk with a partition table has each partition emit its own event,
+# so mounting the disk itself would only fail; skip it.  A table-less card
+# keeps its filesystem on the whole disk and is handled below.
+case "$name" in
+mmcblk[0-9]p[0-9]*|sd[a-z][0-9]*) ;;
+*)
+	for p in /sys/class/block/"$name"/"$name"p*; do
+		[ -d "$p" ] || continue
+		exit 0
+	done
+	;;
+esac
+
+case "${ACTION:-add}" in
+remove)
+	[ -d "$mp" ] || exit 0
+	mountpoint -q "$mp" || exit 0
+	# Only unmount when the mounted source is the card that just left.
+	src=$(awk -v m="$mp" '$2 == m { print $1; exit }' /proc/mounts)
+	[ "$src" = "$node" ] || exit 0
+	if umount "$mp"; then
+		echo "SD: unmounted $mp ($name)" >/dev/kmsg
+	fi
+	;;
+*)
+	[ -b "$node" ] || exit 0
+	mkdir -p "$mp" 2>/dev/null
+	mountpoint -q "$mp" && exit 0
+	if mount -t vfat -o rw,noatime "$node" "$mp" 2>/dev/null ||
+	   mount -t exfat -o rw,noatime "$node" "$mp" 2>/dev/null; then
+		echo "SD: mounted $name -> $mp" >/dev/kmsg
+	else
+		echo "SD: mount failed for $name (unsupported filesystem?)" >/dev/kmsg
+	fi
+	;;
+esac
+
+exit 0

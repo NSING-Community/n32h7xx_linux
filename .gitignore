@@ -1,0 +1,18 @@
+# Python bytecode from the host tools
+__pycache__/
+*.pyc
+
+# Everything the top-level make writes; "rm -rf out" is the full reset.
+out/
+
+# Maintainer-only material.  Not part of the published tree: the release is
+# LICENSE, Makefile, README.md, tools/, bootloader/, kernel/, rootfs/, sdk/, doc/.
+# (AGENTS.md is the agent context file for this checkout, not for customers.)
+/AGENTS.md
+/diagnostics/
+/doc-internal/
+/tools-internal/
+
+# Local source-rebuild environment (uClibc/GCC/busybox sources).  Deliberately
+# NOT published and NOT built by any target here.
+/sdk-src/

@@ -1,0 +1,13 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+set -eu
+# This wrapper lives in <toolchain>/bin, so ".." is the toolchain prefix.  That
+# keeps the whole prefix relocatable: nothing below is an absolute path.
+sdk=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+for arg in "$@"; do
+    case "$arg" in -mfloat-abi=hard|-mfloat-abi=softfp)
+        echo 'Kernel C code must use the soft floating-point ABI' >&2; exit 2;;
+    esac
+done
+exec "$sdk/bin/arm-uclinuxfdpiceabi-gcc" -B"$sdk/bin/" \
+    -mno-fdpic -mthumb -march=armv7e-m -mfloat-abi=soft "$@"

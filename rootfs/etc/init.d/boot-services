@@ -1,0 +1,76 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Convenience bring-up, kept out of rcS so it is never inlined as a
+# "( ... ) &" shell compound (no-MMU hush).
+export PATH=/bin:/sbin
+
+# Read-only board defaults.  Values are data, so this stays a plain text scan:
+# no sourcing, no eval, nothing in the file can run a command.
+conf_get()
+{
+	if grep -q "^$1=" /etc/defaults.conf 2>/dev/null; then
+		sed -n "s/^$1=//p" /etc/defaults.conf | tail -n 1
+	else
+		printf '%s' "$2"
+	fi
+}
+
+name=$(conf_get HOSTNAME n32h787)
+case "$name" in ''|*[!a-zA-Z0-9.-]*) name=n32h787;; esac
+if [ "${#name}" -gt 63 ]; then name=n32h787; fi
+hostname "$name"
+
+# 32 MiB RAM caps the default receive autotuning near 196 KiB; this per-socket
+# ceiling lifts downloads from ~16-23 to ~46-50 Mbps.  It is not a reservation.
+if [ -w /proc/sys/net/ipv4/tcp_rmem ]; then
+  echo '4096 262144 1048576' > /proc/sys/net/ipv4/tcp_rmem ||
+    echo 'WARNING: TCP receive tuning failed'
+fi
+
+/etc/init.d/storage start
+
+# Starts the mdev hotplug daemon and mounts a card already in the slot.
+/etc/init.d/automount start || echo 'WARNING: automount setup failed'
+
+# A failure here is ignored: the read-only rootfs alone must reach a shell.
+/etc/init.d/system start || echo 'WARNING: /system unavailable; continuing'
+
+network_mode=$(conf_get NETWORK_MODE off)
+
+# rtc_hctosys already tried this; repeating it reports plainly whether the
+# calendar survived (warm reset) or not (power cycle).  Failure is normal.
+# Also logged to /dev/kmsg because the serial link drops board->host bytes.
+if [ -c /dev/rtc0 ]; then
+  if hwclock -s -u -f /dev/rtc0 2>/dev/null; then
+    rtc_status="RTC_RESTORED $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+  else
+    rtc_status=RTC_EMPTY
+  fi
+  echo "$rtc_status"
+  echo "$rtc_status" >/dev/kmsg 2>/dev/null
+fi
+# Loopback is always up, whatever the uplink mode is.
+ip addr replace 127.0.0.1/8 dev lo || echo 'WARNING: loopback address setup failed'
+ip link set lo up || echo 'WARNING: loopback link setup failed'
+if [ "$network_mode" = off ]; then
+  echo NETWORK_DISABLED
+else
+  /etc/init.d/network start || echo 'WARNING: network setup failed'
+  # Backgrounded one-shot NTP step; it waits for the DHCP lease itself.
+  /etc/init.d/ntp start || echo 'WARNING: NTP setup failed'
+fi
+
+# Remote login is a network service, so it is skipped with NETWORK_MODE=off.
+/etc/init.d/remote start || echo 'WARNING: remote login setup failed'
+
+# The user's startup script, last and time-bounded; chmod 0644 disables it.
+if mountpoint -q /system && [ -x /system/bin/init.sh ]; then
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 30 /bin/sh /system/bin/init.sh ||
+      echo 'WARNING: /system/bin/init.sh failed or timed out'
+  else
+    /bin/sh /system/bin/init.sh ||
+      echo 'WARNING: /system/bin/init.sh failed'
+  fi
+fi

@@ -1,0 +1,40 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# BusyBox udhcpc6 callback.
+#
+# Unlike the IPv4 client, a DHCPv6 client never touches the interface: every
+# address has to be applied here.  BusyBox exports only the bare address
+# (ipv6=) and a lifetime (lease=); an IA_NA carries no prefix length, so the
+# /64 seen on every network this board has used is assumed.
+#
+# /etc/resolv.conf is left to the IPv4 udhcpc script: two clients would erase
+# each other's entries on renewal, and this server only sends fe80::1, which
+# a resolver cannot use without a scope id.
+export PATH=/bin:/sbin
+[ -n "${interface:-}" ] || exit 1
+state=/run/udhcpc6.addr
+
+# deconfig is both the first callback and the release path: drop the last one.
+drop_applied() {
+  [ -f "$state" ] || return 0
+  applied=$(cat "$state")
+  case "$applied" in
+  ''|*[!0-9a-fA-F:/]*) ;;
+  *) ifconfig "$interface" del "$applied" 2>/dev/null;;
+  esac
+  rm -f "$state"
+}
+
+case "${1:-}" in
+deconfig|leasefail|nak)
+  drop_applied;;
+bound|renew)
+  [ -n "${ipv6:-}" ] || exit 1
+  drop_applied
+  applied="$ipv6/64"
+  ifconfig "$interface" add "$applied" || exit 1
+  printf '%s\n' "$applied" > "$state"
+  # Backgrounded by now, so stdout is /dev/null; log to the kernel log.
+  echo "udhcpc6: $interface lease $ipv6/64 valid=${lease:-?}s dns=${dns:-none}" >/dev/kmsg 2>/dev/null;;
+esac

@@ -1,0 +1,22 @@
+Subject: [EXPERIMENTAL] ARM: preserve Thumb state for PREL31 targets in Thumb-only PLTs
+
+The PLT relocation fast path returns before the normal PREL31 handling.
+On M-profile the PLT itself is Thumb, even if an undefined external symbol
+has no Thumb function type. EHABI personality references must retain bit 0.
+Otherwise the unwinder branches to Thumb PLT code in ARM state and faults.
+Do not change ARM-capable PLTs or unrelated relocation types.
+
+--- a/bfd/elf32-arm.c
++++ b/bfd/elf32-arm.c
+@@ -10377,6 +10377,11 @@
+ 	  value = (splt->output_section->vma
+ 		   + splt->output_offset
+ 		   + plt_offset);
++	  /* PREL31 may encode an EHABI personality routine.  The
++	     fast path must retain the state of a Thumb-only PLT.  */
++	  if (r_type == R_ARM_PREL31 && using_thumb_only (globals))
++	    value |= 1;
++
+ 	  *unresolved_reloc_p = false;
+ 	  return _bfd_final_link_relocate (howto, input_bfd, input_section,
+ 					   contents, rel->r_offset, value,

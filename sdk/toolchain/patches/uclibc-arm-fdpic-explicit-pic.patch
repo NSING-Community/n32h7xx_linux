@@ -1,0 +1,14 @@
+--- a/Rules.mak
++++ b/Rules.mak
+@@ -323,6 +323,11 @@
+ 
+ PICFLAG-y := -fPIC
+ PICFLAG-$(UCLIBC_FORMAT_FDPIC_ELF) := -mfdpic
++ifeq ($(TARGET_ARCH),arm)
++# Override default-PIE compilers for shared objects. Otherwise static TLS
++# definitions can be lowered to local-exec relocations, invalid in a DSO.
++PICFLAG-$(UCLIBC_FORMAT_FDPIC_ELF) := -mfdpic -fPIC
++endif
+ PICFLAG-$(UCLIBC_FORMAT_DSBT_ELF)  := -mdsbt -fpic
+ PICFLAG := $(PICFLAG-y)
+ PIEFLAG_NAME:=-fPIE

@@ -1,0 +1,25 @@
+# /system is the writable userland (JFFS2, SDK contract): user programs in
+# /system/bin, libraries in /system/lib.  Appended last so it cannot shadow
+# a system tool.
+export PATH=/bin:/sbin:/system/bin
+
+# uClibc's ld.so here was built without LDSO_CACHE_SUPPORT: no /etc/ld.so.conf,
+# only /lib and /usr/lib built in, so /system/lib needs LD_LIBRARY_PATH.  A
+# binary that must work without the environment gets DT_RPATH baked in by the
+# SDK's Make/CMake support.  /lib is still searched, so do not add a second
+# libc/libgcc under /system/lib.
+export LD_LIBRARY_PATH=/system/lib
+# hush uses lineedit's fancy prompt: \w is the cwd ($HOME as ~), \h the short
+# host name, \$ is # for root and $ otherwise.  \[ \] mark the colour escapes
+# zero-width, which keeps the line editor's redraw correct.
+export PS1='\[\e[1;32m\]N32H787\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ '
+export PS2='> '
+export HOME=/root
+export TERM=vt100
+
+# busybox ls just checks that LS_COLORS is set and not "none"; the colours come
+# from its built-in file-type table.  CLICOLOR is the same hint for other tools.
+export LS_COLORS='di=01;34:ln=01;36:so=01;35:pi=33:ex=01;32:bd=01;33:cd=01;33:or=01;31:mi=01;31:*.tar=01;31:*.gz=01;31'
+export CLICOLOR=1
+umask 022
+

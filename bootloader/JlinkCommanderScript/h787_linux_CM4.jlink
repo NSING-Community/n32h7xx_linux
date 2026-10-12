@@ -1,0 +1,5 @@
+r
+loadfile ../out/CM4/h787_linux_CM4.hex
+r
+g
+qc

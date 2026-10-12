@@ -1,0 +1,180 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# /system - writable userland, JFFS2 on the SPI NOR "system" partition.
+# It carries programs and libraries only (bin, lib).  Configuration is not a
+# writable thing on this board: it ships read-only in the rootfs, so there is
+# deliberately no etc or data here.
+#
+# BusyBox has no mkfs.jffs2, and JFFS2 needs none: an erased NOR partition
+# already is an empty JFFS2, so "format" means flash_eraseall.  Whether the
+# partition is usable is decided from two signals: the kernel's mount result
+# (only a "no valid JFFS2 nodes" verdict proves there is nothing to lose) and
+# our own /system/.initialized marker, which seeds init.sh exactly once.
+#
+# no-MMU hush: never background a shell compound here; children must exec.
+export PATH=/bin:/sbin
+
+# Keep in step with the DTS fixed-partitions node and tools/spi_image.py.
+MTD_NUM=3
+MTD_DEV=/dev/mtd$MTD_NUM
+MTD_BLOCK=/dev/mtdblock$MTD_NUM
+MOUNT_POINT=/system
+SAMPLE_DIR=/usr/share/n32/system-sample
+MARKER=$MOUNT_POINT/.initialized
+# Bump when a field update has to add or migrate files under /system.
+LAYOUT_VERSION=3
+# Seeded into a fresh /system; an existing file is never overwritten.
+SAMPLE_FILES="bin/init.sh"
+# fs/jffs2/scan.c verdict for a partition that holds no JFFS2 data at all.
+NO_NODES_MSG='no valid JFFS2 nodes'
+DMESG_TAIL=20
+
+system_mounted()
+{
+	mountpoint -q "$MOUNT_POINT"
+}
+
+# Erased NOR reads back as 0xFF, so stripping 0xFF from an untouched
+# partition leaves nothing.  Costs ~2.5 s, so only after a mount failed.
+system_blank()
+{
+	system_left=$(dd if="$MTD_DEV" bs=65536 2>/dev/null | tr -d '\377' | wc -c)
+	[ "$system_left" -eq 0 ]
+}
+
+system_no_jffs2_data()
+{
+	dmesg 2>/dev/null | tail -n "$DMESG_TAIL" | grep -q "$NO_NODES_MSG"
+}
+
+system_safe_to_erase()
+{
+	system_no_jffs2_data && return 0
+	system_blank
+}
+
+system_mount()
+{
+	[ -d "$MOUNT_POINT" ] || mkdir -p "$MOUNT_POINT"
+	# "mtd3" resolves via the kernel mtd superblock (mtdsuper.c); /dev/mtdN
+	# is a char device and get_tree_mtd() rejects it.  mtdblockN is the
+	# fallback.
+	mount -t jffs2 "mtd$MTD_NUM" "$MOUNT_POINT" 2>/dev/null && return 0
+	mount -t jffs2 "$MTD_BLOCK" "$MOUNT_POINT" 2>/dev/null && return 0
+	return 1
+}
+
+system_erase()
+{
+	if ! command -v flash_eraseall >/dev/null 2>&1; then
+		echo "WARNING: SYSTEM_FORMAT_UNAVAILABLE; no flash_eraseall in $PATH"
+		echo "         the booted userland is missing the BusyBox applet"
+		return 1
+	fi
+	echo "SYSTEM_FORMAT: erasing $MTD_DEV"
+	flash_eraseall "$MTD_DEV" >/dev/null 2>&1
+}
+
+system_populate()
+{
+	mkdir -p "$MOUNT_POINT/bin" "$MOUNT_POINT/lib" || return 1
+
+	for system_file in $SAMPLE_FILES; do
+		[ -f "$SAMPLE_DIR/$system_file" ] || continue
+		[ -e "$MOUNT_POINT/$system_file" ] && continue
+		cp "$SAMPLE_DIR/$system_file" "$MOUNT_POINT/$system_file" || return 1
+	done
+	[ -f "$MOUNT_POINT/bin/init.sh" ] && \
+		chmod 0755 "$MOUNT_POINT/bin/init.sh" 2>/dev/null
+
+	printf '%s\n' "$LAYOUT_VERSION" >"$MARKER" || return 1
+	sync
+	return 0
+}
+
+system_start()
+{
+	if system_mounted; then
+		echo 'SYSTEM_ALREADY_MOUNTED'
+	elif system_mount; then
+		echo 'SYSTEM_MOUNTED'
+	elif system_safe_to_erase; then
+		system_erase || return 1
+		if ! system_mount; then
+			echo "WARNING: SYSTEM_MOUNT_FAILED; $MOUNT_POINT unavailable"
+			return 1
+		fi
+		echo 'SYSTEM_FORMATTED'
+	else
+		echo "WARNING: SYSTEM_NOT_MOUNTED; $MTD_DEV holds data that is not JFFS2"
+		echo "         run '/etc/init.d/system format' to erase and reinitialise it"
+		return 1
+	fi
+
+	if [ -f "$MARKER" ]; then
+		have=$(cat "$MARKER" 2>/dev/null)
+		case "$have" in ''|*[!0-9]*) have=0;; esac
+		if [ "$have" -ge "$LAYOUT_VERSION" ]; then
+			echo 'SYSTEM_READY initialized'
+			return 0
+		fi
+		# An older layout only ever gains missing files; nothing is replaced.
+		echo "SYSTEM_UPGRADE: layout $have -> $LAYOUT_VERSION"
+	else
+		echo 'SYSTEM_FIRST_BOOT: installing the default layout'
+	fi
+
+	if ! system_populate; then
+		echo 'WARNING: SYSTEM_POPULATE_FAILED; continuing with a bare /system'
+		return 1
+	fi
+	echo 'SYSTEM_READY initialized'
+	return 0
+}
+
+system_format()
+{
+	if system_mounted; then
+		echo "WARNING: SYSTEM_MOUNTED; unmount $MOUNT_POINT first" >&2
+		return 1
+	fi
+	system_erase || return 1
+	if ! system_mount; then
+		echo "WARNING: SYSTEM_MOUNT_FAILED; $MOUNT_POINT unavailable"
+		return 1
+	fi
+	system_populate || return 1
+	echo 'SYSTEM_READY initialized'
+	return 0
+}
+
+case "${1:-start}" in
+start)
+	system_start
+	;;
+format)
+	# Destructive, never automatic; the operator's way out if /system
+	# holds something that is not JFFS2.
+	system_format
+	;;
+status)
+	if system_mounted; then
+		if [ -f "$MARKER" ]; then
+			echo 'system: mounted, initialized'
+		else
+			echo 'system: mounted, not initialized'
+		fi
+	elif system_no_jffs2_data; then
+		echo 'system: not mounted, kernel found no JFFS2 data'
+	elif system_blank; then
+		echo 'system: not mounted, partition never written'
+	else
+		echo 'system: not mounted, partition holds data'
+	fi
+	;;
+*)
+	echo 'Usage: /etc/init.d/system {start|format|status}' >&2
+	exit 2
+	;;
+esac

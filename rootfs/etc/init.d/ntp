@@ -1,0 +1,88 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Wall-clock sync.  The RTC has no battery, so a power cycle loses the calendar
+# and the kernel starts at the epoch; NTP puts a real date back (after a warm
+# reset the RTC already restored it and this only trims drift).
+#
+# Backgrounded as a real program, never as a shell compound (no-MMU hush).
+export PATH=/bin:/sbin
+
+# Read-only board defaults (/etc/defaults.conf).  Data-only scan; see
+# boot-services for the rationale.
+conf_get()
+{
+	if grep -q "^$1=" /etc/defaults.conf 2>/dev/null; then
+		sed -n "s/^$1=//p" /etc/defaults.conf | tail -n 1
+	else
+		printf '%s' "$2"
+	fi
+}
+
+PIDFILE=/run/ntp.pid
+LOGFILE=/run/ntp.log
+SYNC=/usr/share/n32/ntp-sync.sh
+
+ntp_running()
+{
+	[ -f "$PIDFILE" ] || return 1
+	ntp_pid=$(cat "$PIDFILE" 2>/dev/null)
+	case "$ntp_pid" in ''|*[!0-9]*) return 1;; esac
+	kill -0 "$ntp_pid" 2>/dev/null
+}
+
+ntp_start()
+{
+	if [ "$(conf_get NETWORK_MODE off)" = off ]; then
+		echo NTP_DISABLED
+		return 0
+	fi
+	if ntp_running; then
+		echo NTP_ALREADY_RUNNING
+		return 0
+	fi
+	if [ ! -x "$SYNC" ]; then
+		echo 'WARNING: NTP_SYNC_MISSING; no clock synchronisation'
+		return 1
+	fi
+	# ntp-sync.sh reads the peer list straight from the read-only
+	# /etc/ntp.conf; nothing is copied anywhere.
+	: >"$LOGFILE"
+	/bin/sh "$SYNC" >>"$LOGFILE" 2>&1 &
+	sync_pid=$!
+	echo "$sync_pid" >"$PIDFILE"
+	echo "NTP_STARTED pid=$sync_pid"
+}
+
+ntp_stop()
+{
+	if ntp_running; then
+		kill "$(cat "$PIDFILE")" 2>/dev/null
+	fi
+	# Catches a step in progress if the script exited but ntpd lingers.
+	killall ntpd 2>/dev/null
+	rm -f "$PIDFILE"
+	echo NTP_STOPPED
+}
+
+ntp_status()
+{
+	if ntp_running; then
+		echo 'ntp: syncing'
+	else
+		echo 'ntp: idle'
+	fi
+	echo "date: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+	if [ -f "$LOGFILE" ]; then
+		tail -n 5 "$LOGFILE"
+	fi
+	return 0
+}
+
+case "${1:-start}" in
+start) ntp_start;;
+stop) ntp_stop;;
+restart) ntp_stop; ntp_start;;
+status) ntp_status;;
+*) echo 'Usage: ntp start|stop|restart|status' >&2; exit 2;;
+esac
