@@ -56,43 +56,13 @@ USB 工具；完成后按 [快速上手](doc/quickstart.md) 编译、烧录并�
 
 ## 获取源码
 
-`kernel/` 是 git submodule，其余目录都在本仓库。
+`kernel/` 是 Git 子模块，以下命令会一并拉取：
 
 ```sh
 git clone --recurse-submodules https://github.com/NSING-Community/n32h7xx_linux.git \
     ~/research/n32h7xx_linux
 cd ~/research/n32h7xx_linux
 ```
-
-上面一条命令已经带上了 `kernel/`，不需要再单独 init。漏了 `--recurse-submodules`、
-或者从压缩包解出来时 `kernel/` 会是空的，补一次：
-
-```sh
-git submodule update --init
-```
-
-更新主工程后，让 kernel 跟上记录的提交：
-
-```sh
-git pull --recurse-submodules
-```
-
-仓库公开，HTTPS 匿名即可拉；要走 SSH：
-
-```sh
-git config submodule.kernel.url git@github.com:NSING-Community/linux.git
-git submodule sync && git submodule update --init
-```
-
-需要完整内核历史（默认 depth 1，约 250 MB），或让 kernel 跟分支最新：
-
-```sh
-git -C kernel fetch --unshallow
-git submodule update --remote kernel
-```
-
-kernel 分支 `n32h7xx`，仓库
-[NSING-Community/linux](https://github.com/NSING-Community/linux.git)。
 
 ## 构建
 
