@@ -162,14 +162,12 @@ make flash-bootloader                      # 探针写 CM7 bootloader
 
 `H787_BOARD` 没有默认值，必须指定（板子走 DHCP，地址会变）。
 
-进 USB MSC：上电/复位时按住 KEY1（`PG3`，低有效），调试器写请求标志
-`0x30015f00`（magic `0x544f4f42` 加它的取反），或 Linux 里 `reboot msc`。
+USB MSC 的接线、进入方式和读回校验见 [主机工具与烧写](doc/tools.md)，
+SSH 更新过程见 [网络 OTA](doc/ota-update.md)。
 
-换更大的 NOR：`make FLASH_SIZE=32M`，`system` 自动吃掉多出来的空间；16 MiB 是
-最小档。大于 16 MiB 的板子走 MSC 时按 16 MiB 上报容量，写整片要用
-`--expect-bytes`（或 `H787_MSC_BYTES`）对上。
-
-完整说明见 [doc/ota-update.md](doc/ota-update.md)、[doc/tools.md](doc/tools.md)。
+更换更大的 NOR 时使用 `make FLASH_SIZE=32M`，`system` 占用新增容量；16 MiB
+是默认最小档。当前 bootloader 的 MSC 按 16 MiB 上报，大容量板仍可通过 MSC
+更新 `spi-nor-boot.img`，整片大容量镜像需要能访问完整 NOR 的烧写方式。
 
 ## 常用变量
 
@@ -202,18 +200,20 @@ make flash-bootloader                      # 探针写 CM7 bootloader
 | `doc/` | 用户文档 |
 | `out/` | 全部构建产物 |
 
-用 SDK 编译应用：
+## 文档导航
 
-```sh
-cd sdk/example && make
-sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc -O2 sdk/example/hello.c -o /tmp/hello
-```
+首次使用按 **环境搭建 → 获取源码 → 快速上手** 的顺序进行，之后按任务查阅专题。
 
-## 文档
-
-[环境搭建](doc/setup.md) 配置 Windows + WSL2 开发环境、`doc/quickstart.md` 上手、
-`doc/kernel-config.md` 内核配置、`doc/ota-update.md` 网络更新分区、
-`doc/sdk.md` 应用构建、`doc/tools.md` 主机工具与烧写、`doc/usb.md` USB 角色切换及 ADB。
+| 文档 | 内容 |
+| --- | --- |
+| [环境搭建](doc/setup.md) | Windows / WSL2、依赖安装、USB 共享及权限 |
+| [获取源码](#获取源码) | 克隆、内核子模块及源码更新 |
+| [快速上手](doc/quickstart.md) | 首次编译、USB 刷机、登录及运行 hello |
+| [主机工具与烧写](doc/tools.md) | MSC 更新、bootloader 烧写、串口和 OpenOCD |
+| [网络 OTA](doc/ota-update.md) | 通过 SSH 更新 kernel / dtb / rootfs |
+| [内核配置](doc/kernel-config.md) | menuconfig、配置保留、重置和导出 |
+| [SDK 与应用开发](doc/sdk.md) | 工具链、库、部署、自启、LED 和网络示例 |
+| [USB](doc/usb.md) | ADB、ACM、Host 存储及 Device/Host 切换 |
 
 ## 发布范围
 

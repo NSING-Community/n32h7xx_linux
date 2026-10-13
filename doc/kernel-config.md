@@ -4,17 +4,10 @@
 树里。所有配置命令都走顶层 `make`，不需要进 `kernel/` 目录敲 `make
 menuconfig`。
 
-## 先装依赖
+## 界面依赖
 
-`menuconfig` 是 ncurses 界面，需要 `libncurses-dev`（`nconfig` / `xconfig`
-还有各自的依赖）。开发环境如果只按 [setup.md](setup.md) 的 apt 列表装过，补
-一个：
-
-```sh
-sudo apt install -y libncurses-dev
-```
-
-不装也能编内核，只是打不开 `menuconfig` / `nconfig` 的界面。
+[环境搭建](setup.md) 已包含 `libncurses-dev`，用于 `menuconfig` / `nconfig`。
+使用 `xconfig` 时另外准备 Qt 开发包。纯命令行编译不需要菜单界面。
 
 ## 改配置
 

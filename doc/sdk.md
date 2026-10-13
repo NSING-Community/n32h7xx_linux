@@ -134,12 +134,41 @@ LD_LIBRARY_PATH=/system/lib /system/bin/shared-app
 
 ## 部署到设备
 
-编译产物直接进 `/system`（可写 JFFS2，升级 rootfs 不会覆盖它）：
+在仓库根目录编译，应用放 `/system/bin`，自己的共享库放 `/system/lib`。
+`/system` 是可写 JFFS2，更新 rootfs 时会保留其文件。USB ADB 部署不需要网线：
 
 ```sh
-scp hello root@<板子IP>:/system/bin/
-scp libgreeting.so root@<板子IP>:/system/lib/
+make -C sdk/example hello shared-app
+adb push sdk/example/hello /system/bin/hello
+adb push sdk/example/shared-app /system/bin/shared-app
+adb push sdk/example/libgreeting.so /system/lib/libgreeting.so
+adb shell /system/bin/hello
+adb shell /system/bin/shared-app
 ```
+
+联网时也可以用 SCP / SSH：
+
+```sh
+scp sdk/example/hello root@<板子IP>:/system/bin/
+scp sdk/example/libgreeting.so root@<板子IP>:/system/lib/
+ssh root@<板子IP> '/system/bin/hello'
+```
+
+普通应用和共享库直接传文件即可；更换 kernel、dtb 或整个 rootfs 时，按
+[网络更新](ota-update.md) 或 [USB 烧写](tools.md) 操作。
+
+### 开机自启
+
+把自己的启动脚本放在可写的 `/system/bin/init.sh`，系统挂载 `/system` 后会调用：
+
+```sh
+#!/bin/sh
+export PATH=/system/bin:/bin:/sbin
+export LD_LIBRARY_PATH=/system/lib:/lib
+/system/bin/my-app &
+```
+
+为脚本设置可执行权限。后台任务使用实际可执行程序，NOMMU 下的限制见本文末尾。
 
 ## 板载 LED 示例（/sys/class/gpio）
 
@@ -232,11 +261,9 @@ IPv4-mapped 形式。
 | 慢客户端 | 只影响它自己那条连接 | 只阻塞它自己那个线程 |
 | 代码 | 一个事件循环 | 每连接一个阻塞式 recv/send 循环 |
 
-两种都能跑。第三种——**一连接一个进程**——在这里不成立，原因就是 no-MMU：
-`fork()` 之后子进程在 `execve()` 之前和父进程共用同一份地址空间，所以"多进程"
-既换不来隔离，也换不来并发，只是白付一次拷贝（细节见下面"无 MMU 环境的坑"）。
-**线程没有这个问题**：它们本来就是共享同一个地址空间，uClibc 的 pthread 在这块
-板上是正常的，所以 `-t` 是个真实可用的选项，代价就是每个连接一个栈。
+两种模式都能运行。本系统没有常规 `fork()` 所需的独立地址空间，不能直接照搬
+一连接一进程的 `fork()` 服务模型。线程共享地址空间，uClibc 的 pthread 可用于
+这里的并发处理；每个连接需要独立线程栈。
 
 `-t` 的线程栈是**显式设成 64 KB** 的（`THREAD_STACK`）。默认栈可能是几 MB，
 乘以 16 个连接就超过这块板的 RAM 了；worker 只做 recv/send，64 KB 足够。
@@ -266,12 +293,13 @@ socket 再返回（`-t` 模式下会等 worker 自己收尾，实测 3 个空闲
 
 ```sh
 /system/bin/my-app &         # 可以：子进程立刻 execve，父进程恢复
-( ...; ... ) &               # 不行：fork 后没有独立地址空间
+( ...; ... ) &               # 不行：不能使用常规 fork 后台模型
 { ...; ...; } &              # 不行，同上
 ```
 
-no-MMU 上 `fork()` 不复制地址空间，子进程在 `execve()` 之前一直和父进程共用
-内存，父进程会被挂起等待。shell 复合后台任务永远不会 `exec`，会霸占父进程内存
-直到超时，启动流程就卡在那里。这类问题表现为"系统启动到一半没反应了"，很难查。
+NOMMU 上常规 `fork()` 不可用，启动子程序通常使用 `vfork()` 或
+`posix_spawn()`：子进程在 `execve()` 或退出之前与父进程共享内存，父进程等待。
+本系统的 shell 复合后台任务无法按常规 fork 模型执行，可能阻塞启动流程，
+因此应把工作写成独立程序或脚本并执行。
 
 普通命令替换 `x=$(外部命令)` 是安全的（子进程立刻 exec）。

@@ -1,107 +1,95 @@
 # 快速上手
 
-第一次用这台机器先把环境搭起来：[setup.md](setup.md)（Windows + WSL2、编译与
-调试工具、usbipd 透传）。
+本文走一遍首次使用：编译镜像 → USB 刷机 → 登录 → 运行一个应用。
+主机工具先按 [环境搭建](setup.md) 安装，源码按 [README](../README.md#获取源码)
+拉取。下面的主机命令均在仓库根目录的 WSL / Linux 终端执行。
 
-## 接线
+## 1. 接线
 
-| 接口 | 用途 | 必需 |
-| --- | --- | --- |
-| 电源 | 供电 | 是 |
-| 网线 | SSH、scp、OTA | 是（日常开发） |
-| NSLink / CMSIS-DAP | 调 bootloader、烧片内 flash、看内核日志 | 只在换 bootloader 或调试时 |
-| 串口（USART1，`PA9=TX`/`PA10=RX`，115200 8N1） | 控制台 | 可选，SSH 可用时不必 |
-| USB（设备自己的 MSC） | 更新 dtb / kernel / rootfs 镜像 | 只在更新这三个分区时 |
+| 接口 | 本流程用途 |
+| --- | --- |
+| 电源 | 给板子供电 |
+| USB1（PA11 / PA12） | bootloader MSC 刷机；Linux 启动后 ADB 登录 |
+| NSLink / CMSIS-DAP | 可选；串口日志、调试及片内 bootloader 烧写 |
+| 网线 | 可选；SSH、SCP 和网络 OTA |
 
-## 上电
+本流程要求板子片内已有本工程 bootloader；尚未安装或需要更换时，先按
+[bootloader 烧写说明](tools.md#烧写-bootloader) 操作。
 
-板子从外部 SPI NOR 启动：bootloader 读 `dtb` 和 `kernel` 两个分区，把内核放进
-SDRAM 后跳过去，内核再挂载 `rootfs`（SquashFS，只读）和 `system`（JFFS2，可写）。
-
-启动完可以在串口上看到内核的 printk；`rootfs/etc/inittab` 会在 `ttyS0` 上起一个
-shell。看到 `N32H787:/ #` 提示符就说明系统已经起来了。
-
-## 登录
-
-设备通过 DHCP 拿地址，SSH 默认用户名 `root`：
+## 2. 编译镜像
 
 ```sh
-ssh root@<板子IP>
+make
 ```
 
-地址是 DHCP 分配的，可能每次都变，用串口控制台或路由器查当前值。`telnet` 也开
-着，用途和 SSH 一样。
+完成后使用 `out/dist/spi-nor-boot.img`，它包含 dtb、kernel 和 rootfs，保留可写
+`system` 分区。构建目标及产物说明见 [README](../README.md#构建)。
 
-> **默认凭据是空的。** 出厂 rootfs 里 `root` 的密码就是空字符串
-> （`/etc/shadow` 里存的是空密码的 `$6$` 哈希），并且 `/etc/defaults.conf`
-> 的 `REMOTE_LOGIN=both` 同时开了 telnet 和 ssh，其中 telnet 是明文的。
-> 这是调试板的默认值，任何能连上 22 / 23 端口的人都会直接拿到 root。
->
-> 配置是**只读**的：`/etc/defaults.conf` 和 `/etc/shadow` 都编译在 rootfs 里，
-> 板上没有写它们的入口（rootfs 是只读 SquashFS，`/system` 只放程序和库），
-> 所以 `passwd` 这类改动不会被保存。要改就改构建树、重新 `make` 再烧写：
->
-> ```sh
-> # 关掉 telnet
-> sed -i 's/^REMOTE_LOGIN=.*/REMOTE_LOGIN=ssh/' rootfs/etc/defaults.conf
-> # 设一个真密码（先用主机上的 openssl passwd -6 生成哈希）
-> sed -i 's|^root:.*|root:<哈希>:19000:0:99999:7:::|' rootfs/etc/shadow
-> make && make flash-image
-> ```
+## 3. USB 刷机
 
-登录后先看这几个：
+按住 KEY1（PG3）复位或上电，让 bootloader 进入 MSC 模式。Windows PowerShell
+中用 `usbipd list` 找到 `19f5:5780`，首次管理员共享后 attach 到 WSL：
+
+```powershell
+usbipd bind --busid <MSC 的 busid>     # 首次，管理员 PowerShell
+usbipd attach --wsl --busid <MSC 的 busid>
+```
+
+在仓库根目录的 WSL 终端写入：
+
+```sh
+sudo tools/h787ctl msc-write out/dist/spi-nor-boot.img
+```
+
+确认写入和读回校验成功，Windows 侧 `usbipd detach --busid <MSC 的 busid>`，
+松开 KEY1，再复位或重新上电。其他进入 MSC 的方法、单分区写入和探针烧写见
+[主机工具与烧写](tools.md)。
+
+## 4. 登录并检查启动
+
+Linux 启动后 USB1 重新枚举为 ADB。按 [环境搭建的 USB 共享步骤](setup.md#2-windows-侧安装-usbipd)
+共享并 attach `1d6b:0105`（它与 MSC 是不同设备），然后在 WSL 中运行：
+
+```sh
+adb devices
+adb shell
+```
+
+ADB shell 默认目录为 `/system`。在板子 shell 中检查：
 
 ```sh
 uname -a
-cat /proc/mtd            # 四个 flash 分区
+cat /proc/mtd
 ifconfig eth0
-df                       # / (squashfs ro)、/system (jffs2 rw)、/tmp (ramfs)
+df
+exit
 ```
 
-## 编译一个应用
+应看到四个 MTD 分区、只读 `/` 和可写 `/system`。也可以通过 115200 8N1 串口
+登录；接网线时可用 `ssh root@<板子IP>`，IP 从串口、ADB 的 `ifconfig eth0` 或
+路由器 DHCP 租约查询。
 
-交叉工具链在 `sdk/toolchain/bin/`：
+开发配置默认 root 空密码，SSH/Telnet 同时启用，USB ADB 免认证。
+修改登录配置应在构建树编辑 `rootfs/etc/defaults.conf` 和 `rootfs/etc/shadow`，
+重新打包并更新 rootfs；板上的 `/etc` 为只读，不能持久修改。ADB 服务控制及
+USB Host/Device 切换见 [USB 文档](usb.md)。
+
+## 5. 运行第一个应用
+
+回到仓库根目录的主机终端，只编译并部署 `hello`：
 
 ```sh
-cd sdk/example
-make                     # 直接编译示例，Makefile 自己找工具链
+make -C sdk/example hello
+adb push sdk/example/hello /system/bin/hello
+adb shell /system/bin/hello
 ```
 
-编译产物是 ARM EABI 动态链接的可执行文件，解释器 `/lib/ld-uClibc.so.0`。传到设备
-上跑：
-
-```sh
-scp hello root@<板子IP>:/system/bin/
-ssh root@<板子IP> '/system/bin/hello'
-```
-
-`sdk/example/leds.c` 是个更贴板子的例子：PB3 / PF10 / PI8 三个 LED 的跑马灯，
-走 `/sys/class/gpio`，不依赖 libc 以外的库。
-
-```sh
-make -C sdk/example leds
-scp sdk/example/leds root@<板子IP>:/system/bin/
-ssh root@<板子IP> '/system/bin/leds 5 120'    # 5 轮，每步 120 ms
-```
-
-`sdk/example/net-echo.c` 是个 TCP echo 服务器，用来试"板子上的程序能被外面的
-程序连上"：
-
-```sh
-make -C sdk/example net-echo
-scp sdk/example/net-echo root@<板子IP>:/system/bin/
-ssh root@<板子IP> '/system/bin/net-echo 2323'
-# PC 上另开一个终端：
-#   nc <板子IP> 2323     -> 输入的每行都会原样发回来
-```
-
-加 `-t` 就换成一连接一线程的实现，不加则是一个 `poll()` 循环伺候所有连接；两者
-的区别和线程在这里为什么可用，见 [sdk.md](sdk.md#两种服务方式poll-还是线程)。
-
-细节（自己的工程怎么接工具链、库放哪、为什么用 `/system/lib`）见 [sdk.md](sdk.md)。
+程序输出后返回，完成从构建到板上执行的流程。工具链、SCP 部署、共享库、LED
+及网络示例集中在 [SDK 文档](sdk.md)，这里不再逐个展开。
 
 ## 下一步
 
-- 开发环境搭建：[setup.md](setup.md)
-- 更新设备上的分区：[ota-update.md](ota-update.md)
-- 应用构建与 SDK 布局：[sdk.md](sdk.md)
+- 定制内核：[kernel-config.md](kernel-config.md)
+- 网络更新 kernel / dtb / rootfs：[ota-update.md](ota-update.md)
+- 应用与开机自启：[sdk.md](sdk.md)
+- USB 功能与角色切换：[usb.md](usb.md)

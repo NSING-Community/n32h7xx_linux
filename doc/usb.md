@@ -138,8 +138,9 @@ echo '' > /sys/kernel/config/usb_gadget/serial/UDC
 
 ## Host：存储设备
 
-默认内核包含 USB Storage、SCSI 磁盘和 VFAT/exFAT。插入 USB2 后检查 `dmesg`
-和 `/dev/sd*`，确认分区后再手动挂载，例如：
+默认内核包含 USB Storage、SCSI 磁盘和 VFAT/exFAT。插入 USB2 后先用 `mount`、
+`dmesg` 和 `/dev/sd*` 确认设备及挂载状态。rootfs 的 mdev 规则会尝试将受支持的
+SD / USB 分区挂到 `/mnt/sd`；该位置已被其他存储占用时，可选其他目录手动挂载：
 
 ```sh
 mkdir -p /mnt/usb
@@ -148,7 +149,8 @@ mount /dev/sda1 /mnt/usb
 umount /mnt/usb
 ```
 
-SD 卡的自动挂载规则不包含 USB 磁盘。实际设备名以枚举结果为准。
+实际设备名和挂载点以枚举及 `mount` 输出为准。切换 Host 角色或拔盘前，先卸载
+该设备的实际挂载点。
 
 ## Host：查看设备
 
