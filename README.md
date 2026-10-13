@@ -4,7 +4,8 @@ NSING N32H7xx/N32H787 的 Linux、bootloader、rootfs 和用户态 SDK 统一入
 
 ## 功能清单
 
-以下都在 N32H787 HMI 实板上跑通。
+以下都在 N32H787 HMI 实板上跑通。USB 使用及角色切换方法见
+[doc/usb.md](doc/usb.md)。
 
 **系统**
 
@@ -26,6 +27,7 @@ NSING N32H7xx/N32H787 的 Linux、bootloader、rootfs 和用户态 SDK 统一入
 | SD/MMC | SD 卡（已测 128 GB SDXC） |
 | SPI NOR | XSPI2，16 MiB，MTD 四分区 |
 | RTC | LSE 时钟，无电池，开机 NTP 校时 |
+| USB1 / USB2 | DWC2 HS Host / Device；USB1 默认 ADB，USB2 默认 Host；支持 DTB 配置及运行时角色切换，USB2 VBUS 自动控制 |
 
 **文件系统**
 
@@ -44,6 +46,7 @@ NSING N32H7xx/N32H787 的 Linux、bootloader、rootfs 和用户态 SDK 统一入
 **用户态**
 
 - BusyBox 1.38（shell、`vi`、`top`、`ip`、`fdisk`、`flashcp` 等）
+- USB ADB：交互 shell、文件 push/pull；默认目录 `/system`，开机自动启动
 - `n32-flash`：分区擦写 / 回读校验 / 网络 OTA
 
 ## 获取源码
@@ -205,7 +208,7 @@ sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc -O2 sdk/example/hello.c -o /tmp/hello
 
 `doc/setup.md` 搭 Windows + WSL2 开发环境、`doc/quickstart.md` 上手、
 `doc/kernel-config.md` 内核配置、`doc/ota-update.md` 网络更新分区、
-`doc/sdk.md` 应用构建、`doc/tools.md` 主机工具与烧写。
+`doc/sdk.md` 应用构建、`doc/tools.md` 主机工具与烧写、`doc/usb.md` USB 角色切换及 ADB。
 
 ## 发布范围
 
