@@ -36,6 +36,9 @@ fi
 # A failure here is ignored: the read-only rootfs alone must reach a shell.
 /etc/init.d/system start || echo 'WARNING: /system unavailable; continuing'
 
+# USB login works independently of Ethernet and starts shells in /system.
+/etc/init.d/adbd start || echo 'WARNING: USB ADB setup failed'
+
 network_mode=$(conf_get NETWORK_MODE off)
 
 # rtc_hctosys already tried this; repeating it reports plainly whether the

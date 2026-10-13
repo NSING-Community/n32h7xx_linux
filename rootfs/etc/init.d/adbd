@@ -1,0 +1,113 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+# USB-only microADB development service; authentication is disabled.
+export PATH=/bin:/sbin:/usr/sbin
+G=/sys/kernel/config/usb_gadget/n32-adb
+FFS=/dev/ffs-adb
+PIDFILE=/run/adbd.pid
+LOG=/run/adbd.log
+
+conf_get()
+{
+	if grep -q "^$1=" /etc/defaults.conf 2>/dev/null; then
+		sed -n "s/^$1=//p" /etc/defaults.conf | tail -n 1
+	else
+		printf '%s' "$2"
+	fi
+}
+
+running()
+{
+	[ -f "$PIDFILE" ] || return 1
+	pid=$(cat "$PIDFILE")
+	case "$pid" in ''|*[!0-9]*) return 1;; esac
+	[ "$(readlink /proc/"$pid"/exe)" = /usr/sbin/adbd ] || return 1
+	kill -0 "$pid" 2>/dev/null
+}
+
+stop_adb()
+{
+	if [ -e "$G/UDC" ] && [ -n "$(cat "$G/UDC")" ]; then
+		echo '' > "$G/UDC" || return 1
+	fi
+	if running; then
+		kill "$pid" || return 1
+		for attempt in 1 2 3 4 5; do
+			running || break
+			sleep 1
+		done
+		if running; then echo 'ADB_STOP_FAILED' >&2; return 1; fi
+	fi
+	rm -f "$PIDFILE"
+	if mountpoint -q "$FFS"; then umount "$FFS" || return 1; fi
+	if [ -d "$G" ]; then
+		rm -f "$G/configs/c.1/ffs.adb"
+		# Retain the unbound definition for reuse; no rmdir applet required.
+	fi
+	echo ADB_STOPPED
+}
+
+setup_adb()
+{
+	udc=$(conf_get USB_ADB_UDC 40100000.usb)
+	case "$udc" in 40100000.usb|40060000.usb) ;; *) return 1;; esac
+	[ -d /sys/class/udc/"$udc" ] || return 1
+	[ -x /usr/sbin/adbd ] || return 1
+	# Leave other gadgets under the customer's control.
+	if [ -n "$(cat /sys/class/udc/"$udc"/function)" ]; then
+		echo 'ADB_UDC_BUSY; stop the existing gadget first' >&2
+		return 1
+	fi
+	role=/sys/class/usb_role/"$udc"-role-switch/role
+	[ ! -w "$role" ] || echo device > "$role" || return 1
+	if ! mountpoint -q /sys/kernel/config; then
+		mount -t configfs none /sys/kernel/config || return 1
+	fi
+	mkdir -p "$G/strings/0x409" "$G/configs/c.1" || return 1
+	# Development identifiers. Use assigned VID/PID when shipping a product.
+	echo 0x1d6b > "$G/idVendor" || return 1
+	echo 0x0105 > "$G/idProduct" || return 1
+	serial=$(sed -n 's/^Serial[[:space:]]*:[[:space:]]*//p' /proc/cpuinfo)
+	case "$serial" in ''|*[!0-9a-fA-F]*) serial=n32h787;; esac
+	echo "$serial" > "$G/strings/0x409/serialnumber" || return 1
+	echo NSING > "$G/strings/0x409/manufacturer" || return 1
+	echo 'N32H787 ADB' > "$G/strings/0x409/product" || return 1
+	mkdir -p "$G/functions/ffs.adb" || return 1
+	ln -s "$G/functions/ffs.adb" "$G/configs/c.1/ffs.adb" || return 1
+	mkdir -p "$FFS" || return 1
+	mount -t functionfs adb "$FFS" || return 1
+	: > "$LOG"
+	/usr/sbin/adbd --usb "$FFS" >>"$LOG" 2>&1 </dev/null &
+	echo $! > "$PIDFILE"
+	for attempt in 1 2 3 4 5; do
+		if grep -q FUNCTIONFS_READY "$LOG"; then
+			echo "$udc" > "$G/UDC" || return 1
+			echo "ADB_STARTED usb=$udc serial=$serial"
+			return 0
+		fi
+		running || break
+		sleep 1
+	done
+	echo "ADB_START_FAILED; see $LOG" >&2
+	return 1
+}
+
+start_adb()
+{
+	if running; then echo ADB_ALREADY_RUNNING; return 0; fi
+	if [ "$(conf_get USB_ADB off)" != on ]; then
+		echo ADB_DISABLED
+		return 0
+	fi
+	# Remove stale resources owned by this service before creating new ones.
+	if [ -d "$G" ]; then stop_adb || return 1; fi
+	setup_adb || { stop_adb; return 1; }
+}
+
+case "${1:-start}" in
+start) start_adb;;
+stop) stop_adb;;
+restart) stop_adb && start_adb;;
+status) if running; then echo "adbd: running pid=$pid"; else echo 'adbd: stopped'; fi;;
+*) echo 'Usage: adbd start|stop|restart|status' >&2; exit 2;;
+esac

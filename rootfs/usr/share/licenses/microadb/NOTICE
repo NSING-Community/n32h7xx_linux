@@ -1,0 +1,5 @@
+microADB: Copyright (C) 2020 Simon Piriou.
+Upstream: https://github.com/spiriou/microADB
+Revision: 85cc7a90101b2ae76ee4112ba285141c8fba5012
+Linux NOMMU HAL and N32H787 integration added by NSING.
+Licensed under Apache License, Version 2.0; see LICENSE.
