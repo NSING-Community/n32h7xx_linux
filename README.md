@@ -2,6 +2,11 @@
 
 NSING N32H7xx/N32H787 的 Linux、bootloader、rootfs 和用户态 SDK 统一入口。
 
+## 开始使用
+
+首次使用请先阅读 [环境搭建](doc/setup.md)，配置 Windows / WSL2、构建依赖和
+USB 工具；完成后按 [快速上手](doc/quickstart.md) 编译、烧录并登录开发板。
+
 ## 功能清单
 
 以下都在 N32H787 HMI 实板上跑通。USB 使用及角色切换方法见
@@ -206,7 +211,7 @@ sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc -O2 sdk/example/hello.c -o /tmp/hello
 
 ## 文档
 
-`doc/setup.md` 搭 Windows + WSL2 开发环境、`doc/quickstart.md` 上手、
+[环境搭建](doc/setup.md) 配置 Windows + WSL2 开发环境、`doc/quickstart.md` 上手、
 `doc/kernel-config.md` 内核配置、`doc/ota-update.md` 网络更新分区、
 `doc/sdk.md` 应用构建、`doc/tools.md` 主机工具与烧写、`doc/usb.md` USB 角色切换及 ADB。
 
