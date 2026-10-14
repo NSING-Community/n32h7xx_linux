@@ -106,8 +106,27 @@ adb shell /system/bin/camera-matrix -o /mnt/sd/camera-matrix   # 全部跑一遍
 
 ## MJPEG
 
-按顺序拼接独立 JPEG，可得到裸 MJPEG 流。该格式没有 HTTP multipart 头，
-回放时的帧率需要由应用设置；实际采集速率取决于传感器时钟、格式和存储速度。
+裸 MJPEG 就是按顺序拼接的独立 JPEG，没有 HTTP multipart 头。`v4l2-capture`
+的 `-o -` 把每帧的字节按顺序写到 stdout（进度信息走 stderr），所以一条命令
+就能采出一个 `.mjpeg` 文件；分辨率按上面的 JPEG 清单选：
+
+```sh
+mkdir -p /mnt/sd/camera
+/mnt/sd/tools/v4l2-capture -f JPEG -s 640x480 -n 30 -w 4 -q 1 \
+    -c test_pattern=0 -o - > /mnt/sd/camera/cam.mjpeg
+```
+
+文件里没有帧率信息，回放时自己给；真实帧率取决于是哪个分辨率，`v4l2-capture`
+每帧打印的耗时就是实测值：
+
+```sh
+scp root@<板子IP>:/mnt/sd/camera/cam.mjpeg .
+ffplay -f mjpeg -framerate 15 cam.mjpeg
+ffmpeg -f mjpeg -framerate 15 -i cam.mjpeg -c:v libx264 -pix_fmt yuv420p cam.mp4
+```
+
+要单个图片文件时用 `-o <路径>`（不带 `-`）：那会写成 `路径.0`、`路径.1`……
+每帧一个文件。`-o -` 也可以直接接管道送给下一个程序，不必先落盘。
 
 ## 板级配置
 
@@ -116,4 +135,4 @@ adb shell /system/bin/camera-matrix -o /mnt/sd/camera-matrix   # 全部跑一遍
 和 PLL 实际频率自行分频，采集应用无需另写传感器时钟寄存器。
 
 DVP 驱动和 OV5640 都内建在 zImage 里，改 DTS 只需更新 DTB，只有改驱动
-或 defconfig 才需要重新烧 kernel；rootfs 里没有相机 `.ko`。
+或 defconfig 才需要重新烧 kernel。
