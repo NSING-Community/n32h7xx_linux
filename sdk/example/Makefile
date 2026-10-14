@@ -23,13 +23,16 @@ RUNTIME_LIBDIR ?= /system/lib
 LDFLAGS += -Wl,-rpath,$(RUNTIME_LIBDIR)
 LDLIBS ?=
 .PHONY: all
-all: hello pthread-app hello-cxx libgreeting.so shared-app leds net-echo
+all: hello pthread-app hello-cxx libgreeting.so shared-app leds net-echo \
+	v4l2-capture camera-matrix
 
 # The examples are sources; the ELF files next to them are build output and are
 # not tracked.
 .PHONY: clean
 clean:
 	rm -f hello pthread-app hello-cxx shared-app libgreeting.so leds net-echo
+	rm -f v4l2-capture
+	rm -f camera-matrix
 	rm -f *.o
 hello: hello.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
@@ -55,3 +58,16 @@ leds: leds.c
 # one address space, so that is fine here even though fork() is not.
 net-echo: net-echo.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -pthread $< $(LDLIBS) -o $@
+
+# V4L2 frame grabber for the OV5640 on the DVP port: lists the formats the
+# capture device supports and saves GREY / YUYV / RGB565 / JPEG frames.
+# Header only, so it links against nothing but libc.
+v4l2-capture: v4l2-capture.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
+
+# Walks every format x size combination in one run: captures one frame per
+# combination, checks it, and writes it out.  The counterpart of
+# v4l2-capture for checking what the camera can do rather than for taking a
+# picture.
+camera-matrix: camera-matrix.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
