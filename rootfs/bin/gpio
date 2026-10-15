@@ -1,0 +1,146 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# gpio - small /sys/class/gpio helper for the N32H787.
+#
+# The kernel exports a GPIO sysfs interface (CONFIG_GPIO_SYSFS_LEGACY): a block
+# of numbers per bank, followed by one directory per exported line.  The block's
+# first number is NOT fixed - gpiolib hands it out at boot - so a script cannot
+# hard-code PB3 as 531 and stay correct.  This helper looks the base up from
+# gpiochipN/label every time, which is the same rule the LED example follows.
+#
+#   gpio list                 banks and their current sysfs base
+#   gpio num PB3              the sysfs number of one pin
+#   gpio export PB3           claim a pin (export), idempotent
+#   gpio unexport PB3         release it
+#   gpio dir PB3 out          direction: in | out
+#   gpio get PB3              0 or 1
+#   gpio set PB3 1            drive the pin (must already be "out")
+#   gpio edge PB3 rising      edge: none | rising | falling | both
+#   gpio info PB3             direction, value, active_low, edge
+#
+# A pin is <PA..PK><0..15>, e.g. PA0, PB3, PF10, PI8, PK7.  A plain number is
+# taken as an already-computed sysfs line, for the odd case this helper cannot
+# name.  Not every pin exists in every package, and there is no GPIO irq here:
+# "edge" only makes /sys/.../value a poll source, it never raises an interrupt.
+SYS=/sys/class/gpio
+
+die() { echo "gpio: $*" >&2; exit 1; }
+
+# The help is the file's own header comment: print it up to the first real line.
+usage() {
+	sed -n '1d; /^[^#]/q; s/^#//; s/^ //p' "$0"
+	exit "${1:-0}"
+}
+
+# A..K -> sysfs base of that bank, by label.  Fails if the bank is absent.
+bank_base() {
+	for d in "$SYS"/gpiochip*; do
+		[ -r "$d/label" ] || continue
+		[ "$(cat "$d/label" 2>/dev/null)" = "GPIO$1" ] || continue
+		cat "$d/base"
+		return 0
+	done
+	return 1
+}
+
+# PB3 -> 531 (via the bank base).  A bare number passes through.
+pin_num() {
+	case "$1" in
+	[0-9]*) echo "$1"; return 0 ;;
+	esac
+	bank=$(printf '%s' "$1" | sed -n 's/^P\([A-K]\)[0-9][0-9]*$/\1/p')
+	off=$(printf '%s' "$1" | sed -n 's/^P[A-K]\([0-9][0-9]*\)$/\1/p')
+	[ -n "$bank" ] && [ -n "$off" ] || die "not a pin: $1 (want PA..PK + 0..15)"
+	[ "$off" -le 15 ] || die "not a pin: $1 (pin index $off is past 15)"
+	base=$(bank_base "$bank") || die "no GPIO$bank bank on this board"
+	echo $((base + off))
+}
+
+# Exported lines live in a directory named after their number.
+pin_dir() { echo "$SYS/gpio$1"; }
+
+need_pin() {
+	[ $# -ge 1 ] || die "which pin?  try: gpio $1 PB3"
+	NUM=$(pin_num "$2") || exit 1
+	DIR=$(pin_dir "$NUM")
+}
+
+case "${1:-}" in
+""|-h|--help|help)
+	usage 0
+	;;
+list)
+	for d in "$SYS"/gpiochip*; do
+		[ -r "$d/label" ] || continue
+		printf '%-8s base %-5s lines %s\n' "$(cat "$d/label")" \
+			"$(cat "$d/base")" "$(cat "$d/ngpio")"
+	done
+	echo "(pin number = base + pin index, e.g. PB3 = GPIOB base + 3)"
+	;;
+num)
+	[ $# -eq 2 ] || die "usage: gpio num <PIN>"
+	pin_num "$2"
+	;;
+export)
+	need_pin "$@"
+	[ -d "$DIR" ] && exit 0
+	echo "$NUM" > "$SYS/export" || die "export $NUM failed"
+	;;
+unexport)
+	need_pin "$@"
+	[ -d "$DIR" ] || exit 0
+	echo "$NUM" > "$SYS/unexport" || die "unexport $NUM failed"
+	;;
+dir)
+	[ $# -eq 3 ] || die "usage: gpio dir <PIN> in|out"
+	need_pin "$@"
+	case "$3" in
+	in | out) ;;
+	*) die "direction must be in or out, not $3" ;;
+	esac
+	[ -d "$DIR" ] || { echo "$NUM" > "$SYS/export" || die "export $NUM failed"; }
+	echo "$3" > "$DIR/direction" || die "set direction of $2 failed"
+	;;
+get)
+	[ $# -eq 2 ] || die "usage: gpio get <PIN>"
+	need_pin "$@"
+	[ -d "$DIR" ] || die "$2 is not exported yet (gpio export $2)"
+	cat "$DIR/value"
+	;;
+set)
+	[ $# -eq 3 ] || die "usage: gpio set <PIN> 0|1"
+	need_pin "$@"
+	case "$3" in
+	0 | 1) ;;
+	*) die "value must be 0 or 1, not $3" ;;
+	esac
+	if [ ! -d "$DIR" ]; then
+		echo "$NUM" > "$SYS/export" || die "export $NUM failed"
+		echo out > "$DIR/direction" || die "cannot drive $2 (direction)"
+	fi
+	echo "$3" > "$DIR/value" || die "set $2 failed"
+	;;
+edge)
+	[ $# -eq 3 ] || die "usage: gpio edge <PIN> none|rising|falling|both"
+	need_pin "$@"
+	case "$3" in
+	none | rising | falling | both) ;;
+	*) die "edge must be none|rising|falling|both, not $3" ;;
+	esac
+	[ -d "$DIR" ] || die "$2 is not exported yet (gpio export $2)"
+	echo "$3" > "$DIR/edge" || die "set edge of $2 failed"
+	;;
+info)
+	[ $# -eq 2 ] || die "usage: gpio info <PIN>"
+	need_pin "$@"
+	echo "$2 = sysfs $NUM"
+	[ -d "$DIR" ] || { echo "  not exported"; exit 0; }
+	for f in direction value active_low edge; do
+		[ -r "$DIR/$f" ] && printf '  %-10s %s\n' "$f" "$(cat "$DIR/$f")"
+	done
+	;;
+*)
+	die "unknown command: $1 (try: gpio help)"
+	;;
+esac
