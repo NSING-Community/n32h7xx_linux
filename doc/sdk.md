@@ -10,10 +10,56 @@ sdk/
 │   ├── libexec/ lib/   GCC 内部程序和库
 │   ├── arm-uclinuxfdpiceabi/  as/ld 的 triplet 目录
 │   └── share/cmake/    CMake 工具链文件（给客户自己的工程用）
-└── example/            应用示例源码，只带一个 Makefile
+├── example/            应用示例源码，只带一个 Makefile
+├── optional/           可选附加组件（预编译二进制），不参与构建，自行取用
+└── optional-src/       上面这些组件的构建源码，同样不参与构建
 ```
 
-工具链只有这一处：`sdk/toolchain/`，直接用全路径调用即可。
+工具链只有这一处：`sdk/toolchain/`，直接用全路径调用即可。`optional/` 与
+`optional-src/` 只是随包提供的附加组件，`make` 不会引用它们，详见
+[README 发布范围](../README.md#发布范围)。
+
+## 示例一览
+
+`sdk/example/` 里每个示例都是能独立读通的最小程序。`make -C sdk/example`
+一次全部编出来，也可以只编一个（例如 `make -C sdk/example net-echo`）：
+
+| 示例 | 演示 |
+| --- | --- |
+| `hello` | 最小 C 程序，动态链接 uClibc |
+| `hello-cxx` | C++ 与 libstdc++ |
+| `shared-app` + `libgreeting.so` | 自建共享库、`DT_RPATH` 找库 |
+| `pthread-app` | uClibc pthread |
+| `leds` | `/sys/class/gpio` 跑马灯（PB3 / PF10 / PI8） |
+| `net-echo` | TCP echo 服务器：poll() 与线程两种模型、IPv6 双栈、背压 |
+| `v4l2-capture` | V4L2 采集单帧 / MJPEG，见 [摄像头](camera.md) |
+| `camera-matrix` | 摄像头全格式 x 分辨率验证，见 [摄像头](camera.md) |
+
+板上的放音 / 录音本身用 rootfs 里的 TinyALSA，见 [音频](audio.md)。
+声卡只收 16-bit 双声道、七档采样率，而 `tinyplay` 从 WAV 头取参数、又不做任何
+转换，所以不是这个格式的 WAV 得在传上板之前转好。
+
+## 可选附加组件
+
+`sdk/optional/` 里是预编译好的附加程序，**不参与构建、不进任何镜像**，装不装、
+装到哪儿都由使用者决定。`sdk/optional/install.sh` 把它们装到 `/system`：
+
+```sh
+sh install.sh                    # ssh，默认 192.168.1.85
+BOARD=192.168.1.86 sh install.sh
+USE=adb sh install.sh            # 走 adb
+```
+
+adb 路径直接推目录；往 `/system` 写比往 `/tmp` 慢一个数量级，见
+[USB 文档的 adb 目录推送](usb.md#adb-的目录推送)。
+
+| 组件 | 用途 | 依赖 |
+| --- | --- | --- |
+| [espeak-ng](../sdk/optional/espeak-ng/README.md) | 语音合成，板上的放音设备直接出声 | 无（GPL-3.0-or-later，见该目录 README） |
+| [ns-flash](../sdk/optional/ns-flash/README.md) | 板子作 USB host，驱动外接 NSLink 探针烧写目标板 | 内核要有 USB host 与探针所用传输：bulk 探针走 usbfs，HID 探针要 `CONFIG_HIDRAW`（连同 `CONFIG_INPUT` / `CONFIG_HID_SUPPORT` / `CONFIG_HID` / `CONFIG_HID_GENERIC` / `CONFIG_USB_HID`） |
+
+`ns-flash` 操作的是探针 SWD 那头接着的芯片，不是它自己跑着的这块板子。
+`sdk/optional-src/` 放上面这些组件的构建源码，同样不参与构建。
 
 ## 工具链可以整体搬走
 
@@ -216,6 +262,64 @@ echo 531 > /sys/class/gpio/unexport
 `/sys/class/gpio` 和 `/dev/gpiochipN` 两套接口在本板都开着：前者是经典 ABI，
 不需要任何用户态库，脚本里最好用；后者是现在的推荐接口，需要 libgpiod 或自己
 写 ioctl。
+
+### 用 gpio 脚本操作引脚
+
+基号是运行时分配的，把 `531` 写进脚本就会在别次开机上变错。板上的 `/bin/gpio`
+按 `gpiochipN/label` 反查，所以脚本里写引脚名即可：
+
+```sh
+gpio list                 # 各 bank 的 label / base / 线数
+gpio num PB3              # 531
+gpio export PB3           # 占用（可重复执行）
+gpio dir PB3 out          # in | out
+gpio set PB3 1            # 拉高（未 export 会自动 export 并设为 out）
+gpio get PB3              # 0 或 1
+gpio edge PB3 rising      # none | rising | falling | both
+gpio info PB3             # direction / value / active_low / edge
+gpio unexport PB3         # 释放
+```
+
+`gpio` 带 `#` 注释的头就是它自己的帮助，`gpio help` 打印的即本文这一段之前的
+那个列表。`set` / `dir` 会按需 export，但**不会**替你 unexport——脚本结束前
+自己 `gpio unexport`，否则那根线会一直被占用到重启（`gpio info` 会显示别的进程
+不认得的占用状态）。三个用户 LED 是 **PB3 / PF10 / PI8**，试引脚就从它们开始。
+
+注意两点：`gpio edge` 只让 `/sys/class/gpio/gpioN/value` 可以被 `poll()`，
+**本板没有 GPIO 中断**（pinctrl 驱动没有 `irq_chip`），所以它不是真的外部中断源；
+另外本板 busybox **没有** `gpio` applet，`/bin/gpio` 是板上唯一一个，不用担心
+被哪个 applet 顶掉。
+
+### 智能体 / 逻辑脚本常要的东西
+
+板上 rootfs 带着脚本常用的一整套 busybox applet，不需要再装别的东西：`awk`、
+`sed`、`grep`、`find`（`-maxdepth` / `-type` / `-name` / `-size` / `-exec … \;`
+和 `-exec … +` 都在）、`xargs`、`expr`、`seq`、`cut`、`tr`、`sort`、`uniq`、
+`comm`、`diff`、`cmp`、`tee`、`md5sum`、`base64`、`patch`、`strings`、`od`、
+`hexdump`、`xxd`、`nc`、`nslookup`；后台与进程管理是 `nohup`、`setsid`、
+`pgrep`、`pkill`、`flock`、`crond`。
+
+几条在这个 no-MMU 环境里会影响脚本写法的：
+
+- **后台要用 `nohup` 或 `setsid`**，不要靠 `&` 之后就登出。`nohup cmd
+  >log 2>&1 &` 在 ssh 会话断开后仍然活着；`setsid` 还能把进程从会话里摘出来。
+- **`timeout` 本树已修**（`3 s` 就能截断 `sleep 8`）。但它的退出码是 **143**
+  （被 SIGTERM 杀掉的目标进程的终止状态），不是 GNU coreutils 的 124 —— 脚本
+  判超时不要写 `[ $? -eq 124 ]`。
+- **写文件避开 `/tmp`、`/run`、`/var/log`**：它们是 ramfs，写进去就是吃 RAM，
+  没有配额，写爆时内核 OOM 掉的是**你正在写的那个进程**而不是返回 `ENOSPC`。
+  长期落盘用 `/system`（JFFS2），抓帧一类的大产物用 `/mnt/sd`。
+- **`fork()` 不存在**（no-MMU），要并行就用线程或直接 exec 另一个程序。
+  后台只能后台**真正的可执行文件**：`nohup /system/bin/my-app >log 2>&1 &` 可以，
+  `( ... ) &` / `{ ...; } &` 这种复合后台不行——规则见下面
+  [无 MMU 环境的坑](#无-mmu-环境的坑)。管道和命令替换是安全的。
+- **`PATH` 取决于是怎么登进来的**：非交互 ssh 是
+  `/usr/sbin:/usr/bin:/sbin:/bin`，**没有 `/system/bin`**；串口登录 shell 读
+  `/etc/profile` 才有。所以自己放在 `/system/bin` 的程序，从脚本或 ssh 单条命令
+  调用时要写全路径，别依赖 `PATH`。同理 `LD_LIBRARY_PATH=/system/lib` 只在串口
+  登录 shell 里默认给（见 [库放在哪](#库放在哪)），其它场合靠二进制自带的
+  `-Wl,-rpath,/system/lib`。
+- 跑长任务前先看一眼内存：`free` 与 `cat /proc/buddyinfo`。
 
 ## 网络示例（TCP echo 服务器）
 

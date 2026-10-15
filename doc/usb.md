@@ -79,6 +79,59 @@ microADB；这是免认证的开发板 root 接口，未实现 Android 应用管
 主机需要安装 ADB 并具备 USB 设备访问权限。WSL 使用前需通过 usbipd 共享设备；
 转接给 WSL 后应在 WSL 内运行 ADB。
 
+### 传输速度
+
+`adb push` / `adb pull` 每帧都要一次 USB 往返，板上实测单帧固定开销约 5 ms，所以
+较大的帧可以减少往返次数。默认帧载荷为 65544 字节，其中文件数据最多 64 KiB。
+4 MiB 文件读写 ramfs `/tmp` 的中位数：
+
+| 帧载荷 | push | pull |
+| --- | --- | --- |
+| 4 KiB | 1.4 MB/s | 1.4 MB/s |
+| 16 KiB | 2.9 MB/s | 2.7 MB/s |
+| 32 KiB | 3.6 MB/s | 2.8 MB/s |
+| 65544（= 64 KiB + 8，当前） | 4.2 MB/s | 3.7 MB/s |
+
+65544 不是调出来的数，它按 Android 默认来：`CONFIG_ADBD_SYNC_DATA_MAX` 取
+`file_sync_protocol.h` 的 `SYNC_DATA_MAX`（64 KiB），加上 8 字节 sync DATA 头
+就是帧载荷。主机侧 `file_sync_client.cpp` 把 `max` 写死成 `SYNC_DATA_MAX`
+（注释 `// TODO: decide at runtime.`），设备在 CNXN banner 里通告更大的
+`maxdata` 也不会被抬高；pull 收帧时 `msg.data.size > sc.max` 直接报
+`msg.data.size too large` 并删掉半截文件。所以这个值就是上限，不要往上调。
+再往上提速要改 USB 收发路径本身（单帧开销加上 gadget 数据通路约 6–7 MB/s），
+不是配置层面的事。
+
+### 主机侧只能有一个 adb server
+
+adb 固定监听 `127.0.0.1:5037`。`.wslconfig` 用 `networkingMode=Mirrored` 时
+WSL 与 Windows 共享环回，两边抢的是同一个端口：**先起来的那一边占住 5037，
+另一边就再也起不了 daemon，`adb devices` 一直是空的**。而且这个占用在 Windows
+`netstat` 和 WSL `ss` 里都可能看不到，很容易误判成"没东西占着"。
+
+区分办法是让失败的一边前台跑一次 daemon，它会直接说出原因：
+
+```sh
+adb nodaemon server          # 报 cannot bind to 127.0.0.1:5037 ... (10048) 即是此冲突
+```
+
+Windows 侧要用 adb 就别在 WSL 里跑 adb（反过来说，需要把设备 `usbipd attach`
+给 WSL 时，Windows 侧同时也用不了——设备和 server 都只能归一边）。要在 WSL 里
+用 adb，最省事的是让它连 Windows 那个 daemon，双方共用；不行就给 WSL 单独一个
+端口：
+
+```sh
+export ADB_SERVER_SOCKET=tcp:127.0.0.1:5038
+```
+
+WSL 侧残留的 server 清掉即可恢复 Windows：
+
+```sh
+pgrep -a adb && pkill -x adb
+```
+
+另外 WSL 发行版的 adb 版本可能和 Windows 的不是同一个（本机 34.0.5 对
+37.0.1），共用 daemon 时以先起来的那个版本为准。
+
 服务控制：
 
 ```sh
@@ -87,6 +140,13 @@ microADB；这是免认证的开发板 root 接口，未实现 Android 应用管
 /etc/init.d/adbd start
 /etc/init.d/adbd restart
 ```
+
+### adb 的目录推送
+
+`adb push <目录> <目标目录>/` 和单文件一样可用，一个会话传完整个目录树。
+往 `/system`（JFFS2，SPI NOR）写要比往 `/tmp`（ramfs）慢一个数量级：同样
+3.7 MiB 的 13 个文件，`/system` 约 33 s，`/tmp` 约 1.2 s。慢的是 flash 写入，
+不是 adb。`adb shell` 与 push 互不影响，可以同时用。
 
 日志为 `/run/adbd.log`。关闭开机启动：把 rootfs 的 `/etc/defaults.conf` 中
 `USB_ADB=on` 改为 `USB_ADB=off` 后重新打包。
@@ -165,3 +225,15 @@ cat /sys/bus/usb/devices/*/uevent
 的 root hub；两路都设为 Host 才有两个。即使未插外设，Host 的 root hub 也会
 出现。Device 控制器是 UDC，不提供 Host 总线。BusyBox `lsusb` 没有 `-t` / `-v`，
 详细信息可直接查看 `/sys/bus/usb/devices/`。
+
+## Host：CMSIS-DAP 探针
+
+板子作 Host 接一个 NSLink 探针时，用的是 [ns-flash](sdk.md#可选附加组件) 这个
+可选组件（`sdk/optional/ns-flash/`）。它让板子当主机去烧写探针 SWD 那头接着的
+芯片，不是烧写自己。
+
+NSLink 有两种固件，工具会按探针应答的接口自动选后端，但**内核两边都要有**：
+bulk（CMSIS-DAP v2）走 usbfs，有 `CONFIG_USB` 加 Host 控制器就够；
+HID（CMSIS-DAP v1）要 `CONFIG_HIDRAW`，即 `CONFIG_INPUT` + `CONFIG_HID_SUPPORT`
++ `CONFIG_HID` + `CONFIG_HID_GENERIC` + `CONFIG_HIDRAW` + `CONFIG_USB_HID`，
+否则设备能枚举（`lsusb` 看得到 `19f5:3106`）、但没有 `/dev/hidrawN` 可开。
