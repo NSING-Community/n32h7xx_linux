@@ -1,0 +1,18 @@
+{
+  "component": "busybox",
+  "method": "Published BusyBox matches preserved runtime build output; source/config/patch set frozen by source digest",
+  "checks": {
+    "rootfs/bin/busybox": "bb14f3f5b09751a6655ef491bf3fd4378320ba57dcb097065e43273514f85d9d",
+    "sdk-src/configs/busybox-runtime.config": "b580783c875743a8d05f74ab48eb458d6ac8b025049f76957580b80e1579d921",
+    "sdk-src/patches/busybox-timeout-nommu-reexec.patch": "500d656ddb9287ac95b359cc0b73041126be3abdf33131fa2478c6d38588f164",
+    "sdk-src/patches/busybox-hwclock-uclibc-tm-gmtoff.patch": "25837c3073c2b30091d3800a9c94f1032897b1c185aedd2423e825e5bfa10e59",
+    "sdk-src/patches/busybox-hush-tilde-expansion.patch": "e9a4d68b09ef572075c2dc2c03824de358923610fb93d786fdc7ead7d113f965",
+    "sdk-src/patches/busybox-reboot-reason.patch": "a12c0982f68b67d503fe4c2a960b82f728736e5667b8890de1439a3cd120fae1",
+    "sdk-src/patches/busybox-hush-errexit-loop-cond.patch": "4836d92882aa3b27f5359f1d057cd8042bce4f1626308b0ae26ece0efdc4e04c"
+  },
+  "details": {
+    "source_version": "1.38.0",
+    "recipe": "sdk-src/scripts/install-busybox.sh",
+    "scope": "Existing build association verified; no new runtime installation or board write performed"
+  }
+}

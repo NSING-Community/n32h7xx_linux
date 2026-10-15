@@ -1,0 +1,16 @@
+{
+  "component": "pcaudio",
+  "method": "Static TinyALSA backend source/patch and original library build are preserved alongside the verified espeak binary",
+  "checks": {
+    "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
+    "sdk/optional-src/pcaudiolib/Makefile": "97202544493dc99879692aac1aed299f8be6e88a6ff47f4ee4280841ac00a2b6",
+    "sdk/optional-src/pcaudiolib/config.h": "bc148f25a19c22810fbfe6e0c235ecefe0a7747904be284337f82234c45052b4",
+    "sdk/optional-src/pcaudiolib/pcaudiolib-tinyalsa-backend.patch": "b0143eaa55377d9996fc06316ccca1d9a74be944733c794cb3860167eef52992",
+    "sdk/optional-src/pcaudiolib/tinyalsa.c": "73c60878d815aa1a7dc622ed02012424a8385dad629a7b7d3f7da42387d78ca6",
+    "sdk/optional-src/pcaudiolib/README.md": "688489b80fdde8ecb298400dffa52b43113286068ce74a36145dac7440ef710b"
+  },
+  "details": {
+    "source_revision": "d6a6b00aa4334b461c1a09c27b6c681eaac8da8a",
+    "source_modifications": "Three upstream hunks plus TinyALSA backend; exact source tree frozen in source digest"
+  }
+}

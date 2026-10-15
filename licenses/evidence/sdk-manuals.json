@@ -1,0 +1,231 @@
+{
+  "component": "sdk-manuals",
+  "method": "All shipped info/man documents inventoried with original copyright and per-document license text",
+  "checks": {
+    "sdk/toolchain/share/info/as.info": "c22800d0ac4decdd7bc810dad769b8bc9be5ad453f2b10c365eae3d4774e1656",
+    "sdk/toolchain/share/info/bfd.info": "da6e5878382b28ec1b6ad99b5575ff70cdbf0b077a1dca9b15c2318e999f63cb",
+    "sdk/toolchain/share/info/binutils.info": "aafce8057c65ff594704a2dec25bb75bc17c5ee592c10b509988382875a273ef",
+    "sdk/toolchain/share/info/ctf-spec.info": "9cadd030d4c15d9f9cddb765dfaab6582f1df13adc1f970bbd5c2ba0bd450d4c",
+    "sdk/toolchain/share/info/gprof.info": "439f286acc18289d81b194b6d93dcbd3f2228a81ae54fd8d75076257d89660b4",
+    "sdk/toolchain/share/info/ld.info": "6a75b1e4e137a96c26c9eb2fc04f2070c8eb6460c9692333dd8c96b63e0714d7",
+    "sdk/toolchain/share/info/ldint.info": "c20efbcf6e874fa575ca8a198df93ad761733be848896b76c12444b638a1c8b4",
+    "sdk/toolchain/share/info/sframe-spec.info": "7d59b652787f677917232e2f0f83f76f3ca25eb177697fe4a5dcd633e6e09579",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-addr2line.1": "bf057a8de421ea98a3609e84efef167327409fbf1d120d618a0a323ff52a690b",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ar.1": "eada91b1be3c4314fee8e27eb5a77e0d67e08cefec5a4e132b01f205096779af",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-as.1": "20d7900def4a7fd059bbdcd9cf8394e04b0a30bb73fba25fdaab9a222bcd9637",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-c++filt.1": "569bd513dad00f30abc6e8f29fd7b68bf7e01fe3d4b8c58c8e478b10496b37f6",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-cpp.1": "d73e63ae45b5c8dfb23e04d11ece4b53f3d4b3c72d527ea76930f38faaef39f5",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-dlltool.1": "2040d59ab2da73c9b72ffe3ba833718572cfef3b7485a9686f06408de4a0c519",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-elfedit.1": "6c11bf000a27a1aea792c26ca77681ff3360f710b5e496d1bc62fbc646e25cb0",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-g++.1": "9c137df9e699aefbbd4261d3ce90d61923f2e42b2a9aaf5297fc9ce49a3fb432",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcc.1": "9c137df9e699aefbbd4261d3ce90d61923f2e42b2a9aaf5297fc9ce49a3fb432",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-dump.1": "01291220c13e17a1203fc2936bd432beebcc2c5f8a27471ebbf6eba1bf32cf0b",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-tool.1": "204b02c544b8ff1f375b4a8cc68eccf07bd78102f28245b5628fbe1e33197350",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov.1": "8602cbd363b6575418f3a78f886dd9834a4d87dde07bb454ece24f2066be67bf",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gprof.1": "3c0a9dd15fa37cffba2a40d4a3268a115bff0255eed16a5cd98072e25458f7dc",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ld.1": "6aacad70407e4b2b7f32e4940eb31eebaa91eb7ce941953ce14a270a27ca357c",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-lto-dump.1": "aeea25294df6d9aaee57e9bdd4be109a8e4b514353e662a00f726f624d56d156",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-nm.1": "f9bb9c1b1626fa469046d26b573cef76cb0908b43d46b3f15edff0becc9bb3f8",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objcopy.1": "16ae39e073e7aa104a1311d271824dd7dcfedf637b4282408a5949f65b0900ec",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objdump.1": "b3704173cc725cc7b68ca823ada95f134731775dcf18bed9c93432f280c5ec5f",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ranlib.1": "deaf2cf1e4f7e17894e57a2215362628bea365aad67465d888638fc0f506d3fa",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-readelf.1": "0acb5cc75d8d1902303cebbf946b671896c7357e81ae40870ef173614fe8eab9",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-size.1": "1a3d21afbb73295d56b5ea61cf64006e6311bb392d4f0aee8f48e839f53b736f",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strings.1": "f555839a4d9e14817097423179b0540a32c0ef52dfa4c6003b37b012a5650b2d",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strip.1": "df6bf3c2f1d008e70ea412d5c04c72b01626e5517b0809710be175d26a661638",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windmc.1": "eaa36e32b82a0245cddd239a577658a369cb7b3b42b0f65aa7e4abdd874622f9",
+    "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windres.1": "84b6c9aa1931eb2fa208936e9b98adf5e0691c2f0af818e87c35c9173684d0b4",
+    "sdk/toolchain/share/man/man7/fsf-funding.7": "dac58d430c40a749bd1f0cd96414d485e54e586bbeb4b544f6bce77961c7c825",
+    "sdk/toolchain/share/man/man7/gfdl.7": "9dca6dc5208b77ac4872a8086fc61d03f739ddcfca802e77ba6ca3fe0b773624",
+    "sdk/toolchain/share/man/man7/gpl.7": "d79c19a6d4ecf4cca5f63da05bf4cd4bb53809c07853aecaeca54f40f5efa462"
+  },
+  "details": {
+    "documents": [
+      {
+        "path": "sdk/toolchain/share/info/as.info",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "c22800d0ac4decdd7bc810dad769b8bc9be5ad453f2b10c365eae3d4774e1656"
+      },
+      {
+        "path": "sdk/toolchain/share/info/bfd.info",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "da6e5878382b28ec1b6ad99b5575ff70cdbf0b077a1dca9b15c2318e999f63cb"
+      },
+      {
+        "path": "sdk/toolchain/share/info/binutils.info",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "aafce8057c65ff594704a2dec25bb75bc17c5ee592c10b509988382875a273ef"
+      },
+      {
+        "path": "sdk/toolchain/share/info/ctf-spec.info",
+        "license": "GPL-3.0-or-later",
+        "sha256": "9cadd030d4c15d9f9cddb765dfaab6582f1df13adc1f970bbd5c2ba0bd450d4c"
+      },
+      {
+        "path": "sdk/toolchain/share/info/gprof.info",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "439f286acc18289d81b194b6d93dcbd3f2228a81ae54fd8d75076257d89660b4"
+      },
+      {
+        "path": "sdk/toolchain/share/info/ld.info",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "6a75b1e4e137a96c26c9eb2fc04f2070c8eb6460c9692333dd8c96b63e0714d7"
+      },
+      {
+        "path": "sdk/toolchain/share/info/ldint.info",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "c20efbcf6e874fa575ca8a198df93ad761733be848896b76c12444b638a1c8b4"
+      },
+      {
+        "path": "sdk/toolchain/share/info/sframe-spec.info",
+        "license": "GPL-3.0-or-later",
+        "sha256": "7d59b652787f677917232e2f0f83f76f3ca25eb177697fe4a5dcd633e6e09579"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-addr2line.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "bf057a8de421ea98a3609e84efef167327409fbf1d120d618a0a323ff52a690b"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ar.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "eada91b1be3c4314fee8e27eb5a77e0d67e08cefec5a4e132b01f205096779af"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-as.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "20d7900def4a7fd059bbdcd9cf8394e04b0a30bb73fba25fdaab9a222bcd9637"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-c++filt.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "569bd513dad00f30abc6e8f29fd7b68bf7e01fe3d4b8c58c8e478b10496b37f6"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-cpp.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "d73e63ae45b5c8dfb23e04d11ece4b53f3d4b3c72d527ea76930f38faaef39f5"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-dlltool.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "2040d59ab2da73c9b72ffe3ba833718572cfef3b7485a9686f06408de4a0c519"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-elfedit.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "6c11bf000a27a1aea792c26ca77681ff3360f710b5e496d1bc62fbc646e25cb0"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-g++.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "9c137df9e699aefbbd4261d3ce90d61923f2e42b2a9aaf5297fc9ce49a3fb432"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcc.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "9c137df9e699aefbbd4261d3ce90d61923f2e42b2a9aaf5297fc9ce49a3fb432"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-dump.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "01291220c13e17a1203fc2936bd432beebcc2c5f8a27471ebbf6eba1bf32cf0b"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-tool.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "204b02c544b8ff1f375b4a8cc68eccf07bd78102f28245b5628fbe1e33197350"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "8602cbd363b6575418f3a78f886dd9834a4d87dde07bb454ece24f2066be67bf"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gprof.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "3c0a9dd15fa37cffba2a40d4a3268a115bff0255eed16a5cd98072e25458f7dc"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ld.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "6aacad70407e4b2b7f32e4940eb31eebaa91eb7ce941953ce14a270a27ca357c"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-lto-dump.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "aeea25294df6d9aaee57e9bdd4be109a8e4b514353e662a00f726f624d56d156"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-nm.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "f9bb9c1b1626fa469046d26b573cef76cb0908b43d46b3f15edff0becc9bb3f8"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objcopy.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "16ae39e073e7aa104a1311d271824dd7dcfedf637b4282408a5949f65b0900ec"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objdump.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "b3704173cc725cc7b68ca823ada95f134731775dcf18bed9c93432f280c5ec5f"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ranlib.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "deaf2cf1e4f7e17894e57a2215362628bea365aad67465d888638fc0f506d3fa"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-readelf.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "0acb5cc75d8d1902303cebbf946b671896c7357e81ae40870ef173614fe8eab9"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-size.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "1a3d21afbb73295d56b5ea61cf64006e6311bb392d4f0aee8f48e839f53b736f"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strings.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "f555839a4d9e14817097423179b0540a32c0ef52dfa4c6003b37b012a5650b2d"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strip.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "df6bf3c2f1d008e70ea412d5c04c72b01626e5517b0809710be175d26a661638"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windmc.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "eaa36e32b82a0245cddd239a577658a369cb7b3b42b0f65aa7e4abdd874622f9"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windres.1",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "84b6c9aa1931eb2fa208936e9b98adf5e0691c2f0af818e87c35c9173684d0b4"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man7/fsf-funding.7",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "dac58d430c40a749bd1f0cd96414d485e54e586bbeb4b544f6bce77961c7c825"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man7/gfdl.7",
+        "license": "GFDL-1.3-or-later",
+        "sha256": "9dca6dc5208b77ac4872a8086fc61d03f739ddcfca802e77ba6ca3fe0b773624"
+      },
+      {
+        "path": "sdk/toolchain/share/man/man7/gpl.7",
+        "license": "GPL-3.0-or-later",
+        "sha256": "d79c19a6d4ecf4cca5f63da05bf4cd4bb53809c07853aecaeca54f40f5efa462"
+      }
+    ],
+    "source_components": [
+      "gcc",
+      "binutils"
+    ],
+    "invariant_sections": "bfd.info and ldint.info retain GNU General Public License and Funding Free Software invariant sections, with original cover texts"
+  }
+}

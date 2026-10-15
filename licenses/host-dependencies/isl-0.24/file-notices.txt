@@ -1,0 +1,1503 @@
+sdk-src/sources/gcc/isl-0.24/basis_reduction_tab.c
+sdk-src/sources/gcc/isl-0.24/include/isl/arg.h
+sdk-src/sources/gcc/isl-0.24/include/isl/constraint.h
+sdk-src/sources/gcc/isl-0.24/include/isl/ctx.h
+sdk-src/sources/gcc/isl-0.24/include/isl/hash.h
+sdk-src/sources/gcc/isl-0.24/include/isl/ilp.h
+sdk-src/sources/gcc/isl-0.24/include/isl/list.h
+sdk-src/sources/gcc/isl-0.24/include/isl/lp.h
+sdk-src/sources/gcc/isl-0.24/include/isl/map.h
+sdk-src/sources/gcc/isl-0.24/include/isl/mat.h
+sdk-src/sources/gcc/isl-0.24/include/isl/options.h
+sdk-src/sources/gcc/isl-0.24/include/isl/set.h
+sdk-src/sources/gcc/isl-0.24/include/isl/space.h
+sdk-src/sources/gcc/isl-0.24/include/isl/stream.h
+sdk-src/sources/gcc/isl-0.24/include/isl/vec.h
+sdk-src/sources/gcc/isl-0.24/isl_arg.c
+sdk-src/sources/gcc/isl-0.24/isl_basis_reduction.h
+sdk-src/sources/gcc/isl-0.24/isl_blk.c
+sdk-src/sources/gcc/isl-0.24/isl_blk.h
+sdk-src/sources/gcc/isl-0.24/isl_ctx.c
+sdk-src/sources/gcc/isl-0.24/isl_equalities.h
+sdk-src/sources/gcc/isl-0.24/isl_gmp.c
+sdk-src/sources/gcc/isl-0.24/isl_hash.c
+sdk-src/sources/gcc/isl-0.24/isl_id.c
+sdk-src/sources/gcc/isl-0.24/isl_id_private.h
+sdk-src/sources/gcc/isl-0.24/isl_ilp.c
+sdk-src/sources/gcc/isl-0.24/isl_int.h
+sdk-src/sources/gcc/isl-0.24/isl_lp.c
+sdk-src/sources/gcc/isl-0.24/isl_map_private.h
+sdk-src/sources/gcc/isl-0.24/isl_map_subtract.c
+sdk-src/sources/gcc/isl-0.24/isl_options.c
+sdk-src/sources/gcc/isl-0.24/isl_sample.c
+sdk-src/sources/gcc/isl-0.24/isl_sample.h
+sdk-src/sources/gcc/isl-0.24/isl_scan.c
+sdk-src/sources/gcc/isl-0.24/isl_scan.h
+sdk-src/sources/gcc/isl-0.24/isl_seq.h
+sdk-src/sources/gcc/isl-0.24/isl_stream.c
+sdk-src/sources/gcc/isl-0.24/isl_tab.h
+sdk-src/sources/gcc/isl-0.24/pip.c
+sdk-src/sources/gcc/isl-0.24/polyhedron_detect_equalities.c
+sdk-src/sources/gcc/isl-0.24/polyhedron_minimize.c
+sdk-src/sources/gcc/isl-0.24/polyhedron_sample.c
+sdk-src/sources/gcc/isl-0.24/polytope_scan.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ */
+
+sdk-src/sources/gcc/isl-0.24/basis_reduction_templ.c
+/*
+ * Copyright 2006-2007 Universiteit Leiden
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, Leiden Institute of Advanced Computer Science,
+ * Universiteit Leiden, Niels Bohrweg 1, 2333 CA Leiden, The Netherlands
+ * and K.U.Leuven, Departement Computerwetenschappen, Celestijnenlaan 200A,
+ * B-3001 Leuven, Belgium
+ */
+
+sdk-src/sources/gcc/isl-0.24/codegen.c
+/*
+ * Copyright 2012,2014 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/extract_key.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_coalesce.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_domain_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_move_dims_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_no_domain_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_read_no_explicit_domain_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_type_has_space_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_val.c
+/*
+ * Copyright 2013      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/flow.c
+sdk-src/sources/gcc/isl-0.24/flow_cmp.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_explicit_domain.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_no_explicit_domain.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_pw_aff_explicit_domain.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_union_add_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_union_pw_aff_explicit_domain.c
+sdk-src/sources/gcc/isl-0.24/schedule_cmp.c
+/*
+ * Copyright 2017      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege.
+ */
+
+sdk-src/sources/gcc/isl-0.24/imath/gmp_compat.c
+/*
+  Name:     gmp_compat.c
+  Purpose:  Provide GMP compatiable routines for imath library
+  Author:   David Peixotto
+
+  Copyright (c) 2012 Qualcomm Innovation Center, Inc. All rights reserved.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+ */
+
+sdk-src/sources/gcc/isl-0.24/imath/gmp_compat.h
+/*
+  Name:     gmp_compat.h
+  Purpose:  Provide GMP compatiable routines for imath library
+  Author:   David Peixotto
+
+  Copyright (c) 2012 Qualcomm Innovation Center, Inc. All rights reserved.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+ */
+
+sdk-src/sources/gcc/isl-0.24/imath/imath.c
+/*
+  Name:     imath.c
+  Purpose:  Arbitrary precision integer arithmetic routines.
+  Author:   M. J. Fromberger
+
+  Copyright (C) 2002-2007 Michael J. Fromberger, All Rights Reserved.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+ */
+
+sdk-src/sources/gcc/isl-0.24/imath/imath.h
+/*
+  Name:     imath.h
+  Purpose:  Arbitrary precision integer arithmetic routines.
+  Author:   M. J. Fromberger
+
+  Copyright (C) 2002-2007 Michael J. Fromberger, All Rights Reserved.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+ */
+
+sdk-src/sources/gcc/isl-0.24/imath/imrat.c
+/*
+  Name:     imrat.c
+  Purpose:  Arbitrary precision rational arithmetic routines.
+  Author:   M. J. Fromberger
+
+  Copyright (C) 2002-2007 Michael J. Fromberger, All Rights Reserved.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+ */
+
+sdk-src/sources/gcc/isl-0.24/imath/imrat.h
+/*
+  Name:     imrat.h
+  Purpose:  Arbitrary precision rational arithmetic routines.
+  Author:   M. J. Fromberger
+
+  Copyright (C) 2002-2007 Michael J. Fromberger, All Rights Reserved.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+ */
+
+sdk-src/sources/gcc/isl-0.24/include/isl/hmap_templ.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2013      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/interface/cpp.cc
+sdk-src/sources/gcc/isl-0.24/interface/plain_cpp.cc
+/*
+ * Copyright 2016, 2017 Tobias Grosser. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    1. Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *
+ *    2. Redistributions in binary form must reproduce the above
+ *       copyright notice, this list of conditions and the following
+ *       disclaimer in the documentation and/or other materials provided
+ *       with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY TOBIAS GROSSER ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TOBIAS GROSSER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The views and conclusions contained in the software and documentation
+ * are those of the authors and should not be interpreted as
+ * representing official policies, either expressed or implied, of
+ * Tobias Grosser.
+ */
+
+sdk-src/sources/gcc/isl-0.24/interface/cpp_conversion.cc
+sdk-src/sources/gcc/isl-0.24/isl_test_cpp-checked-conversion.cc
+sdk-src/sources/gcc/isl-0.24/isl_unbind_params_templ.c
+/*
+ * Copyright 2018      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege.
+ */
+
+sdk-src/sources/gcc/isl-0.24/interface/extract_interface.cc
+/*
+ * Copyright 2011 Sven Verdoolaege. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 
+ *    1. Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ * 
+ *    2. Redistributions in binary form must reproduce the above
+ *       copyright notice, this list of conditions and the following
+ *       disclaimer in the documentation and/or other materials provided
+ *       with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY SVEN VERDOOLAEGE ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SVEN VERDOOLAEGE OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * The views and conclusions contained in the software and documentation
+ * are those of the authors and should not be interpreted as
+ * representing official policies, either expressed or implied, of
+ * Sven Verdoolaege.
+ */
+
+sdk-src/sources/gcc/isl-0.24/interface/generator.cc
+/*
+ * Copyright 2011,2015 Sven Verdoolaege. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    1. Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *
+ *    2. Redistributions in binary form must reproduce the above
+ *       copyright notice, this list of conditions and the following
+ *       disclaimer in the documentation and/or other materials provided
+ *       with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY SVEN VERDOOLAEGE ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SVEN VERDOOLAEGE OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The views and conclusions contained in the software and documentation
+ * are those of the authors and should not be interpreted as
+ * representing official policies, either expressed or implied, of
+ * Sven Verdoolaege.
+ */
+
+sdk-src/sources/gcc/isl-0.24/interface/python.cc
+/*
+ * Copyright 2011,2015 Sven Verdoolaege. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 
+ *    1. Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ * 
+ *    2. Redistributions in binary form must reproduce the above
+ *       copyright notice, this list of conditions and the following
+ *       disclaimer in the documentation and/or other materials provided
+ *       with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY SVEN VERDOOLAEGE ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SVEN VERDOOLAEGE OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * The views and conclusions contained in the software and documentation
+ * are those of the authors and should not be interpreted as
+ * representing official policies, either expressed or implied, of
+ * Sven Verdoolaege.
+ */
+
+sdk-src/sources/gcc/isl-0.24/interface/template_cpp.cc
+/*
+ * Copyright 2020 Cerebras Systems. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    1. Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *
+ *    2. Redistributions in binary form must reproduce the above
+ *       copyright notice, this list of conditions and the following
+ *       disclaimer in the documentation and/or other materials provided
+ *       with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY CEREBRAS SYSTEMS ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL CEREBRAS SYSTEMS OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The views and conclusions contained in the software and documentation
+ * are those of the authors and should not be interpreted as
+ * representing official policies, either expressed or implied, of
+ * Cerebras Systems.
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_aff.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2011      Sven Verdoolaege
+ * Copyright 2012-2014 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2016      Sven Verdoolaege
+ * Copyright 2018,2020 Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_aff_lex_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_union_map_lex_templ.c
+/*
+ * Copyright 2014      INRIA Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_aff_map.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2016      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_affine_hull.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_align_params_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_type_check_equal_space_templ.c
+/*
+ * Copyright 2011      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_ast.c
+/*
+ * Copyright 2012-2013 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_ast_build.c
+/*
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_ast_build_expr.c
+sdk-src/sources/gcc/isl-0.24/isl_ast_codegen.c
+/*
+ * Copyright 2012-2014 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_ast_graft.c
+/*
+ * Copyright 2012      Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2019      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_bernstein.c
+/*
+ * Copyright 2006-2007 Universiteit Leiden
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, Leiden Institute of Advanced Computer Science,
+ * Universiteit Leiden, Niels Bohrweg 1, 2333 CA Leiden, The Netherlands
+ * and K.U.Leuven, Departement Computerwetenschappen, Celestijnenlaan 200A,
+ * B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_bind_domain_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_map_bound_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_bind_domain_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_bind_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_opt_mpa_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_bind_domain_templ.c
+/*
+ * Copyright 2018      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_bound.c
+sdk-src/sources/gcc/isl-0.24/isl_farkas.c
+sdk-src/sources/gcc/isl-0.24/isl_fold.c
+sdk-src/sources/gcc/isl-0.24/isl_morph.h
+sdk-src/sources/gcc/isl-0.24/isl_polynomial.c
+sdk-src/sources/gcc/isl-0.24/isl_transitive_closure.c
+sdk-src/sources/gcc/isl-0.24/isl_vertices.c
+/*
+ * Copyright 2010      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France 
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_box.c
+/*
+ * Copyright 2010-2011 INRIA Saclay
+ * Copyright 2012-2013 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_coalesce.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2016      INRIA Paris
+ * Copyright 2020      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ * and Centre de Recherche Inria de Paris, 2 rue Simone Iff - Voie DQ12,
+ * CS 42112, 75589 Paris Cedex 12, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_constraint.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_convex_hull.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2014      INRIA Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_copy_tuple_id_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_ilp_opt_multi_val_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_insert_domain_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_add_constant_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_insert_domain_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_locals_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_min_max_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_unbind_params_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_add_constant_multi_val_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_add_constant_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_add_constant_val_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_insert_domain_templ.c
+/*
+ * Copyright 2019      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_dim_map.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010-2011 INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_domain_factor_templ.c
+/*
+ * Copyright 2012      Ecole Normale Superieure
+ * Copyright 2017      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_equalities.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_factorization.c
+/*
+ * Copyright 2005-2007 Universiteit Leiden
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, Leiden Institute of Advanced Computer Science,
+ * Universiteit Leiden, Niels Bohrweg 1, 2333 CA Leiden, The Netherlands
+ * and K.U.Leuven, Departement Computerwetenschappen, Celestijnenlaan 200A,
+ * B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_flow.c
+/*
+ * Copyright 2005-2007 Universiteit Leiden
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012      Universiteit Leiden
+ * Copyright 2014      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, Leiden Institute of Advanced Computer Science,
+ * Universiteit Leiden, Niels Bohrweg 1, 2333 CA Leiden, The Netherlands
+ * and K.U.Leuven, Departement Computerwetenschappen, Celestijnenlaan 200A,
+ * B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_ilp_opt_val_templ.c
+/*
+ * Copyright 2017      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_input.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2019      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_int_sioimath.h
+sdk-src/sources/gcc/isl-0.24/isl_test_imath.c
+sdk-src/sources/gcc/isl-0.24/isl_test_int.c
+/*
+ * Copyright 2015 INRIA Paris-Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Michael Kruse, INRIA Paris-Rocquencourt,
+ * Domaine de Voluceau, Rocquenqourt, B.P. 105,
+ * 78153 Le Chesnay Cedex France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_list_templ.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2017      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_local.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2014      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_local_space.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2012-2014 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_map.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012-2014 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2016      INRIA Paris
+ * Copyright 2016      Sven Verdoolaege
+ * Copyright 2018-2019 Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ * and Centre de Recherche Inria de Paris, 2 rue Simone Iff - Voie DQ12,
+ * CS 42112, 75589 Paris Cedex 12, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_map_lexopt_templ.c
+/*
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_map_simplify.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2014-2015 INRIA Rocquencourt
+ * Copyright 2016      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_mat.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2014      Ecole Normale Superieure
+ * Copyright 2017      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_morph.c
+/*
+ * Copyright 2010-2011 INRIA Saclay
+ * Copyright 2014      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_align_templ.c
+/*
+ * Copyright 2017      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_apply_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_gist.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_intersect.c
+/*
+ * Copyright 2011      Sven Verdoolaege
+ * Copyright 2012-2013 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_arith_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_dims.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_tuple_id_templ.c
+/*
+ * Copyright 2011      Sven Verdoolaege
+ * Copyright 2012-2013 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_cmp.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_hash.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_hash.c
+/*
+ * Copyright 2016      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_dim_id_templ.c
+/*
+ * Copyright 2011      Sven Verdoolaege
+ * Copyright 2013      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_floor.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_nan_templ.c
+/*
+ * Copyright 2014      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_from_base_templ.c
+/*
+ * Copyright 2012,2014 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_identity_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_product_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_splice_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_multi_zero_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_pullback_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_test_plain_equal_templ.c
+/*
+ * Copyright 2012      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_templ.c
+/*
+ * Copyright 2011      Sven Verdoolaege
+ * Copyright 2012-2014 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_multi_zero_space_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_locals_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_union_locals_templ.c
+/*
+ * Copyright 2020      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_obj.c
+/*
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2014      Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_output.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2019      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_point.c
+/*
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2013      Ecole Normale Superieure
+ * Copyright 2015      Sven Verdoolaege
+ * Copyright 2019      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_pw_eval.c
+sdk-src/sources/gcc/isl-0.24/isl_union_single.c
+/*
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2013      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_pw_insert_dims_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_lift_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_morph_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_move_dims_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_neg_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_opt_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_pw_sub_templ.c
+sdk-src/sources/gcc/isl-0.24/isl_reordering.c
+sdk-src/sources/gcc/isl-0.24/isl_union_eval.c
+sdk-src/sources/gcc/isl-0.24/isl_union_neg.c
+/*
+ * Copyright 2010      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_pw_range_tuple_id_templ.c
+/*
+ * Copyright 2018      Sven Verdoolaege
+ * Copyright 2019      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_pw_templ.c
+/*
+ * Copyright 2010-2011 INRIA Saclay
+ * Copyright 2011      Sven Verdoolaege
+ * Copyright 2012-2014 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_pw_union_opt.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2012      Ecole Normale Superieure
+ * Copyright 2020      Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_schedule.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2012-2014 Ecole Normale Superieure
+ * Copyright 2016      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_schedule_band.c
+/*
+ * Copyright 2013-2014 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_schedule_constraints.c
+/*
+ * Copyright 2012      Ecole Normale Superieure
+ * Copyright 2015-2016 Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_schedule_node.c
+/*
+ * Copyright 2013-2014 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2016      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_schedule_tree.c
+/*
+ * Copyright 2013-2014 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2016      INRIA Paris
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ * and Centre de Recherche Inria de Paris, 2 rue Simone Iff - Voie DQ12,
+ * CS 42112, 75589 Paris Cedex 12, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_scheduler.c
+/*
+ * Copyright 2011      INRIA Saclay
+ * Copyright 2012-2014 Ecole Normale Superieure
+ * Copyright 2015-2016 Sven Verdoolaege
+ * Copyright 2016      INRIA Paris
+ * Copyright 2017      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Centre de Recherche Inria de Paris, 2 rue Simone Iff - Voie DQ12,
+ * CS 42112, 75589 Paris Cedex 12, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_seq.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2011      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_sort.c
+/*
+ * The code of this file was taken from http://jeffreystedfast.blogspot.be,
+ * where it was posted in 2011 by Jeffrey Stedfast under the MIT license.
+ * The MIT license text is as follows:
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_space.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2013-2014 Ecole Normale Superieure
+ * Copyright 2018-2019 Cerebras Systems
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_stride.c
+/*
+ * Copyright 2012-2013 Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_tab.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2013      Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2016      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_tab_lexopt_templ.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2011      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_tab_pip.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2016-2017 Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_tarjan.c
+/*
+ * Copyright 2010-2011 INRIA Saclay
+ * Copyright 2012      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_test.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2012-2013 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_test_cpp-checked.cc
+sdk-src/sources/gcc/isl-0.24/isl_test_cpp-generic.cc
+sdk-src/sources/gcc/isl-0.24/isl_test_cpp.cc
+/* Copyright 2016-2017 Tobias Grosser
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Tobias Grosser, Weststrasse 47, CH-8003, Zurich
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_type_has_equal_space_templ.c
+/*
+ * Copyright 2010      INRIA Saclay
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege,
+ * INRIA Saclay - Ile-de-France, Parc Club Orsay Universite,
+ * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_union_map.c
+/*
+ * Copyright 2010-2011 INRIA Saclay
+ * Copyright 2013-2014 Ecole Normale Superieure
+ * Copyright 2014      INRIA Rocquencourt
+ * Copyright 2016-2017 Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France 
+ * and Inria Paris - Rocquencourt, Domaine de Voluceau - Rocquencourt,
+ * B.P. 105 - 78153 Le Chesnay, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_union_multi.c
+/*
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2013      Ecole Normale Superieure
+ * Copyright 2015      INRIA Paris-Rocquencourt
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ * and INRIA Paris-Rocquencourt, Domaine de Voluceau, Rocquenqourt, B.P. 105,
+ * 78153 Le Chesnay Cedex France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_union_templ.c
+/*
+ * Copyright 2010      INRIA Saclay
+ * Copyright 2013      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, INRIA Saclay - Ile-de-France,
+ * Parc Club Orsay Universite, ZAC des vignes, 4 rue Jacques Monod,
+ * 91893 Orsay, France 
+ * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/isl_vec.c
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ * Copyright 2013      Ecole Normale Superieure
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
+ */
+
+sdk-src/sources/gcc/isl-0.24/schedule.c
+/*
+ * Copyright 2016      Sven Verdoolaege
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege.
+ */

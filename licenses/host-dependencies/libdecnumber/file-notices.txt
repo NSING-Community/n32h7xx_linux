@@ -1,0 +1,780 @@
+sdk-src/sources/gcc/libdecnumber/bid/bid-dpd.h
+sdk-src/sources/gcc/libdecnumber/bid/bid2dpd_dpd2bid.c
+sdk-src/sources/gcc/libdecnumber/bid/bid2dpd_dpd2bid.h
+sdk-src/sources/gcc/libdecnumber/bid/decimal128.c
+sdk-src/sources/gcc/libdecnumber/bid/decimal32.c
+sdk-src/sources/gcc/libdecnumber/bid/decimal64.c
+/* Copyright (C) 2007-2026 Free Software Foundation, Inc.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 3, or (at your option) any later
+version.
+
+GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/bid/host-ieee128.c
+sdk-src/sources/gcc/libdecnumber/bid/host-ieee32.c
+sdk-src/sources/gcc/libdecnumber/bid/host-ieee64.c
+/* This is a software decimal floating point library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+
+This file is part of GCC.
+
+GCC is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 3, or (at your option) any later
+version.
+
+GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dconfig.h
+/* Configure decNumber for either host or target.
+   Copyright (C) 2008-2026 Free Software Foundation, Inc.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decBasic.c
+/* Common base code for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decCommon.c
+/* Common code for fixed-size types in the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decContext.c
+/* Decimal context module for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decContext.h
+/* Decimal context header module for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decDPD.h
+/* Conversion lookup tables for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decDouble.c
+/* decDouble module for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decDouble.h
+/* decDouble module header for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decExcept.c
+sdk-src/sources/gcc/libdecnumber/decLibrary.c
+/* Temporary library support for decimal floating point.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it
+   under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3, or (at your option)
+   any later version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+   License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decExcept.h
+/* Temporary library support for decimal floating point.
+   Copyright (C) 2006-2026 Free Software Foundation, Inc.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it
+   under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3, or (at your option)
+   any later version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+   License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decNumber.c
+/* Decimal number arithmetic module for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decNumber.h
+/* Decimal number arithmetic module header for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decNumberLocal.h
+/* Local definitions for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decPacked.c
+/* Packed decimal conversion module for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decPacked.h
+/* Packed decimal conversion module header for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decQuad.c
+/* decQuad module for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decQuad.h
+/* decQuad module header for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decRound.c
+/* Internal testing support for rounding for decimal float.
+
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it
+   under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3, or (at your option)
+   any later version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+   License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decRound.h
+/* Internal testing support for rounding for decimal float.
+
+   Copyright (C) 2006-2026 Free Software Foundation, Inc.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it
+   under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3, or (at your option)
+   any later version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+   License for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decSingle.c
+/* decSingle module for the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/decSingle.h
+/* decSingle module header for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dpd/decimal128.c
+/* Decimal 128-bit format module for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dpd/decimal128.h
+/* Decimal 128-bit format module header for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dpd/decimal128Local.h
+/* Local definitions for use with the decNumber C Library.
+   Copyright (C) 2007-2026 Free Software Foundation, Inc.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dpd/decimal32.c
+/* Decimal 32-bit format module for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dpd/decimal32.h
+/* Decimal 32-bit format module header for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dpd/decimal64.c
+/* Decimal 64-bit format module for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */
+
+sdk-src/sources/gcc/libdecnumber/dpd/decimal64.h
+/* Decimal 64-bit format module header for the decNumber C Library.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
+   Contributed by IBM Corporation.  Author Mike Cowlishaw.
+
+   This file is part of GCC.
+
+   GCC is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 3, or (at your option) any later
+   version.
+
+   GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+   for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this program;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.  */

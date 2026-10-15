@@ -1,0 +1,4027 @@
+sdk-src/sources/gcc/mpc-1.3.1/src/abs.c
+/* mpc_abs -- Absolute value of a complex number.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/acos.c
+/* mpc_acos -- arccosine of a complex number.
+
+Copyright (C) 2009, 2010, 2011, 2012, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/acosh.c
+/* mpc_acosh -- inverse hyperbolic cosine of a complex number.
+
+Copyright (C) 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/add.c
+/* mpc_add -- Add two complex numbers.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/add_fr.c
+/* mpc_add_fr -- Add a complex number and a floating-point number.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/add_si.c
+/* mpc_add_si -- Add a complex number and a signed long int.
+
+Copyright (C) 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/add_ui.c
+/* mpc_add_ui -- Add a complex number and an unsigned long int.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/agm.c
+/* mpc_agm -- AGM of a complex number.
+
+Copyright (C) 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/arg.c
+/* mpc_arg -- Get the argument of a complex number.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/asin.c
+/* mpc_asin -- arcsine of a complex number.
+
+Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/asinh.c
+/* mpc_asinh -- inverse hyperbolic sine of a complex number.
+
+Copyright (C) 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/atan.c
+/* mpc_atan -- arctangent of a complex number.
+
+Copyright (C) 2009, 2010, 2011, 2012, 2013, 2017, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/atanh.c
+/* mpc_atanh -- inverse hyperbolic tangent of a complex number.
+
+Copyright (C) 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/balls.c
+/* balls -- Functions for complex ball arithmetic.
+
+Copyright (C) 2018, 2020, 2021, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/clear.c
+/* mpc_clear -- Clear a complex variable.
+
+Copyright (C) 2002, 2009, 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/cmp.c
+/* mpc_cmp -- Compare two complex numbers.
+
+Copyright (C) 2002, 2009, 2010, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/cmp_abs.c
+/* mpc_cmp -- Compare two complex numbers.
+
+Copyright (C) 2016 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/cmp_si_si.c
+/* mpc_cmp_si_si -- Compare a complex number to a number of the form
+   b+c*i with b and c signed integers.
+
+Copyright (C) 2005, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/conj.c
+/* mpc_conj -- Conjugate of a complex number.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/cos.c
+/* mpc_cos -- cosine of a complex number.
+
+Copyright (C) 2010, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/cosh.c
+/* mpc_cosh -- hyperbolic cosine of a complex number.
+
+Copyright (C)  2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/div.c
+/* mpc_div -- Divide two complex numbers.
+
+Copyright (C) 2002, 2003, 2004, 2005, 2008, 2009, 2010, 2011, 2012, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/div_2si.c
+/* mpc_div_2si -- Divide a complex number by 2^e.
+
+Copyright (C) 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/div_2ui.c
+/* mpc_div_2ui -- Divide a complex number by 2^e.
+
+Copyright (C) 2002, 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/div_fr.c
+/* mpc_div_fr -- Divide a complex number by a floating-point number.
+
+Copyright (C) 2002, 2008, 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/div_ui.c
+/* mpc_div_ui -- Divide a complex number by a nonnegative integer.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/dot.c
+/* mpc_dot -- Dot product of two arrays of complex numbers.
+
+Copyright (C) 2018, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/eta.c
+/* eta -- Functions for computing the Dedekind eta function
+
+Copyright (C) 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/exp.c
+/* mpc_exp -- exponential of a complex number.
+
+Copyright (C) 2002, 2009, 2010, 2011, 2012, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/fma.c
+/* mpc_fma -- Fused multiply-add of three complex numbers
+
+Copyright (C) 2011, 2012, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/fr_div.c
+/* mpc_fr_div -- Divide a floating-point number by a complex number.
+
+Copyright (C) 2008, 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/fr_sub.c
+/* mpc_fr_sub -- Substract a complex number from a floating-point number.
+
+Copyright (C) 2008, 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/get_prec.c
+/* mpc_get_prec -- returns the common precision of real and imaginary part, or 0 if they differ
+
+Copyright (C) 2007, 2009, 2010 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/get_prec2.c
+/* mpc_get_prec2 -- returns the precisions of the real and of the imaginary
+   part through the first two arguments
+
+Copyright (C) 2007, 2009, 2010 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/get_version.c
+/* mpc_get_version -- MPC version
+
+Copyright (C) 2008, 2009, 2010, 2011, 2012, 2017, 2018, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/get_x.c
+/* mpc_get_dc, mpc_get_ldc -- Transform mpc number into C complex number
+   mpc_get_str -- Convert a complex number into a string.
+
+Copyright (C) 2009, 2010, 2011, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/imag.c
+/* mpc_imag -- Get the imaginary part of a complex number.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/init2.c
+/* mpc_init2 -- Initialize a complex variable with a given precision.
+
+Copyright (C) 2002, 2009, 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/init3.c
+/* mpc_init3 -- Initialize a complex variable with given precisions.
+
+Copyright (C) 2002, 2009, 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/inp_str.c
+/* mpc_inp_str -- Input a complex number from a given stream.
+
+Copyright (C) 2009, 2010, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/log.c
+/* mpc_log -- Take the logarithm of a complex number.
+
+Copyright (C) 2008, 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/log10.c
+/* mpc_log10 -- Take the base-10 logarithm of a complex number.
+
+Copyright (C) 2012, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://logw.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/logging.c
+/* logging.c -- "Dummy" functions logging calls to real mpc functions.
+
+Copyright (C) 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mem.c
+/* wrapper functions to allocate, reallocate and free memory
+
+Copyright (C) 2009 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mpc-impl.h
+/* mpc-impl.h -- Internal include file for mpc.
+
+Copyright (C) 2002, 2004, 2005, 2008, 2009, 2010, 2011, 2012, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mpc-log.h
+/* mpc-log.h -- Include file to enable function call logging; replaces mpc.h.
+
+Copyright (C) 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mpc.h
+/* mpc.h -- Include file for mpc.
+
+Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011, 2012, 2016, 2017, 2018, 2020, 2021, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mul.c
+/* mpc_mul -- Multiply two complex numbers
+
+Copyright (C) 2002, 2004, 2005, 2008, 2009, 2010, 2011, 2012, 2016, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+        he terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mul_2si.c
+/* mpc_mul_2si -- Multiply a complex number by 2^e.
+
+Copyright (C) 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mul_2ui.c
+/* mpc_mul_2ui -- Multiply a complex number by 2^e.
+
+Copyright (C) 2002, 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mul_fr.c
+/* mpc_mul_fr -- Multiply a complex number by a floating-point number.
+
+Copyright (C) 2002, 2008, 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mul_i.c
+/* mpc_mul_i -- Multiply a complex number by plus or minus i.
+
+Copyright (C) 2005, 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mul_si.c
+/* mpc_mul_si -- Multiply a complex number by a signed integer.
+
+Copyright (C) 2005, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/mul_ui.c
+/* mpc_mul_ui -- Multiply a complex number by a nonnegative integer.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/neg.c
+/* mpc_neg -- Negate a complex number.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/norm.c
+/* mpc_norm -- Square of the norm of a complex number.
+
+Copyright (C) 2002, 2005, 2008, 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/out_str.c
+/* mpc_out_str -- Output a complex number on a given stream.
+
+Copyright (C) 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/pow.c
+/* mpc_pow -- Raise a complex number to the power of another complex number.
+
+Copyright (C) 2009, 2010, 2011, 2012, 2014, 2015, 2016, 2018, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/pow_d.c
+/* mpc_pow_d -- Raise a complex number to a double-precision power.
+
+Copyright (C) 2009 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/pow_fr.c
+/* mpc_pow_fr -- Raise a complex number to a floating-point power.
+
+Copyright (C) 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/pow_ld.c
+/* mpc_pow_ld -- Raise a complex number to a long double power.
+
+Copyright (C) 2009 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/pow_si.c
+/* mpc_pow_si -- Raise a complex number to an integer power.
+
+Copyright (C) 2009, 2010 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/pow_ui.c
+/* mpc_pow_ui -- Raise a complex number to an integer power.
+
+Copyright (C) 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/pow_z.c
+/* mpc_pow_z -- Raise a complex number to an integer power.
+
+Copyright (C) 2009, 2010 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/proj.c
+/* mpc_proj -- projection of a complex number onto the Riemann sphere.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/radius.c
+/* radius -- Functions for radii of complex balls.
+
+Copyright (C) 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/real.c
+/* mpc_real -- Get the real part of a complex number.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/rootofunity.c
+/* mpc_rootofunity -- primitive root of unity.
+
+Copyright (C) 2012, 2016 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/set.c
+/* mpc_set -- Set a complex number from another complex number.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/set_prec.c
+/* mpc_set_prec -- reset the precision of a complex variable.
+
+Copyright (C) 2002, 2009, 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/set_str.c
+/* mpc_set_str -- Convert a string into a complex number.
+
+Copyright (C) 2009, 2010, 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/set_x.c
+/* mpc_set_x -- Set the real part of a complex number
+   (imaginary part equals +0 regardless of rounding mode).
+
+Copyright (C) 2008, 2009, 2010, 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/set_x_x.c
+/* mpc_set_x_x -- Set complex number real and imaginary parts from parameters
+   whose type is known by mpfr.
+
+Copyright (C) 2009, 2011, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sin.c
+/* mpc_sin -- sine of a complex number.
+
+Copyright (C) 2010, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sin_cos.c
+/* mpc_sin_cos -- combined sine and cosine of a complex number.
+
+Copyright (C) 2010, 2011, 2012, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sinh.c
+/* mpc_sinh -- hyperbolic sine of a complex number.
+
+Copyright (C)2008, 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sqr.c
+/* mpc_sqr -- Square a complex number.
+
+Copyright (C) 2002, 2005, 2008, 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sqrt.c
+/* mpc_sqrt -- Take the square root of a complex number.
+
+Copyright (C) 2002, 2008, 2009, 2010, 2011, 2012, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/strtoc.c
+/* mpc_strtoc -- Read a complex number from a string.
+
+Copyright (C) 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sub.c
+/* mpc_sub -- Subtract two complex numbers.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sub_fr.c
+/* mpc_sub_fr -- Substract a floating-point number to the real part of a
+   complex number.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sub_ui.c
+/* mpc_sub_ui -- Add a complex number and an unsigned long int.
+
+Copyright (C) 2002, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/sum.c
+/* mpc_sum -- Add an array of complex numbers.
+
+Copyright (C) 2018 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/swap.c
+/* mpc_swap -- Swap two complex numbers.
+
+Copyright (C) 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/tan.c
+/* mpc_tan -- tangent of a complex number.
+
+Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/tanh.c
+/* mpc_tanh -- hyperbolic tangent of a complex number.
+
+Copyright (C) 2008, 2009, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/uceil_log2.c
+/* mpc_ceil_log2 - returns ceil(log(d)/log(2))
+
+Copyright (C) 2004, 2009, 2010 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/ui_div.c
+/* mpc_ui_div -- Divide an unsigned long int by a complex number.
+
+Copyright (C) 2002, 2009 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/ui_ui_sub.c
+/* mpc_ui_ui_sub -- Subtract a complex number from another one given
+   implicitly by its real and imaginary parts of type unsigned long int.
+
+Copyright (C) 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/src/urandom.c
+/* mpc_urandom -- Generate a random complex number uniformly distributed in
+   the interval [0,1[.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/check_data.c
+/* check_data.c -- Check computed data against reference result.
+
+Copyright (C) 2012, 2013, 2014, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/clear_parameters.c
+/* clear_parameters -- Deallocate memory for function parameters.
+
+Copyright (C) 2012, 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/close_datafile.c
+/* close_datafile.c -- Deallocate buffers and close datafile.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/comparisons.c
+/* comparisons.c -- Comparison functions.
+
+Copyright (C) 2008, 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/copy_parameter.c
+/* copy_parameter.c -- Copy of an input parameter into a parameter reused for
+   output.
+
+Copyright (C) 2012, 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/double_rounding.c
+/*  double_rounding.c -- Functions for checking double rounding.
+
+Copyright (C) 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/init_parameters.c
+/* init_parameters -- Allocate memory for function parameters.
+
+Copyright (C) 2012, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/mpc-tests.h
+/* mpc-tests.h -- Tests helper functions.
+
+Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2020, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/mpfr_flags.c
+/* random.c -- Handle seed for random numbers.
+
+Copyright (C) 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/open_datafile.c
+/* open_datafile.c -- Set up datafile context.
+
+   Usage: Before including this template file in your source file,
+   #define the prototype of the function under test in the CALL
+   symbol, see tadd_tmpl.c for an example.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/print_parameter.c
+/* print_parameter.c -- Helper function for parameter printing.
+
+Copyright (C) 2012, 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/random.c
+/* random.c -- Handle seed for random numbers.
+
+// Copyright (C) 2008, 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/read_data.c
+/* read_data.c -- Read data file and check function.
+
+Copyright (C) 2008, 2009, 2010, 2011, 2012, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/read_description.c
+/* read_description.c -- read parameters from description file
+
+Copyright (C) 2012, 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/read_line.c
+/* read_line.c -- Read line of test data in file.
+
+Copyright (C) 2012, 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/rounding.c
+/* rounding.c -- file for functions iterating over rounding modes.
+
+Copyright (C) 2013, 2014, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/setprec_parameters.c
+/* setprec_parameters.c -- Functions changing the precision of i/o parameters.
+
+Copyright (C) 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tabs.c
+/* tabs -- test file for mpc_abs.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tacos.c
+/* tacos -- test file for mpc_acos.
+
+Copyright (C) 2009, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tacosh.c
+/* tacosh.c --  test file for mpc_acosh.
+
+Copyright (C) 2009, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tadd.c
+/* tadd -- test file for mpc_add.
+
+Copyright (C) 2008, 2010, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tadd_fr.c
+/* tadd_fr -- test file for mpc_add_fr.
+
+Copyright (C) 2008, 2010, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tadd_si.c
+/* tadd_si -- test file for mpc_add_si.
+
+Copyright (C) 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tadd_ui.c
+/* tadd_ui -- test file for mpc_add_ui.
+
+Copyright (C) 2008, 2010, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tagm.c
+/* tagm -- test file for mpc_agm.
+
+Copyright (C) 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/targ.c
+/* targ -- test file for mpc_arg.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tasin.c
+/* tasin -- test file for mpc_asin.
+
+Copyright (C) 2009, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tasinh.c
+/* tasinh -- test file for mpc_asinh.
+
+Copyright (C) 2009, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tatan.c
+/* tatan -- test file for mpc_atan.
+
+Copyright (C) 2009, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tatanh.c
+/* tatanh -- test file for mpc_atanh.
+
+Copyright (C) 2009, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tballs.c
+/* tballs -- test file for complex ball arithmetic.
+
+Copyright (C) 2018, 2020, 2021, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tcmp_abs.c
+/* tcmp_abs -- test file for mpc_cmp_abs.
+
+Copyright (C) 2016 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tconj.c
+/* tconj -- test file for mpc_conj.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tcos.c
+/* tcos -- test file for mpc_cos.
+
+Copyright (C) 2008, 2009, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tcosh.c
+/* tcosh -- test file for mpc_cosh.
+
+Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tdiv.c
+/* tdiv -- test file for mpc_div.
+
+Copyright (C) 2002, 2008, 2009, 2011, 2013, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tdiv_2si.c
+/* tdiv_2si -- test file for mpc_div_2si.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tdiv_2ui.c
+/* tdiv_2ui -- test file for mpc_div_2ui.
+
+Copyright (C) 2008, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tdiv_fr.c
+/* tdiv_fr.c -- test file for mpc_div_fr.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tdiv_ui.c
+/* tdiv_ui.c -- test file for mpc_div_ui.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tdot.c
+/* tdot -- test file for mpc_dot.
+
+Copyright (C) 2018, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tdummy.c
+/* tdummy -- test file when stdio.h is not included
+
+Copyright (C) 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/teta.c
+/* teta -- test file for the Dedekind eta function.
+
+Copyright (C) 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/texceptions.c
+/* exceptions -- test file for exceptions
+
+Copyright (C) 2015, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/texp.c
+/* texp -- test file for mpc_exp.
+
+Copyright (C) 2002, 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tfma.c
+/* tfma -- test file for mpc_fma.
+
+Copyright (C) 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tfr_div.c
+/* tfr_div -- test file for mpc_fr_div.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tfr_sub.c
+/* tfr_div -- test file for mpc_fr_sub.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tget_version.c
+/* tget_version -- Test file for mpc_get_version
+
+Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/timag.c
+/* timag -- test file for mpc_imag.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tio_str.c
+/* tio_str-- Test file for mpc_inp_str and mpc_out_str.
+
+Copyright (C) 2009, 2011, 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tlog.c
+/* tlog -- test file for mpc_log.
+
+Copyright (C) 2008, 2009, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tlog10.c
+/* tlog10 -- test file for mpc_log10.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tmul.c
+/* tmul -- test file for mpc_mul.
+
+Copyright (C) 2002, 2005, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tmul_2si.c
+/* tmul_2si -- test file for mpc_mul_2si.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tmul_2ui.c
+/* tmul_2ui -- test file for mpc_mul_2ui.
+
+Copyright (C) 2008, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tmul_fr.c
+/* tmul_fr -- test file for mpc_mul_fr.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tmul_i.c
+/* tmul_i -- test file for mpc_mul_i.
+
+Copyright (C)  2008, 2009, 2010, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tmul_si.c
+/* tmul_si -- test file for mpc_mul_si.
+
+Copyright (C) 2002, 2005, 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tmul_ui.c
+/* tmul_ui -- test file for mpc_mul_ui.
+
+Copyright (C) 2002, 2005, 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tneg.c
+/* tneg -- test file for mpc_neg.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tnorm.c
+/* tnorm -- test file for mpc_norm.
+
+Copyright (C) 2008, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpl_gmp.c
+/* tpl_gmp.c --  Helper functions for mpfr data.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpl_mpc.c
+/* tpl_mpc.c -- Helper functions for mpc data.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpl_mpfr.c
+/* tpl_mpfr.c --  Helper functions for mpfr data.
+
+Copyright (C) 2012, 2013, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpl_native.c
+/* tpl_mpfr.c --  Helper functions for data with native types.
+
+Copyright (C) 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpow.c
+/* tpow -- test file for mpc_pow.
+
+Copyright (C) 2009, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpow_d.c
+/* tpow_d -- test file for mpc_pow_d.
+
+Copyright (C) 2009, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpow_fr.c
+/* tpow_fr -- test file for mpc_pow_fr.
+
+Copyright (C) 2009, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpow_ld.c
+/* tpow_ld -- test file for mpc_pow_ld.
+
+Copyright (C) 2009, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpow_si.c
+/* tpow_si -- test file for mpc_pow_si.
+
+Copyright (C) 2009, 2010, 2011, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpow_ui.c
+/* tpow_ui -- test file for mpc_pow_ui.
+
+Copyright (C) 2009, 2010, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tpow_z.c
+/* tpow_z -- test file for mpc_pow_z.
+
+Copyright (C) 2009, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tprec.c
+/* tprec -- Test file for mpc_set_prec, mpc_get_prec and mpc_get_prec2.
+
+Copyright (C) 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tproj.c
+/* tproj -- test file for mpc_proj.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tradius.c
+/* tradius -- test file for arithmetic of complex ball radii.
+
+Copyright (C) 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/treal.c
+/* treal -- test file for mpc_real.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/treimref.c
+/* treimref -- test file for mpc_realref and mpc_imagref.
+
+Copyright (C) 2009, 2012 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/trootofunity.c
+/* trootofunity -- test file for mpc_rootofunity.
+
+Copyright (C) 2012, 2016 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tset.c
+/* tset -- Test file for mpc_set_x and mpc_set_x_x functions.
+
+Copyright (C) 2009, 2010, 2011, 2012, 2022 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsin.c
+/* tsin -- test file for mpc_sin.
+
+Copyright (C) 2007, 2008, 2010, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsin_cos.c
+/* tsin_cos -- test file for mpc_sin_cos.
+
+Copyright (C) 2011, 2013, 2014 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsinh.c
+/* tsinh -- test file for mpc_sinh.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsqr.c
+/* tsqr -- test file for mpc_sqr.
+
+Copyright (C) 2002, 2005, 2008, 2010, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsqrt.c
+/* tsqrt -- test file for mpc_sqrt.
+
+Copyright (C) 2008, 2013, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tstrtoc.c
+/* tstrtoc -- test file for mpc_strtoc.
+
+Copyright (C) 2009, 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsub.c
+/* tsub -- test file for mpc_sub.
+
+Copyright (C) 2008, 2011, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsub_fr.c
+/* tsub_fr -- test file for mpc_sub_fr.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsub_ui.c
+/* tsub_ui -- test file for mpc_sub_ui.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tsum.c
+/* tsum -- test file for mpc_sum.
+
+Copyright (C) 2018 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tswap.c
+/* tswap -- Test file for mpc_swap.
+
+Copyright (C) 2011 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/ttan.c
+/* ttan -- test file for mpc_tan.
+
+Copyright (C) 2008, 2011, 2012, 2013, 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/ttanh.c
+/* ttanh -- test file for mpc_tanh.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tui_div.c
+/* tui_div -- test file for mpc_ui_div.
+
+Copyright (C) 2008, 2011, 2012, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tests/tui_ui_sub.c
+/* tui_ui_sub -- test file for mpc_ui_ui_sub.
+
+Copyright (C) 2008, 2013 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tools/bench/benchtime.h
+/* benchtime.h -- compute the timings for the benchmark.
+
+Copyright (C) 2014 INRIA - CNRS
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tools/bench/mpcbench.c
+/* mpcbench.c -- perform the benchmark on the complex numbers.
+
+Copyright (C) 2014 CNRS - INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tools/mpcheck/mpcheck-double.c
+/* mpcheck-double -- compare mpc functions against "double complex"
+                     from the GNU libc implementation
+
+Copyright (C) 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tools/mpcheck/mpcheck-float.c
+/* mpcheck-float -- compare mpc functions against "float complex"
+                     from the GNU libc implementation
+
+Copyright (C) 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tools/mpcheck/mpcheck-float128.c
+/* mpcheck-float128 -- compare mpc functions against "__float128 complex"
+                       from the GNU libc implementation
+
+Copyright (C) 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/
+
+sdk-src/sources/gcc/mpc-1.3.1/tools/mpcheck/mpcheck-longdouble.c
+/* mpcheck-longdouble -- compare mpc functions against "long double complex"
+                         from the GNU libc implementation
+
+Copyright (C) 2020 INRIA
+
+This file is part of GNU MPC.
+
+GNU MPC is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+GNU MPC is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see http://www.gnu.org/licenses/ .
+*/

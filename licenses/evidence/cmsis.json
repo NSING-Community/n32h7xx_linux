@@ -1,0 +1,179 @@
+{
+  "component": "cmsis",
+  "method": "All imported headers compared against official ARM-software/CMSIS_5 5.6.0 tag",
+  "checks": {
+    "bootloader/Driver/CMSIS/core/tz_context.h": "7fcc21fc190f6fd970390e9caaa6a86d72fd10f9edf4efab36f12aecf1a8baa0",
+    "bootloader/Driver/CMSIS/core/core_cm35p.h": "32dbde7edb75784b23411639fa8cb8ecd3a3da26f923530b9ae606e010fcae57",
+    "bootloader/Driver/CMSIS/core/cmsis_armclang.h": "99b25ab977f383840994cb456ae3f259a5c9b036cb6a0d8c003b7cbba4f6123a",
+    "bootloader/Driver/CMSIS/core/cmsis_version.h": "dd03af200b23bdd8d091ffa7beb3d1a2c4fc5611557567bd57ec613205f6df1f",
+    "bootloader/Driver/CMSIS/core/core_cm4.h": "cdc0c5ab9ba0f24c065e891d26c3e686ed04106700ce6a572cc7e83e71965b59",
+    "bootloader/Driver/CMSIS/core/core_armv8mbl.h": "319fd8c698098a16f2775fe292b734c91aaeec3feee418e515cc3a1761edec76",
+    "bootloader/Driver/CMSIS/core/core_armv8mml.h": "1778fd691a0768dbee4fbe537b3cc4d03fcfab4ab9f60e31ec52605364f3dd36",
+    "bootloader/Driver/CMSIS/core/core_cm7.h": "ff629c5bf98a8caadf360d0bcc48e1042fefa19995f7b64855d5e81e4c2e81cb",
+    "bootloader/Driver/CMSIS/core/core_cm3.h": "efefef85cd419652f5b7c1074ede2f5c24da943528c5156de8d2a194de1888dc",
+    "bootloader/Driver/CMSIS/core/cmsis_iccarm.h": "a40c60d322903d410fe892c2eccb92d82d8876dce605fbb4cb563d52182aeb16",
+    "bootloader/Driver/CMSIS/core/mpu_armv7.h": "e504a7d47dfdb3d61dfae3cf08d27ba9bc69aa4b2b81ca568efdafd65d6abdcc",
+    "bootloader/Driver/CMSIS/core/cmsis_armclang_ltm.h": "31622280a8296b67bdace0539710a3cfbf828b71f88bd0d5ccc5d7d291ab3a9f",
+    "bootloader/Driver/CMSIS/core/core_sc300.h": "cddd97bb6172b5cdad96a48445124a6d97a449546f5617e48f03847cbc4a09a4",
+    "bootloader/Driver/CMSIS/core/core_cm0.h": "20300b57c02d5b7b34c7b58bf7009e81713a60f44ca2a338f67cb4b473f4f3c4",
+    "bootloader/Driver/CMSIS/core/cmsis_gcc.h": "0837f98e834d6a529854c8c86336e9d99eb8e379bf1deb964858d7863950f862",
+    "bootloader/Driver/CMSIS/core/core_cm0plus.h": "4b79d5bf9f9165ddae727c9f035f82fb0ea85ceee2587b503d5d7bcd172d2df9",
+    "bootloader/Driver/CMSIS/core/core_cm1.h": "c243c4afb291068fe7078d2911b2f0001e78a4d5466c26728611b06147d65c2b",
+    "bootloader/Driver/CMSIS/core/mpu_armv8.h": "95a05e406c38cb770621f07ac066b8c89b90874a50559ec9b10c9587b6049503",
+    "bootloader/Driver/CMSIS/core/cmsis_compiler.h": "869640702d811c4c63abb52206715c891a93fd03be954df5ad40d378355af3d6",
+    "bootloader/Driver/CMSIS/core/core_cm23.h": "009f762a79b693f7f82efc9298a33a14765c06dbd4cb2bf5c9b4ffbb6f7e56ff",
+    "bootloader/Driver/CMSIS/core/core_armv81mml.h": "fb6ff226bc14b8730b3d5c5e49a32514de811b485dc3f0543045ffffd8787f85",
+    "bootloader/Driver/CMSIS/core/core_sc000.h": "e306205844323c8fe4cc3e5433c91ed34d9d5055ed11eceef03401fdfb0c3600",
+    "bootloader/Driver/CMSIS/core/core_cm33.h": "3e50058f0d08b8d8897fec65e636e2f96635d1f8bcef37d2dec289e834539548",
+    "bootloader/Driver/CMSIS/core/cmsis_armcc.h": "e6ba28e21b5a3cd44d4e2d2981e37568f419e5df693c8b58e87674fbdf28deeb"
+  },
+  "details": {
+    "upstream_commit": "b5f0603d6a584d1724d952fd8b0737458b90d62b",
+    "files": [
+      {
+        "path": "bootloader/Driver/CMSIS/core/tz_context.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/tz_context.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "45565c8cb04c653aabaf3cceddfc848b6a0de28c20d4f7e3d475a992c7eee788"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm35p.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm35p.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "1f6da4c033261293acb8f0a7da42a0e9b6ab392c9462cc26f5e3e35d4db4e2d3"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/cmsis_armclang.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/cmsis_armclang.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "e24f4bd1548b94e0ad424f4f13f59a4db4ca5aad7b644d10a893a330775d3003"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/cmsis_version.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/cmsis_version.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "1b2c47a90e9ae741c8fd4d0f323495327b25ff5d555a6c7afd6749a65ba1bb8e"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm4.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm4.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "53d609b900c262650fcaf5a48eabd0fa299c3ac4d1426eb0f20e2aab053f8abb"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_armv8mbl.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_armv8mbl.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "74b92c994af7355e222b45a0342754840b7221b611ef95bd206345879cc2caaa"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_armv8mml.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_armv8mml.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "77255f30508cf0d225f8b72207e28bf81353f8b353e8b120132c6db7e9bead9e"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm7.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm7.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "34d91327a5f1b251c54fa6bb532d9f5ec0423bf3b7f2b679c8f7b3df95af0fc8"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm3.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm3.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "0191499015f3af7b37ce83092df29d1d63dbba9fa5f31b6d2341a2e850b20cb4"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/cmsis_iccarm.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/cmsis_iccarm.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "820bcd68b0a92f97abf5cdde6413e5e842fb286e0514be2c1be1547bb2dd2e7d"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/mpu_armv7.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/mpu_armv7.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "c9ad7cc99ba0481365550ae997c63cde9732d067d9ec0de28b0d6ac39280656d"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/cmsis_armclang_ltm.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/cmsis_armclang_ltm.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "e8f040e9ef61e466cc751677ab3c413a463cb74d1fc33fb6dfd94225bd93c8c1"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_sc300.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_sc300.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "e6a78d85b3ca77e35dc512e32e535028a46e156adab8629360fa4b7fe6731827"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm0.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm0.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "52e8826259be4fcb10d0de2d3655c24d52436e54cd1509f3beb1a31a45524f38"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/cmsis_gcc.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/cmsis_gcc.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "1fba3e120e5c0a439e0982bd37fae04bd033dbd14187428214462a1707c56252"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm0plus.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm0plus.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "36e9aec815eef944241e5fed7085845346de6bcb5ba30561f956356b393ba5f0"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm1.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm1.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "944bf0c4f940eef30a632cd99d5dcfe8270e8a8431eb98c0f081bcf4f61f728e"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/mpu_armv8.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/mpu_armv8.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "53f9e848af62ea8704f463992e4d65c7c79fc72cfd8fab6fa14adc73478b0afd"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/cmsis_compiler.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/cmsis_compiler.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "b51963d271c1571ca3463654c76aa7ea50c4eac5d0a2710df10414ac64d9e0f8"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm23.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm23.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "f04d3e5f385b0ff219a75f6648acabf7debb779a72f0628573b64dac5ad49fdc"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_armv81mml.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_armv81mml.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "b4bc83a6ff10fd2fb7e4c0abefdbd447eb7f78f3db898ca9aac5676307e2b862"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_sc000.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_sc000.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "cc9037b32401824436d251de860799fcdbab3cf69e2321438c8f446f3f342526"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/core_cm33.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/core_cm33.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "3566c5bf835091b1cc46baf6e9b6ce94d83dd0885e0db122f43e901e9326945a"
+      },
+      {
+        "path": "bootloader/Driver/CMSIS/core/cmsis_armcc.h",
+        "url": "https://raw.githubusercontent.com/ARM-software/CMSIS_5/5.6.0/CMSIS/Core/Include/cmsis_armcc.h",
+        "matches_ignoring_crlf": true,
+        "upstream_sha256": "5a80286d68d0b4478895a222da683c8ca561d3bcf6392aaaea225d4a117c843e"
+      }
+    ]
+  }
+}

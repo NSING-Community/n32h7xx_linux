@@ -1,0 +1,660 @@
+sdk/toolchain/share/info/as.info
+This is as.info, produced by makeinfo version 7.2 from as.texi.
+
+This file documents the GNU Assembler "as".
+
+   Copyright © 1991-2026 Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* As: (as).                     The GNU assembler.
+* Gas: (as).                    The GNU assembler.
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/info/bfd.info
+This is bfd.info, produced by makeinfo version 7.2 from bfd.texi.
+
+This file documents the BFD library.
+
+   Copyright © 1991-2026 Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding Free
+Software", the Front-Cover texts being (a) (see below), and with the
+Back-Cover Texts being (b) (see below).  A copy of the license is
+included in the section entitled "GNU Free Documentation License".
+
+   (a) The FSF's Front-Cover Text is:
+
+   A GNU Manual
+
+   (b) The FSF's Back-Cover Text is:
+
+   You have freedom to copy and modify this GNU Manual, like GNU
+software.  Copies published by the Free Software Foundation raise funds
+for GNU development.
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* Bfd: (bfd).                   The Binary File Descriptor library.
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/info/binutils.info
+This is binutils.info, produced by makeinfo version 7.2 from
+binutils.texi.
+
+Copyright © 1991-2026 Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* Binutils: (binutils).         The GNU binary utilities.
+END-INFO-DIR-ENTRY
+
+INFO-DIR-SECTION Individual utilities
+START-INFO-DIR-ENTRY
+* addr2line: (binutils)addr2line. Convert addresses to file and line.
+* ar: (binutils)ar.               Create, modify, and extract from archives.
+* c++filt: (binutils)c++filt.	  Filter to demangle encoded C++ symbols.
+* cxxfilt: (binutils)c++filt.     MS-DOS name for c++filt.
+* dlltool: (binutils)dlltool.	  Create files needed to build and use DLLs.
+* nm: (binutils)nm.               List symbols from object files.
+* objcopy: (binutils)objcopy.	  Copy and translate object files.
+* objdump: (binutils)objdump.     Display information from object files.
+* ranlib: (binutils)ranlib.       Generate index to archive contents.
+* readelf: (binutils)readelf.	  Display the contents of ELF format files.
+* size: (binutils)size.           List section sizes and total size.
+* strings: (binutils)strings.     List printable strings from files.
+* strip: (binutils)strip.         Discard symbols.
+* elfedit: (binutils)elfedit.     Update ELF header and property of ELF files.
+* windmc: (binutils)windmc.	  Generator for Windows message resources.
+* windres: (binutils)windres.	  Manipulate Windows resources.
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/info/ctf-spec.info
+This is ctf-spec.info, produced by makeinfo version 7.2 from
+ctf-spec.texi.
+
+Copyright © 2021-2026 Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 3 or any
+later version published by the Free Software Foundation.  A copy of the
+license is included in the section entitled "GNU General Public
+License".
+
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* CTF: (ctf-spec).         The CTF file format.
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/info/gprof.info
+This is gprof.info, produced by makeinfo version 7.2 from gprof.texi.
+
+This file documents the gprof profiler of the GNU system.
+
+   Copyright © 1988-2026 Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* gprof: (gprof).                Profiling your program's execution
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/info/ld.info
+This is ld.info, produced by makeinfo version 7.2 from ld.texi.
+
+This file documents the GNU linker LD (GNU Binutils) version 2.46.0.
+
+   Copyright © 1991-2026 Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* Ld: (ld).                       The GNU linker.
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/info/ldint.info
+This is ldint.info, produced by makeinfo version 7.2 from ldint.texi.
+
+This file documents the internals of the GNU linker ld.
+
+   Copyright © 1992-2026 Free Software Foundation, Inc.  Contributed by
+Cygnus Support.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding Free
+Software", the Front-Cover texts being (a) (see below), and with the
+Back-Cover Texts being (b) (see below).  A copy of the license is
+included in the section entitled "GNU Free Documentation License".
+
+   (a) The FSF's Front-Cover Text is:
+
+   A GNU Manual
+
+   (b) The FSF's Back-Cover Text is:
+
+   You have freedom to copy and modify this GNU Manual, like GNU
+software.  Copies published by the Free Software Foundation raise funds
+for GNU development.
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* Ld-Internals: (ldint).	The GNU linker internals.
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/info/sframe-spec.info
+This is sframe-spec.info, produced by makeinfo version 7.2 from
+sframe-spec.texi.
+
+Copyright © 2021-2026 Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 3 or any
+later version published by the Free Software Foundation.  A copy of the
+license is included in the section entitled "GNU General Public
+License".
+
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* SFrame: (sframe-spec).         The Simple Frame format.
+END-INFO-DIR-ENTRY
+
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-addr2line.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ar.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-as.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-c++filt.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-cpp.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1987\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation.  A copy of
+the license is included in the
+man page \fBgfdl\fR\|(7).
+This manual contains no Invariant Sections.  The Front\-Cover Texts are
+(a) (see below), and the Back\-Cover Texts are (b) (see below).
+.PP
+(a) The FSF\*(Aqs Front\-Cover Text is:
+.PP
+.Vb 1
+\&     A GNU Manual
+.Ve
+.PP
+(b) The FSF\*(Aqs Back\-Cover Text is:
+.PP
+.Vb 3
+\&     You have freedom to copy and modify this GNU Manual, like GNU
+\&     software.  Copies published by the Free Software Foundation raise
+\&     funds for GNU development.
+.Ve
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-dlltool.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-elfedit.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-g++.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1988\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding
+Free Software", the Front-Cover texts being (a) (see below), and with
+the Back-Cover Texts being (b) (see below).  A copy of the license is
+included in the \fBgfdl\fR\|(7) man page.
+.PP
+(a) The FSF's Front-Cover Text is:
+.PP
+.Vb 1
+\&     A GNU Manual
+.Ve
+.PP
+(b) The FSF's Back-Cover Text is:
+.PP
+.Vb 3
+\&     You have freedom to copy and modify this GNU Manual, like GNU
+\&     software.  Copies published by the Free Software Foundation raise
+\&     funds for GNU development.
+.Ve
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcc.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1988\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding
+Free Software", the Front-Cover texts being (a) (see below), and with
+the Back-Cover Texts being (b) (see below).  A copy of the license is
+included in the \fBgfdl\fR\|(7) man page.
+.PP
+(a) The FSF's Front-Cover Text is:
+.PP
+.Vb 1
+\&     A GNU Manual
+.Ve
+.PP
+(b) The FSF's Back-Cover Text is:
+.PP
+.Vb 3
+\&     You have freedom to copy and modify this GNU Manual, like GNU
+\&     software.  Copies published by the Free Software Foundation raise
+\&     funds for GNU development.
+.Ve
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-dump.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 2017\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding
+Free Software", the Front\-Cover texts being (a) (see below), and with
+the Back\-Cover Texts being (b) (see below).  A copy of the license is
+included in the \fBgfdl\fR\|(7) man page.
+.PP
+(a) The FSF\*(Aqs Front\-Cover Text is:
+.PP
+.Vb 1
+\&     A GNU Manual
+.Ve
+.PP
+(b) The FSF\*(Aqs Back\-Cover Text is:
+.PP
+.Vb 3
+\&     You have freedom to copy and modify this GNU Manual, like GNU
+\&     software.  Copies published by the Free Software Foundation raise
+\&     funds for GNU development.
+.Ve
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-tool.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 2014\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding
+Free Software", the Front\-Cover texts being (a) (see below), and with
+the Back\-Cover Texts being (b) (see below).  A copy of the license is
+included in the \fBgfdl\fR\|(7) man page.
+.PP
+(a) The FSF\*(Aqs Front\-Cover Text is:
+.PP
+.Vb 1
+\&     A GNU Manual
+.Ve
+.PP
+(b) The FSF\*(Aqs Back\-Cover Text is:
+.PP
+.Vb 3
+\&     You have freedom to copy and modify this GNU Manual, like GNU
+\&     software.  Copies published by the Free Software Foundation raise
+\&     funds for GNU development.
+.Ve
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1996\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding
+Free Software", the Front\-Cover texts being (a) (see below), and with
+the Back\-Cover Texts being (b) (see below).  A copy of the license is
+included in the \fBgfdl\fR\|(7) man page.
+.PP
+(a) The FSF\*(Aqs Front\-Cover Text is:
+.PP
+.Vb 1
+\&     A GNU Manual
+.Ve
+.PP
+(b) The FSF\*(Aqs Back\-Cover Text is:
+.PP
+.Vb 3
+\&     You have freedom to copy and modify this GNU Manual, like GNU
+\&     software.  Copies published by the Free Software Foundation raise
+\&     funds for GNU development.
+.Ve
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gprof.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1988\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front\-Cover Texts, and with no
+Back\-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ld.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front\-Cover Texts, and with no
+Back\-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-lto-dump.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 2017\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License" and "Funding
+Free Software", the Front\-Cover texts being (a) (see below), and with
+the Back\-Cover Texts being (b) (see below).  A copy of the license is
+included in the \fBgfdl\fR\|(7) man page.
+.PP
+(a) The FSF\*(Aqs Front\-Cover Text is:
+.PP
+.Vb 1
+\&     A GNU Manual
+.Ve
+.PP
+(b) The FSF\*(Aqs Back\-Cover Text is:
+.PP
+.Vb 3
+\&     You have freedom to copy and modify this GNU Manual, like GNU
+\&     software.  Copies published by the Free Software Foundation raise
+\&     funds for GNU development.
+.Ve
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-nm.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objcopy.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objdump.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ranlib.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-readelf.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-size.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strings.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strip.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windmc.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windres.1
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1991\-2026 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled "GNU Free Documentation License".
+
+
+sdk/toolchain/share/man/man7/fsf-funding.7
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 1994 Free Software Foundation, Inc.
+Verbatim copying and redistribution of this section is permitted
+without royalty; alteration is not permitted.
+
+
+sdk/toolchain/share/man/man7/gfdl.7
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+<\fBhttps://www.fsf.org\fR>
+.PP
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+
+
+sdk/toolchain/share/man/man7/gpl.7
+.SH COPYRIGHT
+.IX Header "COPYRIGHT"
+Copyright (c) 2007 Free Software Foundation, Inc.
+.PP
+Everyone is permitted to copy and distribute verbatim copies of this
+license document, but changing it is not allowed.
+

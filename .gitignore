@@ -2,6 +2,12 @@
 __pycache__/
 *.pyc
 
+# Editor and patch backups: never part of the tree
+*.orig
+*.rej
+*~
+*.swp
+
 # Everything the top-level make writes; "rm -rf out" is the full reset.
 out/
 

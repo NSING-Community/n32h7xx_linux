@@ -1,0 +1,15 @@
+{
+  "component": "gcc",
+  "method": "Released cc1/cc1plus/lto1 hashes match original source-build manifest",
+  "checks": {
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1": "9529c8fe1717d340823cd5b102f44fe4de646abc4b353ba2416643a2e0bbceb5",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1plus": "891fe452d35ae0ea9e013c35bfef076d5078f1da09b0baed9804051f18b7bbb1",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto1": "2e5a37ee792ca948ad3d664fb4e778abe8604b349bbfa394fc3dc8292f4909f7",
+    "licenses/evidence/gcc-link-records.txt": "ee6c2e750ada063089958c735f007c671435646eab4d128c1a251f24d393ff3c"
+  },
+  "details": {
+    "source_version": "16.1.0",
+    "source_location": "sdk-src/sources/gcc",
+    "rebuild_recipe": "sdk-src/scripts/rebuild-toolchain.sh"
+  }
+}

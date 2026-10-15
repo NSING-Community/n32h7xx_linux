@@ -1,0 +1,34 @@
+sdk-src/sources/gcc/isl-0.24/include/isl/ctx.h
+/*
+ * Copyright 2008-2009 Katholieke Universiteit Leuven
+ *
+ * Use of this software is governed by the MIT license
+ *
+ * Written by Sven Verdoolaege, K.U.Leuven, Departement
+ * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
+ */
+
+/* Nearly all isa functions require a struct isl_ctx allocated using
+ * isl_ctx_alloc.  This ctx contains (or will contain) options that
+ * control the behavior of the library and some caches.
+ *
+ * An object allocated within a given ctx should never be used inside
+ * another ctx.  Functions for moving objects from one ctx to another
+ * will be added as the need arises.
+ *
+ * A given context should only be used inside a single thread.
+ * A global context for synchronization between different threads
+ * as well as functions for moving a context to a different thread
+ * will be added as the need arises.
+ *
+ * If anything goes wrong (out of memory, failed assertion), then
+ * the library will currently simply abort.  This will be made
+ * configurable in the future.
+ * Users of the library should expect functions that return
+ * a pointer to a structure, to return NULL, indicating failure.
+ * Any function accepting a pointer to a structure will treat
+ * a NULL argument as a failure, resulting in the function freeing
+ * the remaining structures (if any) and returning NULL itself
+ * (in case of pointer return type).
+ * The only exception is the isl_ctx argument, which should never be NULL.
+ */

@@ -1,0 +1,15 @@
+{
+  "component": "gcc-runtime",
+  "method": "Preserved libgcc and final POSIX libstdc++ source-build outputs match deployed runtime libraries after standard stripping",
+  "checks": {
+    "rootfs/lib/libgcc_s.so.1": "dcd891b5181f14a3176ba4c486856834b1bf205c88e41be7f2cc80fac8dd12be",
+    "rootfs/usr/lib/libstdc++.so.6.0.35": "16a57e547ee3173a2c0a71bc92adf67b2ed310acd4690670bf1931b4d7453158"
+  },
+  "details": {
+    "source_version": "GCC 16.1.0",
+    "recipes": [
+      "sdk-src/scripts/rebuild-toolchain.sh",
+      "sdk-src/scripts/rebuild-libstdcxx.sh"
+    ]
+  }
+}

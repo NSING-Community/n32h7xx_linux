@@ -1,0 +1,15 @@
+{
+  "component": "binutils",
+  "method": "Preserved original source-build ld/as/objdump match released binaries after standard stripping",
+  "checks": {
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ld": "a36d3fcb7da01bf45832cfea907e6101842287f91578945d921b00ed2158c0cd",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-objdump": "c8c11dab9495701afac971c07d5502794a8813ba8223a1f75875cfa8f794f260"
+  },
+  "details": {
+    "source_version": "2.46.0.20260210",
+    "rebuild_recipe": "sdk-src/scripts/rebuild-toolchain.sh",
+    "zlib": "Bundled zlib 1.3.1 linked statically (-L../zlib -lz); original grant retained",
+    "other_components": "bfd/opcodes/libctf/libsframe/libiberty are included in the complete Binutils source snapshot; per-file licenses retained"
+  }
+}

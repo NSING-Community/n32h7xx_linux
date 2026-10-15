@@ -1,0 +1,121 @@
+sdk-src/sources/gcc/libcody/README.md
+# libCODY: COmpiler DYnamism<sup><a href="#1">1</a></sup>
+
+Copyright (C) 2020 Nathan Sidwell, nathan@acm.org
+
+libCODY is an implementation of a communication protocol between
+compilers and build systems.
+
+**WARNING:**  This is preliminary software.
+
+In addition to supporting C++modules, this may also support LTO
+requirements and could also deal with generated #include files
+and feed the compiler with prepruned include paths and whatnot.  (The
+system calls involved in include searches can be quite expensive on
+some build infrastructures.)
+
+* Client and Server objects
+* Direct connection for in-process use
+* Testing with Joust (that means nothing to you, doesn't it!)
+
+
+## Problem Being Solved
+
+The origin is in C++20 modules:
+```
+import foo;
+```
+
+At that import, the compiler needs<sup><a href="#2">2</a></sup> to
+load up the compiled serialization of module `foo`.  Where is that
+file?  Does it even exist?  Unless the build system already knows the
+dependency graph, this might be a completely unknown module.  Now, the
+build system knows how to build things, but it might not have complete
+information about the dependencies.  The ultimate source of
+dependencies is the source code being compiled, and specifying the
+same thing in multiple places is a recipe for build skew.
+
+Hence, a protocol by which a compiler can query a build system.  This
+was originally described in <a
+href="https://wg21.link/p1184r1">p1184r1:A Module Mapper</a>.  Along
+with a proof-of-concept hack in GNUmake, described in <a
+href="https://wg21.link/p1602">p1602:Make Me A Module</a>. The current
+implementation has evolved and an update to p1184 will be forthcoming.
+
+## Packet Encoding
+
+The protocol is turn-based.  The compiler sends a block of one or more
+requests to the builder, then waits for a block of responses to all of
+those requests.  If the builder needs to compile something to satisfy
+a request, there may be some time before the response.  A builder may
+service multiple compilers concurrently, each as a separate connection.
+
+When multiple requests are in a block, the responses are also in a
+block, and in corresponding order.  The responses must not be
+commenced eagerly -- they must wait until the incoming block has ended
+(as mentioned above, it is turn-based).  To do otherwise risks
+deadlock, as there is no requirement for a sending end of the
+communication to listen for incoming responses (or new requests) until
+it has completed sending its current block.
+
+Every request has a response.
+
+Requests and responses are user-readable text.  It is not intended as
+a transmission medium to send large binary objects (such as compiled
+modules).  It is presumed the builder and the compiler share a file
+system, for that kind of thing.<sup><a href="#3">3</a></sup>
+
+Messages characters are encoded in UTF8.
+
+Messages are a sequence of octets ending with a NEWLINE (0xa).  The lines
+consist of a sequence of words, separated by WHITESPACE (0x20 or 0x9).
+Words themselves do not contain WHITESPACE.  Lines consisting solely
+of WHITESPACE (or empty) are ignored.
+
+To encode a block of multiple messages, non-final messages end with a
+single word of SEMICOLON (0x3b), immediately before the NEWLINE.  Thus
+a serial connection can determine whether a block is complete without
+decoding the messages.
+
+Words containing characters in the set [-+_/%.A-Za-z0-9] need not be
+quoted.  Words containing characters outside that set should be
+quoted.  A zero-length word may be achieved with `''`
+
+Quoted words begin and end with APOSTROPHE (x27). Within the quoted
+word, BACKSLASH (x5c) is used as an escape mechanism, with the
+following meanings:
+
+* \\n - NEWLINE (0xa)
+* \\t - TAB (0x9)
+* \\' - APOSTROPHE (')
+* \\\\ - BACKSLASH (\\)
+
+Characters in the range [0x00, 0x20) and 0x7f are encoded with one or
+two lowercase hex characters.  Octets in the range [0x80,0xff) are
+UTF8 encodings of unicode characters outside the traditional ASCII set
+and passed as such.
+
+Decoding should be more relaxed.  Unquoted words containing characters
+in the range [0x20,0xff] other than BACKSLASH or APOSTROPHE should be
+accepted.  In a quoted sequence, `\` followed by one or two lower case
+hex characters decode to that octet.  Further, words can be
+constructed from a mixture of abutted quoted and unquoted sequences.
+For instance `FOO' 'bar` would decode to the word `FOO bar`.
+
+Notice that the block continuation marker of `;` is not a valid
+encoding of the word `;`, which would be `';'`.
+
+It is recommended that words are separated by single SPACE characters.
+
+## Messages
+
+The message descriptions use `$metavariable` examples.
+
+The request messages are specific to a particular action.  The response
+messages are more generic, describing their value types, but not their
+meaning.  Message consumers need to know the response to decode them.
+Notice the `Packet::GetRequest()` method records in response packets
+what the request being responded to was.  Do not confuse this with the
+`Packet::GetCode ()` method.
+
+#

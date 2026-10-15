@@ -1,0 +1,4885 @@
+{
+  "schema_version": 1,
+  "components": [
+    {
+      "id": "project",
+      "name": "Project build tools, scripts and SDK examples",
+      "version": "repository snapshot",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/NSING-Community/n32h7xx_linux",
+      "source_path": "tools",
+      "evidence": [
+        "LICENSE",
+        "licenses/project-MIT.txt"
+      ],
+      "changes": "Top-level BSD applies only to project-owned material; preserve prior MIT grants. Owner confirms sdk/example sources are company-written; local compiled outputs are not distributed.",
+      "source_required": false,
+      "issues": []
+    },
+    {
+      "id": "project-runtime",
+      "name": "Project n32-flash and minimal SFTP server",
+      "version": "Company snapshot; distributed files individually identified by SHA-256",
+      "license": "MIT",
+      "source": "sdk-src/project/src (no immutable public URL confirmed)",
+      "source_path": "sdk-src/project/src",
+      "evidence": [
+        "LICENSE",
+        "licenses/project-MIT.txt"
+      ],
+      "changes": "Source SPDX says MIT; do not relabel BSD.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Company-owned MIT programs: no public-source requirement inferred; original grant retained and available local source included"
+        ]
+      ]
+    },
+    {
+      "id": "linux",
+      "name": "Linux kernel and UAPI headers",
+      "version": "7.3.0-rc6",
+      "license": "GPL-2.0-only",
+      "source": "https://github.com/NSING-Community/linux.git ; branch n32h7xx",
+      "source_path": "kernel",
+      "evidence": [
+        "kernel/COPYING",
+        "kernel/LICENSES/deprecated/0BSD",
+        "kernel/LICENSES/deprecated/CC0-1.0",
+        "kernel/LICENSES/deprecated/GFDL-1.1",
+        "kernel/LICENSES/deprecated/GFDL-1.2",
+        "kernel/LICENSES/deprecated/GPL-1.0",
+        "kernel/LICENSES/deprecated/ISC",
+        "kernel/LICENSES/deprecated/Linux-OpenIB",
+        "kernel/LICENSES/deprecated/X11",
+        "kernel/LICENSES/deprecated/Zlib",
+        "kernel/LICENSES/dual/Apache-2.0",
+        "kernel/LICENSES/dual/CC-BY-4.0",
+        "kernel/LICENSES/dual/CDDL-1.0",
+        "kernel/LICENSES/dual/MPL-1.1",
+        "kernel/LICENSES/dual/copyleft-next-0.3.1",
+        "kernel/LICENSES/exceptions/GCC-exception-2.0",
+        "kernel/LICENSES/exceptions/Linux-syscall-note",
+        "kernel/LICENSES/preferred/BSD-2-Clause",
+        "kernel/LICENSES/preferred/BSD-3-Clause",
+        "kernel/LICENSES/preferred/BSD-3-Clause-Clear",
+        "kernel/LICENSES/preferred/GPL-2.0",
+        "kernel/LICENSES/preferred/LGPL-2.0",
+        "kernel/LICENSES/preferred/LGPL-2.1",
+        "kernel/LICENSES/preferred/MIT",
+        "licenses/evidence/linux.json"
+      ],
+      "changes": "Dirty working tree, including untracked files. UAPI: per-file licenses, including GPL-2.0-only WITH Linux-syscall-note.",
+      "source_required": true,
+      "issues": [
+        [
+          "INFO",
+          "Ignored source-tree build artifacts excluded; dirty tracked and untracked source changes preserved in snapshot"
+        ]
+      ],
+      "revision": "642dfc8ceae0e80cce8d9fcc92fcf8c992da279d",
+      "version_checks": [
+        {
+          "path": "kernel/Makefile",
+          "pattern": "VERSION = 7\\nPATCHLEVEL = 3\\nSUBLEVEL = 0\\nEXTRAVERSION = -rc6"
+        }
+      ],
+      "verification_files": {
+        "out/kernel/zImage": "bcbd2fa1809f6a226c4308c17a90c48b38998413132a2ab1b91f777a9ccb1e17",
+        "out/kernel/n32h787-hmi.dtb": "2a754a08fcb3d727edbc3ab1ed70448ac9b1f5520ef7e4d8d1c0b0786b3c1be8",
+        "out/kernel/build/.config": "b081afc126ab39da72db4c622a7b9a468943324e0996898386bfd4b7d3ba6dfd",
+        "licenses/evidence/linux.json": "0011ce1f3b9ad57ebdd79f46c332270ba9e02c76e7f62320edeccc2e00c90f09"
+      },
+      "source_digest": {
+        "sha256": "71824d957380fcfaff9489659d6c6a1cfefaea5fdd345223d835315b494202af",
+        "files": 96148
+      }
+    },
+    {
+      "id": "busybox",
+      "name": "BusyBox (all applet links)",
+      "version": "1.38.0",
+      "license": "GPL-2.0-only",
+      "source": "https://busybox.net/downloads/ ; busybox-1.38.0.tar.bz2",
+      "source_path": "sdk-src/sources/busybox",
+      "evidence": [
+        "licenses/busybox/LICENSE",
+        "licenses/busybox/AUTHORS",
+        "licenses/evidence/busybox.json"
+      ],
+      "changes": "Five sdk-src/patches/busybox-*.patch plus configs/busybox-runtime.config. Snapshot actual source.",
+      "source_required": true,
+      "issues": [],
+      "version_checks": [
+        {
+          "path": "sdk-src/sources/busybox/Makefile",
+          "pattern": "VERSION = 1\\nPATCHLEVEL = 38\\nSUBLEVEL = 0"
+        }
+      ],
+      "verification_files": {
+        "rootfs/bin/busybox": "bb14f3f5b09751a6655ef491bf3fd4378320ba57dcb097065e43273514f85d9d",
+        "sdk-src/configs/busybox-runtime.config": "b580783c875743a8d05f74ab48eb458d6ac8b025049f76957580b80e1579d921",
+        "sdk-src/patches/busybox-timeout-nommu-reexec.patch": "500d656ddb9287ac95b359cc0b73041126be3abdf33131fa2478c6d38588f164",
+        "sdk-src/patches/busybox-hwclock-uclibc-tm-gmtoff.patch": "25837c3073c2b30091d3800a9c94f1032897b1c185aedd2423e825e5bfa10e59",
+        "sdk-src/patches/busybox-hush-tilde-expansion.patch": "e9a4d68b09ef572075c2dc2c03824de358923610fb93d786fdc7ead7d113f965",
+        "sdk-src/patches/busybox-reboot-reason.patch": "a12c0982f68b67d503fe4c2a960b82f728736e5667b8890de1439a3cd120fae1",
+        "sdk-src/patches/busybox-hush-errexit-loop-cond.patch": "4836d92882aa3b27f5359f1d057cd8042bce4f1626308b0ae26ece0efdc4e04c",
+        "licenses/evidence/busybox.json": "33d4aafc48be2b29e5c1f8de6ec2707628ae9f9d80829915c69abb96583e82c8"
+      },
+      "source_digest": {
+        "sha256": "13a6153872cbee69097cbc5c80d6c10b361a93127807819d54e0dee98d4a1072",
+        "files": 2989
+      }
+    },
+    {
+      "id": "uclibc",
+      "name": "uClibc-ng loader, shared/static libraries and headers",
+      "version": "1.0.59",
+      "license": "LGPL-2.1-or-later",
+      "source": "https://downloads.uclibc-ng.org/releases/1.0.59/uClibc-ng-1.0.59.tar.bz2 plus sdk-src/patches/uclibc-nsing-fdpic.patch; reconstruct with sdk-src/scripts/rebuild-uclibc.sh out/legal-proof/uclibc-1.0.59",
+      "source_path": "out/legal-proof/uclibc-1.0.59/src",
+      "evidence": [
+        "sdk/toolchain/licenses/uClibc/COPYING.LIB",
+        "sdk/toolchain/licenses/uClibc/COPYING.LIB.boilerplate",
+        "licenses/uclibc-file-notices.txt",
+        "licenses/evidence/uclibc.json"
+      ],
+      "changes": "FDPIC/loader/thread patches; capture working source, config and scripts.",
+      "source_required": true,
+      "issues": [
+        [
+          "INFO",
+          "Correct 1.0.59 source reconstructed and binaries reproduced exactly; original LGPL/BSD/public-domain file notices retained"
+        ]
+      ],
+      "version_checks": [
+        {
+          "path": "out/legal-proof/uclibc-1.0.59/src/Rules.mak",
+          "pattern": "SUBLEVEL\\s*:=\\s*59"
+        }
+      ],
+      "verification_files": {
+        "rootfs/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+        "rootfs/lib/ld-uClibc-1.0.59.so": "17a0a9fca030f2ae56616750c4a93d41f9a628c47f7ed4bfddd9e3ec0d6b54bd",
+        "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2": "87a6e4b7f38cd5fb19c573a86fe0ab6424a91ee2f0fa187e25ddfc21d717a3e2",
+        "sdk-src/patches/uclibc-nsing-fdpic.patch": "5fec6d9581f6d2877435b7062282ba56d3c56bf5bb7d32718ffca85671390994",
+        "sdk-src/configs/uclibc.config": "3a43b98e246b5e611f2929df210f2f07188cc78eadbd24f6653edeac63b7d186",
+        "licenses/evidence/uclibc.json": "d9090d0e56eb3edcf6478055b26d5cafdc49f52a5dd4dc93dace33e4d24bac8c"
+      },
+      "source_digest": {
+        "sha256": "1b9c0452ae41b96ba88f33219af784faca9b40bed8d27aa0ffe4ee8a3fa5a93a",
+        "files": 8460
+      }
+    },
+    {
+      "id": "gcc",
+      "name": "GCC compiler, plugins and support",
+      "version": "16.1.0",
+      "license": "GPL-3.0-or-later",
+      "source": "https://gcc.gnu.org/ ; local non-Git source has no confirmed release archive/commit",
+      "source_path": "sdk-src/sources/gcc",
+      "evidence": [
+        "sdk/toolchain/licenses/GCC/COPYING",
+        "sdk/toolchain/licenses/GCC/COPYING3",
+        "sdk/toolchain/licenses/GCC/COPYING.LIB",
+        "sdk/toolchain/licenses/GCC/COPYING3.LIB",
+        "sdk/toolchain/licenses/GCC/COPYING.RUNTIME",
+        "licenses/evidence/gcc.json"
+      ],
+      "changes": "SDK FDPIC/TLS patches and sdk-src/scripts/rebuild-toolchain.sh.",
+      "source_required": true,
+      "issues": [],
+      "version_checks": [
+        {
+          "path": "sdk-src/sources/gcc/gcc/BASE-VER",
+          "pattern": "^16\\.1\\.0"
+        }
+      ],
+      "verification_files": {
+        "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1": "9529c8fe1717d340823cd5b102f44fe4de646abc4b353ba2416643a2e0bbceb5",
+        "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1plus": "891fe452d35ae0ea9e013c35bfef076d5078f1da09b0baed9804051f18b7bbb1",
+        "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto1": "2e5a37ee792ca948ad3d664fb4e778abe8604b349bbfa394fc3dc8292f4909f7",
+        "licenses/evidence/gcc-link-records.txt": "ee6c2e750ada063089958c735f007c671435646eab4d128c1a251f24d393ff3c",
+        "licenses/evidence/gcc.json": "de2db097ea639bead32a45f6b0a2fc40e70c90612946c842830ab15927ee9960"
+      },
+      "source_digest": {
+        "sha256": "26631f20fbfb03c7f5f803b69dcb668616acf3c962264cd19c61775e30c131d8",
+        "files": 167464
+      }
+    },
+    {
+      "id": "gcc-runtime",
+      "name": "GCC libgcc, libstdc++, crt objects and runtime headers",
+      "version": "16.1.0 / libstdc++.so.6.0.35",
+      "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+      "source": "https://gcc.gnu.org/ ; grant verified in libgcc/libgcc2.c and libstdc++-v3/src/c++11/thread.cc",
+      "source_path": "sdk-src/sources/gcc",
+      "evidence": [
+        "sdk/toolchain/licenses/GCC/COPYING",
+        "sdk/toolchain/licenses/GCC/COPYING3",
+        "sdk/toolchain/licenses/GCC/COPYING.LIB",
+        "sdk/toolchain/licenses/GCC/COPYING3.LIB",
+        "sdk/toolchain/licenses/GCC/COPYING.RUNTIME",
+        "licenses/libgcc2.c.notice",
+        "licenses/thread.cc.notice",
+        "licenses/evidence/gcc-runtime.json"
+      ],
+      "changes": "FDPIC/TLS/libstdc++ changes. Runtime exception has eligible compilation conditions; does not waive runtime source distribution.",
+      "source_required": true,
+      "issues": [],
+      "verification_files": {
+        "rootfs/lib/libgcc_s.so.1": "dcd891b5181f14a3176ba4c486856834b1bf205c88e41be7f2cc80fac8dd12be",
+        "rootfs/usr/lib/libstdc++.so.6.0.35": "16a57e547ee3173a2c0a71bc92adf67b2ed310acd4690670bf1931b4d7453158",
+        "licenses/evidence/gcc-runtime.json": "a150a3e0095d3d843df30f0ce08f0c0c53c4f276faa10e14d488282478071794"
+      },
+      "source_digest": {
+        "sha256": "26631f20fbfb03c7f5f803b69dcb668616acf3c962264cd19c61775e30c131d8",
+        "files": 167464
+      }
+    },
+    {
+      "id": "binutils",
+      "name": "GNU Binutils including libdep plugin",
+      "version": "2.46.0.20260210 (host ld --version); source base 2.46.0",
+      "license": "GPL-3.0-or-later",
+      "source": "https://sourceware.org/binutils/ ; exact source archive/commit unconfirmed",
+      "source_path": "sdk-src/sources/binutils",
+      "evidence": [
+        "sdk/toolchain/licenses/binutils/COPYING3",
+        "sdk/toolchain/licenses/GCC/COPYING.LIB",
+        "sdk/toolchain/licenses/GCC/COPYING3.LIB",
+        "licenses/evidence/binutils.json",
+        "licenses/binutils-zlib-notices.txt",
+        "licenses/binutils-libiberty-notices.txt"
+      ],
+      "changes": "SDK thumb-prel31-plt patch; component-specific GPL/LGPL terms retained.",
+      "source_required": true,
+      "issues": [],
+      "version_checks": [
+        {
+          "path": "sdk-src/sources/binutils/bfd/version.m4",
+          "pattern": "2\\.46\\.0"
+        }
+      ],
+      "verification_files": {
+        "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ld": "a36d3fcb7da01bf45832cfea907e6101842287f91578945d921b00ed2158c0cd",
+        "sdk/toolchain/bin/arm-uclinuxfdpiceabi-as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
+        "sdk/toolchain/bin/arm-uclinuxfdpiceabi-objdump": "c8c11dab9495701afac971c07d5502794a8813ba8223a1f75875cfa8f794f260",
+        "licenses/evidence/binutils.json": "09236197b6c87967ec93d9a851382873a513737371ab4c45f259226a57e199d7"
+      },
+      "source_digest": {
+        "sha256": "2916e5b789e4a50870661644f71eaa3e2311ddef5cb4503f915d49e9f5228ba3",
+        "files": 29632
+      }
+    },
+    {
+      "id": "host-dependencies",
+      "name": "GCC bundled support libraries",
+      "version": "GMP 6.3.0; MPFR 4.2.2; MPC 1.3.1; ISL 0.24; GCC 16.1.0 support libraries",
+      "license": "(LGPL-3.0-or-later OR GPL-2.0-or-later) AND LGPL-3.0-or-later AND LGPL-2.0-or-later AND MIT AND Apache-2.0 AND BSD-3-Clause AND GPL-3.0-or-later",
+      "source": "Bundled in sdk-src/sources/gcc",
+      "source_path": "sdk-src/sources/gcc",
+      "evidence": [
+        "sdk/toolchain/licenses/GCC/COPYING3",
+        "sdk/toolchain/licenses/GCC/COPYING3.LIB",
+        "licenses/host-dependencies/gmp-6.3.0/COPYINGv2",
+        "licenses/host-dependencies/gmp-6.3.0/COPYINGv3",
+        "licenses/host-dependencies/mpfr-4.2.2/COPYING",
+        "licenses/host-dependencies/mpfr-4.2.2/COPYING.LESSER",
+        "licenses/host-dependencies/mpc/COPYING.LESSER",
+        "licenses/host-dependencies/isl-0.24/LICENSE",
+        "licenses/host-dependencies/zlib/LICENSE",
+        "licenses/host-dependencies/libcody/LICENSE",
+        "licenses/host-dependencies/libiberty/COPYING.LIB",
+        "licenses/host-dependencies/gmp-6.3.0/README.notice",
+        "licenses/host-dependencies/src/mpfr.h.notice",
+        "licenses/host-dependencies/src/mpc.h.notice",
+        "licenses/host-dependencies/isl/ctx.h.notice",
+        "licenses/host-dependencies/zlib/zlib.h.notice",
+        "licenses/host-dependencies/libcody/README.md.notice",
+        "licenses/host-dependencies/libiberty/README.notice",
+        "licenses/host-dependencies/gmp-6.3.0/file-notices.txt",
+        "licenses/host-dependencies/mpfr-4.2.2/file-notices.txt",
+        "licenses/host-dependencies/mpc-1.3.1/file-notices.txt",
+        "licenses/host-dependencies/isl-0.24/file-notices.txt",
+        "licenses/host-dependencies/libcody/file-notices.txt",
+        "licenses/host-dependencies/libbacktrace/file-notices.txt",
+        "licenses/host-dependencies/libiberty/file-notices.txt",
+        "licenses/host-dependencies/libcpp/file-notices.txt",
+        "licenses/host-dependencies/libdecnumber/file-notices.txt",
+        "licenses/evidence/gcc-link-records.txt",
+        "licenses/evidence/host-dependencies.json"
+      ],
+      "changes": "Static composition established from original compiler link records and matching released compiler hashes. Host compiler: Ubuntu GCC 15.2.0-16ubuntu1; -static-libstdc++/-static-libgcc. System libz/libzstd/libm/libc remain external dynamic host dependencies, not copied into SDK. Per-file copyright and license notices retained.",
+      "source_required": true,
+      "issues": [
+        [
+          "INFO",
+          "Static host support libraries identified from original link records; source snapshots and licenses included"
+        ]
+      ],
+      "subcomponents": [
+        {
+          "name": "GMP",
+          "version": "6.3.0",
+          "license": "LGPL-3.0-or-later OR GPL-2.0-or-later",
+          "source": "GCC 16.1.0 bundled source: gmp-6.3.0",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "MPFR",
+          "version": "4.2.2",
+          "license": "LGPL-3.0-or-later",
+          "source": "GCC 16.1.0 bundled source: mpfr-4.2.2",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "MPC",
+          "version": "1.3.1",
+          "license": "LGPL-3.0-or-later",
+          "source": "GCC 16.1.0 bundled source: mpc-1.3.1",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "ISL",
+          "version": "0.24",
+          "license": "MIT",
+          "source": "GCC 16.1.0 bundled source: isl-0.24",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "libcody",
+          "version": "bundled with GCC 16.1.0",
+          "license": "Apache-2.0",
+          "source": "GCC 16.1.0 bundled source: libcody",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "libbacktrace",
+          "version": "bundled with GCC 16.1.0",
+          "license": "BSD-3-Clause",
+          "source": "GCC 16.1.0 bundled source: libbacktrace",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "libiberty",
+          "version": "bundled with GCC 16.1.0",
+          "license": "LGPL-2.0-or-later; individual permissive files also retained",
+          "source": "GCC 16.1.0 bundled source: libiberty",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "libcpp",
+          "version": "bundled with GCC 16.1.0",
+          "license": "GPL-3.0-or-later",
+          "source": "GCC 16.1.0 bundled source: libcpp",
+          "composition": "Static archive in preserved compiler link records"
+        },
+        {
+          "name": "libdecnumber",
+          "version": "bundled with GCC 16.1.0",
+          "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+          "source": "GCC 16.1.0 bundled source: libdecnumber",
+          "composition": "Static archive in preserved compiler link records"
+        }
+      ],
+      "verification_files": {
+        "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1": "9529c8fe1717d340823cd5b102f44fe4de646abc4b353ba2416643a2e0bbceb5",
+        "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1plus": "891fe452d35ae0ea9e013c35bfef076d5078f1da09b0baed9804051f18b7bbb1",
+        "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto1": "2e5a37ee792ca948ad3d664fb4e778abe8604b349bbfa394fc3dc8292f4909f7",
+        "licenses/evidence/gcc-link-records.txt": "ee6c2e750ada063089958c735f007c671435646eab4d128c1a251f24d393ff3c",
+        "licenses/evidence/host-dependencies.json": "a558a326b213fd253dc9ae3408fb6fb0d9ae21dcbbae3960215cc36939ba3340"
+      },
+      "source_digest": {
+        "sha256": "26631f20fbfb03c7f5f803b69dcb668616acf3c962264cd19c61775e30c131d8",
+        "files": 167464
+      }
+    },
+    {
+      "id": "dropbear",
+      "name": "Dropbear SSH server/client/key/scp with bundled crypto",
+      "version": "2026.94 (source declaration)",
+      "license": "MIT AND BSD-2-Clause AND LicenseRef-Dropbear-Mixed",
+      "source": "https://github.com/mkj/dropbear ; https://matt.ucc.asn.au/dropbear/releases/",
+      "source_path": "sdk-src/sources/dropbear",
+      "evidence": [
+        "licenses/dropbear/LICENSE",
+        "licenses/dropbear/libtomcrypt/LICENSE",
+        "licenses/dropbear/libtommath/LICENSE",
+        "licenses/dropbear-file-notices.txt",
+        "licenses/evidence/dropbear.json"
+      ],
+      "changes": "Localoptions configuration. OpenSSH/PuTTY/LibTomCrypt/LibTomMath/TweetNaCl declarations retained verbatim.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Mixed permissive/public-domain licenses and original attributions retained; binary/source/config correspondence verified"
+        ]
+      ],
+      "version_checks": [
+        {
+          "path": "sdk-src/sources/dropbear/CHANGES",
+          "pattern": "^2026\\.94"
+        }
+      ],
+      "verification_files": {
+        "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
+        "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
+        "rootfs/usr/bin/dbclient": "cf3338d46d44352f38b9ff2a2bafc9fd20958fd06d4e696a5d530bb5bc1081e2",
+        "rootfs/usr/bin/scp": "55d5e90444b08435f22891e5156f50be932ca050787939106cfce58c5720386c",
+        "sdk-src/configs/dropbear-localoptions.h": "7309758e58c2c4f242d1ea8b58d7694ed959b88a9bcbe6659fd1fac93558343c",
+        "licenses/evidence/dropbear.json": "cd669f2fdb8d4f9a0b1843dc966aed069a9d2cb038cad0e65ca26882fe50f635"
+      },
+      "source_digest": {
+        "sha256": "12fb762b4e67124be26c4d5d287efd80a027462dbe76e4c9430e651a74ec46d5",
+        "files": 967
+      }
+    },
+    {
+      "id": "microadb",
+      "name": "microADB with Linux NOMMU HAL",
+      "version": "85cc7a9 + local port",
+      "license": "Apache-2.0",
+      "source": "https://github.com/spiriou/microADB.git",
+      "source_path": "sdk-src/sources/microADB",
+      "evidence": [
+        "rootfs/usr/share/licenses/microadb/LICENSE",
+        "rootfs/usr/share/licenses/microadb/NOTICE",
+        "licenses/evidence/microadb.json"
+      ],
+      "changes": "Copyright (C) 2020 Simon Piriou; NSING NOMMU HAL and sync patch; sdk-src/project/microadb.",
+      "source_required": false,
+      "issues": [],
+      "revision": "85cc7a90101b2ae76ee4112ba285141c8fba5012",
+      "verification_files": {
+        "rootfs/usr/sbin/adbd": "f9339dd605762e1d4f9ad8292a4e8156a906fdfefafe91f3b9865fa9f64ee1f5",
+        "sdk-src/project/microadb/port.c": "dc3af4c05ee8df8237c949e468f1cd887bd36eee127f328fb8222f6cc957b294",
+        "sdk-src/project/microadb/config.h": "6f92e15eb8c82ab092421412884a02989e9287245891bedece94c8c9b966b672",
+        "sdk-src/project/microadb/Makefile": "c4486539ec1e2de1f21d4b00062fde1e10b9281223971d16e30915456ab7e4fd",
+        "licenses/evidence/microadb.json": "c3095f4a871f1766ee88cf07022d67b7b52d3403d09d382bd298e1209a84b2e9"
+      },
+      "source_digest": {
+        "sha256": "9b56ad485f4985fe643b6a72bdd119528133cd7ba0bfaa8a0f83654b4dd2b65a",
+        "files": 25
+      }
+    },
+    {
+      "id": "tinyalsa",
+      "name": "TinyALSA utilities and static library",
+      "version": "2.0.0 build value; pinned commit",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/tinyalsa/tinyalsa.git",
+      "source_path": "sdk-src/sources/tinyalsa",
+      "evidence": [
+        "licenses/tinyalsa/LICENSE",
+        "licenses/evidence/tinyalsa.json"
+      ],
+      "changes": "Copyright 2011 Android Open Source Project; Copyright (c) 2019 Linux Foundation. Actual text has three conditions.",
+      "source_required": false,
+      "issues": [],
+      "revision": "961babfe962e71d952ae734074cc89576b28a9e7",
+      "verification_files": {
+        "rootfs/bin/tinyplay": "956afffb03a3bfd6894519e2fe443972382f7c4b680ed2e89f4fec4fcec01304",
+        "rootfs/bin/tinycap": "be9646a0726ed642fc6fd21291b32d15fd1c4b9b46fa1f002ed9fc5663fe972a",
+        "rootfs/bin/tinymix": "5948ff9c9c92775594581646dcae90b79e7279e25328a7fbc795eb5427fde1ef",
+        "rootfs/bin/tinypcminfo": "4afe2c5185869441e88f4d1da11bb649b656b358dbb0598b6b16f9d20e5a59f0",
+        "licenses/evidence/tinyalsa.json": "783e7c2e8b13d4a24068c58d3a62771fd05752d294a21d4847c2b43ccc4d4899"
+      },
+      "source_digest": {
+        "sha256": "701a40047ae3a2de57232eb4e358d2c5f9d0d074ca9a214f9609f37129cc3c05",
+        "files": 89
+      }
+    },
+    {
+      "id": "cmsis",
+      "name": "Arm CMSIS Core headers",
+      "version": "CMSIS_5 5.6.0 (Core(M) 5.3; individual header versions retained)",
+      "license": "Apache-2.0",
+      "source": "https://github.com/ARM-software/CMSIS_5 ; exact vendor import unconfirmed",
+      "source_path": "bootloader/Driver/CMSIS/core",
+      "evidence": [
+        "licenses/boot-file-notices.txt",
+        "rootfs/usr/share/licenses/microadb/LICENSE",
+        "licenses/evidence/cmsis.json"
+      ],
+      "changes": "All 24 vendor-imported core headers match official CMSIS_5 5.6.0, ignoring CRLF only. Arm original copyrights retained.",
+      "source_required": false,
+      "issues": [],
+      "revision": "b5f0603d6a584d1724d952fd8b0737458b90d62b",
+      "verification_files": {
+        "bootloader/Driver/CMSIS/core/tz_context.h": "7fcc21fc190f6fd970390e9caaa6a86d72fd10f9edf4efab36f12aecf1a8baa0",
+        "bootloader/Driver/CMSIS/core/core_cm35p.h": "32dbde7edb75784b23411639fa8cb8ecd3a3da26f923530b9ae606e010fcae57",
+        "bootloader/Driver/CMSIS/core/cmsis_armclang.h": "99b25ab977f383840994cb456ae3f259a5c9b036cb6a0d8c003b7cbba4f6123a",
+        "bootloader/Driver/CMSIS/core/cmsis_version.h": "dd03af200b23bdd8d091ffa7beb3d1a2c4fc5611557567bd57ec613205f6df1f",
+        "bootloader/Driver/CMSIS/core/core_cm4.h": "cdc0c5ab9ba0f24c065e891d26c3e686ed04106700ce6a572cc7e83e71965b59",
+        "bootloader/Driver/CMSIS/core/core_armv8mbl.h": "319fd8c698098a16f2775fe292b734c91aaeec3feee418e515cc3a1761edec76",
+        "bootloader/Driver/CMSIS/core/core_armv8mml.h": "1778fd691a0768dbee4fbe537b3cc4d03fcfab4ab9f60e31ec52605364f3dd36",
+        "bootloader/Driver/CMSIS/core/core_cm7.h": "ff629c5bf98a8caadf360d0bcc48e1042fefa19995f7b64855d5e81e4c2e81cb",
+        "bootloader/Driver/CMSIS/core/core_cm3.h": "efefef85cd419652f5b7c1074ede2f5c24da943528c5156de8d2a194de1888dc",
+        "bootloader/Driver/CMSIS/core/cmsis_iccarm.h": "a40c60d322903d410fe892c2eccb92d82d8876dce605fbb4cb563d52182aeb16",
+        "bootloader/Driver/CMSIS/core/mpu_armv7.h": "e504a7d47dfdb3d61dfae3cf08d27ba9bc69aa4b2b81ca568efdafd65d6abdcc",
+        "bootloader/Driver/CMSIS/core/cmsis_armclang_ltm.h": "31622280a8296b67bdace0539710a3cfbf828b71f88bd0d5ccc5d7d291ab3a9f",
+        "bootloader/Driver/CMSIS/core/core_sc300.h": "cddd97bb6172b5cdad96a48445124a6d97a449546f5617e48f03847cbc4a09a4",
+        "bootloader/Driver/CMSIS/core/core_cm0.h": "20300b57c02d5b7b34c7b58bf7009e81713a60f44ca2a338f67cb4b473f4f3c4",
+        "bootloader/Driver/CMSIS/core/cmsis_gcc.h": "0837f98e834d6a529854c8c86336e9d99eb8e379bf1deb964858d7863950f862",
+        "bootloader/Driver/CMSIS/core/core_cm0plus.h": "4b79d5bf9f9165ddae727c9f035f82fb0ea85ceee2587b503d5d7bcd172d2df9",
+        "bootloader/Driver/CMSIS/core/core_cm1.h": "c243c4afb291068fe7078d2911b2f0001e78a4d5466c26728611b06147d65c2b",
+        "bootloader/Driver/CMSIS/core/mpu_armv8.h": "95a05e406c38cb770621f07ac066b8c89b90874a50559ec9b10c9587b6049503",
+        "bootloader/Driver/CMSIS/core/cmsis_compiler.h": "869640702d811c4c63abb52206715c891a93fd03be954df5ad40d378355af3d6",
+        "bootloader/Driver/CMSIS/core/core_cm23.h": "009f762a79b693f7f82efc9298a33a14765c06dbd4cb2bf5c9b4ffbb6f7e56ff",
+        "bootloader/Driver/CMSIS/core/core_armv81mml.h": "fb6ff226bc14b8730b3d5c5e49a32514de811b485dc3f0543045ffffd8787f85",
+        "bootloader/Driver/CMSIS/core/core_sc000.h": "e306205844323c8fe4cc3e5433c91ed34d9d5055ed11eceef03401fdfb0c3600",
+        "bootloader/Driver/CMSIS/core/core_cm33.h": "3e50058f0d08b8d8897fec65e636e2f96635d1f8bcef37d2dec289e834539548",
+        "bootloader/Driver/CMSIS/core/cmsis_armcc.h": "e6ba28e21b5a3cd44d4e2d2981e37568f419e5df693c8b58e87674fbdf28deeb",
+        "licenses/evidence/cmsis.json": "40c476d7d89c19a25abc13bc63e4d3be63613dbdfa6800caa5a10e1e535d63e4"
+      },
+      "source_digest": {
+        "sha256": "d986d4d9cea3218bbac7fd37240df6a8cbe3a7b82311e7c571951bac2c13f42c",
+        "files": 24
+      }
+    },
+    {
+      "id": "vendor",
+      "name": "Nations peripheral/USB/device code and templates",
+      "version": "N32H7xx_Library.1.2.0 in representative headers",
+      "license": "LicenseRef-Company-Owned",
+      "source": "Nations / NSING are the same company and this code is company-owned, confirmed by repository owner on 2026-10-15.",
+      "source_path": "bootloader",
+      "evidence": [
+        "licenses/boot-file-notices.txt",
+        "rootfs/usr/share/licenses/microadb/LICENSE"
+      ],
+      "changes": "Original Nations copyright/headers retained. Company-owned scope is not treated as a missing third-party grant.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Nations/NSING ownership confirmed by owner; original headers preserved; top BSD does not replace file-specific terms"
+        ]
+      ]
+    },
+    {
+      "id": "vendor-algorithms",
+      "name": "Nations algorithm archives and flash operation binaries",
+      "version": "Company snapshot identified by per-file SHA-256; individual header versions retained",
+      "license": "LicenseRef-Company-Owned",
+      "source": "Company-owned Nations / NSING code, confirmed by repository owner on 2026-10-15.",
+      "source_path": null,
+      "evidence": [
+        "licenses/boot-file-notices.txt",
+        "rootfs/usr/share/licenses/microadb/LICENSE"
+      ],
+      "changes": "Original headers preserved; no open-source duty inferred solely from precompiled company code.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Company-owned algorithm binaries, not a third-party source-publication gap; immutable binary hashes retained"
+        ]
+      ]
+    },
+    {
+      "id": "espeak",
+      "name": "espeak-ng program and voice data",
+      "version": "1.53.0 / ba90c8e",
+      "license": "GPL-3.0-or-later AND Unicode-DFS-2016 AND LicenseRef-CC-CEDICT-Historical",
+      "source": "https://github.com/espeak-ng/espeak-ng.git",
+      "source_path": "sdk-src/sources/espeak-ng",
+      "evidence": [
+        "sdk/optional/espeak-ng/licenses/COPYING",
+        "sdk/optional/espeak-ng/licenses/COPYING.APACHE",
+        "sdk/optional/espeak-ng/licenses/COPYING.BSD2",
+        "sdk/optional/espeak-ng/licenses/COPYING.PCAUDIOLIB",
+        "sdk/optional/espeak-ng/licenses/COPYING.UCD",
+        "sdk/optional/espeak-ng/licenses/NOTICE",
+        "licenses/espeak-file-notices.txt",
+        "sdk/optional/espeak-ng/licenses/TinyALSA-LICENSE",
+        "sdk/optional/espeak-ng/licenses/Mandarin-NOTICE.txt",
+        "licenses/CC-BY-SA-4.0.txt",
+        "licenses/evidence/espeak.json"
+      ],
+      "changes": "Target port glue and TinyALSA backend preserved; pinned upstream source and generated-data build preserved. Restored editable Mandarin subset reproduces the published dictionary exactly; historical CC-CEDICT extraction/version remains a documented warning. See licenses/evidence/espeak.json.",
+      "source_required": true,
+      "issues": [
+        [
+          "INFO",
+          "Bundled Unicode permission/disclaimer text matched Unicode-DFS-2016 using SPDX matching rules; original 1991-2018 copyright retained"
+        ],
+        [
+          "WARNING",
+          "Mandarin cmn_listx credits CC-CEDICT, but the historical extraction revision/date and original import license version were not retained; current publisher CC-BY-SA-4.0 text and attribution preserved without asserting historical version"
+        ]
+      ],
+      "revision": "ba90c8e9f440ad544f674a790bb5f53878b6ffc5",
+      "bundled_unicode_license": "Unicode-DFS-2016",
+      "verification_files": {
+        "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
+        "sdk/optional/espeak-ng/licenses/COPYING.UCD": "be029c50df83105a810e391778b6edcb522d6cb4b4e142332aca54437a499bf7",
+        "sdk/optional/espeak-ng/espeak-ng-data/phontab": "7462b1d693c4f46b394308052a3ab9f824ff03e1a6ab2ca434fdde0283f4b444",
+        "sdk/optional/espeak-ng/espeak-ng-data/phonindex": "178d6c50c3d9e62303dcc3090348629b50a648ed12f8a831b444a558d112d783",
+        "sdk/optional/espeak-ng/espeak-ng-data/cmn_dict": "4a1157dc2ce761ed8ea7c0862aa2728543561ac20b0c653b3b4dc123e085f027",
+        "sdk/optional/espeak-ng/espeak-ng-data/en_dict": "621c5825c37cff4510ab4e9a724314587995c78bcb86675d21964fe896ad2d4c",
+        "sdk/optional/espeak-ng/espeak-ng-data/intonations": "c4ff28c76c30cf7d9f07643e08ec39e68769ef648098269b5c0ab7731218e219",
+        "sdk/optional/espeak-ng/espeak-ng-data/phondata-manifest": "e9dd3bee1b8453a45d2fa08684f850bc156f2021b45e4cc5d1919409cb1e0647",
+        "sdk/optional/espeak-ng/espeak-ng-data/phondata": "fbf85d4b2d5ed7f0da20e22a3063cfb2ad0bb36cfb322d5e21a2e9710ad509b7",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ko": "c2dfbf88d9aa2ac9bf2f30e92e260120e4f2c21123a02265014ae98d59d5774e",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/qu": "3069e443ecf3421bcb3b35b864e1a89fa9465af072f86eedd46a415990aba6e6",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/eu": "a16e4e4d9b910a6e25a2a55913c812badc4fc3cbece0b8d49a64af112782d5a5",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/aav/vi": "3199c980f9e23a88a2aa693cd631bf4fcb0f3408c4272bc01b7ac0ff8e79d778",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/aav/vi-VN-x-south": "c0a0a2c894cd57b0bbacf9ef4efb8d89bfaf9feb164830e1539f599e7cc4e021",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/aav/vi-VN-x-central": "b351f13c6ed0da37561df25f45579872ff9863920ad66b94e27327a2c611755b",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/cau/ab": "8e012f478d1bf8cb1beff12138ab18aa43071985dc01955c639a6c07dc4392a8",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/poz/mi": "2146cf3868c79b853bb5e41ddbf611d51b4b0a14087199f16194313562b98987",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/poz/id": "ce1fcddab3e756a7cdba3dd009ad24cd57e1fde29ce395698355da24e32a6075",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/poz/ms": "8a965182ee0c5a41357197c05cf047d21b96744775a57a344d831a961e30351b",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/ca-nw": "677d4cb303fd2a41c822ee20581e3641e14ff7192f6a777dce30072467a10b3e",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/ca-ba": "a5e7a617cfe52962dda1ecad9488453b7af1da53ce1e191a4114b1957d2cf9b6",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/es-419": "ff0f84457ac40e3bcf61d6de58028312be74e0e6cbc3b742f31b3ce729c2aa0c",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/pap": "41a5b5e91482a5498a66711c05873a634bbd418786b0ba037032df846344cfc1",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/fr-CH": "b449b0fd99d9cd93261fe1c6b816448b99b4a10420bee3f301e669568ad0de55",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/ro": "b12af10ffc3f89cb87767ca701c6fea0def8a712de63426a9c3d0bf2432467f8",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/ht": "389bdf3e984a2f93b7060baad82452dac65b83bf4482d3884525a176ae0e0524",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/ca": "08d8701b32a82018351c3494d6360d154ef64a4622e64c8a60a2e615a9164dde",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/rup": "7f31b1d3cf6d84f9f698adef793f2578a5ae6cd693b824bad3ffd8a4da5f8fee",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/es": "966aa015ea5646d79f0ca4807cf5da7339aabd3782b55cfa5eb0d8c3fc8fc588",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/pt": "a44060072f790e41912c57b7d52f7b6438c4383e0dabdb052f6fdb7aacc23493",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/lij": "7749ae7bcae295f4d51d5e6e3e1e0c516b4cb8326aea7712de9d07c48031f4f0",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/an": "ff8aa97c55286cc90531cad5df3cd36165abba11502a84d53b0fcd923f965f23",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/fr": "95f44834b48c075dad13eace54d2c98ff79b81aa0074dd67eebaf66c2909eef8",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/fr-BE": "72496a316e47b997f893500b8953dc01a10b86a2d4238e13c1260f50b47d792a",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/ca-va": "279205be934479cb414a25462bafff933c3c27f57cd8e3b6605d47daa86728a9",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/pt-BR": "66f6b3c65bcd8cc9d1f90d0862e60fe9da8cab8fc49af1b1680a2e6f2b2ef8cc",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/roa/it": "0d9069eb9a96db1c55c131b2bb7d1f5255c68fbddc2199ffd3295b52519a3256",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sem/mt": "d23f38fae3253b6fb42e3336760ab482e676893692455465448bc9fbc0ac3e83",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sem/ti": "2845b88da828af75288284359a90e1b0626d3f78a547e71abfc69d986d00864a",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sem/he": "de9195e743b91fb7fbef7493bd5ddccad14c380a58d5aeb7c1d11d3419ef3b86",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sem/am": "5970b16bf865528ee96a78c08498244bc8f54218fc2add499716b0e0c09969fb",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sem/ar": "43f418f8140e5a7bd7096963da20ccba9247f6be1fcdb08cb53dd7967dd72eee",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-US": "41534c2a22df5dd4f1052ff9e1a33a3ea7bff5a26b5c02bdad5ba8ddb7524704",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/nl": "56ae04fae28ae9371ed6db28193189e4ee962ba8236f0bcdeef6a06ea4dee374",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-GB-x-gbcwmd": "927a5ab891c65b30b4426b151d1623a01024f6b773a38497ba1c90cd77a95747",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-GB-x-gbclan": "2040e176f1f7f27bdce81c32d7e2b1662449d54d264afd3c0ed871b8e42b6e46",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-US-nyc": "e8ee9168376d1f7d9e7dcda7c4644c36c529a8bea816e6380895364db46ea2e3",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-GB-scotland": "1ce4282c1f4385dbaf0035e799b2ab1ee9e9a3ab4829100594a3047727b52353",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/af": "fb8ccc05f5eae1754b5aa7e92cb919defdd0810b70eec19f7c77cf836e51db09",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-GB-x-rp": "d0625af7f58561b1b8cf96fd7f93eee6553bcb3eadb9020ae0757bf96e5115e5",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-Shaw": "3eb1fa02a32633cc8fc66823b8bc9235a9f10dff71d7d78f380f15fc0f0e7df5",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en-029": "faeb8cb201056775f733acbd908c66555fe57bf01cb063920f178f389cbf85d3",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/lb": "071beb0e769afeba32177796fc0f1386bdc89a3234bed2bf720e76cbf73f5b99",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/en": "4605d5330801de3641c6e366d15f129ea1f5ffbce8722642aba01ace07ab9c83",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmw/de": "f3cca92f94b70f8c25a29ee0a4c9ce4c7f1022241532e0647fa2b7f698bf104e",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ine/hyw": "26f8a863c74b3d19c9c42fcf16ae5151c12ac52ef8fab36cae1e5f0d4ad30e6a",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ine/hy": "b6ad6129079c49ca915c3005ecb74a02bf5d69cbbc8ec3f8e0f6b949cb3a768f",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ine/sq": "865fde9017b5af82acb844e5f9793998fed422a208ad8aaf9dedacad3bf27af1",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/iro/chr": "f0e2fb8549306c07f571d3e77c89b1d3e9022d448d58e5d424441e01ccce88be",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sai/gn": "ff82d2d163d3e06adb580254d89012e689b2615c46579883562838ab401fb5d5",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zls/sr": "0e076528d3566f6e59b807e16e274dee505e88a6d477da188ab8ec442eae44f4",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zls/hr": "cef3ef0411c66f154e6c82f7decd95beffa8cbfbe953335658df9f125bdd6096",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zls/sl": "e1c2bd1f75c0eeb86f64182472d5f597ce23e64ad7478c248c2f75b694655942",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zls/bs": "0820e7c78b68fbdaf86d83c782cdde1901b642d1cdbeae4181c6f5f5e21e5e89",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zls/bg": "9b91accccb0d53bb2a7bf21922846ba58c74bc082ba71ae32bf12cb0d092f853",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zls/mk": "6dbc2cfb8999141bd0782cd463d4880468161088190c6b4c9412f43552dc39e2",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/esx/kl": "d08cf6ff60b99e6c2ceda549bcbb1a57580915d6a4d50c7f0f5d75289d9fb45a",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/bnt/tn": "2243a1fc208dfdc37e154e837c0e782afc325d4acfbacc22718b7f05583ace92",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/bnt/sw": "271dd28b3ec41adeea53f1146249ba6cab61572963ab2743041114d95784e368",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/cel/gd": "7da0ba464579c367089109826ec15c2584a17417cca4a2c66dae0318d33e3128",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/cel/ga": "29c2cc5736ceb2bd9ef745694d4abf7ed363a33569dfbe745811d4703b7b6cce",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/cel/cy": "67bc33b4a66041e6343dfb98e1950d1089eecb68731f346fcc4f47cd07e79970",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ira/ku": "57db3a210d73412a49e961dbed9b27077f5c7b967a19a0eb9f9363ea4b16cea5",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ira/ps": "d74ad538be8006b81209de3d330e22581cf4308f0f5d72ee1b357fdbd34b82c1",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ira/ps-x-northwest": "28edbb63b2c434d341d3c873c57f3a1f73a28b117c1f5ecaa6a2fb70eb31a794",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ira/fa": "0dc7e93be4d1fbdf7ff52de2fe8bcdc23304e6d86e012b4ab8276d626b5d980c",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ira/ps-x-southeast": "0975911cb3a179e8d444516caa2349c8cf59f3840e5f37608f373679740a6943",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ira/ps-x-yusufzai": "fd56e9d3e1ab35c33eeb31021503d26bf244ba9f4f222d7a3b673bd7cd645538",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ira/fa-Latn": "a04cf8efed8db1ac33b306f1f8c6f42733dace87c9fc9f34a2d227b3bb291e28",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/as": "3f58f5628f792b00a5ae6e8fe3bf8696f64af2838e5723799ddbab6027a0b378",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/bpy": "e528d1189b995b94966cef4cc182469cc54f7da8efc5860375c4ecf186ce6146",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/kok": "810ee23fbbe9c186a036bc12f4e5c0de674a132e2e099c9b3dece2a1c9cdb28a",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/mr": "29063ff3a5257d0d3d7c215dfd4c14deed39e1d48f15894202e6712459720efd",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/gu": "f938a755d270745188c2cf2aacba06642a96bb73ba2a0325384121b9d5ec5407",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/or": "9b52ede7d19659f884854de3dff12597a96f4d6ec7cb4146d2f8dad1453c742f",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/hi": "3c1c3f916f57f2d6d6cbf7923c0f39a36ac2140e2a69ddffce917d7b8bf3ccab",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/ur": "5b7af7474fac265c7bd7d269111994a09610f954690698f55a8613f3fa973318",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/si": "8f0993b35ba5b075c38ae76640971256e560abfbd721b608d16a48588932596d",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/pa": "eed3cf477f81d13559dbb367256f9532b20dad1432c15b206c777217b8f570ca",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/bn": "bc3ce23384b9d0bb3bac06a09d90f690fae32a492dcbb030f0e56ba67b5d656c",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/ne": "d53fda082ec174ef33ed3c3468fc973c43b4ef71aca8c1a28cb344668f4838dc",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/inc/sd": "65bfe0e37799029d42a370eb627cca5aa4108b967fba6c8141878d693c903619",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zlw/cs": "1477cdba5ba3bce85db559accbbd8a24b86b3f6d9d9988bc587e89357c1c4431",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zlw/sk": "f46ff673c7d58c1646096c174d58da34047d893d0d2993dbca260ce54abe77ef",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zlw/pl": "83c586a2b724b24b9f98d21ade5022112c465ac446ca09930286980ceae1c781",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/tai/shn": "f16bf2de219d3ae9a6aec263ce9c684d9cd3e61258d04c7948db0757c67e2c96",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/tai/th": "6c8ac809868de659e06673f1fc2b56dbf4637ff9980da7a4726b846478b4cfe6",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/dra/ta": "5bc213eb163bbf069cbfe4f2e9f7e7db71a719d8c0a96e95401d94c992960ed7",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/dra/ml": "aa7e1f1f239ba55a8a79ed1f3544e9a51b94efe53925de60d4ff737273660b5c",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/dra/kn": "c988a5226fa27ee6768b45566ce999ced9a4b68f8e79232b323d5903f4bb2258",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/dra/te": "176ca4a81feb2181393edff3e2d5c0253cb52239392c4b809c61501d60c69811",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/miz/mto": "e33aba5e8159730f62004b22518d627c796f7d039431e5d9217b498f10341976",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/grk/grc": "319f950b1ad7b1f37efaa390540bf957bddac16d0557a6c3adaff27e0c64e12e",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/grk/el": "0b529c998af07c72bf516b5750709464f6258c56c6916b8b8f0c843be9836fca",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/bat/ltg": "be716cbbdcb5fe319eed88abd4a44c3329a06e1dc468c8363d3f43cca2683a11",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/bat/lv": "f08a801dacccace62f5b90166428e90e088818d92dd5f9333ebbe834b0f21c16",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/bat/lt": "7691c7ca1e79fc9728c70a0d22830eb113a0124bf96807e2a1ace3c6bf0c2f89",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/qya": "78ae3f4d70208a9f69e2c26a6a3b5db28d7e6a58740fae937f51dd7fc9faeb1b",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/piqd": "d1a559b714cd8dd0ea9e46c4574e06c4f451957fb17bf39b945a89b9586f8b97",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/lfn": "394874fd9022e37cdc307c3386e81f1c0c133a8e9c5fdff74888b519f2c6d648",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/eo": "0254b93c8af79d9666a7667ca8b33b21a5453012da4ea0acd79660a9695f89d4",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/xex": "9943000e43eeceaa26259b23253755753bc3c266f60ef0f22c9d0834c318a6a0",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/sjn": "61d85974b6841dfbfcc8cb92ad0742696cb87a6a85d5a28fe99895e46ef9de6f",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/io": "8e8391c7f40b7f9d2307faff8018a40dd2b448df4bd581a2950ee8393a00cebf",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/py": "59e54b95e8571417f43db37a7fd7e351af4e22a8c250cfb66af394f8ed6c4e9c",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/ia": "8fb11718030f8b29146f773ca462b838a6c660f166933eb6f1498c361f2e958b",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/qdb": "52b83fc4f294580ebabd71df641ab5beec6b308758a3458b497124737589a7d8",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/art/jbo": "d9529de82dccbd95f83c1de401f4ea661609bde644546e9ef421241b7043c00e",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/jpx/ja": "6fd980445bc52e0f593062929f5b62831448abaae2a92739beba49df27a79743",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/itc/la": "b70d13a264352eba2d22a5d0ef21730849509d18f7277320b008a56decc6efc2",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/cus/om": "b7c563f1effd83c08f3d229fb5a13d074513b85165ce4359a674ef30ca71786b",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/urj/fi": "61f58ec3bba5b55a392aff7ecf8a84d024200aeaa404b5553fcfb47770936928",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/urj/et": "59c77747c4774e54a63ab74d2c6a95bc3c5b5b0a50d3781f187bd1fc3a613de5",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/urj/smj": "3d709dec77bb633af0d57b89668dbaaa72d9be8688118d6909f7d457bec12a50",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/urj/hu": "c575421d2ae397065d35af0eb4f79dff4e85f3435ccf45da874f46b3fee1338b",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/azc/nci": "7bf70cb18e969398f74428b91c694a4483eaebd6733ecc437eb8714bbf7fff76",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/xgn/mn": "62a0dd61c571525ccc03bc006c898d8330f5ef9ff82b997d1417fa78771450f2",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/xgn/mn-f": "c345e69fc188770d648217db3d5c95fb0a0d8bc3c9f75dcca28a25403ef3fcde",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmq/sv": "00693d7fbe71c18c6cfe5d1e50fe921a3b0dc962522cf8b1ffb73b79e5a86853",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmq/nb": "d47966621312fb95570539f446982f6deb98fd46d9b71fec4a0005a6bace8f46",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmq/da": "e8dd5e0d30ff0694a7ee839faa8ed35c015eb927a737aba1f120c00005692eaf",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmq/is": "16c077e6222acfc7702046fa3579bb5d6b57ece98646229e13be2233f9fdcbd7",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/gmq/fo": "c4e9fafcba0074e54ce5da1a93797076a3811e4dd506c7512a7063c3a5934434",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/myn/quc": "76a75b77c672c432b56b84d517310d6aa75c4b3f9de580e290199804366174ea",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/crh": "2ffb540cf4160d6b68c0865a6b193dbd3a56f16e51fe80427cb75ee716480bb7",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/ky": "8239dfe8bdc6d4725880f5192b4eaf645f839e40cadfd145a4409c8387ac2d59",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/az": "52b424332de4c443f3e9c5ce4de5aed6fbfd421269fc825756dfc6bcbd7e1ad8",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/uz": "04fd711dfda1e00d17dc8b1b250c24d70cc3c498b27e35d31065ac47441a6759",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/cv": "94baf6bacf581cc20337471c599f85ecbbe211f0b8476351ff19450c6541ea92",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/tt": "8b9617a9b6c56f4a2fe2f59d9ce55426837196567962716f9330f70948f8f9b0",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/kk": "2219f4d6de0fbb1dc9982157c6f3cc5f4c8abe5fcb605908a9d1054b9880cd51",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/ba": "a0cc3a06293962093c66533f9c1cffbccf083a2eb666751f2778a02a5316d98c",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/ug": "65d0cdbc96efab4d9e3cd0095440752a31dc7f425edd3ba0a53c4dd33eac5d63",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/tk": "d78263398c135119909ad63a3ecb6ffe3aff08383212934dd03695222a9786d0",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/tr": "490eb5a2f777a2f3396f3a824ed8021bd77a94be801214411461bde6689738c9",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/nog": "e0e27fe61d406b6f4a4879fb8f81a14bc65997106666933991b818c7d79fabc1",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/trk/kaa": "210fb9fba669c9ce8dcf28b98027c50774473e3906e7e7b79eb96faaffec0311",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zle/ru-cl": "0b2201190e6fa6183938564d3ea1cf5c323e981197c3c3cb63239a7db482c24d",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zle/ru": "9f52d00a279aaeaa45a786b4fd3a98b34e95fedbf823f8cdb9fecc1339751d3a",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zle/be": "5beb002d15a36bf3d0d764ed0d483c75a1df6909eaa3b10fe5f6546700c9bfec",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zle/ru-LV": "980e379667ccb94abe33b9c9c660c08800e3f31e36fe4a939551398ab98457ae",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/zle/uk": "df3d1a9f77bac0531e72f87be398d9eb1e903bd6f839d4f04ffec5abb4e34634",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/ccs/ka": "68788b99dba7b82cdf8fc9dd05134bd72cf21f0b4c07b13b67b6f036e6294cba",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/map/haw": "b19f22efb6714354d8d1360f449e05f0f84d50d6fa3c98fcfd619ea1b4ba8996",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sit/yue": "83f3dac92af5b4aaecc119515698a6979524be236b28ea8f1024ec707d99ea5b",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sit/cmn": "a130a38e3b622735c2401cb37f6719f46995e84a133729185cef9a543ec0b072",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sit/cmn-Latn-pinyin": "14c2fc097db280416b688c2bf97de2e5da532c279754020fde7bf6cd624cdd10",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sit/my": "4b5ae2566cbf30aa59207020469e09832e66a7883818788f253996c534303dca",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sit/hak": "c03c30b43e0b0abdfa689445baf9f442664a0373154a5d0ca75a33d30f46aeed",
+        "sdk/optional/espeak-ng/espeak-ng-data/lang/sit/yue-Latn-jyutping": "c56d45bb9a9cd97efb38edabe31c7dd3feb0518cc900aac6a891dcb6bd8eb428",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/grandma": "e033d57ba9b098971fdb995c13830f9c709206add081c586daaec323ff69a392",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/john": "bfbcc1cec33ef0581fdeb4955fbcd0d824a5d4be5493d731e4a2ef7f8f3ba670",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m7": "bdfc54a3558ca98f9ca082479c5211034a824d8721db91804f9d77867db6fab3",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/whisperf": "7fea42b10114f1bfd2004181e6b0eb626997cca987893e23d24b5c616aac89d7",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/zac": "edaf508b2cfbfd6088a163dcc78d5f6a26850a7d39a5a0e5128b09526f56b6db",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/grandpa": "f25627887b95e8bccac5e6ce99cb97c6e34290ff0bf919febe64a9987138796d",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/caleb": "bcde145ec713eae6d3451a6f25dbbdc0b6756fd44e9e092b7aef89f2cff25be8",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Andrea": "6ca52734ec2cf7c419d2d3ad7c3449cd1a1776342c4d152ea12c5b1e72801e89",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/iven3": "27ccf2d2f7bb8f1ff28c705c39cf6ff575eb2458c39a518ed33741ad9c1af252",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/pablo": "053a85c8a6d7e7a0f6432a3158fe73fa9accf06202e5d69c273d4e5bae8bafc8",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Alicia": "6d3f60ec866706e9d4ab7da2a79eedb8c11b50f63620f87e58317f316ea3d58e",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/adam": "b21efbf56fd7d58470e7ce4759c6ef9f23949706b269f2d777832204658ee0dd",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Jacky": "41884ed9b66160aeb5a0dc418370a59fe39ead0013d93e023e6d607ef01c1a6e",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Marco": "04025677360c0270f094bbb6716b83c8284902f6da9b496bedbbf590963835fb",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/shelby": "5e96565045bcdd5b42e7ad0eab2bbd670c67cf5c9e3f2ac6b50b30580fb92be4",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft2": "249a44f4069b323640e6b532ff6a9bc30dca35f5f9a5f666b647937cbc58c685",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/RicishayMax3": "36d20550b68a8c229d34d956657b7d642929962f7e5d4fddd6396af9e5378b56",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m6": "fc0e01af458a96d43f55878010d3abcbbda85e846922b25361a78d27c3a9ca00",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Demonic": "241b0e78362bd3208bb586b65bdf52330e1e8322f8f226c4790c4abeb47cfb09",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/ian": "c0722c7954d3e6582e3f5b3f584140675ab060ac3c6cac5dd11a74592db5550a",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/iven4": "11b3d46c01d4307eedcb60bd8dbcc73a40f3eb86c289176d6fd5bb418223b92f",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/benjamin": "3fa10b0d865fc751fd9c8ed1dabac4bb9b011ea2b95064d4d25a8c719f7785d8",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/klatt2": "afab662a55953532ff8d6f9c615b824ecec87f7aef6790a58c4ccbc4505a742a",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Andy": "0e13ba1a940cd9df7e65358c36445c9740f3d75f1360c7f7c71ab9f74b45edca",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Nguyen": "4f3d557d9c045080f56022a96e5b3659c4d1caa5fa1d702e12d3ef6bec2e3a45",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robert": "72604f85afe5bb52a5ce7e3427b196e1e3e426a14a64e2d93b6617e248a46417",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/miguel": "9c8c2bbe9fba6d1f06eb63ee67d98d7ebb8846b2bf13847a9b359c90ba9fa8fe",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Annie": "40f0f829c5c6e7abf4a02a21f128a572756d6f6693014c26d09a5c29ede5ec33",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/f1": "7cdef453c6b0391d50a02b8f35392e6f41249cea65df1021affd68a64917b85f",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/edward2": "59d166f7adfee4515a492993405e95432889050aaa47b6cd7eaeeb457fbca227",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft8": "389230461647836c1b66c51939c0a493e3fbc81e2b7afc01c6f88b8f9da21e2b",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/sandro": "1b8c36a3ce35a27cbbabf4679df0264cd37f4c79b66aa1f4c310eb31b9c80490",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/aunty": "0aede4d1ca614f32c348f3d728eab58322ccd016e8531234fdc3dfcf00e32bf1",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Hugo": "906acbef890dc4da67cb54b5b0ddc2cab7ee308a95d350c899f0b0cb6a83dd5f",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Reed": "727dbc3f6bff0be4dd7d0438f66d3bb82cff68ed148cf52cb58e73314aaec1e4",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Gene": "06258dae680cde2122a4939dbd4f23ed4ea145b7475068bf7dd4d466090afd2a",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m2": "6eb925eb6691621a6de66c87596c6ed879c80a04215a9a8437dffc28fcfa14dd",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Michael": "4409be23ef5fedf4c8bffbfaa8a802a342824d7e97f1d92938336a25f92f0ebe",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/UniRobot": "23dba52c2d1cb332db6225304818d85488f110a668ddcdbfd7f0438afe37794b",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/whisper": "1e3534c843768898cea47a3f83b2fd91720c0775b438ea5c0134676940a66e96",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/boris": "f23d0a6ee2eeb7e3340506d61d422b691fb04f4e98977ea15c1e0ee5715846d5",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Tweaky": "c34d1c1d8b7922ceb886b95ad6ab534ca048f9c47e19698ec2aae5cf0c32cdbc",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/quincy": "e9945bee7b4f3240221866f497bf2511a886ed7702d8389688a03c2ea120caf0",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/f2": "62b17f6c8f94add0310db032f5e463c13510c5ff83ef1f21e8894ccbf00b00e3",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/steph3": "a7d796211b6969ba92213f89de54b053890306af774424ee38fb02ace45e852d",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/marcelo": "3238a933a17c40c61cdd385c0e742bf54c42c008f4110d4b0353a6ae72a5d1a0",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Storm": "e817c7d1ce10de527ebc19c0835f580cb584c3ae7d36d30a4f414482602e7b89",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/croak": "2906a2c6f7b7687db2f1c862164a9b80435d5afc3ba16d74619728bf8c3a8ca7",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft": "ce2820edd349f3fbc734bfe94095518f10ecbefdb304560109f37106f9f4d2fa",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/ed": "12ddb6355b40a2e39a3b6cef66a2bf4db15a25045769b330a9a3b344a608026d",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/f5": "6c76406d94540d59dee16de11520c37124a1f6dfc236981e483877075f0271b3",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m8": "060130540e2fae5f8acfb19bcd4ef3dc5dc8f8d2134c502bb57af277fd4cc491",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/kaukovalta": "b9f6016145835c3999bcd5872b8a53442729bd903591781ea3340746b3b4956b",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/announcer": "4af6a6748c720cbbaac1e3dcac17bb3bc7a4c553499ec7ee69e054db51a50de3",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/victor": "a880a8083ac5eaadf94f71c63b51f34c1426d4bfe0a26f6761ddec5c6e9a5c76",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/paul": "75fb8098bea28859513de6ce033092307382d6f20455e71b051193dfc0793d5e",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Alex": "1cf9874567f4fa8109329f084e9ad9ed788fb2362298921d0a04a57b24f1141f",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/klatt3": "f1c0cd147bd656f6c4830b3341c9694483438c43aea15c982dcc1945dbb334b9",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/fast": "fa2f9c2918f351499037f6bffb25294d9b781b2785d9772a8ae3293c0c0037fe",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/RicishayMax": "7ddc7a57711ccd7a736540f14271adadf1e2e0422941ecaa7cc43ab87f8e2017",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Mr serious": "794abd78deb07ce9b03419d20f7744df4c0151d5abff7981217e9d0926a2f240",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/david": "50b5cb5f61a50f5ff5299dd22e5d645446746dbc36909595f6ae47bac0bda9c3",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/anikaRobot": "3ba724be6aab2fc1a084b25cdb16f469250eb9de4c6c0924a18788d0246fc32f",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m3": "7a4ac872387439814ddd65f5e1ff73017122975911df6b5dc62c5709e6fdb611",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/belinda": "9bd791b7115820e25ada82b4911134d5116e8238b4fd4d214dfccf162576141c",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft4": "d5f728e0d0a9d27f604f34e835e059590fd01411fd467c91328b573c7597bb2d",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Henrique": "5c6bf1cf5b6bc7c7d48f2a8368ae348c6ff64232c047f40f9d9a6e6824b4ce6a",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/rob": "fbfffcdb0afb2e3b70f886c02282feae22509d77fe6e7103daf907f7a356595d",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/steph2": "ca88414b48553fed1fd409389548a94ea90cf282d6340e3cb968c8538a2ac2ec",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/pedro": "7429792ba833fa2446bec6db790068f5862b9ed099392002cd0e724ec6ab2a66",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/f3": "d0342ee8ceebe3047831774634d234e90281ec73ce2aed8dd0bdd915ccf500fc",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/edward": "b7a12bcb2af280c40e4be4280b675001024619ed529262dbf3e819db53b5b310",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/klatt4": "3459c15aa8fa7d7218ac34388dfc0833c850ffc923013949308c2f643f3daad2",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m1": "7f2de023bdfe18651d2d0453d2e7ff5e8ade9f094912a79247336ddc90fd7783",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/michel": "c0068ad9cb792dfb78aedbdff9c3cec68e5083736bae0c33bf19088186101087",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Mike": "8999b264606c0af23d346a877e10ca05aa757f7ea433e6cfcb3bef50a56ba2cf",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/klatt": "9abb6d05d0ca354831c570e14323dd4e821459b53166d96395875a48bacdbde2",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m4": "6bef82cea3538da1246b7a2c203206e90155cbb4af86faa8ef03366c3119ceee",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft7": "e19c1045259d9cfb078c229d5d1372f7c5af971d0e2536a41b89c40ca3e23ede",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/travis": "7d5a34be05778ee850d97b0491a62db7683c058d660ff2afc71c08c87360f30d",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/norbert": "35b9923e15caf36280542270282bd2392c6d86ef5db9a8be7be92ce2241a46cb",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/steph": "78186aeddce4c449348f368046b2665375b1a492e948d739249b0c964f082861",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/antonio": "c90477080cd9aa9c384770c0ec18901d01e9851f1bc7d15526a2565a3b0c4da5",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/iven2": "f94830e5abe118dc4c0909630d66637ba2a7c94957279c31fd78e313374054cd",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/klatt6": "7d3930cd97ef7a0732f2e19f53f84e480f2d441d263390647b92bb0b4c645d05",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/AnxiousAndy": "7dfe126f517b76cc78269618dbee2c30d324bea9460b400938756ec93995eaf8",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/iven": "10ab9de8365ff7bf5a20621d08f1a2019d4bf5521f3c6f65447c9256057406c8",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft5": "39da0efe1768e14eefe05a7019fab416795bbffb222fce23ad7f963991447f7b",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Denis": "a09fe9f7a4e478d2ba1e139c2995633e2b99de9abdaaa82307954599b0e3d6fd",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/max": "c88f70a60a19e76a6774dfbd7664be639b9aa8aa587c680834c305ffa434aaaf",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/f4": "ff9e2907a818920e3b976232c90eabaf270fff0de0b8a479af9a3633e9b7921f",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/anika": "228771ce84cad16a089e0b23efe2e69edf25f1ab7c0cb3a50d366ac70e82fbbd",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Lee": "a1584887cddb40c10e04992fb770025b52e66b70504656094f80975f1d6bbf6b",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Mario": "a94ac65d132030df496e8aa364d5cde5f2eafa4b6b3ae361a2901d512c6029d8",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft3": "f8543efe18019c735ebad99d1cab4e06e0efd565ac269a895415dfebf342c383",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/linda": "df06b4c29f5953034e7815ea7062e356917266f8fab576f76c036045525c8e28",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Gene2": "bcdb3039296eea37398e4423dc9bb6849cda9c5c812b83702ebc49682c649f57",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/RicishayMax2": "3de5e414d4b2ef082a7b974bb7ede94937e93b5b873d2b2f7928b19d30745180",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/robosoft6": "46426971d76c34266580133fad2c26ab829395a71c1713e6205d9d46b0871672",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/m5": "08590ef7ce37630a6875d9cbe200dc473a9054b4184287808a4fd1c8e27dd02a",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/klatt5": "44397d8282454a2974078d25509caa470bceb093e484e727843a5147b4193e60",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/mike2": "274ebc5df252b3258e8996f1276137b2cf9d6e5006e1145a5172997284f1dba0",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/Diogo": "a4a17c453d13242b48783c247816bff8d2cf7bc8931c3f8237887d88a2881b18",
+        "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/gustave": "5fa89cf8625cd460b9309748eca019ab5b325a04dccbd29f1a9b2a00caa2e848",
+        "sdk/optional-src/espeak-ng/Makefile": "a440ab4d127cd1aee99683f397102f76a1b698882cf65602cab4a447b59b91c3",
+        "sdk/optional-src/espeak-ng/config.h": "7696c8567da579fa97faa4d977ebac154e2b3a81397ff69c25d1288a207f643e",
+        "sdk/optional-src/espeak-ng/README.md": "8bf94b371a7deb3812f24061994f4125f481014e0672d3716fc166bce757342e",
+        "sdk/optional-src/espeak-ng/compat/wchar_shim.c": "706a472fb6eadd9e92f3add684daa49c8e696aead12a8c9b3e5a94c39be66e3e",
+        "sdk/optional-src/espeak-ng/compat/wctype.h": "d7026be94157d698d8b08c4e56e9176c498520374c4d0c5a399fe88c71d979c7",
+        "sdk/optional-src/espeak-ng/compat/wchar.h": "7fccef3f7502c89e8b6ecb65c5437a8dc04a3d912172f426a602c64fda5be525",
+        "sdk/optional-src/espeak-ng/probe/allocprobe.c": "0cfa99ea1a5d627ab2adca8d3dbd02ea465f4c31b46354d80b4c71b9116d0d37",
+        "sdk/optional-src/espeak-ng/cmn-source/recovery.json": "48235713b1fea74370fcf5fb1ee15eecc826faea0547b8ccd0a1d6ad3efd041d",
+        "sdk/optional-src/espeak-ng/cmn-source/cmn_listx": "dc3b3e2c3d6847106bd72bc80dae519fbf914fd74a0e628475feb0d1acef9c2e",
+        "sdk/optional-src/espeak-ng/cmn-source/cmn_emoji": "e2eb2d7ff740929d4fb85bfb861368d659d15c38bca98488e2641cf97e43333e",
+        "sdk/optional-src/espeak-ng/cmn-source/cmn_list": "9236137395ecf5c658ff1d2d1b0c1f457f37d30e307e4659cc23e49010544bbc",
+        "sdk/optional-src/espeak-ng/cmn-source/cmn_rules": "2af85cfcc6526497e71f8adf29d0285c6d0103d3c3e2de9b127a71d602884bcf",
+        "sdk/optional-src/espeak-ng/cmn-source/README.md": "5cb4fc7866b5936d4ee81e1275965da2f61d365da8b827ba998fa00b7e8a5f13",
+        "licenses/evidence/espeak.json": "fdc8c2d967805a8c08b81eb7c19def88bfda2908448d7d6b63fbed2ef6f2d4b1"
+      },
+      "source_digest": {
+        "sha256": "f771a4c6f2109b1ab685312eb4ae8de80eb0151bc43f009b7a2c8bf1574198e6",
+        "files": 2682
+      }
+    },
+    {
+      "id": "pcaudio",
+      "name": "pcaudiolib linked into optional espeak-ng",
+      "version": "d6a6b00",
+      "license": "GPL-3.0-or-later",
+      "source": "https://github.com/alsa-project/pcaudiolib.git",
+      "source_path": "sdk-src/sources/pcaudiolib",
+      "evidence": [
+        "sdk/optional/espeak-ng/licenses/COPYING",
+        "sdk/optional/espeak-ng/licenses/COPYING.APACHE",
+        "sdk/optional/espeak-ng/licenses/COPYING.BSD2",
+        "sdk/optional/espeak-ng/licenses/COPYING.PCAUDIOLIB",
+        "sdk/optional/espeak-ng/licenses/COPYING.UCD",
+        "sdk/optional/espeak-ng/licenses/NOTICE",
+        "licenses/pcaudio-file-notices.txt",
+        "sdk/optional/espeak-ng/licenses/TinyALSA-LICENSE",
+        "licenses/evidence/pcaudio.json"
+      ],
+      "changes": "TinyALSA backend patch and glue in sdk/optional-src/pcaudiolib.",
+      "source_required": true,
+      "issues": [],
+      "revision": "d6a6b00aa4334b461c1a09c27b6c681eaac8da8a",
+      "verification_files": {
+        "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
+        "sdk/optional-src/pcaudiolib/Makefile": "97202544493dc99879692aac1aed299f8be6e88a6ff47f4ee4280841ac00a2b6",
+        "sdk/optional-src/pcaudiolib/config.h": "bc148f25a19c22810fbfe6e0c235ecefe0a7747904be284337f82234c45052b4",
+        "sdk/optional-src/pcaudiolib/pcaudiolib-tinyalsa-backend.patch": "b0143eaa55377d9996fc06316ccca1d9a74be944733c794cb3860167eef52992",
+        "sdk/optional-src/pcaudiolib/tinyalsa.c": "73c60878d815aa1a7dc622ed02012424a8385dad629a7b7d3f7da42387d78ca6",
+        "sdk/optional-src/pcaudiolib/README.md": "1f0aad7644fc42f5bf19c3ca4b0b235517367a1e8a3f0d9108283f1144bc0d01",
+        "licenses/evidence/pcaudio.json": "80fb79a751de3461bf6a341be200df83cec1908b01062f84883f554bc95293f3"
+      },
+      "source_digest": {
+        "sha256": "60a786c50ec60cca7e5f429bfbff7d2b8766eaff26a28ae69d1dd1a301814b4f",
+        "files": 25
+      }
+    },
+    {
+      "id": "ns-flash",
+      "name": "NSLink optional ns-flash binary",
+      "version": "0.1.4 (README declaration)",
+      "license": "LicenseRef-Company-Proprietary",
+      "source": "Company-owned NSLink project; closed-source binary, as confirmed by repository owner on 2026-10-15.",
+      "source_path": null,
+      "evidence": [
+        "sdk/optional/ns-flash/README.md",
+        "licenses/Zig-MIT.txt",
+        "licenses/evidence/ns-flash.json",
+        "sdk/optional/ns-flash/THIRD_PARTY_NOTICES.txt",
+        "sdk/optional/ns-flash/Zig-MIT.txt"
+      ],
+      "changes": "Company-owned closed binary. No open-source obligation is inferred from absence of its source. Third-party linked code still follows its own terms.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Company-owned closed binary matched original output; Zig 0.16.0 MIT notice included; uClibc/GCC runtime obligations covered separately"
+        ]
+      ],
+      "verification_files": {
+        "sdk/optional/ns-flash/ns-flash": "9cbf1bedfe9d5f454c6c2ef3de706403d2b9c8b0ad5605cb5c1707d88bbd5226",
+        "licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",
+        "licenses/evidence/ns-flash.json": "0d599d1fe14602e8e5f193ea0b9b1f72389e4d673e17e3eae8baeeff823fd947"
+      },
+      "copyright": "Nations/NSING company-owned program; Zig contributors for bundled Zig support."
+    },
+    {
+      "id": "sdk-manuals",
+      "name": "GNU GCC and Binutils SDK manuals",
+      "version": "shipped SDK snapshot",
+      "license": "GFDL-1.3-or-later AND GPL-3.0-or-later",
+      "source": "https://gcc.gnu.org/ and https://sourceware.org/binutils/ ; document sources in the bundled GCC and Binutils source trees",
+      "source_path": "sdk-src/sources/binutils",
+      "evidence": [
+        "licenses/GFDL-1.3.texi",
+        "licenses/sdk-manual-notices.txt",
+        "sdk/toolchain/licenses/GCC/COPYING3",
+        "licenses/evidence/sdk-manuals.json"
+      ],
+      "changes": "Per-document grants inspected. CTF/SFrame info specs are GPL-3.0-or-later; other GNU manuals are GFDL with document-specific invariant sections and cover texts preserved. Manuals are shipped unmodified; complete GCC and Binutils doc sources included.",
+      "source_required": true,
+      "issues": [
+        [
+          "INFO",
+          "Document-specific copyright, invariant sections, cover texts and GPL/GFDL license distinctions preserved"
+        ]
+      ],
+      "verification_files": {
+        "sdk/toolchain/share/info/as.info": "c22800d0ac4decdd7bc810dad769b8bc9be5ad453f2b10c365eae3d4774e1656",
+        "sdk/toolchain/share/info/bfd.info": "da6e5878382b28ec1b6ad99b5575ff70cdbf0b077a1dca9b15c2318e999f63cb",
+        "sdk/toolchain/share/info/binutils.info": "aafce8057c65ff594704a2dec25bb75bc17c5ee592c10b509988382875a273ef",
+        "sdk/toolchain/share/info/ctf-spec.info": "9cadd030d4c15d9f9cddb765dfaab6582f1df13adc1f970bbd5c2ba0bd450d4c",
+        "sdk/toolchain/share/info/gprof.info": "439f286acc18289d81b194b6d93dcbd3f2228a81ae54fd8d75076257d89660b4",
+        "sdk/toolchain/share/info/ld.info": "6a75b1e4e137a96c26c9eb2fc04f2070c8eb6460c9692333dd8c96b63e0714d7",
+        "sdk/toolchain/share/info/ldint.info": "c20efbcf6e874fa575ca8a198df93ad761733be848896b76c12444b638a1c8b4",
+        "sdk/toolchain/share/info/sframe-spec.info": "7d59b652787f677917232e2f0f83f76f3ca25eb177697fe4a5dcd633e6e09579",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-addr2line.1": "bf057a8de421ea98a3609e84efef167327409fbf1d120d618a0a323ff52a690b",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ar.1": "eada91b1be3c4314fee8e27eb5a77e0d67e08cefec5a4e132b01f205096779af",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-as.1": "20d7900def4a7fd059bbdcd9cf8394e04b0a30bb73fba25fdaab9a222bcd9637",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-c++filt.1": "569bd513dad00f30abc6e8f29fd7b68bf7e01fe3d4b8c58c8e478b10496b37f6",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-cpp.1": "d73e63ae45b5c8dfb23e04d11ece4b53f3d4b3c72d527ea76930f38faaef39f5",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-dlltool.1": "2040d59ab2da73c9b72ffe3ba833718572cfef3b7485a9686f06408de4a0c519",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-elfedit.1": "6c11bf000a27a1aea792c26ca77681ff3360f710b5e496d1bc62fbc646e25cb0",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-g++.1": "9c137df9e699aefbbd4261d3ce90d61923f2e42b2a9aaf5297fc9ce49a3fb432",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcc.1": "9c137df9e699aefbbd4261d3ce90d61923f2e42b2a9aaf5297fc9ce49a3fb432",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-dump.1": "01291220c13e17a1203fc2936bd432beebcc2c5f8a27471ebbf6eba1bf32cf0b",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov-tool.1": "204b02c544b8ff1f375b4a8cc68eccf07bd78102f28245b5628fbe1e33197350",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gcov.1": "8602cbd363b6575418f3a78f886dd9834a4d87dde07bb454ece24f2066be67bf",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-gprof.1": "3c0a9dd15fa37cffba2a40d4a3268a115bff0255eed16a5cd98072e25458f7dc",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ld.1": "6aacad70407e4b2b7f32e4940eb31eebaa91eb7ce941953ce14a270a27ca357c",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-lto-dump.1": "aeea25294df6d9aaee57e9bdd4be109a8e4b514353e662a00f726f624d56d156",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-nm.1": "f9bb9c1b1626fa469046d26b573cef76cb0908b43d46b3f15edff0becc9bb3f8",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objcopy.1": "16ae39e073e7aa104a1311d271824dd7dcfedf637b4282408a5949f65b0900ec",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-objdump.1": "b3704173cc725cc7b68ca823ada95f134731775dcf18bed9c93432f280c5ec5f",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-ranlib.1": "deaf2cf1e4f7e17894e57a2215362628bea365aad67465d888638fc0f506d3fa",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-readelf.1": "0acb5cc75d8d1902303cebbf946b671896c7357e81ae40870ef173614fe8eab9",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-size.1": "1a3d21afbb73295d56b5ea61cf64006e6311bb392d4f0aee8f48e839f53b736f",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strings.1": "f555839a4d9e14817097423179b0540a32c0ef52dfa4c6003b37b012a5650b2d",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-strip.1": "df6bf3c2f1d008e70ea412d5c04c72b01626e5517b0809710be175d26a661638",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windmc.1": "eaa36e32b82a0245cddd239a577658a369cb7b3b42b0f65aa7e4abdd874622f9",
+        "sdk/toolchain/share/man/man1/arm-uclinuxfdpiceabi-windres.1": "84b6c9aa1931eb2fa208936e9b98adf5e0691c2f0af818e87c35c9173684d0b4",
+        "sdk/toolchain/share/man/man7/fsf-funding.7": "dac58d430c40a749bd1f0cd96414d485e54e586bbeb4b544f6bce77961c7c825",
+        "sdk/toolchain/share/man/man7/gfdl.7": "9dca6dc5208b77ac4872a8086fc61d03f739ddcfca802e77ba6ca3fe0b773624",
+        "sdk/toolchain/share/man/man7/gpl.7": "d79c19a6d4ecf4cca5f63da05bf4cd4bb53809c07853aecaeca54f40f5efa462",
+        "licenses/evidence/sdk-manuals.json": "e01cd84524744f83a3bbf905bd6579fff0174e16f1d0fe667c1d0e05128d5356"
+      },
+      "source_digest": {
+        "sha256": "2916e5b789e4a50870661644f71eaa3e2311ddef5cb4503f915d49e9f5228ba3",
+        "files": 29632
+      }
+    },
+    {
+      "id": "linker-scripts",
+      "name": "Generated GNU ld linker scripts",
+      "version": "SDK snapshot; generator binary 2.46.0.20260210",
+      "license": "LicenseRef-Binutils-Linker-Script",
+      "source": "Generated by GNU Binutils ld; original scripts shipped in SDK",
+      "source_path": "sdk/toolchain/arm-uclinuxfdpiceabi/lib/ldscripts",
+      "source_required": false,
+      "evidence": [
+        "licenses/binutils-linker-script-notices.txt"
+      ],
+      "changes": "Copyright (C) 2014-2026 Free Software Foundation, Inc. Copying/distribution with or without modification permitted if copyright and notice are preserved.",
+      "issues": []
+    }
+  ],
+  "rules": [
+    {
+      "prefix": "bootloader",
+      "component": "vendor"
+    },
+    {
+      "prefix": "bootloader/Makefile",
+      "component": "project"
+    },
+    {
+      "prefix": "bootloader/LinkFile",
+      "component": "project"
+    },
+    {
+      "prefix": "bootloader/JlinkCommanderScript",
+      "component": "project"
+    },
+    {
+      "prefix": "bootloader/OpenocdCfg",
+      "component": "vendor-algorithms"
+    },
+    {
+      "prefix": "bootloader/Driver/n32h7xx_algo_lib",
+      "component": "vendor-algorithms"
+    },
+    {
+      "prefix": "bootloader/Driver/CMSIS/core",
+      "component": "cmsis"
+    },
+    {
+      "prefix": "kernel",
+      "component": "linux"
+    },
+    {
+      "prefix": "rootfs",
+      "component": "project"
+    },
+    {
+      "prefix": "rootfs/bin/busybox",
+      "component": "busybox"
+    },
+    {
+      "prefix": "rootfs/lib",
+      "component": "uclibc"
+    },
+    {
+      "prefix": "rootfs/lib/libgcc_s.so.1",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "rootfs/usr/lib",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "rootfs/sbin/n32-flash",
+      "component": "project-runtime"
+    },
+    {
+      "prefix": "rootfs/usr/libexec/sftp-server",
+      "component": "project-runtime"
+    },
+    {
+      "prefix": "rootfs/usr/sbin/adbd",
+      "component": "microadb"
+    },
+    {
+      "prefix": "rootfs/usr/sbin/dropbear",
+      "component": "dropbear"
+    },
+    {
+      "prefix": "rootfs/usr/sbin/dropbearkey",
+      "component": "dropbear"
+    },
+    {
+      "prefix": "rootfs/usr/bin/dbclient",
+      "component": "dropbear"
+    },
+    {
+      "prefix": "rootfs/usr/bin/scp",
+      "component": "dropbear"
+    },
+    {
+      "prefix": "rootfs/usr/share/licenses/microadb",
+      "component": "microadb"
+    },
+    {
+      "prefix": "rootfs/usr/share/licenses/tinyalsa",
+      "component": "tinyalsa"
+    },
+    {
+      "prefix": "sdk",
+      "component": "project"
+    },
+    {
+      "prefix": "sdk/toolchain",
+      "component": "gcc"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot",
+      "component": "uclibc"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/c++",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/arm-uclinuxfdpiceabi/lib",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/lib/libgcc_s.so.1",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/lib/libstdc++.so.6.0.35",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/lib/libstdc++.a",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "sdk/toolchain/lib/bfd-plugins",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/optional/espeak-ng",
+      "component": "espeak"
+    },
+    {
+      "prefix": "sdk/optional/ns-flash",
+      "component": "ns-flash"
+    },
+    {
+      "prefix": "sdk/optional-src/espeak-ng",
+      "component": "espeak"
+    },
+    {
+      "prefix": "sdk/optional-src/pcaudiolib",
+      "component": "pcaudio"
+    },
+    {
+      "prefix": "tools",
+      "component": "project"
+    },
+    {
+      "prefix": "rootfs/bin/tinyplay",
+      "component": "tinyalsa"
+    },
+    {
+      "prefix": "rootfs/bin/tinycap",
+      "component": "tinyalsa"
+    },
+    {
+      "prefix": "rootfs/bin/tinymix",
+      "component": "tinyalsa"
+    },
+    {
+      "prefix": "rootfs/bin/tinypcminfo",
+      "component": "tinyalsa"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-ranlib",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc-ar",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-objcopy",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-as",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-ld",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-strip",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-readelf",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-objdump",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ar",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ranlib",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-size",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-nm",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-addr2line",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc-nm",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-c++filt",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-objdump",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-ar",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-ld.bfd",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-strip",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-strings",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-as",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-nm",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ld",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ld.bfd",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gprof",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc-ranlib",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-objcopy",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-uclinuxfdpiceabi-elfedit",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/bin/arm-n32-linux-kernel-readelf",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/share/info",
+      "component": "sdk-manuals"
+    },
+    {
+      "prefix": "sdk/toolchain/arm-uclinuxfdpiceabi/bin",
+      "component": "binutils"
+    },
+    {
+      "prefix": "sdk/toolchain/lib/gcc",
+      "component": "gcc-runtime"
+    },
+    {
+      "prefix": "sdk/toolchain/arm-uclinuxfdpiceabi/lib/ldscripts",
+      "component": "linker-scripts"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tdx-guest.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/omapfb.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pci.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/qnx4_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tipc_config.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/posix_acl_xattr.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/errno.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/quota.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_team.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/net.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/amd-pmf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/audit.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atalk.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gsmmux.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atmsap.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/icmp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/i2c-dev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ntsync.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/map_to_14segment.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/shm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_plip.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/l2tp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cec-funcs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/matroxfb.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/input.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sctp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/v4l2-mediabus.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_ppp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/serial_reg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sockios.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/iommufd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mei_uuid.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/uio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/blkzoned.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pkt_cls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_eql.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_pppol2tp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipmi_msgdefs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/msdos_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/auto_fs4.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/agpgart.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_console.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/alloc_tag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fdreg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/uinput.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ncsi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/udmabuf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/drbd_limits.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hsr_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gpib.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/udf_fs_i.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cec.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/selinux_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mtio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atmapi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nexthop.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kernel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/prctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_ether.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_i2c.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/securebits.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dm-log-userspace.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/module.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_9p.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/seccomp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_arp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/joystick.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_addrlabel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/taskstats.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mshv.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fuse.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bcm933xx_hcs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vhost_types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/xattr.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/arm_sdei.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/falloc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nubus.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dccp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hiddev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bits.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/times.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bpf_common.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/elf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bfs_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hw_breakpoint.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/igmp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/thp7312.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipmi_bmc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/oom.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/btrfs_tree.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/un.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/f2fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gpio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_packet.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/net_dropmon.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/veth.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/btf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/qnxtypes.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/counter.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_pppox.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/smc_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cxl_mem.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atmioc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fpga-dfl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_phonet.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ppp-comp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/irqnr.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/net_shaper.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/timex.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kcm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/seg6_genl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kvm_para.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/utime.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_tun.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rfkill.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vbox_err.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/screen_info.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_mem.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ip_vs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/thermal.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mempolicy.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/npcm-video.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/zorro.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ax25.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dns_resolver.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/param.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/blktrace_api.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/llc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nbd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/input-event-codes.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_rtc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_fddi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pfrut.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vt.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/map_benchmark.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ndctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hdreg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_gpio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/btrfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/stat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_scsi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/edd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vm_sockets.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nl80211.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sysctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/futex.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ppp-ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/neighbour.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/arcfb.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ivtv.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_rng.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/string.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vfio_ccw.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/romfs_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vfio_zdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/wireless.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ivtvfb.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/um_timetravel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/seg6_iptunnel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/psp-sfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tee.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nilfs2_ondisk.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/aio_abi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_crypto.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_can.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/libc-compat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/affs_hardblocks.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nitro_enclaves.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/lsm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/videodev2.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rds.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/devlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_bt.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/auto_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tcp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sonet.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/packet_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fsmap.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nvme_ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vbox_vmmdev_types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/stm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mrp_bridge.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/jffs2.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/idxd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/udp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mount.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfsd_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/major.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pcitest.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/loadpin.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/landlock.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipmi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/wait.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_snd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mman.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/resource.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ultrasound.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/suspend_ioctls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/socket.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_tunnel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ioam6_iptunnel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vboxguest.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pr.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/time_types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/v4l2-dv-timings.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/parport.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/unix_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/wireguard.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_arp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dma-buf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/liveupdate.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dcbnl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/module_signature.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/stddef.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/inet_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/radeonfb.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usbip.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ethtool.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/perf_event.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dlmconstants.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/user_events.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fsl_mc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gen_stats.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ila.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/in.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/serial_core.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/inotify.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/drbd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_fc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fanotify.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dma-heap.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_mmio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs3.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_input.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_spi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/reboot.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/elf-em.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netdevice.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pps_gen.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hdlc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pidfd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rxrpc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/batadv_packet.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/papr_pdsm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/keyctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/genetlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/i8k.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_x25.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ioam6_genl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/qrtr.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/serio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mmtimer.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dpll.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kcov.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cdrom.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/wmi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/zorro_ids.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_pmem.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/io_uring.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_scmi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pwm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tps6594_pfsm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/psp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/userio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dev_energymodel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fsl_hypervisor.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/seg6_local.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sync_file.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/coredump.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/firewire-constants.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_balloon.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs_mount.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/posix_types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/wwan.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/amt.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rtc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/personality.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/keyboard.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vdpa.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kfd_sysfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ublk_cmd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/watchdog.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/random.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/minix_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/timerfd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pfkeyv2.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tcp_metrics.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nl80211-vnd-intel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mctp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/blk-crypto.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vsockmon.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ppdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/coresight-stm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/apm_bios.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sched.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/swab.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/drbd_genl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ioprio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pktcdvd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/errqueue.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/msg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/posix_acl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipmi_ssif_bmc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cgroupstats.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/exfat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hyperv.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/remoteproc_cdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gameport.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/patchkey.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/loop.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/lwtunnel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rseq.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fb.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fib_rules.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ovpn.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ptp_clock.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/handshake.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cryptouser.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_arcnet.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/coda.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rpl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/xfrm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/time.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/in6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tipc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/adfs_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/capability.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/toshiba.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/trace_mmap.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dw100.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_vsock.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/unistd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs4_mount.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tipc_sockets_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/seg6_hmac.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nbd-netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/i2o-dev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs_idmap.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/utsname.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sev-guest.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/seg6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_pcidev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/limits.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/firewire-cdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vmcore.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/acrn.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfsacl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/comedi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nvram.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_config.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tty.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_ids.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fadvise.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tiocl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/lp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/target_core_user.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vesa.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rkisp1-config.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/auto_dev-ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ethtool_netlink_generated.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/psp-sev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rpl_iptunnel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/openvswitch.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sock_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/erspan.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sed-opal.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/termios.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_link.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/net_namespace.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_slip.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_addr.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/chio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bt-bmc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kexec.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hpet.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kcmp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/lirc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fsverity.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atmdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/iso_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/xilinx-v4l2-controls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/switchtec_ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nsm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cn_proc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_net.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bsg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_bridge.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fiemap.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vhost.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vm_sockets_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/binfmts.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_ltalk.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/typelimits.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nilfs2_api.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs2.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/membarrier.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nsfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sem.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/aspeed-p2a-ctrl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/coff.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rpmsg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipsec.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/openat2.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/isst_if.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cycx_cfm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ip6_tunnel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/uleds.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pkt_sched.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/xdp_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_gpu.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mpls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/uuid.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/snmp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/eventfd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/v4l2-common.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vduse.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_xdp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pci_regs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/watch_queue.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/max2175.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bpqether.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sunrpc_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/lockd_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/auxvec.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mroute.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/x25.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mqueue.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/scif_ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/filter.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sound.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/phonet.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/omap3isp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vmclock-abi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/i2c.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pmu.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vfio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kdev_t.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rio_mport_cdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bpf_perf_event.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/elf-fdpic.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hidraw.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cciss_ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cyclades.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kernel-page-flags.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/blkdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hid.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dm-ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cciss_defs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/memfd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gfs2_ondisk.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/vtpm_proxy.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/connector.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netlink_diag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ioam6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/pps.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/signal.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/batman_adv.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/magic.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/v4l2-controls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dlm_plock.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/net_tstamp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tipc_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/kfd_ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfs4.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mei.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cramfs_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media-bus-format.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sysinfo.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_ring.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/poll.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/aspeed-lpc-ctrl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/soundcard.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gpib_ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/uhid.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mdio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/serial.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mroute6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/bpf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_bonding.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/adb.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/userfaultfd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/signalfd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hash_info.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ppp_defs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/issei.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cfm_bridge.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mptcp_pm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/psample.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/acct.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_blk.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dqblk_xfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atmbr2684.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/icmpv6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rio_cm_cdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ptrace.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usbdevice_fs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/blkpg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_vlan.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/qemu_fw_cfg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rtnetlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fou.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/close_range.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dlm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tty_flags.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_pci.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ip.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/aspeed-video.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/gtp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ife.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/smiapp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sonypi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/const.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_hippi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ccs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/psci.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dlm_device.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netconf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/smc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mptcp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/rpmsg_types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mii.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fcntl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mpls_iptunnel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/am437x-vpfe.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_infiniband.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/in_route.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/virtio_iommu.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fsi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_alg.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipv6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/map_to_7segment.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/route.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/if_macsec.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ext4.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cuda.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/phantom.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/eventpoll.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/atmppp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/uvcvideo.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ipv6_route.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/v4l2-subdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/ethtool_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/psp-dbc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/fscrypt.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/errno.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/sockios.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/ucontext.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/statfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/msgbuf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/kvm_para.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/param.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/termbits.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/stat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/mman-common.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/termbits-common.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/int-ll64.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/sembuf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/setup.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/mman.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/resource.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/socket.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/shmbuf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/posix_types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/swab.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/ioctls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/unistd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/termios.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/auxvec.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/bpf_perf_event.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/bitsperlong.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/signal.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/signal-defs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/poll.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/errno-base.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/int-l64.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/siginfo.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/ipcbuf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/fcntl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/asm-generic/hugetlb_encode.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/mtd/mtd-user.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/mtd/inftl-user.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/mtd/nftl-user.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/mtd/mtd-abi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/mtd/ubi-user.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/v4l2-isp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_ematch/tc_em_text.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_ematch/tc_em_cmp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_ematch/tc_em_ipt.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_ematch/tc_em_meta.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_ematch/tc_em_nbyte.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/misc/bcm_vk.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/surface_aggregator/cdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/surface_aggregator/dtx.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/gadgetfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/midi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/tmc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/video.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/cdc-wdm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/charger.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/ch9.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/g_printer.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/g_hid.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/ch11.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/functionfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/audio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/cdc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/raw_gadget.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/usb/g_uvc.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/android/binder.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/android/binder_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/android/binderfs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cifs/cifs_netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/cifs/cifs_mount.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_NPT.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_frag.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_LOG.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_srh.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_ipv6header.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_rt.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_mh.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_ah.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_HL.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6_tables.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_opts.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_REJECT.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv6/ip6t_hl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_arp/arpt_mangle.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_arp/arp_tables.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/mmc/ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/byteorder/big_endian.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/byteorder/little_endian.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_REJECT.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_CLUSTERIP.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_TTL.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_ttl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ip_tables.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_LOG.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_ecn.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_ECN.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_ipv4/ipt_ah.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sched/types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_conntrack.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_hashlimit.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_DSCP.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_u32.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_l2tp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_CHECKSUM.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_length.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_pkttype.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_tcpmss.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_osf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_ecn.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_queue.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_TPROXY.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_cpu.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_TCPMSS.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_cttimeout.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_helper.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_recent.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_HMARK.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_cthelper.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_conntrack_sctp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_comment.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_conntrack_tcp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_mark.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_ipvs.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_iprange.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_time.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_mac.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_addrtype.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_dccp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_hook.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_statistic.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_osf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_nfacct.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_CT.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_acct.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_tables.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_conntrack.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_socket.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_NFQUEUE.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_SECMARK.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_RATEEST.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_realm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_CLASSIFY.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_esp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_string.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_quota.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_synproxy.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_dscp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_conntrack_tuple_common.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_cgroup.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_nat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_sctp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_compat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_MARK.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_multiport.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_policy.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_SYNPROXY.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_CONNMARK.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_cluster.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_IDLETIMER.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_limit.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_owner.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_devgroup.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_state.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_LED.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_conntrack_common.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_rpfilter.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_connlabel.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_set.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_CONNSECMARK.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_ipcomp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_tables_compat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_bpf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_tcpudp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_connlimit.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_AUDIT.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_TEE.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/x_tables.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_NFLOG.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_rateest.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_connmark.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nfnetlink_log.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_LOG.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_log.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_connbytes.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/nf_conntrack_ftp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_physdev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/xt_TCPOPTSTRIP.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/io_uring/bpf_filter.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/io_uring/zcrx.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/io_uring/mock_file.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/io_uring/query.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_nat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_ct.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_csum.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_sample.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_mpls.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_ife.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_defact.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_vlan.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_pedit.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_skbmod.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_gate.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_tunnel_key.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_bpf.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_ctinfo.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_skbedit.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_connmark.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_mirred.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/tc_act/tc_gact.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/raid/md_u.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/raid/md_p.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfsd/export.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfsd/stats.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfsd/debug.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/nfsd/cld.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/net.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/version.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/video.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/ca.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/audio.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/osd.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/frontend.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/dvb/dmx.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/counter/microchip-tcb-capture.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/spi/spi.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/spi/spidev.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/vxcan.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/j1939.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/bcm.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/isotp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/netlink.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/gw.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/raw.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/can/error.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_stp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_nflog.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_among.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_nat.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_pkttype.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_802_3.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebtables.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_mark_t.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_vlan.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_arpreply.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_log.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_ip.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_ip6.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_limit.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_mark_m.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_redirect.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter_bridge/ebt_arp.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/genwqe/genwqe_card.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hdlc/ioctl.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/sunrpc/debug.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hsi/hsi_char.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/hsi/cs-protocol.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/iio/events.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/iio/buffer.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/iio/types.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/ipset/ip_set.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/ipset/ip_set_list.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/ipset/ip_set_bitmap.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/netfilter/ipset/ip_set_hash.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/dreamchip/rppx1-config.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/raspberrypi/pisp_be_config.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/raspberrypi/pisp_common.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/raspberrypi/pisp_fe_config.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/raspberrypi/pisp_fe_statistics.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/amlogic/c3-isp-config.h",
+      "component": "linux"
+    },
+    {
+      "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/arm/mali-c55-config.h",
+      "component": "linux"
+    }
+  ],
+  "build_materials": [
+    "sdk-src/patches",
+    "sdk-src/configs",
+    "sdk-src/scripts",
+    "sdk-src/project/microadb",
+    "sdk-src/project/src",
+    "sdk-src/project/pcaudiolib",
+    "sdk-src/project/espeak-ng",
+    "sdk/optional-src",
+    "sdk/toolchain/patches",
+    "Makefile",
+    "bootloader/Makefile",
+    "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2"
+  ],
+  "binary_sha256": {
+    "bootloader/OpenocdCfg/cm4_flash_op/flash_op.bin": "63c71ff9a83dcfb37b9d4594f712f8514b35b95a7c31515b5d57dea90daee9fc",
+    "bootloader/OpenocdCfg/cm7_flash_op/flash_op.bin": "01f2348be66507a1d75824c685393fc24f0a1ec79ea04b2849e4410a81666d10",
+    "rootfs/bin/busybox": "bb14f3f5b09751a6655ef491bf3fd4378320ba57dcb097065e43273514f85d9d",
+    "rootfs/bin/tinycap": "be9646a0726ed642fc6fd21291b32d15fd1c4b9b46fa1f002ed9fc5663fe972a",
+    "rootfs/bin/tinymix": "5948ff9c9c92775594581646dcae90b79e7279e25328a7fbc795eb5427fde1ef",
+    "rootfs/bin/tinypcminfo": "4afe2c5185869441e88f4d1da11bb649b656b358dbb0598b6b16f9d20e5a59f0",
+    "rootfs/bin/tinyplay": "956afffb03a3bfd6894519e2fe443972382f7c4b680ed2e89f4fec4fcec01304",
+    "rootfs/lib/ld-uClibc-1.0.59.so": "17a0a9fca030f2ae56616750c4a93d41f9a628c47f7ed4bfddd9e3ec0d6b54bd",
+    "rootfs/lib/libgcc_s.so.1": "dcd891b5181f14a3176ba4c486856834b1bf205c88e41be7f2cc80fac8dd12be",
+    "rootfs/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+    "rootfs/sbin/n32-flash": "28fa224ede067114c0f80618714e9fdd6d900b8f259a98bec0b88b36bac8f7a5",
+    "rootfs/usr/bin/dbclient": "cf3338d46d44352f38b9ff2a2bafc9fd20958fd06d4e696a5d530bb5bc1081e2",
+    "rootfs/usr/bin/scp": "55d5e90444b08435f22891e5156f50be932ca050787939106cfce58c5720386c",
+    "rootfs/usr/lib/libstdc++.so.6.0.35": "16a57e547ee3173a2c0a71bc92adf67b2ed310acd4690670bf1931b4d7453158",
+    "rootfs/usr/libexec/sftp-server": "468980ec2954d5e8ae74d6d752852bea51d6e33cba5777bc9124e3e87425e52e",
+    "rootfs/usr/sbin/adbd": "f9339dd605762e1d4f9ad8292a4e8156a906fdfefafe91f3b9865fa9f64ee1f5",
+    "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
+    "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
+    "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
+    "sdk/optional/ns-flash/ns-flash": "9cbf1bedfe9d5f454c6c2ef3de706403d2b9c8b0ad5605cb5c1707d88bbd5226",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/ar": "f06223b03b0ca3db73df7985808e8aa51d1b571b50154d1c35a9c144c82ee9bf",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/ld": "a36d3fcb7da01bf45832cfea907e6101842287f91578945d921b00ed2158c0cd",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/ld.bfd": "a36d3fcb7da01bf45832cfea907e6101842287f91578945d921b00ed2158c0cd",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/nm": "27f56fa5022a899aa24dadf750eb16bc12072c71da99fdc57d0e39403bfb51e8",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/objcopy": "00525f503ddd00417de848a67bf069e12ef15247489f936dfb66affd1e82a319",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/objdump": "c8c11dab9495701afac971c07d5502794a8813ba8223a1f75875cfa8f794f260",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/ranlib": "9374b730549af2cb498f6615f62dcf61bcae44f92fd68dd50a2f1805e555c926",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/readelf": "20b01ca0d48aa3bd955e1461acab30cd742bf9ecfe1623c90a41532952a13e59",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/bin/strip": "bfa13fd139d1864b721893158916f12b0ecd8e4038330e45bbfbb09b0ca04f9e",
+    "sdk/toolchain/arm-uclinuxfdpiceabi/lib/libgcc_s.so.1": "dcd891b5181f14a3176ba4c486856834b1bf205c88e41be7f2cc80fac8dd12be",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-addr2line": "7d05d79ba04c7ed2046a86075a230df7b166f48b2874a56f31eaa084e0699246",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ar": "f06223b03b0ca3db73df7985808e8aa51d1b571b50154d1c35a9c144c82ee9bf",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-c++": "f31ed9aa933f57a1413a1bd0169765d3c1ef92e7f6e6cdc3105442d49b94c07c",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-c++filt": "020be34eed65c05e1e98d4bdb6c7e707a184992ab60ea03b3a0feb70e4a37bac",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-cpp": "614bea4e3b4e036a1526a3f1dda2c561a6e4b0633716e7d52a743cb3e94148bc",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-elfedit": "e94d0cb842cdff98c189768c67e918877db89f998fa959ae351bded1145cc17f",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-g++": "f31ed9aa933f57a1413a1bd0169765d3c1ef92e7f6e6cdc3105442d49b94c07c",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc": "5a198672397c243ac4eea1037d3b7903ead0d89342ff5002e6165009864f7c80",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc-16.1.0": "5a198672397c243ac4eea1037d3b7903ead0d89342ff5002e6165009864f7c80",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc-ar": "d812b63819dc99acc4bc40dca5b9deb1b28df630bd2320a765237041fefbd3af",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc-nm": "8589fac89b934939740e49ec9dcd7e9a302cc4b95469129aa430758b4c41598c",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc-ranlib": "6b592e076e03689f2f9728c0e5bd5a90d3199160c0ec44310a51c94b169f5446",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcov": "93b94673b5dde39602e0f344539ce5b9e0749ebdd0c7d7e214e746f76d7a50c5",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcov-dump": "83023f36ccebd37b7639ab4d9bdca2d1fdeb002690d8671109f0acade5f00f0c",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcov-tool": "9441b4b97e067a24fa04d92701800cc958cfd6e9a885d0de9511d1c72e4e5bfb",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-gprof": "790d6aab2af016938d2da6dc2b67b92da7e7a91bb44fdf8eece63c4659be1c39",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ld": "a36d3fcb7da01bf45832cfea907e6101842287f91578945d921b00ed2158c0cd",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ld.bfd": "a36d3fcb7da01bf45832cfea907e6101842287f91578945d921b00ed2158c0cd",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-lto-dump": "8059beb8fd17c5faaf2db21bda9aa31034fb95287f5c7c26727d5568d0a64b62",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-nm": "27f56fa5022a899aa24dadf750eb16bc12072c71da99fdc57d0e39403bfb51e8",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-objcopy": "00525f503ddd00417de848a67bf069e12ef15247489f936dfb66affd1e82a319",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-objdump": "c8c11dab9495701afac971c07d5502794a8813ba8223a1f75875cfa8f794f260",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ranlib": "9374b730549af2cb498f6615f62dcf61bcae44f92fd68dd50a2f1805e555c926",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-readelf": "20b01ca0d48aa3bd955e1461acab30cd742bf9ecfe1623c90a41532952a13e59",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-size": "e028e823149e7b83fa5028e2d07dc3afa2e766368c0cd41b79335c9e72b842c8",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-strings": "00a1e932c23e85df8c08a2e20010786e3dfebcf227f752f269110ae2d5f9386b",
+    "sdk/toolchain/bin/arm-uclinuxfdpiceabi-strip": "bfa13fd139d1864b721893158916f12b0ecd8e4038330e45bbfbb09b0ca04f9e",
+    "sdk/toolchain/lib/bfd-plugins/libdep.so": "86e9929a3ec1d8ffa221cee6981a3b80c22dfa55e5adb6254d0cefe132dce4d5",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/crtbegin.o": "7495ad320f7b85715583432d9fc2c5167bf607443a79e6a321c9ad6a508a188a",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/crtbeginS.o": "bbabae8497f2fa4f5268db045c66136281947eb2ea34e7abc5832d4cc50d5790",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/crtbeginT.o": "7495ad320f7b85715583432d9fc2c5167bf607443a79e6a321c9ad6a508a188a",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/crtend.o": "7b4a838b89c9abe43ce9eaa8239ea9727b72144fb2cef8f20dab9680be2c7727",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/crtendS.o": "7b4a838b89c9abe43ce9eaa8239ea9727b72144fb2cef8f20dab9680be2c7727",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/crtfastmath.o": "31aa6c975e0582c752b127700de316cc2190b595aabb95cbbe8632063f198a14",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/libgcc.a": "a0fd49de2a301b0c7e0f65de2d5803ac5c650469e7ae82ae16108858013020e3",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/libgcc_eh.a": "3c2062c26d3cec992f1d87d2eab1f92e1c8fd482a6be07ac6fdb72e506abe294",
+    "sdk/toolchain/lib/gcc/arm-uclinuxfdpiceabi/16.1.0/libgcov.a": "76bcf386dae6545e6f07581a10c87fde4841598bea5ea2c3c8e8abd1da6a93e7",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1": "9529c8fe1717d340823cd5b102f44fe4de646abc4b353ba2416643a2e0bbceb5",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1plus": "891fe452d35ae0ea9e013c35bfef076d5078f1da09b0baed9804051f18b7bbb1",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/collect2": "71b4cc506d7af773d68558bf73964eed37eabd935dc363418a2babecd4a29689",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/liblto_plugin.so": "b8bffef1dafa9955848433d95d2dbab588d3c4956d4d87560f9746a9a1fb74f0",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto-wrapper": "813245d108e689b888a986a370cf0ba44a0f1ec1cbbc4db7eb42844855378c9e",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto1": "2e5a37ee792ca948ad3d664fb4e778abe8604b349bbfa394fc3dc8292f4909f7",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/install-tools/fixincl": "a814effa9b0ed999544f23405d6b556bf163eb7886daec3838b7a805d28c4204",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/plugin/gengtype": "393f9191cd8e6c8fdd911b900039b84c9e0708fead699c388d99d5333c935162",
+    "sdk/toolchain/sysroot/lib/ld-uClibc-1.0.59.so": "17a0a9fca030f2ae56616750c4a93d41f9a628c47f7ed4bfddd9e3ec0d6b54bd",
+    "sdk/toolchain/sysroot/lib/libgcc_s.so.1": "dcd891b5181f14a3176ba4c486856834b1bf205c88e41be7f2cc80fac8dd12be",
+    "sdk/toolchain/sysroot/lib/libstdc++.a": "a5f1f3d3d29dc94d96fb6e8c4f5ffc424c38cde89d52f55b3fc011a7d7865e01",
+    "sdk/toolchain/sysroot/lib/libstdc++.so.6.0.35": "16a57e547ee3173a2c0a71bc92adf67b2ed310acd4690670bf1931b4d7453158",
+    "sdk/toolchain/sysroot/lib/libstdc++exp.a": "71408e9637d00c828d124e11220e7d9fb105ab801105abe501f8fa9c7fb74921",
+    "sdk/toolchain/sysroot/lib/libstdc++fs.a": "02533b9b90ae6dbd9f9616c7e6782357455413c288937af1e752229dae40ba9d",
+    "sdk/toolchain/sysroot/lib/libsupc++.a": "5fc4a4deb053299e2413091688909bc23c058b873064f56d8e0c88e11b78380c",
+    "sdk/toolchain/sysroot/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+    "sdk/toolchain/sysroot/usr/lib/Scrt1.o": "ab2fd5118ae09848dc51445f0b8a60992373f43106a654a0e22d47045734b6c8",
+    "sdk/toolchain/sysroot/usr/lib/crt1.o": "ab2fd5118ae09848dc51445f0b8a60992373f43106a654a0e22d47045734b6c8",
+    "sdk/toolchain/sysroot/usr/lib/crti.o": "ffcb26aaeedfebc5b899871eeeda3dbe8b7a7cae22f656219dfa34ed5b99b978",
+    "sdk/toolchain/sysroot/usr/lib/crtn.o": "a95ff3cf3d9347d7187c0337827b4a6153a1a0c2a7114cd44340bba34eb686d0",
+    "sdk/toolchain/sysroot/usr/lib/crtreloc.o": "48613fc778962d1d83fc24d471db31b38f5501e15dd5ee0d0fc82b31893edf85",
+    "sdk/toolchain/sysroot/usr/lib/libc.a": "31b6a2adbba303b98a858a2df37dca00de51bcc9f68a5f57eb5be754bfa262f2",
+    "sdk/toolchain/sysroot/usr/lib/libcrypt.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
+    "sdk/toolchain/sysroot/usr/lib/libdl.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
+    "sdk/toolchain/sysroot/usr/lib/libm.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
+    "sdk/toolchain/sysroot/usr/lib/libnsl.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
+    "sdk/toolchain/sysroot/usr/lib/libpthread.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
+    "sdk/toolchain/sysroot/usr/lib/libpthread_nonshared.a": "c187d93e35b2adc1f295b0deba9f7f424f55d5dbcc757c1e43a85c1bf5089a7a",
+    "sdk/toolchain/sysroot/usr/lib/libresolv.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
+    "sdk/toolchain/sysroot/usr/lib/librt.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
+    "sdk/toolchain/sysroot/usr/lib/uclibc_nonshared.a": "da39ab23048b83813664e5276fd676b8eb7c96a6dbb4069b991574095007ee42",
+    "kernel/tools/testing/selftests/tc-testing/action-ebpf": "3ac0b8ebe3d292efdff15018dd4c34fb1dc43c478863b452a16654db48df2aff",
+    "kernel/arch/x86/tools/vdso2c": "04366a5353b35a65e949493c486cc71a3e43c078e1b007d2584b9f1545dc5ec6",
+    "kernel/arch/x86/tools/relocs": "69adc3fb3fa933b57c0901c9baeeeb460dc1dac88f83b590e12935de18ab2bf1",
+    "kernel/drivers/media/i2c/ov5640.o": "ae378358ef66d73ba881ab08bb8c06d900df7d88eca138b2bc1ed40218daafb7",
+    "kernel/drivers/media/i2c/ov5640.ko": "13c9df7160b9aafa32e1c18fee7cb43d68ec1e49b9227baa89c2ecef22b9c673",
+    "kernel/drivers/media/i2c/ov5640.mod.o": "98e6e18950f5d5ff707cdce301abd64dd408e9e0125bc055ce980cf39b7be72e",
+    "kernel/drivers/media/i2c/.module-common.o": "5e9ab4ae21acd740ed82d77acd05e76bd8515043b5c3a410fe248fa90d43f76f"
+  },
+  "source_only_paths": [
+    "sdk/example"
+  ],
+  "build_material_digests": {
+    "sdk-src/patches": {
+      "sha256": "7ceec3b11cc01ec5b9fb71c2ae77e2499110fb3f656998df912e48df3af15918",
+      "files": 8
+    },
+    "sdk-src/configs": {
+      "sha256": "68630eb7309ef3bd155bdf06e592fb58ef71411c4e28744263cf1926216756eb",
+      "files": 5
+    },
+    "sdk-src/scripts": {
+      "sha256": "e8c3915a608b38c5cba50d2e65ee1f9bdb3033cd97859fa317142523f76caab6",
+      "files": 19
+    },
+    "sdk-src/project/microadb": {
+      "sha256": "27559490c2172534a488289b5b72c4d150d9431d9cb1f778044cfa49b620b2ef",
+      "files": 5
+    },
+    "sdk-src/project/src": {
+      "sha256": "be4b0eeb8f78bc02aecccd9b765eb86fd215959db05f7e413002808e8ef1540a",
+      "files": 2
+    },
+    "sdk-src/project/pcaudiolib": {
+      "sha256": "4227b61032f58aa60b6632f6488ddd6af466486ac737e6e41f75da8722c1743a",
+      "files": 4
+    },
+    "sdk-src/project/espeak-ng": {
+      "sha256": "1252af8bcae1857f023e8e98c7edccbf7a18a5ae96cd83c34f1d167baf9b55c4",
+      "files": 7
+    },
+    "sdk/optional-src": {
+      "sha256": "8172af6b9ffa573898b828ea7dc7a1b0367c3e847f14ca14c19247669446d981",
+      "files": 19
+    },
+    "sdk/toolchain/patches": {
+      "sha256": "460bc1015f3f7bbe837aef41ffeb69bba4924182907644295dd7128a171779ca",
+      "files": 3
+    },
+    "Makefile": {
+      "sha256": "508da23a7d6fdd5d63007f5e9a887c79c3c611cd921a83582fb534c9b090cc98",
+      "files": 1
+    },
+    "bootloader/Makefile": {
+      "sha256": "17e0ab95564c0042cc486eb8a5c94321fa7f32dab6515379305fa8cb19f77635",
+      "files": 1
+    },
+    "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2": {
+      "sha256": "4e5a368b6e65b9720b5c1f7416bca8ee764a2fef8e001033db9cf4cdb640dd8a",
+      "files": 1
+    }
+  }
+}

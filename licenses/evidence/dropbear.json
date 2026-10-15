@@ -1,0 +1,18 @@
+{
+  "component": "dropbear",
+  "method": "All four deployed stripped programs match preserved build output byte for byte; source/config comparison",
+  "checks": {
+    "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
+    "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
+    "rootfs/usr/bin/dbclient": "cf3338d46d44352f38b9ff2a2bafc9fd20958fd06d4e696a5d530bb5bc1081e2",
+    "rootfs/usr/bin/scp": "55d5e90444b08435f22891e5156f50be932ca050787939106cfce58c5720386c",
+    "sdk-src/configs/dropbear-localoptions.h": "7309758e58c2c4f242d1ea8b58d7694ed959b88a9bcbe6659fd1fac93558343c"
+  },
+  "details": {
+    "source_files_compared": 831,
+    "all_source_files_equal": true,
+    "upstream_version": "2026.94",
+    "configure_arguments": "--host=arm-uclinuxfdpiceabi --prefix=/usr --disable-zlib --disable-lastlog --disable-utmp --disable-utmpx --disable-wtmp --disable-wtmpx",
+    "licenses": "Original mixed permissive grants retained; no GPL source-publication requirement inferred for Dropbear."
+  }
+}

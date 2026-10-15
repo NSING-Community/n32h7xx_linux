@@ -22,6 +22,8 @@
 #                          config, SHA256SUMS (flat; no version subdirectory
 #                          and no "latest" symlink -- there is only ever one
 #                          staged kernel, so a second name for it was noise)
+#   out/kernel/modules/    loadable module tree (lib/modules/<release>/);
+#                          merged into the rootfs SquashFS image at pack time
 #   out/rootfs/            rootfs.squashfs (the userland the board runs)
 #   out/work/              userland component builds (busybox, dropbear, ...)
 #   out/dist/              the assembled flash images -- the final product
@@ -77,6 +79,10 @@ KERNEL_STAGE   := $(KERNEL_OUT)
 # must not be concatenated, or the decompressor rewrites the r2 DTB argument.
 KERNEL_ZIMAGE  := $(KERNEL_STAGE)/zImage
 KERNEL_DTB     := $(KERNEL_STAGE)/$(BOARD).dtb
+# Where release.sh installs the loadable modules.  The rootfs packaging merges
+# this tree into the SquashFS image, so nothing has to be written next to the
+# rootfs/ sources.
+KERNEL_MODULES := $(KERNEL_STAGE)/modules
 
 # --- rootfs (packaging only) ------------------------------------------------
 # The tree that becomes the userland: the rootfs/ directory itself, which is the
@@ -84,6 +90,10 @@ KERNEL_DTB     := $(KERNEL_STAGE)/$(BOARD).dtb
 # flash partition; the kernel no longer embeds a copy (see the defconfig).
 ROOTFS_TREE     ?= $(ROOTFS_DIR)
 ROOTFS_SQUASHFS := $(ROOTFS_OUT)/rootfs.squashfs
+# mksquashfs takes one source tree, so the rootfs and the kernel modules are
+# merged into a staging copy first.  The copy lives under out/ so the shipped
+# rootfs/ tree stays exactly what it is in git.
+ROOTFS_STAGE    := $(ROOTFS_OUT)/stage
 
 # --- flash image ------------------------------------------------------------
 # The image carries every fixed partition -- dtb + kernel + rootfs -- and leaves
@@ -108,7 +118,7 @@ TOOLS_DIR      := $(TOP)/tools
 SPI_IMAGE_TOOL := $(TOOLS_DIR)/spi_image.py
 
 .PHONY: all help bootloader kernel rootfs rootfs-squashfs busybox dropbear \
-        tools sftp-server flash-image flash-kernel ota-check \
+        tools tinyalsa pcaudiolib sftp-server flash-image flash-kernel ota-check \
         ota-rootfs ota-kernel ota-dtb \
         flash-bootloader doctor \
         menuconfig kernel-menuconfig kernel-nconfig kernel-xconfig \
@@ -123,12 +133,30 @@ all: bootloader flash-image
 	@echo "built: bootloader, kernel, rootfs, $(notdir $(FLASH_IMAGE))"
 	@echo "dist:  $(DIST_OUT)/  (2 flash images + bootloader.bin)"
 
+# Host-side companion artifacts only. No dependency from any firmware target.
+# Default inventory generation succeeds even when the report is BLOCKED;
+# LEGAL_STRICT=1 is the explicit release gate (nonzero for unresolved errors).
+LEGAL_STRICT ?= 0
+LEGAL_INFO_TOOL := $(TOP)/tools-internal/legal_info.py
+.PHONY: legal-info legal-info-sources legal-info-tool-check
+legal-info-tool-check:
+	@test -f "$(LEGAL_INFO_TOOL)" || { \
+		echo "legal-info is maintainer-only; tools-internal/legal_info.py is not distributed." >&2; \
+		exit 1; }
+
+legal-info: legal-info-tool-check
+	python3 "$(LEGAL_INFO_TOOL)" --out "$(OUT_DIR)/legal-info" $(if $(filter 1,$(LEGAL_STRICT)),--strict,)
+
+legal-info-sources: legal-info-tool-check
+	python3 "$(LEGAL_INFO_TOOL)" --out "$(OUT_DIR)/legal-info-sources" --sources $(if $(filter 1,$(LEGAL_STRICT)),--strict,)
+
 help:
 	@echo "N32H7xx Linux top-level targets:"
 	@echo
 	@echo "  all              bootloader + kernel + rootfs + flash image (default)"
 	@echo "  bootloader       build the $(BOOT_STORAGE)-backed CM7 bootloader"
 	@echo "  kernel           build and stage the separate zImage + $(BOARD).dtb"
+	@echo "                   (also builds the loadable modules into out/kernel/modules)"
 	@echo "  menuconfig       change the kernel configuration (ncurses; 'kernel-menuconfig')"
 	@echo "  kernel-nconfig   same with the newer ncurses UI ('kernel-xconfig' for Qt)"
 	@echo "  kernel-oldconfig review the symbols a kernel update added, one by one"
@@ -139,8 +167,10 @@ help:
 	@echo "  busybox          rebuild BusyBox and install it into the rootfs tree"
 	@echo "  dropbear         rebuild dropbear/dropbearkey and install them"
 	@echo "  tools            rebuild n32-flash and install it"
+	@echo "  tinyalsa         rebuild tinyplay/tinycap/tinymix/tinypcminfo"
+	@echo "  pcaudiolib       build libpcaudio.a (espeak-ng's audio sink; no install)"
 	@echo "  sftp-server      build the SSH 'sftp' subsystem and install it"
-	@echo "    (the four component-rebuild targets above need sdk-src/, the local"
+	@echo "    (the six component-rebuild targets above need sdk-src/, the local"
 	@echo "     source-rebuild environment, which is not part of this tree."
 	@echo "     Everything else here is self-contained.)"
 	@echo "  flash-image      assemble the raw SPI NOR image (system left erased)"
@@ -150,6 +180,9 @@ help:
 	@echo "  ota-dtb          push $(notdir $(KERNEL_DTB)) over SSH and flash it from Linux"
 	@echo "  flash-bootloader program the CM7 bootloader into on-chip flash"
 	@echo "  doctor           report tool, probe and target state"
+	@echo "  legal-info       maintainer-only license bundle, inventory and compliance report"
+	@echo "  legal-info-sources  maintainer-only: also snapshot available sources (large)"
+	@echo "                   LEGAL_STRICT=1 fails on unresolved release blockers"
 	@echo "  clean            remove the whole build tree $(OUT_DIR)"
 	@echo
 	@echo "Final products land in $(DIST_OUT)/:"
@@ -248,6 +281,10 @@ ROOTFS_MANIFEST := $(ROOTFS_OUT)/.tree-manifest
 
 $(ROOTFS_MANIFEST): FORCE | $(ROOTFS_OUT)/.dir
 	@find $(ROOTFS_TREE) -printf '%p %y %s %T@\n' | sort >$@.new
+	@# The module tree is part of the image, so a rebuilt .ko has to repack it.
+	@if [ -d $(KERNEL_MODULES) ]; then \
+		find $(KERNEL_MODULES) -printf 'mod %P %y %s %T@\n' | sort >>$@.new; \
+	fi
 	@cmp -s $@.new $@ || mv $@.new $@
 	@rm -f $@.new
 
@@ -257,8 +294,17 @@ FORCE:
 $(ROOTFS_SQUASHFS): $(ROOTFS_MANIFEST)
 	@test -d $(ROOTFS_TREE) || { \
 		echo "error: ROOTFS_TREE $(ROOTFS_TREE) does not exist" >&2; exit 1; }
-	@echo "==> packing SquashFS from $(ROOTFS_TREE)"
-	mksquashfs $(ROOTFS_TREE) $@ -noappend -comp gzip -b 65536 \
+	@echo "==> staging rootfs from $(ROOTFS_TREE)"
+	@rm -rf $(ROOTFS_STAGE)
+	@mkdir -p $(ROOTFS_STAGE)
+	@cp -a $(ROOTFS_TREE)/. $(ROOTFS_STAGE)/
+	@if [ -d $(KERNEL_MODULES)/lib/modules ]; then \
+		echo "==> adding kernel modules from $(KERNEL_MODULES)"; \
+		mkdir -p $(ROOTFS_STAGE)/lib; \
+		cp -a $(KERNEL_MODULES)/lib/. $(ROOTFS_STAGE)/lib/; \
+	fi
+	@echo "==> packing SquashFS"
+	mksquashfs $(ROOTFS_STAGE) $@ -noappend -comp gzip -b 65536 \
 		-processors 1 -all-root
 	@echo "rootfs: $@"
 
@@ -313,6 +359,25 @@ tools:
 	@echo "==> board tools (n32-flash)"
 	bash $(TOP)/sdk-src/scripts/install-n32-tools.sh $(ROOTFS_TREE)
 	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
+
+# BusyBox ships no audio applets.  The ALSA user space on this board is the
+# upstream TinyALSA utilities: tinyplay (playback), tinycap (capture),
+# tinymix (mixer controls) and tinypcminfo (PCM capabilities).
+tinyalsa:
+	$(call require-sdk-src,tinyalsa)
+	@echo "==> tinyalsa (sdk-src/sources/tinyalsa)"
+	bash $(TOP)/sdk-src/scripts/install-tinyalsa.sh $(ROOTFS_TREE)
+	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
+
+# pcaudiolib is espeak-ng's audio sink and has no ALSA/PulseAudio/OSS/QSA to
+# talk to here, so the port at sdk-src/project/pcaudiolib/ adds a TinyALSA
+# backend.  Unlike the targets above this installs nothing: it produces a
+# static library under out/work/, which is what the espeak-ng cross build links.
+# Run 'make tinyalsa' first - the backend links TinyALSA's archive.
+pcaudiolib:
+	$(call require-sdk-src,pcaudiolib)
+	@echo "==> pcaudiolib (sdk-src/sources/pcaudiolib + TinyALSA backend)"
+	$(MAKE) -C $(TOP)/sdk-src/project/pcaudiolib
 
 # Dropbear execs SFTPSERVER_PATH for the SSH "sftp" subsystem (used by "sftp"
 # and by "scp" in its default mode); nothing in busybox or dropbear provides it.
@@ -375,8 +440,10 @@ flash-bootloader: bootloader
 # ---------------------------------------------------------------------------
 # Push an image over SSH and let the board program its own flash.  No probe and
 # no USB cable: n32-flash on the board erases, programs and reads the partition
-# back byte for byte, then reboots into it.  The address is DHCP-assigned
-# unless the board is configured otherwise, so it can change between boots.
+# back byte for byte, then reboots into it.  The address is DHCP-assigned; the
+# board's MAC comes from its chip ID, so the lease usually comes back the same,
+# but the address is not built into the image and H787_BOARD still has to be
+# passed in.
 #
 # The image is piped into the board's stdin ("n32-flash ota -"), not copied
 # there first.  Staging on the board also works and is documented, but /tmp is
@@ -406,8 +473,9 @@ ota-check:
 	@test -n "$(H787_BOARD)" || { \
 		echo "error: H787_BOARD is not set." >&2; \
 		echo "       It is the board's SSH target, e.g. root@192.168.1.85." >&2; \
-		echo "       The address is DHCP-assigned and changes between boots, so" >&2; \
-		echo "       look it up on the console (ifconfig eth0) and pass it:" >&2; \
+		echo "       The address comes from DHCP (the MAC is fixed per board, so" >&2; \
+		echo "       the lease is stable, but the image does not pin it).  Read" >&2; \
+		echo "       it with 'ifconfig eth0' on the console and pass it:" >&2; \
 		echo "         make ota-<part> H787_BOARD=root@<ip>" >&2; \
 		exit 1; }
 	@test -f $(SSH_OTA_TOOL) || { \

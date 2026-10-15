@@ -1,0 +1,18 @@
+{
+  "component": "tinyalsa",
+  "method": "Fresh isolated source build reproduces all four published utilities byte for byte",
+  "checks": {
+    "rootfs/bin/tinyplay": "956afffb03a3bfd6894519e2fe443972382f7c4b680ed2e89f4fec4fcec01304",
+    "rootfs/bin/tinycap": "be9646a0726ed642fc6fd21291b32d15fd1c4b9b46fa1f002ed9fc5663fe972a",
+    "rootfs/bin/tinymix": "5948ff9c9c92775594581646dcae90b79e7279e25328a7fbc795eb5427fde1ef",
+    "rootfs/bin/tinypcminfo": "4afe2c5185869441e88f4d1da11bb649b656b358dbb0598b6b16f9d20e5a59f0"
+  },
+  "details": {
+    "recipe": "sdk-src/scripts/install-tinyalsa.sh; equivalent isolated source/output directories, no install step executed",
+    "compiler": "SDK arm-uclinuxfdpiceabi-gcc 16.1.0",
+    "headers": "Exported sound UAPI from reviewed kernel",
+    "flags": "Library: -fPIC -Os -g0; utilities: -Os -g0 -ldl, standard strip",
+    "archive_bit_identical": false,
+    "scope": "Utilities exact; no bit-identity claim for the static archive container"
+  }
+}

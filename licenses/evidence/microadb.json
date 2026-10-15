@@ -1,0 +1,14 @@
+{
+  "component": "microadb",
+  "method": "Published daemon matches preserved stripped runtime build output",
+  "checks": {
+    "rootfs/usr/sbin/adbd": "f9339dd605762e1d4f9ad8292a4e8156a906fdfefafe91f3b9865fa9f64ee1f5",
+    "sdk-src/project/microadb/port.c": "dc3af4c05ee8df8237c949e468f1cd887bd36eee127f328fb8222f6cc957b294",
+    "sdk-src/project/microadb/config.h": "6f92e15eb8c82ab092421412884a02989e9287245891bedece94c8c9b966b672",
+    "sdk-src/project/microadb/Makefile": "c4486539ec1e2de1f21d4b00062fde1e10b9281223971d16e30915456ab7e4fd"
+  },
+  "details": {
+    "matching_build_output": "out/work/microadb/adbd.stripped",
+    "scope": "Existing build association plus source/input digests, not a fresh build claim"
+  }
+}

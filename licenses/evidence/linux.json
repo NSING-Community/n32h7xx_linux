@@ -1,0 +1,141 @@
+{
+  "component": "linux",
+  "method": "Isolated source rebuild: all allocated ELF sections identical after normalizing GNU build-id and minimal initramfs cpio mtimes; DTB identical",
+  "checks": {
+    "out/kernel/zImage": "bcbd2fa1809f6a226c4308c17a90c48b38998413132a2ab1b91f777a9ccb1e17",
+    "out/kernel/n32h787-hmi.dtb": "2a754a08fcb3d727edbc3ab1ed70448ac9b1f5520ef7e4d8d1c0b0786b3c1be8",
+    "out/kernel/build/.config": "b081afc126ab39da72db4c622a7b9a468943324e0996898386bfd4b7d3ba6dfd"
+  },
+  "details": {
+    "compiler": "arm-none-eabi-gcc 14.2.1 20241119",
+    "config": "out/kernel/build/.config",
+    "build_user": "tobby",
+    "build_host": "n32-wsl",
+    "build_version": "42",
+    "build_timestamp": "Thu Oct 15 00:18:39 CST 2026",
+    "temporary_uts_header": "Default # PREEMPT placeholder during version.o compilation; final timestamp applied at link step",
+    "recipe": "make -C kernel O=<isolated-output> ARCH=arm CROSS_COMPILE=arm-none-eabi- olddefconfig; make -j8 zImage dtbs",
+    "original_build_id": "a94bc8a41aa798e85cdf9ba29b1327ef7b77e85f",
+    "rebuild_build_id": "7ca845b777cb730bd13bf384cd8a3e34efcf328c",
+    "differing_allocated_sections": [
+      ".notes",
+      ".init.data"
+    ],
+    "original_minimal_initramfs": [
+      {
+        "name": "dev",
+        "mtime": 1791882501
+      },
+      {
+        "name": "dev/console",
+        "mtime": 1791882501
+      },
+      {
+        "name": "root",
+        "mtime": 1791882501
+      },
+      {
+        "name": "TRAILER!!!",
+        "mtime": 0
+      }
+    ],
+    "rebuilt_minimal_initramfs": [
+      {
+        "name": "dev",
+        "mtime": 1792033421
+      },
+      {
+        "name": "dev/console",
+        "mtime": 1792033421
+      },
+      {
+        "name": "root",
+        "mtime": 1792033421
+      },
+      {
+        "name": "TRAILER!!!",
+        "mtime": 0
+      }
+    ],
+    "normalized_sections": [
+      {
+        "section": ".head.text",
+        "sha256": "300a0e17abe341221e0300245f091d45b92da5800f69c393026b6b7837f76157"
+      },
+      {
+        "section": ".text",
+        "sha256": "63be94e8edaf2ffa0a5d71acaa4372df16af05fcc45e6b53babefb62ac444ff7"
+      },
+      {
+        "section": ".rodata",
+        "sha256": "53e662ce291c4a279413e882e5aef8bc118127afe839e7d2cce75c9368c5c289"
+      },
+      {
+        "section": "__ksymtab",
+        "sha256": "de0754678b759966f95f241d38d4612331e8dadfea9a972be7331fbdbd48c54d"
+      },
+      {
+        "section": "__kflagstab",
+        "sha256": "30038e266a7b706b2c10b2011f39e0e2aff61657c6c787239b0eff725401aeed"
+      },
+      {
+        "section": "__ksymtab_strings",
+        "sha256": "107d3349402035708d1d09a3e5f0fd2cce48e328dadc038ca66080b44e42a75d"
+      },
+      {
+        "section": "__param",
+        "sha256": "b5141c91b76309dba429a47ad5b84c79c97fbe434a459456d1737dd9fbc9261a"
+      },
+      {
+        "section": "__modver",
+        "sha256": "33ad7b93a3509c56417608238f962b903c22946ec74d07f8ef8cc4314fd2f7e7"
+      },
+      {
+        "section": ".notes",
+        "sha256": "e35dc1ddec9daad49bb50d72fddc1fb4687ed6e3fef1378dd03d8fed3e24b6c8"
+      },
+      {
+        "section": ".ARM.unwind_idx",
+        "sha256": "673c33494fe79a8819189b0b5a5413765ff38071805c4ba43554ae27f2149f36"
+      },
+      {
+        "section": ".ARM.unwind_tab",
+        "sha256": "258d6235c1b319dd2eb5bba854f7cc0ec1652501ec7b26afeb17458ba36ec05d"
+      },
+      {
+        "section": ".init.text",
+        "sha256": "8c280de9b61e6ffae444fd5dfdd236f8af530574034c49c861c1822ecc86b90e"
+      },
+      {
+        "section": ".exit.text",
+        "sha256": "d9afe8dcd65cec7eeec81cb085376bc290398684657260e4ff66494060de7286"
+      },
+      {
+        "section": ".init.proc.info",
+        "sha256": "86b192b7d72e85544948a738a7c70abd76622d3173c30651a5043e7876ec875a"
+      },
+      {
+        "section": ".init.arch.info",
+        "sha256": "d63538f8cdae4fa57562bc9447768e3f0effbb4bdf59c1a818c782f6ab52e603"
+      },
+      {
+        "section": ".init.tagtable",
+        "sha256": "a59d41ed07347e0b9c43c98efa09f3c6b470b22a6a38887157536d92ff53e94c"
+      },
+      {
+        "section": ".init.data",
+        "sha256": "b85e1dca493af2bed3a2e694f5a76f8982614fb2531877e042d468ad15295c6f"
+      },
+      {
+        "section": ".data",
+        "sha256": "e1a28dae27c6290d52ea5cbfce3ac760c227e5da51bb4ffbcd1ed80d9cb68f45"
+      },
+      {
+        "section": "__bug_table",
+        "sha256": "43f3e620cfa875cd1453215a514094def2e3bf424976f987894f5c6cbaa06d08"
+      }
+    ],
+    "zimage_bit_identical": false,
+    "explanation": "Different debug paths change GNU build-id, and default minimal cpio records wall-clock mtimes. All other allocated bytes match, including every instruction and non-timestamp datum. Exact excluded byte patterns and cpio entries are recorded."
+  }
+}

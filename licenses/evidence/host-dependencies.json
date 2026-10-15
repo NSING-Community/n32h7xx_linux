@@ -1,0 +1,85 @@
+{
+  "component": "host-dependencies",
+  "method": "Released compiler hashes match original source-build release manifest; static archive/link flags preserved",
+  "checks": {
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1": "9529c8fe1717d340823cd5b102f44fe4de646abc4b353ba2416643a2e0bbceb5",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1plus": "891fe452d35ae0ea9e013c35bfef076d5078f1da09b0baed9804051f18b7bbb1",
+    "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto1": "2e5a37ee792ca948ad3d664fb4e778abe8604b349bbfa394fc3dc8292f4909f7",
+    "licenses/evidence/gcc-link-records.txt": "ee6c2e750ada063089958c735f007c671435646eab4d128c1a251f24d393ff3c"
+  },
+  "details": {
+    "subcomponents": [
+      {
+        "name": "GMP",
+        "version": "6.3.0",
+        "license": "LGPL-3.0-or-later OR GPL-2.0-or-later",
+        "source": "GCC 16.1.0 bundled source: gmp-6.3.0",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "MPFR",
+        "version": "4.2.2",
+        "license": "LGPL-3.0-or-later",
+        "source": "GCC 16.1.0 bundled source: mpfr-4.2.2",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "MPC",
+        "version": "1.3.1",
+        "license": "LGPL-3.0-or-later",
+        "source": "GCC 16.1.0 bundled source: mpc-1.3.1",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "ISL",
+        "version": "0.24",
+        "license": "MIT",
+        "source": "GCC 16.1.0 bundled source: isl-0.24",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "libcody",
+        "version": "bundled with GCC 16.1.0",
+        "license": "Apache-2.0",
+        "source": "GCC 16.1.0 bundled source: libcody",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "libbacktrace",
+        "version": "bundled with GCC 16.1.0",
+        "license": "BSD-3-Clause",
+        "source": "GCC 16.1.0 bundled source: libbacktrace",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "libiberty",
+        "version": "bundled with GCC 16.1.0",
+        "license": "LGPL-2.0-or-later; individual permissive files also retained",
+        "source": "GCC 16.1.0 bundled source: libiberty",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "libcpp",
+        "version": "bundled with GCC 16.1.0",
+        "license": "GPL-3.0-or-later",
+        "source": "GCC 16.1.0 bundled source: libcpp",
+        "composition": "Static archive in preserved compiler link records"
+      },
+      {
+        "name": "libdecnumber",
+        "version": "bundled with GCC 16.1.0",
+        "license": "GPL-3.0-or-later WITH GCC-exception-3.1",
+        "source": "GCC 16.1.0 bundled source: libdecnumber",
+        "composition": "Static archive in preserved compiler link records"
+      }
+    ],
+    "native_build_compiler": "Ubuntu GCC 15.2.0-16ubuntu1",
+    "native_runtime": "Linked by eligible GNU compilation with GCC Runtime Library Exception 3.1; no separate native runtime libraries shipped",
+    "external_host_dependencies": [
+      "libz.so.1",
+      "libzstd.so.1",
+      "libm.so.6",
+      "libc.so.6"
+    ]
+  }
+}

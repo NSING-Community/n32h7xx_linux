@@ -1,0 +1,15 @@
+{
+  "component": "uclibc",
+  "method": "Fresh isolated rebuild of pinned tarball + actual patch/config reproduces deployed libc and loader byte for byte",
+  "checks": {
+    "rootfs/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+    "rootfs/lib/ld-uClibc-1.0.59.so": "17a0a9fca030f2ae56616750c4a93d41f9a628c47f7ed4bfddd9e3ec0d6b54bd",
+    "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2": "87a6e4b7f38cd5fb19c573a86fe0ab6424a91ee2f0fa187e25ddfc21d717a3e2",
+    "sdk-src/patches/uclibc-nsing-fdpic.patch": "5fec6d9581f6d2877435b7062282ba56d3c56bf5bb7d32718ffca85671390994",
+    "sdk-src/configs/uclibc.config": "3a43b98e246b5e611f2929df210f2f07188cc78eadbd24f6653edeac63b7d186"
+  },
+  "details": {
+    "recipe": "JOBS=8 bash sdk-src/scripts/rebuild-uclibc.sh out/legal-proof/uclibc-1.0.59",
+    "legacy_source_directory": "sdk-src/sources/uclibc is 1.0.57 and is deliberately NOT used as 1.0.59 corresponding source"
+  }
+}

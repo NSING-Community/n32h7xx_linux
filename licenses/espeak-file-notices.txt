@@ -1,0 +1,1367 @@
+sdk-src/sources/espeak-ng/android/jni/include/Log.h
+/*
+ * Copyright (C) 2009 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+sdk-src/sources/espeak-ng/android/jni/jni/eSpeakService.c
+/*
+ * Copyright (C) 2012-2017 Reece H. Dunn
+ * Copyright (C) 2011 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+sdk-src/sources/espeak-ng/src/compat/getopt.c
+/*-
+ * Copyright (c) 2000 The NetBSD Foundation, Inc.
+ * All rights reserved.
+ *
+ * This code is derived from software contributed to The NetBSD Foundation
+ * by Dieter Baron and Thomas Klausner.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
+ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+sdk-src/sources/espeak-ng/src/espeak-ng.c
+/*
+ * Copyright (C) 2006 to 2013 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/endian.h
+/* Compatibility shim for <endian.h>
+ *
+ * "License": Public Domain
+ * "Original": https://gist.github.com/panzi/6856583
+ *
+ * I, Mathias Panzenböck, place this file hereby into the public domain. Use it
+ * at your own risk for whatever you like. In case there are jurisdictions that
+ * don't support putting things in the public domain you can also consider it
+ * to be "dual licensed" under the BSD, MIT and Apache licenses, if you want
+ * to. This code is trivial anyway. Consider it an example on how to get the
+ * endian conversion functions on different platforms.
+ *
+ * Modifications also in the Public Domain and dual licensed under BSD, MIT and
+ * Apache licenses (using the terms outlined above):
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/getopt.h
+/* Compatibility shim for <getopt.h>
+ *
+ * Copyright (C) 2006 to 2013 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/math.h
+/* Compatibility shim for <math.h>
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/stdint.h
+/* Compatibility shim for <stdint.h>
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/stdio.h
+/* Compatibility shim for <stdio.h>
+ *
+ * Copyright (C) 2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/string.h
+/* Compatibility shim for <string.h>
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/strings.h
+/* Compatibility shim for <strings.h>
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/sys/stat.h
+/* Compatibility shim for <sys/stat.h>
+ *
+ * Copyright (C) 2016-2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/unistd.h
+/* Compatibility shim for <unistd.h>
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/wchar.h
+/* Compatibility shim for <wchar.h>
+ *
+ * Copyright (C) 2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/compat/wctype.h
+/* Compatibility shim for <wctype.h>
+ *
+ * Copyright (C) 2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/espeak/speak_lib.h
+sdk-src/sources/espeak-ng/src/include/espeak-ng/speak_lib.h
+/***************************************************************************
+ *   Copyright (C) 2005 to 2012 by Jonathan Duddington                     *
+ *   email: jonsd@users.sourceforge.net                                    *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, see:                                 *
+ *               <http://www.gnu.org/licenses/>.                           *
+ ***************************************************************************/
+
+sdk-src/sources/espeak-ng/src/include/espeak-ng/encoding.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/encoding.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/phoneme.c
+/*
+ * Copyright (C) 2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/include/espeak-ng/espeak_ng.h
+/* eSpeak NG API.
+ *
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/common.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/speech.c
+/*
+ * Copyright (C) 2005 to 2013 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2013-2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/common.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/speech.h
+/*
+ * Copyright (C) 2005 to 2007 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2013-2015 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/compiledata.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/dictionary.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/mnemonics.c
+/*
+ * Copyright (C) 2005 to 2014 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2013-2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/compiledict.c
+/*
+ * Copyright (C) 2005 to 2014 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write see:
+ *             <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/compiledict.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/dictionary.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/intonation.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/mbrola.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/numbers.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/phonemelist.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/readclause.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/setlengths.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/synthdata.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/wavegen.h
+/*
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2018 Reece H. Dunn
+ * Copyright (C) 2018 Juho Hiltunen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/compilembrola.c
+/*
+ * Copyright (C) 2005 to 2014 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2013-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/error.c
+/* Error handling APIs.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/error.h
+/* Internal error APIs.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_api.c
+/* An implementation of the eSpeak API using the espeak-ng API.
+ *
+ * Copyright (C) 2005 to 2013 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_command.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/event.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/fifo.c
+/*
+ * Copyright (C) 2007, Gilles Casse <gcasse@oralux.org>
+ * Copyright (C) 2013-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_command.h
+/*
+ * Copyright (C) 2007, Gilles Casse <gcasse@oralux.org>
+ * Copyright (C) 2015 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/event.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/fifo.h
+/*
+ * Copyright (C) 2007, Gilles Casse <gcasse@oralux.org>
+ * Copyright (C) 2015-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/ieee80.c
+sdk-src/sources/espeak-ng/tests/ieee80.c
+/*
+ * Copyright (C) 2022 Ulrich Müller <ulm@gentoo.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ *
+ *
+ * Alternatively, at your option, you can distribute this file under
+ * the terms of the 2-clause BSD license.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/intonation.c
+/*
+ * Copyright (C) 2005 to 2007 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/klatt.c
+/*
+ * Copyright (C) 2008 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2013-2016 Reece H. Dunn
+ *
+ * Based on a re-implementation by:
+ * (c) 1993,94 Jon Iles and Nick Ing-Simmons
+ * of the Klatt cascade-parallel formant synthesizer
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/klatt.h
+/*
+ * Copyright (C) 2008 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ *
+ * Based on a re-implementation by:
+ * (c) 1993,94 Jon Iles and Nick Ing-Simmons
+ * of the Klatt cascade-parallel formant synthesizer
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/langopts.c
+/*
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ * Copyright (C) 2022 Juho Hiltunen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/langopts.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/voice.h
+/*
+ * Copyright (C) 2005 to 2007 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/mbrowrap.c
+/*
+ * mbrowrap -- A wrapper library around the mbrola binary
+ * providing a subset of the API from the Windows mbrola DLL.
+ *
+ * Copyright (C) 2005 to 2013 by Jonathan Duddington
+ * Copyright (C) 2010 by Nicolas Pitre <nico@fluxnic.net>
+ * Copyright (C) 2013-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/mbrowrap.h
+/*
+ * mbrowrap -- A wrapper library around the mbrola binary
+ * providing a subset of the API from the Windows mbrola DLL.
+ *
+ * Copyright (C) 2010 by Nicolas Pitre <nico@fluxnic.net>
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/mnemonics.h
+/*
+ * Copyright (C) 2005 to 2007 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2013-2015 Reece H. Dunn
+ * Copyright (C) 2021 Juho Hiltunen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/numbers.c
+/*
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2016, 2020 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/phoneme.h
+/*
+ * Copyright (C) 2005 to 2010 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/phonemelist.c
+/*
+ * Copyright (C) 2005 to 2014 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/readclause.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/voices.c
+/*
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/setlengths.c
+/*
+ * Copyright (C) 2005 to 2011 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/sintab.h
+/*
+ * Copyright (C) 2007 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/soundicon.c
+/*
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ * Copyright (C) 2021 Juho Hiltunen
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/soundicon.h
+/*
+ * Copyright (C) 2005 to 2014 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ * Copyright (C) 2021 Juho Hiltunen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/spect.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/spect.h
+/*
+ * Copyright (C) 2005 to 2007 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2013-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/ssml.c
+/*
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ * Copyright (C) 2018 Juho Hiltunen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/ssml.h
+/* SSML (Speech Synthesis Markup Language) processing APIs.
+ *
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2018 Reece H. Dunn
+ * Copyright (C) 2018 Juho Hiltunen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/synth_mbrola.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/wavegen.c
+sdk-src/sources/espeak-ng/src/speak-ng.c
+/*
+ * Copyright (C) 2005 to 2013 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/synthdata.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/synthesize.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/synthesize.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/translate.c
+sdk-src/sources/espeak-ng/src/libespeak-ng/translateword.c
+/*
+ * Copyright (C) 2005 to 2014 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/tr_languages.c
+/*
+ * Copyright (C) 2005 to 2015 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2016, 2020 Reece H. Dunn
+ * Copyright (C) 2021 Juho Hiltunen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/libespeak-ng/translate.h
+sdk-src/sources/espeak-ng/src/libespeak-ng/translateword.h
+/*
+ * Copyright (C) 2005 to 2014 by Jonathan Duddington
+ * email: jonsd@users.sourceforge.net
+ * Copyright (C) 2015-2017, 2020 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/speechPlayer/include/speechPlayer.h
+sdk-src/sources/espeak-ng/src/speechPlayer/src/frame.h
+sdk-src/sources/espeak-ng/src/speechPlayer/src/sample.h
+sdk-src/sources/espeak-ng/src/speechPlayer/src/speechPlayer.h
+sdk-src/sources/espeak-ng/src/speechPlayer/src/speechWaveGenerator.h
+sdk-src/sources/espeak-ng/src/speechPlayer/src/utils.h
+sdk-src/sources/espeak-ng/src/speechPlayer/src/waveGenerator.h
+/*
+This file is a part of the NV Speech Player project. 
+URL: https://bitbucket.org/nvaccess/speechplayer
+Copyright 2014 NV Access Limited.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License, as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+This license can be found at:
+http://www.gnu.org/licenses/gpl.html
+*/
+
+sdk-src/sources/espeak-ng/src/ucd-tools/src/case.c
+/* Unicode Case Conversion
+ *
+ * Copyright (C) 2012-2018, 2021 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/ucd-tools/src/categories.c
+/* Unicode General Categories
+ *
+ * Copyright (C) 2012-2018 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/ucd-tools/src/ctype.c
+/* ctype-style APIs.
+ *
+ * Copyright (C) 2012-2018 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/ucd-tools/src/include/ucd/ucd.h
+/* Unicode Character Database API
+ *
+ * Copyright (C) 2012-2018 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/ucd-tools/src/proplist.c
+/* PropList APIs.
+ *
+ * Copyright (C) 2017-2018 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/ucd-tools/src/scripts.c
+/* Unicode Scripts
+ *
+ * Copyright (C) 2012-2018 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/ucd-tools/src/tostring.c
+/* Enumeration types to string.
+ *
+ * Copyright (C) 2012-2018 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/ucd-tools/tests/printcdata.c
+sdk-src/sources/espeak-ng/src/ucd-tools/tests/printucddata.c
+/*
+ * Copyright (C) 2012-2017 Reece H. Dunn
+ *
+ * This file is part of ucd-tools.
+ *
+ * ucd-tools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ucd-tools is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/src/windows/com/comentrypoints.c
+/*
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see: <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/tests/api.c
+sdk-src/sources/espeak-ng/tests/encoding.c
+sdk-src/sources/espeak-ng/tests/readclause.c
+/*
+ * Copyright (C) 2017 Reece H. Dunn
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write see:
+ *             <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/espeak-ng/tests/fuzzing/synth_fuzzer.c
+sdk-src/sources/espeak-ng/tests/fuzzrunner.c
+sdk-src/sources/espeak-ng/tests/ssml-fuzzer.c
+/*
+ * Copyright (C) 2018 Sascha Brawer
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write see:
+ *             <http://www.gnu.org/licenses/>.
+ */

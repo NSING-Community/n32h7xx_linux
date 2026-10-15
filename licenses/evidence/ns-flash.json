@@ -1,0 +1,20 @@
+{
+  "component": "ns-flash",
+  "method": "Closed company binary matches preserved original ARM build; build configuration and Zig toolchain licenses audited without publishing private code",
+  "checks": {
+    "sdk/optional/ns-flash/ns-flash": "9cbf1bedfe9d5f454c6c2ef3de706403d2b9c8b0ad5605cb5c1707d88bbd5226",
+    "licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177"
+  },
+  "details": {
+    "company_source_published": false,
+    "company_source_included_in_archive": false,
+    "version": "0.1.4",
+    "zig_version": "0.16.0",
+    "zig_license": "MIT",
+    "zig_copyright": "Zig contributors",
+    "upstream": "https://ziglang.org/",
+    "compiler_recipe_sha256": "88a4a06f9f03b6439f4ad80cd250773ba88173360cff64032e37bd43c1aab5a6",
+    "build_description": "Zig C backend + SDK GCC; direct usbfs/hidraw implementation, no external libusb link; ELF NEEDED libc.so.0",
+    "scope": "Only version, license, recipe hash and binary correspondence are disclosed; no private source text copied."
+  }
+}

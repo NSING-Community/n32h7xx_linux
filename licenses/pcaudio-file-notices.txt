@@ -1,0 +1,189 @@
+sdk-src/sources/pcaudiolib/src/alsa.c
+/* ALSA Output.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/audio.c
+/* Public API Implementation.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/audio_priv.h
+/* Internal Audio API.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/coreaudio.c
+/* Coreaudio Output.
+ *
+ * Copyright (C) 2016 Rui Batista
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/include/pcaudiolib/audio.h
+/* Audio API.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/oss.c
+/* OSS Output.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/pulseaudio.c
+/* PulseAudio Output.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/qsa.c
+/* QSA Output.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ * Copyright (C) 2016 Kaj-Michael Lang
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+sdk-src/sources/pcaudiolib/src/windows.c
+/* Windows Helpers for Writing Windows Audio Objects.
+ *
+ * Copyright (C) 2016 Reece H. Dunn
+ *
+ * This file is part of pcaudiolib.
+ *
+ * pcaudiolib is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * pcaudiolib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with pcaudiolib.  If not, see <http://www.gnu.org/licenses/>.
+ */
