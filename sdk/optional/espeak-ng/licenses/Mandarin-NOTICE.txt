@@ -1,0 +1,24 @@
+Mandarin pronunciation data attribution
+
+The upstream cmn_listx input credits:
+  Unicode Unihan database, kMandarin entries (except kHanyuPinlu entries).
+  https://www.unicode.org/ucd/ ; original Unicode notice: COPYING.UCD.
+  CC-CEDICT contributors, hosted by MDBG, with corrections by espeak authors.
+  https://www.mdbg.net/chinese/dictionary?page=cc-cedict
+  https://cc-cedict.org/editor/editor.php?handler=Download
+
+The current CC-CEDICT publisher offers data under Creative Commons
+Attribution-ShareAlike 4.0 International; its full text accompanies this notice.
+The historical extraction date/revision and license version used for the
+espeak upstream import are not recorded in these inputs. That historical
+provenance remains a WARNING; the current publisher's grant is not represented
+as proof of the original import's license version.
+
+The source subset shipped here retains 59064 compiled cmn_listx records from
+the pinned espeak-ng source. It was reconstructed in 2026 to reproduce the
+existing binary dictionary; the original selection procedure was unavailable.
+Readable inputs and reproduction instructions accompany the corresponding
+source package under sdk/optional-src/espeak-ng/cmn-source/.
+
+espeak-ng program/source is GPL-3.0-or-later. This attribution supplements,
+and does not replace, any original data grants or copyrights.

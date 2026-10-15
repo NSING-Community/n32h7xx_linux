@@ -1,0 +1,12 @@
+NSLink ns-flash 0.1.4 is Nations/NSING company-owned closed-source software.
+Inclusion in this SDK does not grant an open-source license to that program.
+
+This ARM build uses Zig 0.16.0 standard-library/C-backend support, Copyright
+(c) Zig contributors, under the MIT license. See accompanying Zig-MIT.txt.
+Upstream: https://ziglang.org/
+
+The binary dynamically uses the SDK uClibc runtime. The SDK's separate legal
+companion and corresponding-source package cover that runtime and applicable
+GCC runtime terms. No company program source is included or required merely
+by its aggregation with those libraries; applicable LGPL replacement and
+debugging rights remain available for modifications to the LGPL library.

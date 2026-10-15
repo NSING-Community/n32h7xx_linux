@@ -1,0 +1,17 @@
+{
+  "cmn_list": {
+    "original_records": 3860,
+    "retained_records": 3860
+  },
+  "cmn_emoji": {
+    "original_records": 2203,
+    "retained_records": 2203
+  },
+  "cmn_listx": {
+    "original_records": 77860,
+    "retained_records": 59064
+  },
+  "method": "Equivalent readable source subset restored by matching compiled records against pinned upstream inputs; original historical selection procedure was not preserved.",
+  "source_commit": "ba90c8e9f440ad544f674a790bb5f53878b6ffc5",
+  "published_sha256": "4a1157dc2ce761ed8ea7c0862aa2728543561ac20b0c653b3b4dc123e085f027"
+}

@@ -1,0 +1,41 @@
+diff --git a/Makefile.am b/Makefile.am
+index 7bcff13..9054151 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -70,6 +70,7 @@ src_libpcaudio_la_SOURCES = \
+ 	src/oss.c \
+ 	src/pulseaudio.c \
+ 	src/audio_priv.h \
++	src/tinyalsa.c \
+ 	src/audio.c
+ 
+ # Windows audio support
+diff --git a/src/audio.c b/src/audio.c
+index 745d7b6..15fb4ae 100644
+--- a/src/audio.c
++++ b/src/audio.c
+@@ -96,6 +96,8 @@ create_audio_device_object(const char *device,
+ 		return object;
+ 
+ #else
++	if ((object = create_tinyalsa_object(device, application_name, description)) != NULL)
++		return object;
+ 	if ((object = create_pulseaudio_object(device, application_name, description)) != NULL)
+ 		return object;
+ 	if ((object = create_alsa_object(device, application_name, description)) != NULL)
+diff --git a/src/audio_priv.h b/src/audio_priv.h
+index 9526138..1589040 100644
+--- a/src/audio_priv.h
++++ b/src/audio_priv.h
+@@ -111,6 +111,11 @@ create_oss_object(const char *device,
+                   const char *application_name,
+                   const char *description);
+ 
++struct audio_object *
++create_tinyalsa_object(const char *device,
++                       const char *application_name,
++                       const char *description);
++
+ #endif
+ #endif
+ 
