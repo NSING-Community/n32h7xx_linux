@@ -13,7 +13,7 @@ board. Where it goes on your system is your call.
 
 Together that is 2295744 B raw, ≈1060614 B gzipped. The build glue for the
 binary is **not** in this directory — it is beside it, in the repository under
-[`sdk/optional-src/`](../optional-src/), which covers both components.
+[`sdk/optional-src/`](../../optional-src/), which covers both components.
 
 ## Licence — read this before you ship anything
 
@@ -39,7 +39,7 @@ can get the corresponding source. It is all reachable from here:
 * **The build glue for this binary** — the `Makefile`, `config.h`, `compat/` and
   `probe/` that turn upstream sources into the `espeak-ng` beside them — is in
   the repository at
-  [`sdk/optional-src/espeak-ng/`](../optional-src/espeak-ng/). It is small and
+  [`sdk/optional-src/espeak-ng/`](../../optional-src/espeak-ng/). It is small and
   self-contained, and together with pcaudiolib's `tinyalsa.c` it is the whole of
   the corresponding source that is not simply upstream.
 
@@ -67,9 +67,9 @@ can get the corresponding source. It is all reachable from here:
 
   Three hunks — `Makefile.am`, `src/audio.c`, `src/audio_priv.h`. The patch was
   checked against a pristine checkout of that commit: it applies with no fuzz
-  and reproduces the maintainer tree byte for byte. The port's `tinyalsa.c` and
-  `Makefile` are in the same directory
-  ([`sdk/optional-src/pcaudiolib/`](../optional-src/pcaudiolib/)), so applying
+  and reproduces the source tree the shipped library was built from byte for
+  byte. The port's `tinyalsa.c` and `Makefile` are in the same directory
+  ([`sdk/optional-src/pcaudiolib/`](../../optional-src/pcaudiolib/)), so applying
   the patch and adding those two files gives exactly the library linked into
   this binary. TinyALSA itself is BSD-3-Clause; include its source in the
   combined binary's corresponding-source release and retain its own notices.
@@ -87,12 +87,20 @@ The directory is laid out so it runs from wherever you drop it: `espeak-ng-data`
 sits next to the binary, which is the one thing the program needs to find.
 
 **The quick way — one command.** [`../install.sh`](../install.sh), one directory
-up, is two lines and contains no logic: a `scp -r` line and an `adb push` line,
-one of them commented out. Delete the `#` in front of the transport you want,
-then run `sh install.sh`. It builds nothing, translates nothing, creates no
-directory and changes no permission — `scp -r` keeps the executable bit by
-itself, so the copy lands byte-identical to what you downloaded. The manual
-equivalents follow, in case you want to see or change what it does.
+up, copies both add-on directories onto the board's `/system`. It builds
+nothing and translates nothing. Choose the transport with `USE`, and pass
+`BOARD` when you use ssh:
+
+```sh
+sh install.sh                        # adb (the default)
+BOARD=<board-ip> USE=ssh sh install.sh
+```
+
+`BOARD` deliberately has no default: the board takes a DHCP lease, so a baked-in
+address would only wait for an ssh timeout. Read the current one on the board
+with `ifconfig eth0`. `scp -r` keeps the executable bit by itself, so the copy
+lands byte-identical to what you downloaded. The manual equivalents follow, in
+case you want to see or change what it does.
 
 **Option 1 — run it in place, no installation.** Copy this whole directory to
 the board (SD card, `/system`, wherever) and point `ESPEAK_DATA_PATH` at the
@@ -346,7 +354,7 @@ two free order-9 (2 MiB) blocks will satisfy both order-8 requests.
 ## Rebuilding
 
 Everything needed on top of the two upstreams is in the repository under
-[`sdk/optional-src/`](../optional-src/) — `espeak-ng/` for the program,
+[`sdk/optional-src/`](../../optional-src/) — `espeak-ng/` for the program,
 `pcaudiolib/` for its audio layer. That directory's README has the full recipe;
 briefly, three checkouts (espeak-ng, pcaudiolib, TinyALSA), the backend patch,
 then two `make` commands, pcaudiolib first because the espeak-ng link absorbs

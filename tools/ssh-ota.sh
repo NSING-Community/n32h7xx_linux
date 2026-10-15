@@ -32,7 +32,7 @@ set -euo pipefail
 
 usage() {
 	echo "usage: $0 IMAGE PARTITION [TARGET] [--no-reboot]" >&2
-	echo "  TARGET defaults to \${H787_BOARD:-root@192.168.1.85}" >&2
+	echo "  TARGET defaults to \$H787_BOARD; no address is built in" >&2
 	exit 2
 }
 
@@ -40,7 +40,7 @@ usage() {
 
 image=$1
 partition=$2
-target=${H787_BOARD:-root@192.168.1.85}
+target=${H787_BOARD:-}
 reboot_after=1
 shift 2
 
@@ -51,6 +51,14 @@ for arg in "$@"; do
 	*)           target=$arg ;;
 	esac
 done
+
+[ -n "$target" ] || {
+	echo "$0: no target." >&2
+	echo "  Pass the board's SSH target as the third argument or in H787_BOARD," >&2
+	echo "  e.g. root@<board-ip>.  The board takes a DHCP lease, so the address" >&2
+	echo "  is not built in; read it on the board with 'ifconfig eth0'." >&2
+	exit 2
+}
 
 [ -f "$image" ] || { echo "$0: no such image: $image" >&2; exit 1; }
 

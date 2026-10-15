@@ -23,8 +23,8 @@ discrete rates and **exactly two channels**:
 | format | S16_LE only |
 
 espeak-ng always synthesises 22050 Hz **mono** S16.  22050 is one of the seven,
-so the rate is fine — the other agent widened the DAI for exactly this.  The
-channel count is not fine, and that is the whole reason this backend exists:
+so the rate is fine and nothing has to resample it.  The channel count is not
+fine, and that is the whole reason this backend exists:
 `n32_hw_params()` has an explicit `params_channels(params) != 2 → -EINVAL`, so a
 mono open is refused before a single frame is written.
 

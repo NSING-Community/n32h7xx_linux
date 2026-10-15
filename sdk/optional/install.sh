@@ -3,24 +3,35 @@
 #
 # install.sh - copy this directory's add-ons onto a board's /system.
 #
-#   sh install.sh                    over ssh, to $BOARD
-#   BOARD=192.168.1.86 sh install.sh
-#   USE=adb sh install.sh            over adb instead
+#   sh install.sh                       over adb (the default)
+#   BOARD=<board-ip> USE=ssh sh install.sh
 #
 # /system is the writable JFFS2 partition and survives kernel and rootfs
 # updates.  espeak-ng keeps a directory of its own there (/system/espeak-ng);
 # ns-flash is a single file and goes to /system/bin, which is where the board
 # looks for programs.  The root password is empty, so the ssh path answers the
 # prompt from a helper rather than asking you to press Enter.
+#
+# BOARD has no default: the board takes a DHCP lease, so a baked-in address
+# would be someone else's bench and would just hang on an ssh timeout.  Read
+# the current one on the board ("ifconfig eth0") and pass it for this run.
 
 set -e
 
 here=$(dirname "$0")
-board=${BOARD:-192.168.1.86}
+board=${BOARD:-}
 use=${USE:-adb}
 
 case "$use" in
 ssh)
+	if [ -z "$board" ]; then
+		echo "install.sh: BOARD is not set." >&2
+		echo "            BOARD is the board's address, e.g." >&2
+		echo "            BOARD=<board-ip> USE=ssh sh install.sh" >&2
+		echo "            The address comes from DHCP; read it on the board" >&2
+		echo "            with 'ifconfig eth0'." >&2
+		exit 2
+	fi
 	askpass=/tmp/install.sh-askpass
 	printf '#!/bin/sh\necho ""\n' >"$askpass"
 	chmod +x "$askpass"

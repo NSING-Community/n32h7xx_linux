@@ -5,7 +5,8 @@ board, built with the SDK toolchain in `sdk/toolchain/`.
 
 **It builds, it runs, and it is bit-exact.** Synthesising the same text on the
 board and on an x86-64 host produces byte-identical WAV files — every sample,
-not "close enough". See `diagnostics/espeak-ng-2026-10-14/` for the evidence.
+not "close enough". The native and cross builds below are what makes that
+checkable: synthesise the same text through both and compare the WAV files.
 
 There is one operational caveat, and it is a property of this board's libc
 rather than of espeak-ng: the 600 KiB `phondata` file has to land in a single
@@ -191,7 +192,7 @@ A durable fix, if this ever needs to run unattended, would be to stop reading
 `phondata` as one 600 KiB block — chunk it, or split the file by phoneme and
 load on demand. That has not been done.
 
-## Licencing
+## Licensing
 
 espeak-ng is **GPL-3.0-or-later** ([upstream
 README](https://github.com/espeak-ng/espeak-ng#license-information), `COPYING`),
@@ -205,7 +206,7 @@ glue alone does not fulfill the complete corresponding-source requirement.
 
 ## Status
 
-Verified on the board (kernel `7.3.0-rc6-01024-g642dfc8ceae0-dirty`):
+Verified on the board (kernel `7.3.0-rc7-ga894130780a1`):
 
 * `--version` reports `1.53.0` and the data path.
 * Three phrases, including a 2.79 s pangram, synthesise with `rc=0` and are
