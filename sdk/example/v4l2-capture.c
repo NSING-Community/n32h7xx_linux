@@ -25,9 +25,11 @@
  * Frames are captured with mmap streaming: the driver has no format
  * conversion, so every buffer is already the format that was asked for.
  *
- * JPEG frames vary in length and the sensor's own bit rate controller settles
- * over the first frames, so use -w to drop a few before saving.  Even then the
- * first saved frame is only a snapshot of the moment it was taken.
+ * The sensor restarts its auto exposure and auto white balance on every
+ * STREAMON, and the frames that follow are not pictures of the scene
+ * yet.  Capturing drops frames until the sensor has settled before it saves
+ * anything -- see frame_usable() below.  -w sets the minimum number of frames
+ * to drop; more are dropped if that is what it takes.
  *
  * The controls belong to the sensor, not to this driver.  The bridge lends
  * the sensor's control handler to /dev/videoN, so the ordinary control ioctls
@@ -130,7 +132,9 @@ static void usage(void)
 		"  -f FOURCC  GREY | YUYV | RGB565 | JPEG\n"
 		"  -s WxH     frame size (default 320x240)\n"
 		"  -n N       save N frames (default 1)\n"
-		"  -w N       discard N frames first (default 2)\n"
+		"  -w N       drop at least N frames first (default 2).  More are\n"
+		"             dropped if the sensor's auto exposure needs longer\n"
+		"             to settle\n"
 		"  -q N       number of buffers (default 4)\n"
 		"  -L         list the sensor's controls, then exit\n"
 		"  -c N=V     set control N to V (repeatable).  Names are matched\n"
@@ -342,6 +346,91 @@ static void open_output(const char *path, int index, int count,
 	}
 }
 
+/* Read one of the sensor's controls.  Returns 0 and the value on success. */
+static int ctrl_get(int fd, unsigned int id, long *value)
+{
+	struct v4l2_control c;
+
+	memset(&c, 0, sizeof(c));
+	c.id = id;
+	if (ioctl(fd, VIDIOC_G_CTRL, &c) < 0)
+		return -1;
+	*value = c.value;
+	return 0;
+}
+
+/*
+ * How long to wait for the sensor to settle after STREAMON.  SETTLE_FRAMES
+ * is how many reads of the exposure and the gain in a row have to agree, and
+ * WARMUP_MAX is how many frames to keep dropping if they never do.
+ */
+#define SETTLE_FRAMES	3
+#define WARMUP_MAX	30
+
+struct settle {
+	long	exposure;	/* last readings; -1 until the first one */
+	long	gain;
+	int	still;		/* reads in a row that did not move */
+	int	live;		/* the driver answers G_CTRL */
+};
+
+/*
+ * Should the frame that was just dequeued be saved?
+ *
+ * The OV5640 runs its own auto exposure and auto white balance and restarts
+ * both every time streaming starts, so the first frames after STREAMON are
+ * not pictures of the scene yet: they run from far too dark through
+ * overexposed, and the white balance drifts across a strong green cast on the
+ * way.  Saving one of those is what makes a capture look wrong -- a large
+ * resolution is slow enough that the frame is usually fine by the time it is
+ * saved, while a small one lands right in the middle of the ramp.
+ *
+ * The sensor has no "converged" flag, but the driver marks the exposure and
+ * the analogue gain volatile and reads them back out of the sensor on
+ * VIDIOC_G_CTRL, so the numbers the AEC is working with are visible from
+ * userspace.  The frames stop being wrong when those stop changing.
+ *
+ * min_frames are dropped whatever happens.  Past that, frames are dropped
+ * until the pair has held still for SETTLE_FRAMES reads, or until WARMUP_MAX
+ * more frames have gone by, so a scene the AEC keeps hunting in still
+ * produces a capture.  A driver that does not forward the controls leaves -w
+ * to do the work on its own.
+ */
+static int frame_usable(int fd, int j, int min_frames, struct settle *s)
+{
+	long exposure, gain;
+
+	if (j < min_frames)
+		return 0;
+
+	if (s->live &&
+	    (ctrl_get(fd, V4L2_CID_EXPOSURE, &exposure) < 0 ||
+	     ctrl_get(fd, V4L2_CID_ANALOGUE_GAIN, &gain) < 0))
+		s->live = 0;
+	if (!s->live)
+		return 1;
+
+	if (exposure == s->exposure && gain == s->gain)
+		s->still++;
+	else
+		s->still = 0;
+	s->exposure = exposure;
+	s->gain = gain;
+
+	if (s->still >= SETTLE_FRAMES)
+		return 1;
+
+	if (j + 1 >= min_frames + WARMUP_MAX) {
+		fprintf(stderr,
+			"%s: warning: the sensor's auto exposure did not settle "
+			"within %d frames, using frame %d anyway\n",
+			progname, min_frames + WARMUP_MAX, j);
+		return 1;
+	}
+
+	return 0;
+}
+
 int main(int argc, char **argv)
 {
 	const char *device = "/dev/video0";
@@ -349,6 +438,7 @@ int main(int argc, char **argv)
 	uint32_t want_fourcc = 0;
 	unsigned int want_w = 0, want_h = 0;
 	int save = 1, warmup = 2, nbufs = 4;
+	struct settle settle = { .exposure = -1, .gain = -1, .live = 1 };
 	struct buffer *buffers = NULL;
 	struct v4l2_requestbuffers req;
 	enum v4l2_buf_type type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
@@ -356,6 +446,7 @@ int main(int argc, char **argv)
 	int fd, c, i, j;
 	int list = 0;
 	int list_ctrls = 0, nctrls = 0;
+	int ready = 0;
 	struct ctrl_opt ctrls[MAX_CTRLS];
 	unsigned int saved = 0;
 	unsigned int bad = 0;
@@ -575,9 +666,9 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	for (j = 0; j < warmup + save; j++) {
+	for (j = 0; (int)saved < save; j++) {
 		struct v4l2_buffer buf;
-		int last = (j >= warmup);
+		int last;
 		int out_fd = -1;
 		char resolved[512];
 		ssize_t written;
@@ -589,6 +680,16 @@ int main(int argc, char **argv)
 			perror("VIDIOC_DQBUF");
 			break;
 		}
+
+		if (!ready && frame_usable(fd, j, warmup, &settle)) {
+			ready = 1;
+			if (j > warmup)
+				fprintf(stderr,
+					"%s: dropped %d frames waiting for the "
+					"sensor's auto exposure to settle\n",
+					progname, j);
+		}
+		last = ready;
 
 		if (last) {
 			/*

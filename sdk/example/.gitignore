@@ -8,4 +8,6 @@ shared-app
 pthread-app
 leds
 net-echo
+camera-matrix
+v4l2-capture
 *.o

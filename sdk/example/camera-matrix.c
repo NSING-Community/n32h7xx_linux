@@ -51,6 +51,12 @@
  * the sensor has to settle into the new mode, so it is left out; the column
  * is what the camera can sustain, not what the first frame costs.
  *
+ * The frame that is saved is not simply the one after -w frames: the sensor
+ * restarts its auto exposure and auto white balance on every STREAMON and
+ * takes a few frames to converge, and a frame grabbed from that ramp comes out
+ * dark, blown out or with a green cast.  Frames are dropped until the exposure
+ * and gain the sensor reports have held still; see frame_usable().
+ *
  * Memory: each combination reserves and then releases its own physically
  * contiguous buffers, because a buffer is exactly one frame of the size in
  * use.  Writing the frames to the SD card (-o /mnt/sd/...) rather than to
@@ -169,7 +175,9 @@ static void usage(void)
 		"             reliable ones (some are expected to fail)\n"
 		"  -o DIR     directory for the frames (default .)\n"
 		"  -q N       capture buffers per combination (default 2)\n"
-		"  -w N       frames to discard before the saved one (default 2)\n"
+		"  -w N       drop at least N frames before the saved one\n"
+		"             (default 2).  More are dropped if the sensor's auto\n"
+		"             exposure needs longer to settle\n"
 		"  -c N=V     set control N to V before capturing (repeatable).\n"
 		"             Names ignore case, spaces and underscores, so\n"
 		"             test_pattern=1 or \"Test Pattern\"=1 both work.\n"
@@ -461,6 +469,78 @@ static int save_frame(const struct format *fmt, const struct buffer *buf,
 	return bad ? -1 : 0;
 }
 
+/* Read one of the sensor's controls.  Returns 0 and the value on success. */
+static int ctrl_get(int fd, unsigned int id, long *value)
+{
+	struct v4l2_control c;
+
+	memset(&c, 0, sizeof(c));
+	c.id = id;
+	if (ioctl(fd, VIDIOC_G_CTRL, &c) < 0)
+		return -1;
+	*value = c.value;
+	return 0;
+}
+
+/*
+ * How long to wait for the sensor to settle after STREAMON.  SETTLE_FRAMES
+ * is how many reads of the exposure and the gain in a row have to agree, and
+ * WARMUP_MAX is how many frames to keep dropping if they never do.
+ */
+#define SETTLE_FRAMES	3
+#define WARMUP_MAX	30
+
+struct settle {
+	long	exposure;	/* last readings; -1 until the first one */
+	long	gain;
+	int	still;		/* reads in a row that did not move */
+	int	live;		/* the driver answers G_CTRL */
+};
+
+/*
+ * Should the frame that was just dequeued be kept?
+ *
+ * The OV5640 runs its own auto exposure and auto white balance and restarts
+ * both every time streaming starts, so the first frames after STREAMON are
+ * not pictures of the scene yet: they run from far too dark through
+ * overexposed, and the white balance drifts across a strong green cast on the
+ * way.  A frame saved from that ramp is the usual reason a capture looks
+ * wrong.
+ *
+ * The sensor has no "converged" flag, but the driver marks the exposure and
+ * the analogue gain volatile and reads them back out of the sensor on
+ * VIDIOC_G_CTRL, so the numbers the AEC is working with are visible from
+ * userspace.  The frames stop being wrong when those stop changing.
+ *
+ * min_frames are dropped whatever happens.  Past that, frames are dropped
+ * until the pair has held still for SETTLE_FRAMES reads, or until WARMUP_MAX
+ * more frames have gone by, so a sensor mode that never settles still
+ * produces a frame.
+ */
+static int frame_usable(int fd, int j, int min_frames, struct settle *s)
+{
+	long exposure, gain;
+
+	if (j < min_frames)
+		return 0;
+
+	if (s->live &&
+	    (ctrl_get(fd, V4L2_CID_EXPOSURE, &exposure) < 0 ||
+	     ctrl_get(fd, V4L2_CID_ANALOGUE_GAIN, &gain) < 0))
+		s->live = 0;
+	if (!s->live)
+		return 1;
+
+	if (exposure == s->exposure && gain == s->gain)
+		s->still++;
+	else
+		s->still = 0;
+	s->exposure = exposure;
+	s->gain = gain;
+
+	return s->still >= SETTLE_FRAMES || j + 1 >= min_frames + WARMUP_MAX;
+}
+
 /*
  * One format at one size: program the sensor, capture one frame, check it.
  * Every combination gets its own buffers, because a buffer is exactly one
@@ -480,8 +560,10 @@ static int capture_case(int fd, const struct format *fmt, const struct size *sz,
 	double t_start, t_prev = 0.0;
 	unsigned int expected = 0;
 	unsigned int i, j;
+	struct settle settle = { .exposure = -1, .gain = -1, .live = 1 };
 	int mapped = 0;
 	int streaming = 0;
+	int usable = 0;
 	int ret = -1;
 
 	memset(&f, 0, sizeof(f));
@@ -581,7 +663,7 @@ static int capture_case(int fd, const struct format *fmt, const struct size *sz,
 	}
 	streaming = 1;
 
-	for (j = 0; j <= warmup; j++) {
+	for (j = 0; !usable; j++) {
 		struct pollfd pfd;
 		struct v4l2_buffer buf;
 		double t_now;
@@ -621,7 +703,11 @@ static int capture_case(int fd, const struct format *fmt, const struct size *sz,
 			ret = -1;
 		}
 
-		if (j == warmup) {
+		/* Hold the frame back until the sensor has settled; see
+		 * frame_usable().  -w is only the floor. */
+		usable = frame_usable(fd, (int)j, (int)warmup, &settle);
+
+		if (usable) {
 			/*
 			 * The frame before this one is the honest measure of
 			 * how fast frames arrive: the wait for the very first
