@@ -1,0 +1,34 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Bring up the camera stack: the N32H7xx DVP capture device and the OV5640
+# sensor behind it, published to userspace as /dev/video0.
+#
+# Both drivers are usually built into the kernel and probe themselves from the
+# device tree, so by the time this runs there is normally nothing left to do.
+# When they are built as modules instead, this loads them; the module files
+# decide which case applies, so the same rootfs serves both.
+#
+# The board must still reach a shell without a camera, so a failure here is
+# reported and not fatal.
+export PATH=/bin:/sbin
+
+case "${1:-start}" in
+start)
+	if [ ! -c /dev/video0 ] && [ -d "/lib/modules/$(uname -r)" ]; then
+		modprobe n32h7xx_dvp || { echo 'WARNING: CAMERA_DVP_LOAD_FAILED'; exit 1; }
+		modprobe ov5640 || { echo 'WARNING: CAMERA_SENSOR_LOAD_FAILED'; exit 1; }
+	fi
+	if [ -c /dev/video0 ]; then
+		echo CAMERA_READY
+	else
+		echo 'WARNING: CAMERA_NO_DEVICE'
+		exit 1
+	fi
+	;;
+stop)
+	modprobe -r ov5640 2>/dev/null
+	modprobe -r n32h7xx_dvp 2>/dev/null
+	;;
+*) echo 'Usage: camera start' >&2; exit 2;;
+esac

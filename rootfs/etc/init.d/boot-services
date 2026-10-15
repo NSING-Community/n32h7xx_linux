@@ -36,6 +36,12 @@ fi
 # A failure here is ignored: the read-only rootfs alone must reach a shell.
 /etc/init.d/system start || echo 'WARNING: /system unavailable; continuing'
 
+# Camera.  The drivers are built into the kernel and probe on their own, so
+# this only reports whether /dev/video0 came up; nothing else depends on it.
+if [ "$(conf_get CAMERA on)" != off ]; then
+  /etc/init.d/camera start || echo 'WARNING: camera setup failed'
+fi
+
 # USB login works independently of Ethernet and starts shells in /system.
 /etc/init.d/adbd start || echo 'WARNING: USB ADB setup failed'
 
@@ -68,12 +74,27 @@ fi
 /etc/init.d/remote start || echo 'WARNING: remote login setup failed'
 
 # The user's startup script, last and time-bounded; chmod 0644 disables it.
+# Bound it by hand rather than with busybox "timeout" so the two cases stay
+# distinguishable: this way we know whether the script finished on its own or
+# we had to kill it, and can say so.  "timeout" reports both as 143.
 if mountpoint -q /system && [ -x /system/bin/init.sh ]; then
-  if command -v timeout >/dev/null 2>&1; then
-    timeout 30 /bin/sh /system/bin/init.sh ||
-      echo 'WARNING: /system/bin/init.sh failed or timed out'
+  /bin/sh /system/bin/init.sh &
+  init_sh_pid=$!
+  init_sh_left=30
+  while [ "$init_sh_left" -gt 0 ] && kill -0 "$init_sh_pid" 2>/dev/null; do
+    sleep 1
+    init_sh_left=$((init_sh_left - 1))
+  done
+  if kill -0 "$init_sh_pid" 2>/dev/null; then
+    echo 'WARNING: /system/bin/init.sh still running after 30s; killing it'
+    kill -9 "$init_sh_pid" 2>/dev/null
+    wait "$init_sh_pid" 2>/dev/null
   else
-    /bin/sh /system/bin/init.sh ||
-      echo 'WARNING: /system/bin/init.sh failed'
+    wait "$init_sh_pid" 2>/dev/null
+    init_sh_rc=$?
+    # 127 = the shell reaped it already, so there is no status to judge.
+    if [ "$init_sh_rc" -ne 0 ] && [ "$init_sh_rc" -ne 127 ]; then
+      echo "WARNING: /system/bin/init.sh failed (rc=$init_sh_rc)"
+    fi
   fi
 fi

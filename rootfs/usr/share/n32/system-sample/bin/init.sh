@@ -23,9 +23,11 @@
 #
 #   * "chmod 0644 /system/bin/init.sh" disables the hook without deleting it.
 #
-#   * /system holds bin and lib only, on purpose: configuration is read-only
-#     and ships in the rootfs.  Keep scratch files in /tmp (ramfs) or create
-#     your own subdirectory under /system.
+#   * /system holds bin and lib for you, on purpose: configuration is
+#     read-only and ships in the rootfs.  Keep scratch files in /tmp (ramfs);
+#     anything that must survive a reboot belongs in a subdirectory of your
+#     own under /system.  Leave var/ alone -- that is the board's own
+#     persistent state (the ssh host key), not a place for user files.
 #
 # ---------------------------------------------------------------------------
 #
@@ -50,8 +52,10 @@
 #
 #   * chmod 0644 /system/bin/init.sh 可在不删除文件的前提下禁用本钩子。
 #
-#   * /system 下只有 bin 和 lib，这是刻意的：配置是只读的，随 rootfs 发布。
-#     临时文件请放 /tmp（ramfs），或自己在 /system 下建目录。
+#   * /system 下留给你的是 bin 和 lib，这是刻意的：配置是只读的，随 rootfs
+#     发布。临时文件请放 /tmp（ramfs）；需要掉电保留的文件，请自己在
+#     /system 下建目录。var/ 目录请勿占用，那是板子自己的持久状态
+#     （ssh 主机密钥）。
 
 export PATH=/system/bin:/bin:/sbin
 export LD_LIBRARY_PATH=/system/lib:/lib

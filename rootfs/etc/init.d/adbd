@@ -1,7 +1,14 @@
 #!/bin/sh
 # SPDX-License-Identifier: BSD-3-Clause
 # USB-only microADB development service; authentication is disabled.
-export PATH=/bin:/sbin:/usr/sbin
+#
+# /system/bin is appended last, never in front: a user program deployed there
+# must not be able to shadow a system tool.  It has to be here at all because
+# adbd is the parent of every "adb shell <command>" shell, and that shell is
+# non-login -- it never reads /etc/profile -- so without this the SDK contract
+# ("user programs live in /system/bin") would only hold for an interactive
+# session.  Keep this list in step with /etc/profile.
+export PATH=/bin:/sbin:/usr/sbin:/system/bin
 G=/sys/kernel/config/usb_gadget/n32-adb
 FFS=/dev/ffs-adb
 PIDFILE=/run/adbd.pid

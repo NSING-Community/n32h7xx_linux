@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # /system - writable userland, JFFS2 on the SPI NOR "system" partition.
-# It carries programs and libraries only (bin, lib).  Configuration is not a
+# It carries programs and libraries (bin, lib), plus the one bit of machine
+# state that has to survive a reboot: the ssh host key, in var/dropbear, so
+# that clients do not see a new key every time.  Configuration is not a
 # writable thing on this board: it ships read-only in the rootfs, so there is
 # deliberately no etc or data here.
 #

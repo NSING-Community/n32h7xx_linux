@@ -67,9 +67,26 @@ fi
 # An epoch-dated line followed by a real date proves the step happened.
 log_msg "ntp-sync: before: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
+# Bound ntpd by hand rather than with busybox "timeout": the rc below decides
+# whether the clock gets stored in the RTC, and "timeout" reports a timeout and
+# a self-inflicted SIGTERM as the same 143.
 # Unquoted on purpose: $peers is a list of "-p HOST" words built above.
-timeout "$NTPD_TIMEOUT" ntpd -n -q $peers
-rc=$?
+ntpd -n -q $peers &
+ntpd_pid=$!
+ntpd_left=$NTPD_TIMEOUT
+while [ "$ntpd_left" -gt 0 ] && kill -0 "$ntpd_pid" 2>/dev/null; do
+	sleep 1
+	ntpd_left=$((ntpd_left - 1))
+done
+rc=1
+if kill -0 "$ntpd_pid" 2>/dev/null; then
+	log_msg "ntp-sync: ntpd still running after ${NTPD_TIMEOUT}s, killing it"
+	kill -9 "$ntpd_pid" 2>/dev/null
+	wait "$ntpd_pid" 2>/dev/null
+else
+	wait "$ntpd_pid" 2>/dev/null
+	rc=$?
+fi
 
 if [ "$rc" -eq 0 ]; then
 	log_msg "ntp-sync: after:  $(date -u '+%Y-%m-%d %H:%M:%S UTC')"

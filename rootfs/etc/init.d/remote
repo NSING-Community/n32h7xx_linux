@@ -21,18 +21,29 @@ conf_get()
 	fi
 }
 
-# Must be writable: /etc is a read-only SquashFS, so runtime state goes on the
-# /run ramfs.
+# Must be writable: /etc is a read-only SquashFS, so transient runtime state
+# goes on the /run ramfs.
 CONF=/run/inetd.conf
 PIDFILE=/run/inetd.pid
 LOGFILE=/run/dropbear-keygen.log
 
+# Host key storage.  /etc is a read-only SquashFS and /run is a ramfs, so a key
+# kept in either one is regenerated on every boot and every ssh client reports
+# a changed host key.  /system is JFFS2, the board's only persistent writable
+# filesystem, and the usual update (dtb/kernel/rootfs into spi-nor-boot.img)
+# leaves it alone -- so the key is written there once per board and reused.
+# A board whose system partition is missing or unmountable falls back to the
+# ramfs: ssh still works, the key is just new after every reboot.
+PERSIST_KEY_DIR=/system/var/dropbear
+VOLATILE_KEY_DIR=/run/dropbear
+
 key_dir()
 {
-	# /system carries bin and lib only, and /etc is read-only, so the host key
-	# has nowhere persistent to live: it is generated on the ramfs and is new
-	# on every boot, which is why ssh clients warn about a changed host key.
-	echo /run/dropbear
+	if mountpoint -q /system && mkdir -p "$PERSIST_KEY_DIR" 2>/dev/null; then
+		echo "$PERSIST_KEY_DIR"
+	else
+		echo "$VOLATILE_KEY_DIR"
+	fi
 }
 
 inetd_running()
@@ -110,8 +121,23 @@ remote_start()
 		fi
 		dir=$(key_dir)
 		if ! ensure_host_key "$dir"; then
-			echo 'WARNING: REMOTE_HOSTKEY_FAILED; see /run/dropbear-keygen.log'
-			return 1
+			# Not fatal on its own: a /system that is mounted but unwritable,
+			# or out of space, must not cost us ssh.  Fall back to a key that
+			# dies with the reboot, which is what this board used to do.
+			if [ "$dir" = "$PERSIST_KEY_DIR" ]; then
+				echo 'WARNING: REMOTE_HOSTKEY_PERSIST_FAILED; retrying on the ramfs'
+				dir=$VOLATILE_KEY_DIR
+				ensure_host_key "$dir" || dir=none
+			else
+				dir=none
+			fi
+			if [ "$dir" = none ]; then
+				echo 'WARNING: REMOTE_HOSTKEY_FAILED; see /run/dropbear-keygen.log'
+				return 1
+			fi
+		fi
+		if [ "$dir" = "$VOLATILE_KEY_DIR" ]; then
+			echo 'WARNING: REMOTE_HOSTKEY_VOLATILE; key changes on reboot'
 		fi
 		key=$dir/dropbear_ed25519_host_key
 	fi
