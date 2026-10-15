@@ -14,8 +14,7 @@ ssh root@<板子IP> 'uname -a; cat /proc/mtd'
 
 确认设备身份及 `dtb`、`kernel`、`rootfs`、`system` 四个分区。镜像必须与板型匹配。
 设备需有 `/sbin/n32-flash` 或 `/system/bin/n32-flash`；发布 rootfs 已包含它。
-旧系统缺少该工具时，可从匹配的 rootfs 文件树复制到 `/system/bin`，工具重建
-入口 `make tools` 需要本地用户态源码环境。
+旧系统缺少该工具时，从匹配的 rootfs 文件树把这个文件复制到 `/system/bin` 即可。
 
 ## 使用 make 更新
 
@@ -26,6 +25,8 @@ ssh root@<板子IP> 'uname -a; cat /proc/mtd'
 | dtb | `make ota-dtb H787_BOARD=root@<板子IP>` | 当前板型 DTB |
 
 `H787_BOARD` 没有默认值，用串口、ADB 的 `ifconfig eth0` 或 DHCP 租约确认当前 IP。
+想让板子每次开机都用同一个地址，可以在 `rootfs/etc/defaults.conf` 里把
+`NETWORK_MODE` 改成 `static`（配置项见 [快速上手](quickstart.md#板级默认配置)）。
 目标先构建对应镜像，再通过 SSH 管道送入 `n32-flash ota -`，逐块写入和读回校验，
 最后重启。流式传输使用 32 KiB 镜像缓冲，不在板上暂存整份镜像。
 

@@ -74,6 +74,46 @@ exit
 重新打包并更新 rootfs；板上的 `/etc` 为只读，不能持久修改。ADB 服务控制及
 USB Host/Device 切换见 [USB 文档](usb.md)。
 
+SSH 主机密钥存放在 `/system/var/dropbear/`，只写一次、之后一直复用，所以重启
+或者更新 kernel / dtb / rootfs 都不会再让客户端报 "host key changed"。密钥是
+每块板子各自的，第一次用新 rootfs 启动时才会生成；主机上如果还留着旧记录，
+删掉一次即可：
+
+```sh
+ssh-keygen -R <板子IP>
+```
+
+整片擦写的 `spi-nor-16M.img` 会连 system 分区一起擦掉，密钥随之重建，需要再
+删一次记录；只更新 `spi-nor-boot.img` 则不受影响。`/system` 没有挂载时（分区
+损坏、正在格式化）密钥回退到 ramfs，串口会打印
+`REMOTE_HOSTKEY_VOLATILE`，此时每次重启都会变。
+
+密钥稳定解决的是 "REMOTE HOST IDENTIFICATION HAS CHANGED"。板子 MAC 由芯片 UCID
+派生，同一块板子每次启动都一样，DHCP 拿回同一租约，所以日常重启和刷机都不再
+需要重新认证主机。只有地址真的换了（换网段、路由器改了租约表）才会再问一次
+"are you sure you want to continue connecting"，那是 SSH 的正常行为，与密钥无关；
+地址要写死可以在路由器上做 DHCP 保留，或把 `defaults.conf` 的 `NETWORK_MODE`
+改成 `static` 并填好同网段的 `IPV4_ADDRESS`、`IPV4_GATEWAY`、`DNS1`。
+
+### 板级默认配置
+
+开机行为由 `rootfs/etc/defaults.conf` 决定，改完重新打包 rootfs 并更新分区才生效：
+
+| 配置项 | 默认 | 说明 |
+| --- | --- | --- |
+| `HOSTNAME` | `n32h787` | 主机名 |
+| `NETWORK_MODE` | `dhcp` | `dhcp` / `static` / `off` |
+| `NETWORK_IPV6` | `slaac` | `slaac` / `dhcp6` / `off` |
+| `NETWORK_IFACE` | `eth0` | 网口 |
+| `IPV4_ADDRESS`、`IPV4_GATEWAY`、`DNS1` | 见文件 | 只在 `NETWORK_MODE=static` 时使用 |
+| `REMOTE_LOGIN` | `both` | `off` / `telnet` / `ssh` / `both` |
+| `USB_ADB` | `on` | USB1 的免认证调试 shell |
+| `USB_ADB_UDC` | `40100000.usb` | ADB 绑定的控制器 |
+| `CAMERA` | `on` | 开机确认摄像头就绪并生成 `/dev/video0`；驱动是模块时顺带加载 |
+
+这个文件由 init 脚本用 `sed` 读取，值只是数据：不加引号、不留空格、不做变量
+展开。关掉某项功能就改成 `off`，例如 `CAMERA=off` 之后不再检查摄像头。
+
 ## 5. 运行第一个应用
 
 回到仓库根目录的主机终端，只编译并部署 `hello`：
@@ -85,7 +125,8 @@ adb shell /system/bin/hello
 ```
 
 程序输出后返回，完成从构建到板上执行的流程。工具链、SCP 部署、共享库、LED
-及网络示例集中在 [SDK 文档](sdk.md)，这里不再逐个展开。
+及网络示例集中在 [SDK 文档](sdk.md)，摄像头见 [camera.md](camera.md)、音频见
+[audio.md](audio.md)，这里不再逐个展开。
 
 ## 下一步
 

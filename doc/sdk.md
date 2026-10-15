@@ -17,7 +17,7 @@ sdk/
 
 工具链只有这一处：`sdk/toolchain/`，直接用全路径调用即可。`optional/` 与
 `optional-src/` 只是随包提供的附加组件，`make` 不会引用它们，详见
-[README 发布范围](../README.md#发布范围)。
+[README 可选组件](../README.md#可选组件)。
 
 ## 示例一览
 
@@ -45,13 +45,13 @@ sdk/
 装到哪儿都由使用者决定。`sdk/optional/install.sh` 把它们装到 `/system`：
 
 ```sh
-sh install.sh                    # ssh，默认 192.168.1.85
-BOARD=192.168.1.86 sh install.sh
-USE=adb sh install.sh            # 走 adb
+sh install.sh                        # 默认走 adb（USB1）
+BOARD=<板子IP> USE=ssh sh install.sh # 走 ssh；BOARD 没有默认值
 ```
 
-adb 路径直接推目录；往 `/system` 写比往 `/tmp` 慢一个数量级，见
-[USB 文档的 adb 目录推送](usb.md#adb-的目录推送)。
+走 ssh 时 `BOARD` 必须显式给出：板子走 DHCP，写死地址只会等到 SSH 超时；当前
+地址用板上的 `ifconfig eth0` 读。adb 路径直接推目录；往 `/system` 写比往 `/tmp`
+慢一个数量级，见 [USB 文档的 adb 目录推送](usb.md#adb-的目录推送)。
 
 | 组件 | 用途 | 依赖 |
 | --- | --- | --- |
@@ -351,7 +351,7 @@ net-echo -6 5000      # IPv6 双栈 + 换端口；选项和端口可以任意组
 ```
 
 `-6` 不是"只收 IPv6"，而是**双栈**：一个监听 socket 同时接受 IPv6 和 IPv4
-（`IPV6_V6ONLY` 关掉），IPv4 客户端在日志里显示成 `[::ffff:192.168.1.2]` 这种
+（`IPV6_V6ONLY` 关掉），IPv4 客户端在日志里显示成 `[::ffff:192.0.2.2]` 这种
 IPv4-mapped 形式。
 
 ### 两种服务方式：poll() 还是线程

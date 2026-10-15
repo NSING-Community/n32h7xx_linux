@@ -129,8 +129,8 @@ WSL 侧残留的 server 清掉即可恢复 Windows：
 pgrep -a adb && pkill -x adb
 ```
 
-另外 WSL 发行版的 adb 版本可能和 Windows 的不是同一个（本机 34.0.5 对
-37.0.1），共用 daemon 时以先起来的那个版本为准。
+另外 WSL 发行版的 adb 和 Windows 的 adb 可能不是同一个版本，共用 daemon 时以
+先起来的那个版本为准；哪一边在用可以随时用 `adb version` 确认。
 
 服务控制：
 
