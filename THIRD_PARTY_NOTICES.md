@@ -2,9 +2,9 @@
 
 The root BSD-3-Clause license covers project-owned material only. Original Linux, third-party and file-specific licenses and copyrights remain in force.
 
-Nations and NSING are the same company (owner confirmation, 2026-10-15). Optional ns-flash is company-owned and closed-source; its company source is excluded. `sdk/example/` is company-written source-only material; local build products are excluded.
+Nations and NSING are the same company. Optional ns-flash is company-owned and closed-source; its program source is not published. `sdk/example/` is company-written source-only material; local build products are excluded.
 
-The legal-info implementation/tests are unpublished internal maintainer tools under `tools-internal/`. Generated release packages exclude their code. `tools/` is existing public build material and retains its file-specific licenses.
+Each component's corresponding source - the original tree, the local modifications listed below, the configuration and the build scripts - is delivered in the source package published with the release, as described in [licenses/README.md](licenses/README.md). `tools/` and `sdk/example/` are project material and retain their file-specific licenses.
 
 Use `make legal-info` for the metadata companion and `make legal-info-sources LEGAL_STRICT=1` for the corresponding-source bundle. Materials stay on the host and beside release downloads, outside all firmware images. Evidence results and limitations are described in [licenses/RESOLUTIONS.md](licenses/RESOLUTIONS.md).
 
@@ -12,7 +12,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 | --- | --- | --- |
 | Project build tools, scripts and SDK examples | repository snapshot | `BSD-3-Clause` |
 | Project n32-flash and minimal SFTP server | Company snapshot; distributed files individually identified by SHA-256 | `MIT` |
-| Linux kernel and UAPI headers | 7.3.0-rc6 | `GPL-2.0-only` |
+| Linux kernel and UAPI headers | 7.3.0-rc7 | `GPL-2.0-only` |
 | BusyBox (all applet links) | 1.38.0 | `GPL-2.0-only` |
 | uClibc-ng loader, shared/static libraries and headers | 1.0.59 | `LGPL-2.1-or-later` |
 | GCC compiler, plugins and support | 16.1.0 | `GPL-3.0-or-later` |
@@ -37,7 +37,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `BSD-3-Clause`
 - Source: https://github.com/NSING-Community/n32h7xx_linux
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `tools`
+- Corresponding source: `tools` (ships in this repository)
 - Modifications: Top-level BSD applies only to project-owned material; preserve prior MIT grants. Owner confirms sdk/example sources are company-written; local compiled outputs are not distributed.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -48,9 +48,9 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 
 - Version: Company snapshot; distributed files individually identified by SHA-256
 - SPDX/classification: `MIT`
-- Source: sdk-src/project/src (no immutable public URL confirmed)
+- Source: Company snapshot; no immutable public URL confirmed
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/project/src`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: Source SPDX says MIT; do not relabel BSD.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -59,12 +59,12 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 
 ## Linux kernel and UAPI headers
 
-- Version: 7.3.0-rc6
+- Version: 7.3.0-rc7
 - SPDX/classification: `GPL-2.0-only`
 - Source: https://github.com/NSING-Community/linux.git ; branch n32h7xx
-- Source revision: 642dfc8ceae0e80cce8d9fcc92fcf8c992da279d
-- Local source: `kernel`
-- Modifications: Dirty working tree, including untracked files. UAPI: per-file licenses, including GPL-2.0-only WITH Linux-syscall-note.
+- Source revision: a894130780a157e2f5a69a8a948e52b4f5bf227e plus the local NSING changes in this repository, as reviewed; licenses/evidence/linux.json was regenerated for this revision from an isolated rebuild of the same configuration
+- Corresponding source: `kernel` (ships in this repository)
+- Modifications: Merge of upstream 7.3.0-rc7 plus the local NSING changes carried in this repository. UAPI: per-file licenses, including GPL-2.0-only WITH Linux-syscall-note.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
   - [kernel/COPYING](kernel/COPYING)
@@ -99,8 +99,8 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `GPL-2.0-only`
 - Source: https://busybox.net/downloads/ ; busybox-1.38.0.tar.bz2
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/sources/busybox`
-- Modifications: Five sdk-src/patches/busybox-*.patch plus configs/busybox-runtime.config. Snapshot actual source.
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
+- Modifications: Five local BusyBox patches plus the runtime configuration. Snapshot actual source.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
   - [licenses/busybox/LICENSE](licenses/busybox/LICENSE)
@@ -111,9 +111,9 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 
 - Version: 1.0.59
 - SPDX/classification: `LGPL-2.1-or-later`
-- Source: https://downloads.uclibc-ng.org/releases/1.0.59/uClibc-ng-1.0.59.tar.bz2 plus sdk-src/patches/uclibc-nsing-fdpic.patch; reconstruct with sdk-src/scripts/rebuild-uclibc.sh out/legal-proof/uclibc-1.0.59
+- Source: https://downloads.uclibc-ng.org/releases/1.0.59/uClibc-ng-1.0.59.tar.bz2 plus the NSING FDPIC patch and configuration shipped in the corresponding-source package
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `out/legal-proof/uclibc-1.0.59/src`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: FDPIC/loader/thread patches; capture working source, config and scripts.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -128,8 +128,8 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `GPL-3.0-or-later`
 - Source: https://gcc.gnu.org/ ; local non-Git source has no confirmed release archive/commit
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/sources/gcc`
-- Modifications: SDK FDPIC/TLS patches and sdk-src/scripts/rebuild-toolchain.sh.
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
+- Modifications: SDK FDPIC/TLS patches and the toolchain rebuild script.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
   - [sdk/toolchain/licenses/GCC/COPYING](sdk/toolchain/licenses/GCC/COPYING)
@@ -145,7 +145,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `GPL-3.0-or-later WITH GCC-exception-3.1`
 - Source: https://gcc.gnu.org/ ; grant verified in libgcc/libgcc2.c and libstdc++-v3/src/c++11/thread.cc
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/sources/gcc`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: FDPIC/TLS/libstdc++ changes. Runtime exception has eligible compilation conditions; does not waive runtime source distribution.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -164,7 +164,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `GPL-3.0-or-later`
 - Source: https://sourceware.org/binutils/ ; exact source archive/commit unconfirmed
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/sources/binutils`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: SDK thumb-prel31-plt patch; component-specific GPL/LGPL terms retained.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -179,9 +179,9 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 
 - Version: GMP 6.3.0; MPFR 4.2.2; MPC 1.3.1; ISL 0.24; GCC 16.1.0 support libraries
 - SPDX/classification: `(LGPL-3.0-or-later OR GPL-2.0-or-later) AND LGPL-3.0-or-later AND LGPL-2.0-or-later AND MIT AND Apache-2.0 AND BSD-3-Clause AND GPL-3.0-or-later`
-- Source: Bundled in sdk-src/sources/gcc
+- Source: Bundled in the GCC source tree
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/sources/gcc`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: Static composition established from original compiler link records and matching released compiler hashes. Host compiler: Ubuntu GCC 15.2.0-16ubuntu1; -static-libstdc++/-static-libgcc. System libz/libzstd/libm/libc remain external dynamic host dependencies, not copied into SDK. Per-file copyright and license notices retained.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -230,7 +230,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `MIT AND BSD-2-Clause AND LicenseRef-Dropbear-Mixed`
 - Source: https://github.com/mkj/dropbear ; https://matt.ucc.asn.au/dropbear/releases/
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/sources/dropbear`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: Localoptions configuration. OpenSSH/PuTTY/LibTomCrypt/LibTomMath/TweetNaCl declarations retained verbatim.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -246,8 +246,8 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `Apache-2.0`
 - Source: https://github.com/spiriou/microADB.git
 - Source revision: 85cc7a90101b2ae76ee4112ba285141c8fba5012
-- Local source: `sdk-src/sources/microADB`
-- Modifications: Copyright (C) 2020 Simon Piriou; NSING NOMMU HAL and sync patch; sdk-src/project/microadb.
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
+- Modifications: Copyright (C) 2020 Simon Piriou; NSING NOMMU HAL and sync patch.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
   - [rootfs/usr/share/licenses/microadb/LICENSE](rootfs/usr/share/licenses/microadb/LICENSE)
@@ -260,7 +260,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `BSD-3-Clause`
 - Source: https://github.com/tinyalsa/tinyalsa.git
 - Source revision: 961babfe962e71d952ae734074cc89576b28a9e7
-- Local source: `sdk-src/sources/tinyalsa`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: Copyright 2011 Android Open Source Project; Copyright (c) 2019 Linux Foundation. Actual text has three conditions.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -273,7 +273,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `Apache-2.0`
 - Source: https://github.com/ARM-software/CMSIS_5 ; exact vendor import unconfirmed
 - Source revision: b5f0603d6a584d1724d952fd8b0737458b90d62b
-- Local source: `bootloader/Driver/CMSIS/core`
+- Corresponding source: `bootloader/Driver/CMSIS/core` (ships in this repository)
 - Modifications: All 24 vendor-imported core headers match official CMSIS_5 5.6.0, ignoring CRLF only. Arm original copyrights retained.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -287,7 +287,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `LicenseRef-Company-Owned`
 - Source: Nations / NSING are the same company and this code is company-owned, confirmed by repository owner on 2026-10-15.
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `bootloader`
+- Corresponding source: `bootloader` (ships in this repository)
 - Modifications: Original Nations copyright/headers retained. Company-owned scope is not treated as a missing third-party grant.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -300,7 +300,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `LicenseRef-Company-Owned`
 - Source: Company-owned Nations / NSING code, confirmed by repository owner on 2026-10-15.
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: Not included; see ownership/source statement above
+- Corresponding source: Not included; see the ownership/source statement above
 - Modifications: Original headers preserved; no open-source duty inferred solely from precompiled company code.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -313,7 +313,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `GPL-3.0-or-later AND Unicode-DFS-2016 AND LicenseRef-CC-CEDICT-Historical`
 - Source: https://github.com/espeak-ng/espeak-ng.git
 - Source revision: ba90c8e9f440ad544f674a790bb5f53878b6ffc5
-- Local source: `sdk-src/sources/espeak-ng`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: Target port glue and TinyALSA backend preserved; pinned upstream source and generated-data build preserved. Restored editable Mandarin subset reproduces the published dictionary exactly; historical CC-CEDICT extraction/version remains a documented warning. See licenses/evidence/espeak.json.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -336,7 +336,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `GPL-3.0-or-later`
 - Source: https://github.com/alsa-project/pcaudiolib.git
 - Source revision: d6a6b00aa4334b461c1a09c27b6c681eaac8da8a
-- Local source: `sdk-src/sources/pcaudiolib`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: TinyALSA backend patch and glue in sdk/optional-src/pcaudiolib.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -356,7 +356,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `LicenseRef-Company-Proprietary`
 - Source: Company-owned NSLink project; closed-source binary, as confirmed by repository owner on 2026-10-15.
 - Source revision: Company-owned closed source; no publication required
-- Local source: Not included; see ownership/source statement above
+- Corresponding source: Not included; see the ownership/source statement above
 - Modifications: Company-owned closed binary. No open-source obligation is inferred from absence of its source. Third-party linked code still follows its own terms.
 - Copyright: Nations/NSING company-owned program; Zig contributors for bundled Zig support.
 - Full licenses, NOTICEs and evidence:
@@ -372,7 +372,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `GFDL-1.3-or-later AND GPL-3.0-or-later`
 - Source: https://gcc.gnu.org/ and https://sourceware.org/binutils/ ; document sources in the bundled GCC and Binutils source trees
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk-src/sources/binutils`
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: Per-document grants inspected. CTF/SFrame info specs are GPL-3.0-or-later; other GNU manuals are GFDL with document-specific invariant sections and cover texts preserved. Manuals are shipped unmodified; complete GCC and Binutils doc sources included.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -387,7 +387,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - SPDX/classification: `LicenseRef-Binutils-Linker-Script`
 - Source: Generated by GNU Binutils ld; original scripts shipped in SDK
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
-- Local source: `sdk/toolchain/arm-uclinuxfdpiceabi/lib/ldscripts`
+- Corresponding source: `sdk/toolchain/arm-uclinuxfdpiceabi/lib/ldscripts` (ships in this repository)
 - Modifications: Copyright (C) 2014-2026 Free Software Foundation, Inc. Copying/distribution with or without modification permitted if copyright and notice are preserved.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
@@ -417,9 +417,6 @@ notices. Permissive components still require their own copyright/grant/disclaime
 GFDL manuals have separate document-specific conditions. Closed company code
 does not become open source through aggregation, and must honor any third-party
 dependencies. See [audit](licenses/AUDIT.md) and [release workflow](licenses/README.md).
-
-
-
 
 ## Source provenance and data attribution
 

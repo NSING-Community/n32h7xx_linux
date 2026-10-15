@@ -8,7 +8,7 @@
   },
   "details": {
     "source_version": "2.46.0.20260210",
-    "rebuild_recipe": "sdk-src/scripts/rebuild-toolchain.sh",
+    "rebuild_recipe": "toolchain rebuild script delivered in the corresponding-source package",
     "zlib": "Bundled zlib 1.3.1 linked statically (-L../zlib -lz); original grant retained",
     "other_components": "bfd/opcodes/libctf/libsframe/libiberty are included in the complete Binutils source snapshot; per-file licenses retained"
   }

@@ -1,4 +1,4 @@
-sdk-src/sources/espeak-ng/android/jni/include/Log.h
+espeak-ng/android/jni/include/Log.h
 /*
  * Copyright (C) 2009 Google Inc.
  *
@@ -15,7 +15,7 @@ sdk-src/sources/espeak-ng/android/jni/include/Log.h
  * limitations under the License.
  */
 
-sdk-src/sources/espeak-ng/android/jni/jni/eSpeakService.c
+espeak-ng/android/jni/jni/eSpeakService.c
 /*
  * Copyright (C) 2012-2017 Reece H. Dunn
  * Copyright (C) 2011 Google Inc.
@@ -33,7 +33,7 @@ sdk-src/sources/espeak-ng/android/jni/jni/eSpeakService.c
  * limitations under the License.
  */
 
-sdk-src/sources/espeak-ng/src/compat/getopt.c
+espeak-ng/src/compat/getopt.c
 /*-
  * Copyright (c) 2000 The NetBSD Foundation, Inc.
  * All rights reserved.
@@ -63,7 +63,7 @@ sdk-src/sources/espeak-ng/src/compat/getopt.c
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-sdk-src/sources/espeak-ng/src/espeak-ng.c
+espeak-ng/src/espeak-ng.c
 /*
  * Copyright (C) 2006 to 2013 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -83,7 +83,7 @@ sdk-src/sources/espeak-ng/src/espeak-ng.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/endian.h
+espeak-ng/src/include/compat/endian.h
 /* Compatibility shim for <endian.h>
  *
  * "License": Public Domain
@@ -102,7 +102,7 @@ sdk-src/sources/espeak-ng/src/include/compat/endian.h
  * Copyright (C) 2016 Reece H. Dunn
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/getopt.h
+espeak-ng/src/include/compat/getopt.h
 /* Compatibility shim for <getopt.h>
  *
  * Copyright (C) 2006 to 2013 by Jonathan Duddington
@@ -123,7 +123,7 @@ sdk-src/sources/espeak-ng/src/include/compat/getopt.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/math.h
+espeak-ng/src/include/compat/math.h
 /* Compatibility shim for <math.h>
  *
  * Copyright (C) 2016 Reece H. Dunn
@@ -142,7 +142,7 @@ sdk-src/sources/espeak-ng/src/include/compat/math.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/stdint.h
+espeak-ng/src/include/compat/stdint.h
 /* Compatibility shim for <stdint.h>
  *
  * Copyright (C) 2016 Reece H. Dunn
@@ -161,7 +161,7 @@ sdk-src/sources/espeak-ng/src/include/compat/stdint.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/stdio.h
+espeak-ng/src/include/compat/stdio.h
 /* Compatibility shim for <stdio.h>
  *
  * Copyright (C) 2017 Reece H. Dunn
@@ -180,7 +180,7 @@ sdk-src/sources/espeak-ng/src/include/compat/stdio.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/string.h
+espeak-ng/src/include/compat/string.h
 /* Compatibility shim for <string.h>
  *
  * Copyright (C) 2016 Reece H. Dunn
@@ -199,7 +199,7 @@ sdk-src/sources/espeak-ng/src/include/compat/string.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/strings.h
+espeak-ng/src/include/compat/strings.h
 /* Compatibility shim for <strings.h>
  *
  * Copyright (C) 2016 Reece H. Dunn
@@ -218,7 +218,7 @@ sdk-src/sources/espeak-ng/src/include/compat/strings.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/sys/stat.h
+espeak-ng/src/include/compat/sys/stat.h
 /* Compatibility shim for <sys/stat.h>
  *
  * Copyright (C) 2016-2017 Reece H. Dunn
@@ -237,7 +237,7 @@ sdk-src/sources/espeak-ng/src/include/compat/sys/stat.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/unistd.h
+espeak-ng/src/include/compat/unistd.h
 /* Compatibility shim for <unistd.h>
  *
  * Copyright (C) 2016 Reece H. Dunn
@@ -256,7 +256,7 @@ sdk-src/sources/espeak-ng/src/include/compat/unistd.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/wchar.h
+espeak-ng/src/include/compat/wchar.h
 /* Compatibility shim for <wchar.h>
  *
  * Copyright (C) 2017 Reece H. Dunn
@@ -275,7 +275,7 @@ sdk-src/sources/espeak-ng/src/include/compat/wchar.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/compat/wctype.h
+espeak-ng/src/include/compat/wctype.h
 /* Compatibility shim for <wctype.h>
  *
  * Copyright (C) 2017 Reece H. Dunn
@@ -294,8 +294,8 @@ sdk-src/sources/espeak-ng/src/include/compat/wctype.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/espeak/speak_lib.h
-sdk-src/sources/espeak-ng/src/include/espeak-ng/speak_lib.h
+espeak-ng/src/include/espeak/speak_lib.h
+espeak-ng/src/include/espeak-ng/speak_lib.h
 /***************************************************************************
  *   Copyright (C) 2005 to 2012 by Jonathan Duddington                     *
  *   email: jonsd@users.sourceforge.net                                    *
@@ -315,9 +315,9 @@ sdk-src/sources/espeak-ng/src/include/espeak-ng/speak_lib.h
  *               <http://www.gnu.org/licenses/>.                           *
  ***************************************************************************/
 
-sdk-src/sources/espeak-ng/src/include/espeak-ng/encoding.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/encoding.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/phoneme.c
+espeak-ng/src/include/espeak-ng/encoding.h
+espeak-ng/src/libespeak-ng/encoding.c
+espeak-ng/src/libespeak-ng/phoneme.c
 /*
  * Copyright (C) 2017 Reece H. Dunn
  *
@@ -335,7 +335,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/phoneme.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/include/espeak-ng/espeak_ng.h
+espeak-ng/src/include/espeak-ng/espeak_ng.h
 /* eSpeak NG API.
  *
  * Copyright (C) 2015-2017 Reece H. Dunn
@@ -354,8 +354,8 @@ sdk-src/sources/espeak-ng/src/include/espeak-ng/espeak_ng.h
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/common.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/speech.c
+espeak-ng/src/libespeak-ng/common.c
+espeak-ng/src/libespeak-ng/speech.c
 /*
  * Copyright (C) 2005 to 2013 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -375,8 +375,8 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/speech.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/common.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/speech.h
+espeak-ng/src/libespeak-ng/common.h
+espeak-ng/src/libespeak-ng/speech.h
 /*
  * Copyright (C) 2005 to 2007 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -396,9 +396,9 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/speech.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/compiledata.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/dictionary.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/mnemonics.c
+espeak-ng/src/libespeak-ng/compiledata.c
+espeak-ng/src/libespeak-ng/dictionary.c
+espeak-ng/src/libespeak-ng/mnemonics.c
 /*
  * Copyright (C) 2005 to 2014 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -418,7 +418,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/mnemonics.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/compiledict.c
+espeak-ng/src/libespeak-ng/compiledict.c
 /*
  * Copyright (C) 2005 to 2014 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -439,16 +439,16 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/compiledict.c
  *             <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/compiledict.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/dictionary.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/intonation.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/mbrola.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/numbers.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/phonemelist.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/readclause.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/setlengths.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/synthdata.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/wavegen.h
+espeak-ng/src/libespeak-ng/compiledict.h
+espeak-ng/src/libespeak-ng/dictionary.h
+espeak-ng/src/libespeak-ng/intonation.h
+espeak-ng/src/libespeak-ng/mbrola.h
+espeak-ng/src/libespeak-ng/numbers.h
+espeak-ng/src/libespeak-ng/phonemelist.h
+espeak-ng/src/libespeak-ng/readclause.h
+espeak-ng/src/libespeak-ng/setlengths.h
+espeak-ng/src/libespeak-ng/synthdata.h
+espeak-ng/src/libespeak-ng/wavegen.h
 /*
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -469,7 +469,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/wavegen.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/compilembrola.c
+espeak-ng/src/libespeak-ng/compilembrola.c
 /*
  * Copyright (C) 2005 to 2014 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -489,7 +489,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/compilembrola.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/error.c
+espeak-ng/src/libespeak-ng/error.c
 /* Error handling APIs.
  *
  * Copyright (C) 2016 Reece H. Dunn
@@ -508,7 +508,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/error.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/error.h
+espeak-ng/src/libespeak-ng/error.h
 /* Internal error APIs.
  *
  * Copyright (C) 2016 Reece H. Dunn
@@ -527,7 +527,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/error.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_api.c
+espeak-ng/src/libespeak-ng/espeak_api.c
 /* An implementation of the eSpeak API using the espeak-ng API.
  *
  * Copyright (C) 2005 to 2013 by Jonathan Duddington
@@ -548,9 +548,9 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_api.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_command.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/event.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/fifo.c
+espeak-ng/src/libespeak-ng/espeak_command.c
+espeak-ng/src/libespeak-ng/event.c
+espeak-ng/src/libespeak-ng/fifo.c
 /*
  * Copyright (C) 2007, Gilles Casse <gcasse@oralux.org>
  * Copyright (C) 2013-2016 Reece H. Dunn
@@ -569,7 +569,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/fifo.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_command.h
+espeak-ng/src/libespeak-ng/espeak_command.h
 /*
  * Copyright (C) 2007, Gilles Casse <gcasse@oralux.org>
  * Copyright (C) 2015 Reece H. Dunn
@@ -588,8 +588,8 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/espeak_command.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/event.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/fifo.h
+espeak-ng/src/libespeak-ng/event.h
+espeak-ng/src/libespeak-ng/fifo.h
 /*
  * Copyright (C) 2007, Gilles Casse <gcasse@oralux.org>
  * Copyright (C) 2015-2016 Reece H. Dunn
@@ -608,8 +608,8 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/fifo.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/ieee80.c
-sdk-src/sources/espeak-ng/tests/ieee80.c
+espeak-ng/src/libespeak-ng/ieee80.c
+espeak-ng/tests/ieee80.c
 /*
  * Copyright (C) 2022 Ulrich Müller <ulm@gentoo.org>
  *
@@ -631,7 +631,7 @@ sdk-src/sources/espeak-ng/tests/ieee80.c
  * the terms of the 2-clause BSD license.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/intonation.c
+espeak-ng/src/libespeak-ng/intonation.c
 /*
  * Copyright (C) 2005 to 2007 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -651,7 +651,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/intonation.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/klatt.c
+espeak-ng/src/libespeak-ng/klatt.c
 /*
  * Copyright (C) 2008 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -675,7 +675,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/klatt.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/klatt.h
+espeak-ng/src/libespeak-ng/klatt.h
 /*
  * Copyright (C) 2008 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -699,7 +699,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/klatt.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/langopts.c
+espeak-ng/src/libespeak-ng/langopts.c
 /*
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -720,8 +720,8 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/langopts.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/langopts.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/voice.h
+espeak-ng/src/libespeak-ng/langopts.h
+espeak-ng/src/libespeak-ng/voice.h
 /*
  * Copyright (C) 2005 to 2007 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -741,7 +741,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/voice.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/mbrowrap.c
+espeak-ng/src/libespeak-ng/mbrowrap.c
 /*
  * mbrowrap -- A wrapper library around the mbrola binary
  * providing a subset of the API from the Windows mbrola DLL.
@@ -761,7 +761,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/mbrowrap.c
  * GNU General Public License for more details.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/mbrowrap.h
+espeak-ng/src/libespeak-ng/mbrowrap.h
 /*
  * mbrowrap -- A wrapper library around the mbrola binary
  * providing a subset of the API from the Windows mbrola DLL.
@@ -780,7 +780,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/mbrowrap.h
  * GNU General Public License for more details.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/mnemonics.h
+espeak-ng/src/libespeak-ng/mnemonics.h
 /*
  * Copyright (C) 2005 to 2007 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -801,7 +801,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/mnemonics.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/numbers.c
+espeak-ng/src/libespeak-ng/numbers.c
 /*
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -821,7 +821,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/numbers.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/phoneme.h
+espeak-ng/src/libespeak-ng/phoneme.h
 /*
  * Copyright (C) 2005 to 2010 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -841,7 +841,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/phoneme.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/phonemelist.c
+espeak-ng/src/libespeak-ng/phonemelist.c
 /*
  * Copyright (C) 2005 to 2014 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -861,8 +861,8 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/phonemelist.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/readclause.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/voices.c
+espeak-ng/src/libespeak-ng/readclause.c
+espeak-ng/src/libespeak-ng/voices.c
 /*
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -882,7 +882,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/voices.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/setlengths.c
+espeak-ng/src/libespeak-ng/setlengths.c
 /*
  * Copyright (C) 2005 to 2011 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -902,7 +902,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/setlengths.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/sintab.h
+espeak-ng/src/libespeak-ng/sintab.h
 /*
  * Copyright (C) 2007 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -922,7 +922,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/sintab.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/soundicon.c
+espeak-ng/src/libespeak-ng/soundicon.c
 /*
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -943,7 +943,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/soundicon.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/soundicon.h
+espeak-ng/src/libespeak-ng/soundicon.h
 /*
  * Copyright (C) 2005 to 2014 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -964,8 +964,8 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/soundicon.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/spect.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/spect.h
+espeak-ng/src/libespeak-ng/spect.c
+espeak-ng/src/libespeak-ng/spect.h
 /*
  * Copyright (C) 2005 to 2007 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -985,7 +985,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/spect.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/ssml.c
+espeak-ng/src/libespeak-ng/ssml.c
 /*
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -1006,7 +1006,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/ssml.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/ssml.h
+espeak-ng/src/libespeak-ng/ssml.h
 /* SSML (Speech Synthesis Markup Language) processing APIs.
  *
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
@@ -1028,9 +1028,9 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/ssml.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/synth_mbrola.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/wavegen.c
-sdk-src/sources/espeak-ng/src/speak-ng.c
+espeak-ng/src/libespeak-ng/synth_mbrola.c
+espeak-ng/src/libespeak-ng/wavegen.c
+espeak-ng/src/speak-ng.c
 /*
  * Copyright (C) 2005 to 2013 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -1050,11 +1050,11 @@ sdk-src/sources/espeak-ng/src/speak-ng.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/synthdata.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/synthesize.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/synthesize.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/translate.c
-sdk-src/sources/espeak-ng/src/libespeak-ng/translateword.c
+espeak-ng/src/libespeak-ng/synthdata.c
+espeak-ng/src/libespeak-ng/synthesize.c
+espeak-ng/src/libespeak-ng/synthesize.h
+espeak-ng/src/libespeak-ng/translate.c
+espeak-ng/src/libespeak-ng/translateword.c
 /*
  * Copyright (C) 2005 to 2014 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -1074,7 +1074,7 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/translateword.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/tr_languages.c
+espeak-ng/src/libespeak-ng/tr_languages.c
 /*
  * Copyright (C) 2005 to 2015 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -1095,8 +1095,8 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/tr_languages.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/libespeak-ng/translate.h
-sdk-src/sources/espeak-ng/src/libespeak-ng/translateword.h
+espeak-ng/src/libespeak-ng/translate.h
+espeak-ng/src/libespeak-ng/translateword.h
 /*
  * Copyright (C) 2005 to 2014 by Jonathan Duddington
  * email: jonsd@users.sourceforge.net
@@ -1116,13 +1116,13 @@ sdk-src/sources/espeak-ng/src/libespeak-ng/translateword.h
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/speechPlayer/include/speechPlayer.h
-sdk-src/sources/espeak-ng/src/speechPlayer/src/frame.h
-sdk-src/sources/espeak-ng/src/speechPlayer/src/sample.h
-sdk-src/sources/espeak-ng/src/speechPlayer/src/speechPlayer.h
-sdk-src/sources/espeak-ng/src/speechPlayer/src/speechWaveGenerator.h
-sdk-src/sources/espeak-ng/src/speechPlayer/src/utils.h
-sdk-src/sources/espeak-ng/src/speechPlayer/src/waveGenerator.h
+espeak-ng/src/speechPlayer/include/speechPlayer.h
+espeak-ng/src/speechPlayer/src/frame.h
+espeak-ng/src/speechPlayer/src/sample.h
+espeak-ng/src/speechPlayer/src/speechPlayer.h
+espeak-ng/src/speechPlayer/src/speechWaveGenerator.h
+espeak-ng/src/speechPlayer/src/utils.h
+espeak-ng/src/speechPlayer/src/waveGenerator.h
 /*
 This file is a part of the NV Speech Player project. 
 URL: https://bitbucket.org/nvaccess/speechplayer
@@ -1138,7 +1138,7 @@ This license can be found at:
 http://www.gnu.org/licenses/gpl.html
 */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/src/case.c
+espeak-ng/src/ucd-tools/src/case.c
 /* Unicode Case Conversion
  *
  * Copyright (C) 2012-2018, 2021 Reece H. Dunn
@@ -1159,7 +1159,7 @@ sdk-src/sources/espeak-ng/src/ucd-tools/src/case.c
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/src/categories.c
+espeak-ng/src/ucd-tools/src/categories.c
 /* Unicode General Categories
  *
  * Copyright (C) 2012-2018 Reece H. Dunn
@@ -1180,7 +1180,7 @@ sdk-src/sources/espeak-ng/src/ucd-tools/src/categories.c
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/src/ctype.c
+espeak-ng/src/ucd-tools/src/ctype.c
 /* ctype-style APIs.
  *
  * Copyright (C) 2012-2018 Reece H. Dunn
@@ -1201,7 +1201,7 @@ sdk-src/sources/espeak-ng/src/ucd-tools/src/ctype.c
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/src/include/ucd/ucd.h
+espeak-ng/src/ucd-tools/src/include/ucd/ucd.h
 /* Unicode Character Database API
  *
  * Copyright (C) 2012-2018 Reece H. Dunn
@@ -1222,7 +1222,7 @@ sdk-src/sources/espeak-ng/src/ucd-tools/src/include/ucd/ucd.h
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/src/proplist.c
+espeak-ng/src/ucd-tools/src/proplist.c
 /* PropList APIs.
  *
  * Copyright (C) 2017-2018 Reece H. Dunn
@@ -1243,7 +1243,7 @@ sdk-src/sources/espeak-ng/src/ucd-tools/src/proplist.c
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/src/scripts.c
+espeak-ng/src/ucd-tools/src/scripts.c
 /* Unicode Scripts
  *
  * Copyright (C) 2012-2018 Reece H. Dunn
@@ -1264,7 +1264,7 @@ sdk-src/sources/espeak-ng/src/ucd-tools/src/scripts.c
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/src/tostring.c
+espeak-ng/src/ucd-tools/src/tostring.c
 /* Enumeration types to string.
  *
  * Copyright (C) 2012-2018 Reece H. Dunn
@@ -1285,8 +1285,8 @@ sdk-src/sources/espeak-ng/src/ucd-tools/src/tostring.c
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/ucd-tools/tests/printcdata.c
-sdk-src/sources/espeak-ng/src/ucd-tools/tests/printucddata.c
+espeak-ng/src/ucd-tools/tests/printcdata.c
+espeak-ng/src/ucd-tools/tests/printucddata.c
 /*
  * Copyright (C) 2012-2017 Reece H. Dunn
  *
@@ -1306,7 +1306,7 @@ sdk-src/sources/espeak-ng/src/ucd-tools/tests/printucddata.c
  * along with ucd-tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/src/windows/com/comentrypoints.c
+espeak-ng/src/windows/com/comentrypoints.c
 /*
  * Copyright (C) 2016 Reece H. Dunn
  *
@@ -1324,9 +1324,9 @@ sdk-src/sources/espeak-ng/src/windows/com/comentrypoints.c
  * along with this program; if not, see: <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/tests/api.c
-sdk-src/sources/espeak-ng/tests/encoding.c
-sdk-src/sources/espeak-ng/tests/readclause.c
+espeak-ng/tests/api.c
+espeak-ng/tests/encoding.c
+espeak-ng/tests/readclause.c
 /*
  * Copyright (C) 2017 Reece H. Dunn
  *
@@ -1345,9 +1345,9 @@ sdk-src/sources/espeak-ng/tests/readclause.c
  *             <http://www.gnu.org/licenses/>.
  */
 
-sdk-src/sources/espeak-ng/tests/fuzzing/synth_fuzzer.c
-sdk-src/sources/espeak-ng/tests/fuzzrunner.c
-sdk-src/sources/espeak-ng/tests/ssml-fuzzer.c
+espeak-ng/tests/fuzzing/synth_fuzzer.c
+espeak-ng/tests/fuzzrunner.c
+espeak-ng/tests/ssml-fuzzer.c
 /*
  * Copyright (C) 2018 Sascha Brawer
  *

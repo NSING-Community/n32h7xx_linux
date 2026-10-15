@@ -9,7 +9,7 @@
     "sdk-src/configs/uclibc.config": "3a43b98e246b5e611f2929df210f2f07188cc78eadbd24f6653edeac63b7d186"
   },
   "details": {
-    "recipe": "JOBS=8 bash sdk-src/scripts/rebuild-uclibc.sh out/legal-proof/uclibc-1.0.59",
-    "legacy_source_directory": "sdk-src/sources/uclibc is 1.0.57 and is deliberately NOT used as 1.0.59 corresponding source"
+    "recipe": "JOBS=8 bash rebuild-uclibc.sh <work-dir> (rebuild script and configuration delivered in the corresponding-source package; isolated proof build directory)",
+    "legacy_source_directory": "A legacy local libc tree is 1.0.57 and is deliberately NOT used as 1.0.59 corresponding source"
   }
 }

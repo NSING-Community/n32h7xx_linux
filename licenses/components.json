@@ -21,7 +21,7 @@
       "name": "Project n32-flash and minimal SFTP server",
       "version": "Company snapshot; distributed files individually identified by SHA-256",
       "license": "MIT",
-      "source": "sdk-src/project/src (no immutable public URL confirmed)",
+      "source": "Company snapshot; no immutable public URL confirmed",
       "source_path": "sdk-src/project/src",
       "evidence": [
         "LICENSE",
@@ -39,7 +39,7 @@
     {
       "id": "linux",
       "name": "Linux kernel and UAPI headers",
-      "version": "7.3.0-rc6",
+      "version": "7.3.0-rc7",
       "license": "GPL-2.0-only",
       "source": "https://github.com/NSING-Community/linux.git ; branch n32h7xx",
       "source_path": "kernel",
@@ -70,7 +70,7 @@
         "kernel/LICENSES/preferred/MIT",
         "licenses/evidence/linux.json"
       ],
-      "changes": "Dirty working tree, including untracked files. UAPI: per-file licenses, including GPL-2.0-only WITH Linux-syscall-note.",
+      "changes": "Merge of upstream 7.3.0-rc7 plus the local NSING changes carried in this repository. UAPI: per-file licenses, including GPL-2.0-only WITH Linux-syscall-note.",
       "source_required": true,
       "issues": [
         [
@@ -78,21 +78,22 @@
           "Ignored source-tree build artifacts excluded; dirty tracked and untracked source changes preserved in snapshot"
         ]
       ],
-      "revision": "642dfc8ceae0e80cce8d9fcc92fcf8c992da279d",
+      "revision": "a894130780a157e2f5a69a8a948e52b4f5bf227e",
+      "revision_note": "plus the local NSING changes in this repository, as reviewed; licenses/evidence/linux.json was regenerated for this revision from an isolated rebuild of the same configuration",
       "version_checks": [
         {
           "path": "kernel/Makefile",
-          "pattern": "VERSION = 7\\nPATCHLEVEL = 3\\nSUBLEVEL = 0\\nEXTRAVERSION = -rc6"
+          "pattern": "VERSION = 7\\nPATCHLEVEL = 3\\nSUBLEVEL = 0\\nEXTRAVERSION = -rc7"
         }
       ],
       "verification_files": {
-        "out/kernel/zImage": "bcbd2fa1809f6a226c4308c17a90c48b38998413132a2ab1b91f777a9ccb1e17",
+        "out/kernel/zImage": "72449eba58803cbd3bc1beadf32ce3ab3d974491e2e60694bc8e9a2f480a7e3d",
         "out/kernel/n32h787-hmi.dtb": "2a754a08fcb3d727edbc3ab1ed70448ac9b1f5520ef7e4d8d1c0b0786b3c1be8",
-        "out/kernel/build/.config": "b081afc126ab39da72db4c622a7b9a468943324e0996898386bfd4b7d3ba6dfd",
-        "licenses/evidence/linux.json": "0011ce1f3b9ad57ebdd79f46c332270ba9e02c76e7f62320edeccc2e00c90f09"
+        "out/kernel/build/.config": "be58a56bc5825364ef9123d6256fc0a889b0724aae7371863610c781494e4078",
+        "licenses/evidence/linux.json": "37e77aebef9c17290d355c99a2b48cb02bf5bdc160a988492e5ae0d248ee34ac"
       },
       "source_digest": {
-        "sha256": "71824d957380fcfaff9489659d6c6a1cfefaea5fdd345223d835315b494202af",
+        "sha256": "e391399f374649f1abdda95944d9c71bebc086e44583acc35839f71752752fbb",
         "files": 96148
       }
     },
@@ -108,7 +109,7 @@
         "licenses/busybox/AUTHORS",
         "licenses/evidence/busybox.json"
       ],
-      "changes": "Five sdk-src/patches/busybox-*.patch plus configs/busybox-runtime.config. Snapshot actual source.",
+      "changes": "Five local BusyBox patches plus the runtime configuration. Snapshot actual source.",
       "source_required": true,
       "issues": [],
       "version_checks": [
@@ -125,7 +126,7 @@
         "sdk-src/patches/busybox-hush-tilde-expansion.patch": "e9a4d68b09ef572075c2dc2c03824de358923610fb93d786fdc7ead7d113f965",
         "sdk-src/patches/busybox-reboot-reason.patch": "a12c0982f68b67d503fe4c2a960b82f728736e5667b8890de1439a3cd120fae1",
         "sdk-src/patches/busybox-hush-errexit-loop-cond.patch": "4836d92882aa3b27f5359f1d057cd8042bce4f1626308b0ae26ece0efdc4e04c",
-        "licenses/evidence/busybox.json": "33d4aafc48be2b29e5c1f8de6ec2707628ae9f9d80829915c69abb96583e82c8"
+        "licenses/evidence/busybox.json": "08c05afb92010e6848d1cb3a944f19c0775b164d6474d94632b4451ced313bea"
       },
       "source_digest": {
         "sha256": "13a6153872cbee69097cbc5c80d6c10b361a93127807819d54e0dee98d4a1072",
@@ -137,7 +138,7 @@
       "name": "uClibc-ng loader, shared/static libraries and headers",
       "version": "1.0.59",
       "license": "LGPL-2.1-or-later",
-      "source": "https://downloads.uclibc-ng.org/releases/1.0.59/uClibc-ng-1.0.59.tar.bz2 plus sdk-src/patches/uclibc-nsing-fdpic.patch; reconstruct with sdk-src/scripts/rebuild-uclibc.sh out/legal-proof/uclibc-1.0.59",
+      "source": "https://downloads.uclibc-ng.org/releases/1.0.59/uClibc-ng-1.0.59.tar.bz2 plus the NSING FDPIC patch and configuration shipped in the corresponding-source package",
       "source_path": "out/legal-proof/uclibc-1.0.59/src",
       "evidence": [
         "sdk/toolchain/licenses/uClibc/COPYING.LIB",
@@ -165,7 +166,7 @@
         "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2": "87a6e4b7f38cd5fb19c573a86fe0ab6424a91ee2f0fa187e25ddfc21d717a3e2",
         "sdk-src/patches/uclibc-nsing-fdpic.patch": "5fec6d9581f6d2877435b7062282ba56d3c56bf5bb7d32718ffca85671390994",
         "sdk-src/configs/uclibc.config": "3a43b98e246b5e611f2929df210f2f07188cc78eadbd24f6653edeac63b7d186",
-        "licenses/evidence/uclibc.json": "d9090d0e56eb3edcf6478055b26d5cafdc49f52a5dd4dc93dace33e4d24bac8c"
+        "licenses/evidence/uclibc.json": "c26e675e759985d6a6e9b7471310d6df009a9d1db7172e3c362019bd6de2acc6"
       },
       "source_digest": {
         "sha256": "1b9c0452ae41b96ba88f33219af784faca9b40bed8d27aa0ffe4ee8a3fa5a93a",
@@ -187,7 +188,7 @@
         "sdk/toolchain/licenses/GCC/COPYING.RUNTIME",
         "licenses/evidence/gcc.json"
       ],
-      "changes": "SDK FDPIC/TLS patches and sdk-src/scripts/rebuild-toolchain.sh.",
+      "changes": "SDK FDPIC/TLS patches and the toolchain rebuild script.",
       "source_required": true,
       "issues": [],
       "version_checks": [
@@ -200,8 +201,8 @@
         "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1": "9529c8fe1717d340823cd5b102f44fe4de646abc4b353ba2416643a2e0bbceb5",
         "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1plus": "891fe452d35ae0ea9e013c35bfef076d5078f1da09b0baed9804051f18b7bbb1",
         "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto1": "2e5a37ee792ca948ad3d664fb4e778abe8604b349bbfa394fc3dc8292f4909f7",
-        "licenses/evidence/gcc-link-records.txt": "ee6c2e750ada063089958c735f007c671435646eab4d128c1a251f24d393ff3c",
-        "licenses/evidence/gcc.json": "de2db097ea639bead32a45f6b0a2fc40e70c90612946c842830ab15927ee9960"
+        "licenses/evidence/gcc-link-records.txt": "657157871fa373157745447d4b3f9129c86b389b58f845da96c9f3e2c6d0f229",
+        "licenses/evidence/gcc.json": "d05c7679de545484eccb99072f0fbaf1690718ef1b8d756f8dc4e75bef2eabbb"
       },
       "source_digest": {
         "sha256": "26631f20fbfb03c7f5f803b69dcb668616acf3c962264cd19c61775e30c131d8",
@@ -231,7 +232,7 @@
       "verification_files": {
         "rootfs/lib/libgcc_s.so.1": "dcd891b5181f14a3176ba4c486856834b1bf205c88e41be7f2cc80fac8dd12be",
         "rootfs/usr/lib/libstdc++.so.6.0.35": "16a57e547ee3173a2c0a71bc92adf67b2ed310acd4690670bf1931b4d7453158",
-        "licenses/evidence/gcc-runtime.json": "a150a3e0095d3d843df30f0ce08f0c0c53c4f276faa10e14d488282478071794"
+        "licenses/evidence/gcc-runtime.json": "f22beebdfc6e60c3b7628dacab9bdadaa161ae275ceed81c3dd26e60b5a06b43"
       },
       "source_digest": {
         "sha256": "26631f20fbfb03c7f5f803b69dcb668616acf3c962264cd19c61775e30c131d8",
@@ -266,7 +267,7 @@
         "sdk/toolchain/bin/arm-uclinuxfdpiceabi-ld": "a36d3fcb7da01bf45832cfea907e6101842287f91578945d921b00ed2158c0cd",
         "sdk/toolchain/bin/arm-uclinuxfdpiceabi-as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
         "sdk/toolchain/bin/arm-uclinuxfdpiceabi-objdump": "c8c11dab9495701afac971c07d5502794a8813ba8223a1f75875cfa8f794f260",
-        "licenses/evidence/binutils.json": "09236197b6c87967ec93d9a851382873a513737371ab4c45f259226a57e199d7"
+        "licenses/evidence/binutils.json": "48bf0b81319842217099b2a446dbd6d7075bf06a584df0698035d58bd6ae86b6"
       },
       "source_digest": {
         "sha256": "2916e5b789e4a50870661644f71eaa3e2311ddef5cb4503f915d49e9f5228ba3",
@@ -278,7 +279,7 @@
       "name": "GCC bundled support libraries",
       "version": "GMP 6.3.0; MPFR 4.2.2; MPC 1.3.1; ISL 0.24; GCC 16.1.0 support libraries",
       "license": "(LGPL-3.0-or-later OR GPL-2.0-or-later) AND LGPL-3.0-or-later AND LGPL-2.0-or-later AND MIT AND Apache-2.0 AND BSD-3-Clause AND GPL-3.0-or-later",
-      "source": "Bundled in sdk-src/sources/gcc",
+      "source": "Bundled in the GCC source tree",
       "source_path": "sdk-src/sources/gcc",
       "evidence": [
         "sdk/toolchain/licenses/GCC/COPYING3",
@@ -388,7 +389,7 @@
         "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1": "9529c8fe1717d340823cd5b102f44fe4de646abc4b353ba2416643a2e0bbceb5",
         "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/cc1plus": "891fe452d35ae0ea9e013c35bfef076d5078f1da09b0baed9804051f18b7bbb1",
         "sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0/lto1": "2e5a37ee792ca948ad3d664fb4e778abe8604b349bbfa394fc3dc8292f4909f7",
-        "licenses/evidence/gcc-link-records.txt": "ee6c2e750ada063089958c735f007c671435646eab4d128c1a251f24d393ff3c",
+        "licenses/evidence/gcc-link-records.txt": "657157871fa373157745447d4b3f9129c86b389b58f845da96c9f3e2c6d0f229",
         "licenses/evidence/host-dependencies.json": "a558a326b213fd253dc9ae3408fb6fb0d9ae21dcbbae3960215cc36939ba3340"
       },
       "source_digest": {
@@ -449,16 +450,16 @@
         "rootfs/usr/share/licenses/microadb/NOTICE",
         "licenses/evidence/microadb.json"
       ],
-      "changes": "Copyright (C) 2020 Simon Piriou; NSING NOMMU HAL and sync patch; sdk-src/project/microadb.",
+      "changes": "Copyright (C) 2020 Simon Piriou; NSING NOMMU HAL and sync patch.",
       "source_required": false,
       "issues": [],
       "revision": "85cc7a90101b2ae76ee4112ba285141c8fba5012",
       "verification_files": {
-        "rootfs/usr/sbin/adbd": "f9339dd605762e1d4f9ad8292a4e8156a906fdfefafe91f3b9865fa9f64ee1f5",
-        "sdk-src/project/microadb/port.c": "dc3af4c05ee8df8237c949e468f1cd887bd36eee127f328fb8222f6cc957b294",
+        "rootfs/usr/sbin/adbd": "eab8773180b0fa08ddd810f937a0f56196c6d49b416516c40dba03c7d78e55fa",
+        "sdk-src/project/microadb/port.c": "86123a8dc6e9d8665863fc508a9534de9e0b93f12fc6297cbfd2673d2a4aa10d",
         "sdk-src/project/microadb/config.h": "6f92e15eb8c82ab092421412884a02989e9287245891bedece94c8c9b966b672",
         "sdk-src/project/microadb/Makefile": "c4486539ec1e2de1f21d4b00062fde1e10b9281223971d16e30915456ab7e4fd",
-        "licenses/evidence/microadb.json": "c3095f4a871f1766ee88cf07022d67b7b52d3403d09d382bd298e1209a84b2e9"
+        "licenses/evidence/microadb.json": "2596beb134c1c45e2505e3f521ab4d8ffab9c70d889696da96ad0c398dcd1128"
       },
       "source_digest": {
         "sha256": "9b56ad485f4985fe643b6a72bdd119528133cd7ba0bfaa8a0f83654b4dd2b65a",
@@ -881,7 +882,7 @@
         "sdk/optional/espeak-ng/espeak-ng-data/voices/!v/gustave": "5fa89cf8625cd460b9309748eca019ab5b325a04dccbd29f1a9b2a00caa2e848",
         "sdk/optional-src/espeak-ng/Makefile": "a440ab4d127cd1aee99683f397102f76a1b698882cf65602cab4a447b59b91c3",
         "sdk/optional-src/espeak-ng/config.h": "7696c8567da579fa97faa4d977ebac154e2b3a81397ff69c25d1288a207f643e",
-        "sdk/optional-src/espeak-ng/README.md": "8bf94b371a7deb3812f24061994f4125f481014e0672d3716fc166bce757342e",
+        "sdk/optional-src/espeak-ng/README.md": "0f9c824d888eba73ebe6595266393599a590a8c3adc24f25c8abddfeb2076990",
         "sdk/optional-src/espeak-ng/compat/wchar_shim.c": "706a472fb6eadd9e92f3add684daa49c8e696aead12a8c9b3e5a94c39be66e3e",
         "sdk/optional-src/espeak-ng/compat/wctype.h": "d7026be94157d698d8b08c4e56e9176c498520374c4d0c5a399fe88c71d979c7",
         "sdk/optional-src/espeak-ng/compat/wchar.h": "7fccef3f7502c89e8b6ecb65c5437a8dc04a3d912172f426a602c64fda5be525",
@@ -927,8 +928,8 @@
         "sdk/optional-src/pcaudiolib/config.h": "bc148f25a19c22810fbfe6e0c235ecefe0a7747904be284337f82234c45052b4",
         "sdk/optional-src/pcaudiolib/pcaudiolib-tinyalsa-backend.patch": "b0143eaa55377d9996fc06316ccca1d9a74be944733c794cb3860167eef52992",
         "sdk/optional-src/pcaudiolib/tinyalsa.c": "73c60878d815aa1a7dc622ed02012424a8385dad629a7b7d3f7da42387d78ca6",
-        "sdk/optional-src/pcaudiolib/README.md": "1f0aad7644fc42f5bf19c3ca4b0b235517367a1e8a3f0d9108283f1144bc0d01",
-        "licenses/evidence/pcaudio.json": "80fb79a751de3461bf6a341be200df83cec1908b01062f84883f554bc95293f3"
+        "sdk/optional-src/pcaudiolib/README.md": "854fa32b97f572365f79dfc7b1bed79cc1135fc8dea8eb347753e0e346e7721b",
+        "licenses/evidence/pcaudio.json": "eb7ba06f7c53a470ac734b446a87ab72c07c2a0b31eab379471fb33c4d6b7cf4"
       },
       "source_digest": {
         "sha256": "60a786c50ec60cca7e5f429bfbff7d2b8766eaff26a28ae69d1dd1a301814b4f",
@@ -4736,7 +4737,7 @@
     "rootfs/usr/bin/scp": "55d5e90444b08435f22891e5156f50be932ca050787939106cfce58c5720386c",
     "rootfs/usr/lib/libstdc++.so.6.0.35": "16a57e547ee3173a2c0a71bc92adf67b2ed310acd4690670bf1931b4d7453158",
     "rootfs/usr/libexec/sftp-server": "468980ec2954d5e8ae74d6d752852bea51d6e33cba5777bc9124e3e87425e52e",
-    "rootfs/usr/sbin/adbd": "f9339dd605762e1d4f9ad8292a4e8156a906fdfefafe91f3b9865fa9f64ee1f5",
+    "rootfs/usr/sbin/adbd": "eab8773180b0fa08ddd810f937a0f56196c6d49b416516c40dba03c7d78e55fa",
     "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
     "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
     "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
@@ -4846,7 +4847,7 @@
       "files": 19
     },
     "sdk-src/project/microadb": {
-      "sha256": "27559490c2172534a488289b5b72c4d150d9431d9cb1f778044cfa49b620b2ef",
+      "sha256": "71a1b4a100b8b35b0d1207d8c816a502d58de2dc7e3146cc734e535e45de62e4",
       "files": 5
     },
     "sdk-src/project/src": {
@@ -4862,7 +4863,7 @@
       "files": 7
     },
     "sdk/optional-src": {
-      "sha256": "8172af6b9ffa573898b828ea7dc7a1b0367c3e847f14ca14c19247669446d981",
+      "sha256": "71c9241267499ea11e6d9544f90c98c8720ef3783a85c401b50cc263c88140c5",
       "files": 19
     },
     "sdk/toolchain/patches": {
@@ -4870,7 +4871,7 @@
       "files": 3
     },
     "Makefile": {
-      "sha256": "508da23a7d6fdd5d63007f5e9a887c79c3c611cd921a83582fb534c9b090cc98",
+      "sha256": "9452c5e87903db653dc0626090858317463d813b6e15f9b915a82a56f8faa0d5",
       "files": 1
     },
     "bootloader/Makefile": {

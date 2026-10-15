@@ -2,8 +2,8 @@
 # N32H7xx Linux top-level build entry.
 #
 # Daily use only touches bootloader/, kernel/, rootfs/ and sdk/.  Everything
-# needed for that ships in this tree; the maintainer-only sdk-src/ rebuild
-# environment is used by four optional userland-rebuild targets (see `make help`).
+# needed for that ships in this tree; the component-rebuild targets further down
+# additionally use the local sdk-src/ working tree and are not part of `make help`.
 #
 #   make            build everything and assemble the flash image (same as `all`)
 #   make bootloader build the SPI-backed CM7 bootloader
@@ -94,6 +94,12 @@ ROOTFS_SQUASHFS := $(ROOTFS_OUT)/rootfs.squashfs
 # merged into a staging copy first.  The copy lives under out/ so the shipped
 # rootfs/ tree stays exactly what it is in git.
 ROOTFS_STAGE    := $(ROOTFS_OUT)/stage
+# Empty directories have no representation in git, so the mount points and
+# working directories the userland needs must be recreated at pack time: a
+# freshly cloned tree would otherwise produce a rooted image with no /proc,
+# /sys, /dev, /tmp or /system.  rcS cannot create them itself -- it runs from
+# the read-only SquashFS, where mkdir fails -- so this is not optional.
+ROOTFS_DIRS     := dev dev/pts mnt mnt/sd proc root run sys system tmp var/log
 
 # --- flash image ------------------------------------------------------------
 # The image carries every fixed partition -- dtb + kernel + rootfs -- and leaves
@@ -119,7 +125,7 @@ SPI_IMAGE_TOOL := $(TOOLS_DIR)/spi_image.py
 
 .PHONY: all help bootloader kernel rootfs rootfs-squashfs busybox dropbear \
         tools tinyalsa pcaudiolib sftp-server flash-image flash-kernel ota-check \
-        ota-rootfs ota-kernel ota-dtb \
+        ota-rootfs ota-kernel ota-dtb publish-bin \
         flash-bootloader doctor \
         menuconfig kernel-menuconfig kernel-nconfig kernel-xconfig \
         kernel-oldconfig kernel-savedefconfig kernel-defconfig \
@@ -141,7 +147,9 @@ LEGAL_INFO_TOOL := $(TOP)/tools-internal/legal_info.py
 .PHONY: legal-info legal-info-sources legal-info-tool-check
 legal-info-tool-check:
 	@test -f "$(LEGAL_INFO_TOOL)" || { \
-		echo "legal-info is maintainer-only; tools-internal/legal_info.py is not distributed." >&2; \
+		echo "error: legal-info is not available in this checkout." >&2; \
+		echo "       It is a maintainer-side target; a release ships the" >&2; \
+		echo "       generated compliance materials alongside it instead." >&2; \
 		exit 1; }
 
 legal-info: legal-info-tool-check
@@ -164,21 +172,13 @@ help:
 	@echo "  kernel-defconfig go back to $(DEFCONFIG), dropping your changes"
 	@echo "  rootfs           pack $(ROOTFS_TREE) into the SquashFS image (no compilation)"
 	@echo "  rootfs-squashfs  same thing; kept for scripts that name it explicitly"
-	@echo "  busybox          rebuild BusyBox and install it into the rootfs tree"
-	@echo "  dropbear         rebuild dropbear/dropbearkey and install them"
-	@echo "  tools            rebuild n32-flash and install it"
-	@echo "  tinyalsa         rebuild tinyplay/tinycap/tinymix/tinypcminfo"
-	@echo "  pcaudiolib       build libpcaudio.a (espeak-ng's audio sink; no install)"
-	@echo "  sftp-server      build the SSH 'sftp' subsystem and install it"
-	@echo "    (the six component-rebuild targets above need sdk-src/, the local"
-	@echo "     source-rebuild environment, which is not part of this tree."
-	@echo "     Everything else here is self-contained.)"
 	@echo "  flash-image      assemble the raw SPI NOR image (system left erased)"
 	@echo "  flash-kernel     write dtb+kernel+rootfs to the board over USB MSC"
 	@echo "  ota-rootfs       push rootfs over SSH and flash it from Linux"
 	@echo "  ota-kernel       push $(notdir $(KERNEL_ZIMAGE)) over SSH and flash it from Linux"
 	@echo "  ota-dtb          push $(notdir $(KERNEL_DTB)) over SSH and flash it from Linux"
 	@echo "  flash-bootloader program the CM7 bootloader into on-chip flash"
+	@echo "  publish-bin      refresh bin/ with the two artifacts downloaded from the repository"
 	@echo "  doctor           report tool, probe and target state"
 	@echo "  legal-info       maintainer-only license bundle, inventory and compliance report"
 	@echo "  legal-info-sources  maintainer-only: also snapshot available sources (large)"
@@ -280,10 +280,10 @@ $(ROOTFS_OUT)/.dir:
 ROOTFS_MANIFEST := $(ROOTFS_OUT)/.tree-manifest
 
 $(ROOTFS_MANIFEST): FORCE | $(ROOTFS_OUT)/.dir
-	@find $(ROOTFS_TREE) -printf '%p %y %s %T@\n' | sort >$@.new
+	@find $(ROOTFS_TREE) -printf '%p %y %m %s %T@\n' | sort >$@.new
 	@# The module tree is part of the image, so a rebuilt .ko has to repack it.
 	@if [ -d $(KERNEL_MODULES) ]; then \
-		find $(KERNEL_MODULES) -printf 'mod %P %y %s %T@\n' | sort >>$@.new; \
+		find $(KERNEL_MODULES) -printf 'mod %P %y %m %s %T@\n' | sort >>$@.new; \
 	fi
 	@cmp -s $@.new $@ || mv $@.new $@
 	@rm -f $@.new
@@ -298,10 +298,14 @@ $(ROOTFS_SQUASHFS): $(ROOTFS_MANIFEST)
 	@rm -rf $(ROOTFS_STAGE)
 	@mkdir -p $(ROOTFS_STAGE)
 	@cp -a $(ROOTFS_TREE)/. $(ROOTFS_STAGE)/
+	@for d in $(ROOTFS_DIRS); do mkdir -p $(ROOTFS_STAGE)/$$d; done
 	@if [ -d $(KERNEL_MODULES)/lib/modules ]; then \
 		echo "==> adding kernel modules from $(KERNEL_MODULES)"; \
 		mkdir -p $(ROOTFS_STAGE)/lib; \
 		cp -a $(KERNEL_MODULES)/lib/. $(ROOTFS_STAGE)/lib/; \
+	else \
+		echo "note: $(KERNEL_MODULES) is not staged yet, so this rootfs carries" >&2; \
+		echo "      no /lib/modules; run 'make kernel' first if you want it" >&2; \
 	fi
 	@echo "==> packing SquashFS"
 	mksquashfs $(ROOTFS_STAGE) $@ -noappend -comp gzip -b 65536 \
@@ -319,18 +323,16 @@ rootfs-squashfs: $(ROOTFS_SQUASHFS)
 # ---------------------------------------------------------------------------
 # busybox - the one place applets are added or removed
 # ---------------------------------------------------------------------------
-# The four "rebuild a userland component" targets below are the only ones that
-# touch sdk-src/.  sdk-src/ is the local source-rebuild environment and is NOT
-# part of the open-source release, so they check for it and say so instead of
+# The six "rebuild a userland component" targets below are the only ones that
+# need sdk-src/.  They check for it first and explain the situation instead of
 # failing with a bare "No such file or directory" from bash.
 SDK_SRC := $(TOP)/sdk-src
 
 define require-sdk-src
 	@test -d $(SDK_SRC)/scripts || { \
-		echo "error: $(1) needs $(SDK_SRC)/scripts, which is not part of the" >&2; \
-		echo "       open-source tree (it is the local source-rebuild env)." >&2; \
-		echo "       Nothing else in this Makefile needs it: bootloader/kernel/" >&2; \
-		echo "       rootfs/flash-image all build from the shipped sources." >&2; \
+		echo "error: the $(1) rebuild target is not available in this checkout." >&2; \
+		echo "       bootloader/, kernel/, rootfs/ and flash-image build from" >&2; \
+		echo "       the sources present here and do not need it." >&2; \
 		exit 1; }
 endef
 
@@ -390,7 +392,13 @@ sftp-server:
 # ---------------------------------------------------------------------------
 # flash images
 # ---------------------------------------------------------------------------
-flash-image: kernel rootfs-squashfs
+# The two build steps are sequenced in the recipe rather than listed as
+# prerequisites: make builds prerequisites in parallel under -j, and packing the
+# rootfs before the kernel had staged its loadable modules silently produced an
+# image without /lib/modules.  Both targets still work on their own.
+flash-image:
+	@$(MAKE) --no-print-directory kernel
+	@$(MAKE) --no-print-directory rootfs-squashfs
 	@echo "==> SPI NOR image ($(FLASH_SIZE): dtb + kernel + rootfs, system erased)"
 	python3 $(SPI_IMAGE_TOOL) \
 		--output $(FLASH_IMAGE) \
@@ -464,7 +472,7 @@ flash-bootloader: bootloader
 #
 # With an empty root password, ssh cannot prompt in a non-interactive build:
 #   printf '#!/bin/sh\necho ""\n' >/tmp/askpass.sh; chmod +x /tmp/askpass.sh
-#   H787_SSH_ASKPASS=/tmp/askpass.sh make ota-rootfs H787_BOARD=root@192.168.1.85
+#   H787_SSH_ASKPASS=/tmp/askpass.sh make ota-rootfs H787_BOARD=root@<board-ip>
 H787_BOARD    ?=
 SSH_OTA_TOOL  := $(TOOLS_DIR)/ssh-ota.sh
 
@@ -472,7 +480,7 @@ SSH_OTA_TOOL  := $(TOOLS_DIR)/ssh-ota.sh
 ota-check:
 	@test -n "$(H787_BOARD)" || { \
 		echo "error: H787_BOARD is not set." >&2; \
-		echo "       It is the board's SSH target, e.g. root@192.168.1.85." >&2; \
+		echo "       It is the board's SSH target, e.g. root@<board-ip>." >&2; \
 		echo "       The address comes from DHCP (the MAC is fixed per board, so" >&2; \
 		echo "       the lease is stable, but the image does not pin it).  Read" >&2; \
 		echo "       it with 'ifconfig eth0' on the console and pass it:" >&2; \
@@ -495,6 +503,31 @@ ota-kernel: kernel ota-check
 ota-dtb: kernel ota-check
 	@echo "==> network OTA: dtb -> $(H787_BOARD)"
 	H787_BOARD=$(H787_BOARD) bash $(SSH_OTA_TOOL) $(KERNEL_DTB) dtb
+
+# ---------------------------------------------------------------------------
+# published binaries
+# ---------------------------------------------------------------------------
+# Copies the two artifacts people download straight out of the repository (via
+# raw.githubusercontent.com) into bin/, so a board can be brought up without
+# building anything:
+#
+#   bin/bootloader.bin      CM7 bootloader, programmed into on-chip flash
+#   bin/spi-nor-boot.img    dtb + kernel + rootfs, what an over-USB update writes
+#
+# Deliberately NOT part of `all`: a normal build never writes next to the
+# sources, and a bin/ that has drifted from the tree is worse than an empty
+# one.  Run this by hand with the tree final, as the last step before a release
+# is pushed.
+PUBLISHED_BIN_DIR := $(TOP)/bin
+
+publish-bin: bootloader flash-image
+	@mkdir -p $(PUBLISHED_BIN_DIR)
+	@cp $(DIST_BOOTLOADER) $(PUBLISHED_BIN_DIR)/bootloader.bin
+	@cp $(FLASH_PREFIX)    $(PUBLISHED_BIN_DIR)/spi-nor-boot.img
+	@chmod 0755 $(PUBLISHED_BIN_DIR)/bootloader.bin
+	@chmod 0644 $(PUBLISHED_BIN_DIR)/spi-nor-boot.img
+	@echo "==> $(PUBLISHED_BIN_DIR)/ (the two files served by raw.githubusercontent)"
+	@cd $(PUBLISHED_BIN_DIR) && sha256sum bootloader.bin spi-nor-boot.img
 
 # ---------------------------------------------------------------------------
 # misc

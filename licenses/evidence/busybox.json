@@ -12,7 +12,7 @@
   },
   "details": {
     "source_version": "1.38.0",
-    "recipe": "sdk-src/scripts/install-busybox.sh",
+    "recipe": "BusyBox install script delivered in the corresponding-source package",
     "scope": "Existing build association verified; no new runtime installation or board write performed"
   }
 }

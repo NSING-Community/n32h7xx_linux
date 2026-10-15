@@ -1,46 +1,46 @@
-sdk-src/sources/gcc/isl-0.24/basis_reduction_tab.c
-sdk-src/sources/gcc/isl-0.24/include/isl/arg.h
-sdk-src/sources/gcc/isl-0.24/include/isl/constraint.h
-sdk-src/sources/gcc/isl-0.24/include/isl/ctx.h
-sdk-src/sources/gcc/isl-0.24/include/isl/hash.h
-sdk-src/sources/gcc/isl-0.24/include/isl/ilp.h
-sdk-src/sources/gcc/isl-0.24/include/isl/list.h
-sdk-src/sources/gcc/isl-0.24/include/isl/lp.h
-sdk-src/sources/gcc/isl-0.24/include/isl/map.h
-sdk-src/sources/gcc/isl-0.24/include/isl/mat.h
-sdk-src/sources/gcc/isl-0.24/include/isl/options.h
-sdk-src/sources/gcc/isl-0.24/include/isl/set.h
-sdk-src/sources/gcc/isl-0.24/include/isl/space.h
-sdk-src/sources/gcc/isl-0.24/include/isl/stream.h
-sdk-src/sources/gcc/isl-0.24/include/isl/vec.h
-sdk-src/sources/gcc/isl-0.24/isl_arg.c
-sdk-src/sources/gcc/isl-0.24/isl_basis_reduction.h
-sdk-src/sources/gcc/isl-0.24/isl_blk.c
-sdk-src/sources/gcc/isl-0.24/isl_blk.h
-sdk-src/sources/gcc/isl-0.24/isl_ctx.c
-sdk-src/sources/gcc/isl-0.24/isl_equalities.h
-sdk-src/sources/gcc/isl-0.24/isl_gmp.c
-sdk-src/sources/gcc/isl-0.24/isl_hash.c
-sdk-src/sources/gcc/isl-0.24/isl_id.c
-sdk-src/sources/gcc/isl-0.24/isl_id_private.h
-sdk-src/sources/gcc/isl-0.24/isl_ilp.c
-sdk-src/sources/gcc/isl-0.24/isl_int.h
-sdk-src/sources/gcc/isl-0.24/isl_lp.c
-sdk-src/sources/gcc/isl-0.24/isl_map_private.h
-sdk-src/sources/gcc/isl-0.24/isl_map_subtract.c
-sdk-src/sources/gcc/isl-0.24/isl_options.c
-sdk-src/sources/gcc/isl-0.24/isl_sample.c
-sdk-src/sources/gcc/isl-0.24/isl_sample.h
-sdk-src/sources/gcc/isl-0.24/isl_scan.c
-sdk-src/sources/gcc/isl-0.24/isl_scan.h
-sdk-src/sources/gcc/isl-0.24/isl_seq.h
-sdk-src/sources/gcc/isl-0.24/isl_stream.c
-sdk-src/sources/gcc/isl-0.24/isl_tab.h
-sdk-src/sources/gcc/isl-0.24/pip.c
-sdk-src/sources/gcc/isl-0.24/polyhedron_detect_equalities.c
-sdk-src/sources/gcc/isl-0.24/polyhedron_minimize.c
-sdk-src/sources/gcc/isl-0.24/polyhedron_sample.c
-sdk-src/sources/gcc/isl-0.24/polytope_scan.c
+gcc/isl-0.24/basis_reduction_tab.c
+gcc/isl-0.24/include/isl/arg.h
+gcc/isl-0.24/include/isl/constraint.h
+gcc/isl-0.24/include/isl/ctx.h
+gcc/isl-0.24/include/isl/hash.h
+gcc/isl-0.24/include/isl/ilp.h
+gcc/isl-0.24/include/isl/list.h
+gcc/isl-0.24/include/isl/lp.h
+gcc/isl-0.24/include/isl/map.h
+gcc/isl-0.24/include/isl/mat.h
+gcc/isl-0.24/include/isl/options.h
+gcc/isl-0.24/include/isl/set.h
+gcc/isl-0.24/include/isl/space.h
+gcc/isl-0.24/include/isl/stream.h
+gcc/isl-0.24/include/isl/vec.h
+gcc/isl-0.24/isl_arg.c
+gcc/isl-0.24/isl_basis_reduction.h
+gcc/isl-0.24/isl_blk.c
+gcc/isl-0.24/isl_blk.h
+gcc/isl-0.24/isl_ctx.c
+gcc/isl-0.24/isl_equalities.h
+gcc/isl-0.24/isl_gmp.c
+gcc/isl-0.24/isl_hash.c
+gcc/isl-0.24/isl_id.c
+gcc/isl-0.24/isl_id_private.h
+gcc/isl-0.24/isl_ilp.c
+gcc/isl-0.24/isl_int.h
+gcc/isl-0.24/isl_lp.c
+gcc/isl-0.24/isl_map_private.h
+gcc/isl-0.24/isl_map_subtract.c
+gcc/isl-0.24/isl_options.c
+gcc/isl-0.24/isl_sample.c
+gcc/isl-0.24/isl_sample.h
+gcc/isl-0.24/isl_scan.c
+gcc/isl-0.24/isl_scan.h
+gcc/isl-0.24/isl_seq.h
+gcc/isl-0.24/isl_stream.c
+gcc/isl-0.24/isl_tab.h
+gcc/isl-0.24/pip.c
+gcc/isl-0.24/polyhedron_detect_equalities.c
+gcc/isl-0.24/polyhedron_minimize.c
+gcc/isl-0.24/polyhedron_sample.c
+gcc/isl-0.24/polytope_scan.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  *
@@ -50,7 +50,7 @@ sdk-src/sources/gcc/isl-0.24/polytope_scan.c
  * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
  */
 
-sdk-src/sources/gcc/isl-0.24/basis_reduction_templ.c
+gcc/isl-0.24/basis_reduction_templ.c
 /*
  * Copyright 2006-2007 Universiteit Leiden
  * Copyright 2008-2009 Katholieke Universiteit Leuven
@@ -63,7 +63,7 @@ sdk-src/sources/gcc/isl-0.24/basis_reduction_templ.c
  * B-3001 Leuven, Belgium
  */
 
-sdk-src/sources/gcc/isl-0.24/codegen.c
+gcc/isl-0.24/codegen.c
 /*
  * Copyright 2012,2014 Ecole Normale Superieure
  *
@@ -73,14 +73,14 @@ sdk-src/sources/gcc/isl-0.24/codegen.c
  * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/extract_key.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_coalesce.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_domain_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_move_dims_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_no_domain_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_read_no_explicit_domain_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_type_has_space_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_val.c
+gcc/isl-0.24/extract_key.c
+gcc/isl-0.24/isl_multi_coalesce.c
+gcc/isl-0.24/isl_multi_domain_templ.c
+gcc/isl-0.24/isl_multi_move_dims_templ.c
+gcc/isl-0.24/isl_multi_no_domain_templ.c
+gcc/isl-0.24/isl_multi_read_no_explicit_domain_templ.c
+gcc/isl-0.24/isl_type_has_space_templ.c
+gcc/isl-0.24/isl_val.c
 /*
  * Copyright 2013      Ecole Normale Superieure
  *
@@ -90,14 +90,14 @@ sdk-src/sources/gcc/isl-0.24/isl_val.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/flow.c
-sdk-src/sources/gcc/isl-0.24/flow_cmp.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_explicit_domain.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_no_explicit_domain.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_pw_aff_explicit_domain.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_union_add_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_union_pw_aff_explicit_domain.c
-sdk-src/sources/gcc/isl-0.24/schedule_cmp.c
+gcc/isl-0.24/flow.c
+gcc/isl-0.24/flow_cmp.c
+gcc/isl-0.24/isl_multi_explicit_domain.c
+gcc/isl-0.24/isl_multi_no_explicit_domain.c
+gcc/isl-0.24/isl_multi_pw_aff_explicit_domain.c
+gcc/isl-0.24/isl_multi_union_add_templ.c
+gcc/isl-0.24/isl_multi_union_pw_aff_explicit_domain.c
+gcc/isl-0.24/schedule_cmp.c
 /*
  * Copyright 2017      Sven Verdoolaege
  *
@@ -106,7 +106,7 @@ sdk-src/sources/gcc/isl-0.24/schedule_cmp.c
  * Written by Sven Verdoolaege.
  */
 
-sdk-src/sources/gcc/isl-0.24/imath/gmp_compat.c
+gcc/isl-0.24/imath/gmp_compat.c
 /*
   Name:     gmp_compat.c
   Purpose:  Provide GMP compatiable routines for imath library
@@ -133,7 +133,7 @@ sdk-src/sources/gcc/isl-0.24/imath/gmp_compat.c
   SOFTWARE.
  */
 
-sdk-src/sources/gcc/isl-0.24/imath/gmp_compat.h
+gcc/isl-0.24/imath/gmp_compat.h
 /*
   Name:     gmp_compat.h
   Purpose:  Provide GMP compatiable routines for imath library
@@ -160,7 +160,7 @@ sdk-src/sources/gcc/isl-0.24/imath/gmp_compat.h
   SOFTWARE.
  */
 
-sdk-src/sources/gcc/isl-0.24/imath/imath.c
+gcc/isl-0.24/imath/imath.c
 /*
   Name:     imath.c
   Purpose:  Arbitrary precision integer arithmetic routines.
@@ -187,7 +187,7 @@ sdk-src/sources/gcc/isl-0.24/imath/imath.c
   SOFTWARE.
  */
 
-sdk-src/sources/gcc/isl-0.24/imath/imath.h
+gcc/isl-0.24/imath/imath.h
 /*
   Name:     imath.h
   Purpose:  Arbitrary precision integer arithmetic routines.
@@ -214,7 +214,7 @@ sdk-src/sources/gcc/isl-0.24/imath/imath.h
   SOFTWARE.
  */
 
-sdk-src/sources/gcc/isl-0.24/imath/imrat.c
+gcc/isl-0.24/imath/imrat.c
 /*
   Name:     imrat.c
   Purpose:  Arbitrary precision rational arithmetic routines.
@@ -241,7 +241,7 @@ sdk-src/sources/gcc/isl-0.24/imath/imrat.c
   SOFTWARE.
  */
 
-sdk-src/sources/gcc/isl-0.24/imath/imrat.h
+gcc/isl-0.24/imath/imrat.h
 /*
   Name:     imrat.h
   Purpose:  Arbitrary precision rational arithmetic routines.
@@ -268,7 +268,7 @@ sdk-src/sources/gcc/isl-0.24/imath/imrat.h
   SOFTWARE.
  */
 
-sdk-src/sources/gcc/isl-0.24/include/isl/hmap_templ.c
+gcc/isl-0.24/include/isl/hmap_templ.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2013      Ecole Normale Superieure
@@ -281,8 +281,8 @@ sdk-src/sources/gcc/isl-0.24/include/isl/hmap_templ.c
  * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/interface/cpp.cc
-sdk-src/sources/gcc/isl-0.24/interface/plain_cpp.cc
+gcc/isl-0.24/interface/cpp.cc
+gcc/isl-0.24/interface/plain_cpp.cc
 /*
  * Copyright 2016, 2017 Tobias Grosser. All rights reserved.
  *
@@ -316,9 +316,9 @@ sdk-src/sources/gcc/isl-0.24/interface/plain_cpp.cc
  * Tobias Grosser.
  */
 
-sdk-src/sources/gcc/isl-0.24/interface/cpp_conversion.cc
-sdk-src/sources/gcc/isl-0.24/isl_test_cpp-checked-conversion.cc
-sdk-src/sources/gcc/isl-0.24/isl_unbind_params_templ.c
+gcc/isl-0.24/interface/cpp_conversion.cc
+gcc/isl-0.24/isl_test_cpp-checked-conversion.cc
+gcc/isl-0.24/isl_unbind_params_templ.c
 /*
  * Copyright 2018      Sven Verdoolaege
  *
@@ -327,7 +327,7 @@ sdk-src/sources/gcc/isl-0.24/isl_unbind_params_templ.c
  * Written by Sven Verdoolaege.
  */
 
-sdk-src/sources/gcc/isl-0.24/interface/extract_interface.cc
+gcc/isl-0.24/interface/extract_interface.cc
 /*
  * Copyright 2011 Sven Verdoolaege. All rights reserved.
  * 
@@ -361,7 +361,7 @@ sdk-src/sources/gcc/isl-0.24/interface/extract_interface.cc
  * Sven Verdoolaege.
  */
 
-sdk-src/sources/gcc/isl-0.24/interface/generator.cc
+gcc/isl-0.24/interface/generator.cc
 /*
  * Copyright 2011,2015 Sven Verdoolaege. All rights reserved.
  *
@@ -395,7 +395,7 @@ sdk-src/sources/gcc/isl-0.24/interface/generator.cc
  * Sven Verdoolaege.
  */
 
-sdk-src/sources/gcc/isl-0.24/interface/python.cc
+gcc/isl-0.24/interface/python.cc
 /*
  * Copyright 2011,2015 Sven Verdoolaege. All rights reserved.
  * 
@@ -429,7 +429,7 @@ sdk-src/sources/gcc/isl-0.24/interface/python.cc
  * Sven Verdoolaege.
  */
 
-sdk-src/sources/gcc/isl-0.24/interface/template_cpp.cc
+gcc/isl-0.24/interface/template_cpp.cc
 /*
  * Copyright 2020 Cerebras Systems. All rights reserved.
  *
@@ -463,7 +463,7 @@ sdk-src/sources/gcc/isl-0.24/interface/template_cpp.cc
  * Cerebras Systems.
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_aff.c
+gcc/isl-0.24/isl_aff.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2011      Sven Verdoolaege
@@ -483,8 +483,8 @@ sdk-src/sources/gcc/isl-0.24/isl_aff.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_aff_lex_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_union_map_lex_templ.c
+gcc/isl-0.24/isl_aff_lex_templ.c
+gcc/isl-0.24/isl_union_map_lex_templ.c
 /*
  * Copyright 2014      INRIA Rocquencourt
  *
@@ -495,7 +495,7 @@ sdk-src/sources/gcc/isl-0.24/isl_union_map_lex_templ.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_aff_map.c
+gcc/isl-0.24/isl_aff_map.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2012-2013 Ecole Normale Superieure
@@ -509,7 +509,7 @@ sdk-src/sources/gcc/isl-0.24/isl_aff_map.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_affine_hull.c
+gcc/isl-0.24/isl_affine_hull.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -524,8 +524,8 @@ sdk-src/sources/gcc/isl-0.24/isl_affine_hull.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_align_params_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_type_check_equal_space_templ.c
+gcc/isl-0.24/isl_align_params_templ.c
+gcc/isl-0.24/isl_type_check_equal_space_templ.c
 /*
  * Copyright 2011      Sven Verdoolaege
  *
@@ -534,7 +534,7 @@ sdk-src/sources/gcc/isl-0.24/isl_type_check_equal_space_templ.c
  * Written by Sven Verdoolaege
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_ast.c
+gcc/isl-0.24/isl_ast.c
 /*
  * Copyright 2012-2013 Ecole Normale Superieure
  *
@@ -544,7 +544,7 @@ sdk-src/sources/gcc/isl-0.24/isl_ast.c
  * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_ast_build.c
+gcc/isl-0.24/isl_ast_build.c
 /*
  * Copyright 2012-2013 Ecole Normale Superieure
  * Copyright 2014      INRIA Rocquencourt
@@ -557,8 +557,8 @@ sdk-src/sources/gcc/isl-0.24/isl_ast_build.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_ast_build_expr.c
-sdk-src/sources/gcc/isl-0.24/isl_ast_codegen.c
+gcc/isl-0.24/isl_ast_build_expr.c
+gcc/isl-0.24/isl_ast_codegen.c
 /*
  * Copyright 2012-2014 Ecole Normale Superieure
  * Copyright 2014      INRIA Rocquencourt
@@ -571,7 +571,7 @@ sdk-src/sources/gcc/isl-0.24/isl_ast_codegen.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_ast_graft.c
+gcc/isl-0.24/isl_ast_graft.c
 /*
  * Copyright 2012      Ecole Normale Superieure
  * Copyright 2014      INRIA Rocquencourt
@@ -586,7 +586,7 @@ sdk-src/sources/gcc/isl-0.24/isl_ast_graft.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_bernstein.c
+gcc/isl-0.24/isl_bernstein.c
 /*
  * Copyright 2006-2007 Universiteit Leiden
  * Copyright 2008-2009 Katholieke Universiteit Leuven
@@ -602,12 +602,12 @@ sdk-src/sources/gcc/isl-0.24/isl_bernstein.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_bind_domain_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_map_bound_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_bind_domain_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_bind_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_opt_mpa_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_bind_domain_templ.c
+gcc/isl-0.24/isl_bind_domain_templ.c
+gcc/isl-0.24/isl_map_bound_templ.c
+gcc/isl-0.24/isl_multi_bind_domain_templ.c
+gcc/isl-0.24/isl_multi_bind_templ.c
+gcc/isl-0.24/isl_opt_mpa_templ.c
+gcc/isl-0.24/isl_pw_bind_domain_templ.c
 /*
  * Copyright 2018      Cerebras Systems
  *
@@ -617,13 +617,13 @@ sdk-src/sources/gcc/isl-0.24/isl_pw_bind_domain_templ.c
  * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_bound.c
-sdk-src/sources/gcc/isl-0.24/isl_farkas.c
-sdk-src/sources/gcc/isl-0.24/isl_fold.c
-sdk-src/sources/gcc/isl-0.24/isl_morph.h
-sdk-src/sources/gcc/isl-0.24/isl_polynomial.c
-sdk-src/sources/gcc/isl-0.24/isl_transitive_closure.c
-sdk-src/sources/gcc/isl-0.24/isl_vertices.c
+gcc/isl-0.24/isl_bound.c
+gcc/isl-0.24/isl_farkas.c
+gcc/isl-0.24/isl_fold.c
+gcc/isl-0.24/isl_morph.h
+gcc/isl-0.24/isl_polynomial.c
+gcc/isl-0.24/isl_transitive_closure.c
+gcc/isl-0.24/isl_vertices.c
 /*
  * Copyright 2010      INRIA Saclay
  *
@@ -634,7 +634,7 @@ sdk-src/sources/gcc/isl-0.24/isl_vertices.c
  * 91893 Orsay, France 
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_box.c
+gcc/isl-0.24/isl_box.c
 /*
  * Copyright 2010-2011 INRIA Saclay
  * Copyright 2012-2013 Ecole Normale Superieure
@@ -647,7 +647,7 @@ sdk-src/sources/gcc/isl-0.24/isl_box.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_coalesce.c
+gcc/isl-0.24/isl_coalesce.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -670,7 +670,7 @@ sdk-src/sources/gcc/isl-0.24/isl_coalesce.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_constraint.c
+gcc/isl-0.24/isl_constraint.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -683,7 +683,7 @@ sdk-src/sources/gcc/isl-0.24/isl_constraint.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_convex_hull.c
+gcc/isl-0.24/isl_convex_hull.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2014      INRIA Rocquencourt
@@ -696,18 +696,18 @@ sdk-src/sources/gcc/isl-0.24/isl_convex_hull.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_copy_tuple_id_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_ilp_opt_multi_val_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_insert_domain_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_add_constant_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_insert_domain_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_locals_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_min_max_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_unbind_params_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_add_constant_multi_val_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_add_constant_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_add_constant_val_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_insert_domain_templ.c
+gcc/isl-0.24/isl_copy_tuple_id_templ.c
+gcc/isl-0.24/isl_ilp_opt_multi_val_templ.c
+gcc/isl-0.24/isl_insert_domain_templ.c
+gcc/isl-0.24/isl_multi_add_constant_templ.c
+gcc/isl-0.24/isl_multi_insert_domain_templ.c
+gcc/isl-0.24/isl_multi_locals_templ.c
+gcc/isl-0.24/isl_multi_min_max_templ.c
+gcc/isl-0.24/isl_multi_unbind_params_templ.c
+gcc/isl-0.24/isl_pw_add_constant_multi_val_templ.c
+gcc/isl-0.24/isl_pw_add_constant_templ.c
+gcc/isl-0.24/isl_pw_add_constant_val_templ.c
+gcc/isl-0.24/isl_pw_insert_domain_templ.c
 /*
  * Copyright 2019      Cerebras Systems
  *
@@ -717,7 +717,7 @@ sdk-src/sources/gcc/isl-0.24/isl_pw_insert_domain_templ.c
  * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_dim_map.c
+gcc/isl-0.24/isl_dim_map.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010-2011 INRIA Saclay
@@ -730,7 +730,7 @@ sdk-src/sources/gcc/isl-0.24/isl_dim_map.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_domain_factor_templ.c
+gcc/isl-0.24/isl_domain_factor_templ.c
 /*
  * Copyright 2012      Ecole Normale Superieure
  * Copyright 2017      Sven Verdoolaege
@@ -741,7 +741,7 @@ sdk-src/sources/gcc/isl-0.24/isl_domain_factor_templ.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_equalities.c
+gcc/isl-0.24/isl_equalities.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -754,7 +754,7 @@ sdk-src/sources/gcc/isl-0.24/isl_equalities.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_factorization.c
+gcc/isl-0.24/isl_factorization.c
 /*
  * Copyright 2005-2007 Universiteit Leiden
  * Copyright 2008-2009 Katholieke Universiteit Leuven
@@ -770,7 +770,7 @@ sdk-src/sources/gcc/isl-0.24/isl_factorization.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_flow.c
+gcc/isl-0.24/isl_flow.c
 /*
  * Copyright 2005-2007 Universiteit Leiden
  * Copyright 2008-2009 Katholieke Universiteit Leuven
@@ -789,7 +789,7 @@ sdk-src/sources/gcc/isl-0.24/isl_flow.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_ilp_opt_val_templ.c
+gcc/isl-0.24/isl_ilp_opt_val_templ.c
 /*
  * Copyright 2017      Sven Verdoolaege
  *
@@ -798,7 +798,7 @@ sdk-src/sources/gcc/isl-0.24/isl_ilp_opt_val_templ.c
  * Written by Sven Verdoolaege
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_input.c
+gcc/isl-0.24/isl_input.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -815,9 +815,9 @@ sdk-src/sources/gcc/isl-0.24/isl_input.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_int_sioimath.h
-sdk-src/sources/gcc/isl-0.24/isl_test_imath.c
-sdk-src/sources/gcc/isl-0.24/isl_test_int.c
+gcc/isl-0.24/isl_int_sioimath.h
+gcc/isl-0.24/isl_test_imath.c
+gcc/isl-0.24/isl_test_int.c
 /*
  * Copyright 2015 INRIA Paris-Rocquencourt
  *
@@ -828,7 +828,7 @@ sdk-src/sources/gcc/isl-0.24/isl_test_int.c
  * 78153 Le Chesnay Cedex France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_list_templ.c
+gcc/isl-0.24/isl_list_templ.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2011      INRIA Saclay
@@ -844,7 +844,7 @@ sdk-src/sources/gcc/isl-0.24/isl_list_templ.c
  * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_local.c
+gcc/isl-0.24/isl_local.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2014      Ecole Normale Superieure
@@ -857,7 +857,7 @@ sdk-src/sources/gcc/isl-0.24/isl_local.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_local_space.c
+gcc/isl-0.24/isl_local_space.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2012-2014 Ecole Normale Superieure
@@ -870,7 +870,7 @@ sdk-src/sources/gcc/isl-0.24/isl_local_space.c
  * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_map.c
+gcc/isl-0.24/isl_map.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -894,7 +894,7 @@ sdk-src/sources/gcc/isl-0.24/isl_map.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_map_lexopt_templ.c
+gcc/isl-0.24/isl_map_lexopt_templ.c
 /*
  * Copyright 2010      INRIA Saclay
  * Copyright 2012      Ecole Normale Superieure
@@ -907,7 +907,7 @@ sdk-src/sources/gcc/isl-0.24/isl_map_lexopt_templ.c
  * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_map_simplify.c
+gcc/isl-0.24/isl_map_simplify.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2012-2013 Ecole Normale Superieure
@@ -923,7 +923,7 @@ sdk-src/sources/gcc/isl-0.24/isl_map_simplify.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_mat.c
+gcc/isl-0.24/isl_mat.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -939,7 +939,7 @@ sdk-src/sources/gcc/isl-0.24/isl_mat.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_morph.c
+gcc/isl-0.24/isl_morph.c
 /*
  * Copyright 2010-2011 INRIA Saclay
  * Copyright 2014      Ecole Normale Superieure
@@ -952,7 +952,7 @@ sdk-src/sources/gcc/isl-0.24/isl_morph.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_align_templ.c
+gcc/isl-0.24/isl_multi_align_templ.c
 /*
  * Copyright 2017      Sven Verdoolaege
  *
@@ -961,9 +961,9 @@ sdk-src/sources/gcc/isl-0.24/isl_multi_align_templ.c
  * Written by Sven Verdoolaege,
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_apply_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_gist.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_intersect.c
+gcc/isl-0.24/isl_multi_apply_templ.c
+gcc/isl-0.24/isl_multi_gist.c
+gcc/isl-0.24/isl_multi_intersect.c
 /*
  * Copyright 2011      Sven Verdoolaege
  * Copyright 2012-2013 Ecole Normale Superieure
@@ -974,9 +974,9 @@ sdk-src/sources/gcc/isl-0.24/isl_multi_intersect.c
  * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_arith_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_dims.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_tuple_id_templ.c
+gcc/isl-0.24/isl_multi_arith_templ.c
+gcc/isl-0.24/isl_multi_dims.c
+gcc/isl-0.24/isl_multi_tuple_id_templ.c
 /*
  * Copyright 2011      Sven Verdoolaege
  * Copyright 2012-2013 Ecole Normale Superieure
@@ -987,9 +987,9 @@ sdk-src/sources/gcc/isl-0.24/isl_multi_tuple_id_templ.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_cmp.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_hash.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_hash.c
+gcc/isl-0.24/isl_multi_cmp.c
+gcc/isl-0.24/isl_multi_hash.c
+gcc/isl-0.24/isl_pw_hash.c
 /*
  * Copyright 2016      Sven Verdoolaege
  *
@@ -998,7 +998,7 @@ sdk-src/sources/gcc/isl-0.24/isl_pw_hash.c
  * Written by Sven Verdoolaege
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_dim_id_templ.c
+gcc/isl-0.24/isl_multi_dim_id_templ.c
 /*
  * Copyright 2011      Sven Verdoolaege
  * Copyright 2013      Ecole Normale Superieure
@@ -1009,8 +1009,8 @@ sdk-src/sources/gcc/isl-0.24/isl_multi_dim_id_templ.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_floor.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_nan_templ.c
+gcc/isl-0.24/isl_multi_floor.c
+gcc/isl-0.24/isl_multi_nan_templ.c
 /*
  * Copyright 2014      Ecole Normale Superieure
  *
@@ -1020,7 +1020,7 @@ sdk-src/sources/gcc/isl-0.24/isl_multi_nan_templ.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_from_base_templ.c
+gcc/isl-0.24/isl_multi_from_base_templ.c
 /*
  * Copyright 2012,2014 Ecole Normale Superieure
  *
@@ -1030,12 +1030,12 @@ sdk-src/sources/gcc/isl-0.24/isl_multi_from_base_templ.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_identity_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_product_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_splice_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_multi_zero_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_pullback_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_test_plain_equal_templ.c
+gcc/isl-0.24/isl_multi_identity_templ.c
+gcc/isl-0.24/isl_multi_product_templ.c
+gcc/isl-0.24/isl_multi_splice_templ.c
+gcc/isl-0.24/isl_multi_zero_templ.c
+gcc/isl-0.24/isl_pw_pullback_templ.c
+gcc/isl-0.24/isl_test_plain_equal_templ.c
 /*
  * Copyright 2012      Ecole Normale Superieure
  *
@@ -1045,7 +1045,7 @@ sdk-src/sources/gcc/isl-0.24/isl_test_plain_equal_templ.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_templ.c
+gcc/isl-0.24/isl_multi_templ.c
 /*
  * Copyright 2011      Sven Verdoolaege
  * Copyright 2012-2014 Ecole Normale Superieure
@@ -1056,9 +1056,9 @@ sdk-src/sources/gcc/isl-0.24/isl_multi_templ.c
  * Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_multi_zero_space_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_locals_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_union_locals_templ.c
+gcc/isl-0.24/isl_multi_zero_space_templ.c
+gcc/isl-0.24/isl_pw_locals_templ.c
+gcc/isl-0.24/isl_union_locals_templ.c
 /*
  * Copyright 2020      Cerebras Systems
  *
@@ -1068,7 +1068,7 @@ sdk-src/sources/gcc/isl-0.24/isl_union_locals_templ.c
  * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_obj.c
+gcc/isl-0.24/isl_obj.c
 /*
  * Copyright 2010      INRIA Saclay
  * Copyright 2014      Ecole Normale Superieure
@@ -1084,7 +1084,7 @@ sdk-src/sources/gcc/isl-0.24/isl_obj.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_output.c
+gcc/isl-0.24/isl_output.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -1101,7 +1101,7 @@ sdk-src/sources/gcc/isl-0.24/isl_output.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_point.c
+gcc/isl-0.24/isl_point.c
 /*
  * Copyright 2010      INRIA Saclay
  * Copyright 2013      Ecole Normale Superieure
@@ -1117,8 +1117,8 @@ sdk-src/sources/gcc/isl-0.24/isl_point.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_pw_eval.c
-sdk-src/sources/gcc/isl-0.24/isl_union_single.c
+gcc/isl-0.24/isl_pw_eval.c
+gcc/isl-0.24/isl_union_single.c
 /*
  * Copyright 2010      INRIA Saclay
  * Copyright 2013      Ecole Normale Superieure
@@ -1131,16 +1131,16 @@ sdk-src/sources/gcc/isl-0.24/isl_union_single.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_pw_insert_dims_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_lift_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_morph_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_move_dims_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_neg_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_opt_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_pw_sub_templ.c
-sdk-src/sources/gcc/isl-0.24/isl_reordering.c
-sdk-src/sources/gcc/isl-0.24/isl_union_eval.c
-sdk-src/sources/gcc/isl-0.24/isl_union_neg.c
+gcc/isl-0.24/isl_pw_insert_dims_templ.c
+gcc/isl-0.24/isl_pw_lift_templ.c
+gcc/isl-0.24/isl_pw_morph_templ.c
+gcc/isl-0.24/isl_pw_move_dims_templ.c
+gcc/isl-0.24/isl_pw_neg_templ.c
+gcc/isl-0.24/isl_pw_opt_templ.c
+gcc/isl-0.24/isl_pw_sub_templ.c
+gcc/isl-0.24/isl_reordering.c
+gcc/isl-0.24/isl_union_eval.c
+gcc/isl-0.24/isl_union_neg.c
 /*
  * Copyright 2010      INRIA Saclay
  *
@@ -1151,7 +1151,7 @@ sdk-src/sources/gcc/isl-0.24/isl_union_neg.c
  * 91893 Orsay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_pw_range_tuple_id_templ.c
+gcc/isl-0.24/isl_pw_range_tuple_id_templ.c
 /*
  * Copyright 2018      Sven Verdoolaege
  * Copyright 2019      Cerebras Systems
@@ -1162,7 +1162,7 @@ sdk-src/sources/gcc/isl-0.24/isl_pw_range_tuple_id_templ.c
  * Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_pw_templ.c
+gcc/isl-0.24/isl_pw_templ.c
 /*
  * Copyright 2010-2011 INRIA Saclay
  * Copyright 2011      Sven Verdoolaege
@@ -1176,7 +1176,7 @@ sdk-src/sources/gcc/isl-0.24/isl_pw_templ.c
  * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_pw_union_opt.c
+gcc/isl-0.24/isl_pw_union_opt.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2012      Ecole Normale Superieure
@@ -1191,7 +1191,7 @@ sdk-src/sources/gcc/isl-0.24/isl_pw_union_opt.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_schedule.c
+gcc/isl-0.24/isl_schedule.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2012-2014 Ecole Normale Superieure
@@ -1205,7 +1205,7 @@ sdk-src/sources/gcc/isl-0.24/isl_schedule.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_schedule_band.c
+gcc/isl-0.24/isl_schedule_band.c
 /*
  * Copyright 2013-2014 Ecole Normale Superieure
  * Copyright 2014      INRIA Rocquencourt
@@ -1218,7 +1218,7 @@ sdk-src/sources/gcc/isl-0.24/isl_schedule_band.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_schedule_constraints.c
+gcc/isl-0.24/isl_schedule_constraints.c
 /*
  * Copyright 2012      Ecole Normale Superieure
  * Copyright 2015-2016 Sven Verdoolaege
@@ -1229,7 +1229,7 @@ sdk-src/sources/gcc/isl-0.24/isl_schedule_constraints.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_schedule_node.c
+gcc/isl-0.24/isl_schedule_node.c
 /*
  * Copyright 2013-2014 Ecole Normale Superieure
  * Copyright 2014      INRIA Rocquencourt
@@ -1243,7 +1243,7 @@ sdk-src/sources/gcc/isl-0.24/isl_schedule_node.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_schedule_tree.c
+gcc/isl-0.24/isl_schedule_tree.c
 /*
  * Copyright 2013-2014 Ecole Normale Superieure
  * Copyright 2014      INRIA Rocquencourt
@@ -1259,7 +1259,7 @@ sdk-src/sources/gcc/isl-0.24/isl_schedule_tree.c
  * CS 42112, 75589 Paris Cedex 12, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_scheduler.c
+gcc/isl-0.24/isl_scheduler.c
 /*
  * Copyright 2011      INRIA Saclay
  * Copyright 2012-2014 Ecole Normale Superieure
@@ -1277,7 +1277,7 @@ sdk-src/sources/gcc/isl-0.24/isl_scheduler.c
  * CS 42112, 75589 Paris Cedex 12, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_seq.c
+gcc/isl-0.24/isl_seq.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2011      INRIA Saclay
@@ -1288,7 +1288,7 @@ sdk-src/sources/gcc/isl-0.24/isl_seq.c
  * Computerwetenschappen, Celestijnenlaan 200A, B-3001 Leuven, Belgium
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_sort.c
+gcc/isl-0.24/isl_sort.c
 /*
  * The code of this file was taken from http://jeffreystedfast.blogspot.be,
  * where it was posted in 2011 by Jeffrey Stedfast under the MIT license.
@@ -1313,7 +1313,7 @@ sdk-src/sources/gcc/isl-0.24/isl_sort.c
  * IN THE SOFTWARE.
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_space.c
+gcc/isl-0.24/isl_space.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -1330,7 +1330,7 @@ sdk-src/sources/gcc/isl-0.24/isl_space.c
  * and Cerebras Systems, 175 S San Antonio Rd, Los Altos, CA, USA
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_stride.c
+gcc/isl-0.24/isl_stride.c
 /*
  * Copyright 2012-2013 Ecole Normale Superieure
  *
@@ -1340,7 +1340,7 @@ sdk-src/sources/gcc/isl-0.24/isl_stride.c
  * Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_tab.c
+gcc/isl-0.24/isl_tab.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2013      Ecole Normale Superieure
@@ -1356,7 +1356,7 @@ sdk-src/sources/gcc/isl-0.24/isl_tab.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_tab_lexopt_templ.c
+gcc/isl-0.24/isl_tab_lexopt_templ.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -1370,7 +1370,7 @@ sdk-src/sources/gcc/isl-0.24/isl_tab_lexopt_templ.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_tab_pip.c
+gcc/isl-0.24/isl_tab_pip.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -1384,7 +1384,7 @@ sdk-src/sources/gcc/isl-0.24/isl_tab_pip.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France 
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_tarjan.c
+gcc/isl-0.24/isl_tarjan.c
 /*
  * Copyright 2010-2011 INRIA Saclay
  * Copyright 2012      Ecole Normale Superieure
@@ -1397,7 +1397,7 @@ sdk-src/sources/gcc/isl-0.24/isl_tarjan.c
  * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_test.c
+gcc/isl-0.24/isl_test.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2010      INRIA Saclay
@@ -1415,9 +1415,9 @@ sdk-src/sources/gcc/isl-0.24/isl_test.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_test_cpp-checked.cc
-sdk-src/sources/gcc/isl-0.24/isl_test_cpp-generic.cc
-sdk-src/sources/gcc/isl-0.24/isl_test_cpp.cc
+gcc/isl-0.24/isl_test_cpp-checked.cc
+gcc/isl-0.24/isl_test_cpp-generic.cc
+gcc/isl-0.24/isl_test_cpp.cc
 /* Copyright 2016-2017 Tobias Grosser
  *
  * Use of this software is governed by the MIT license
@@ -1425,7 +1425,7 @@ sdk-src/sources/gcc/isl-0.24/isl_test_cpp.cc
  * Written by Tobias Grosser, Weststrasse 47, CH-8003, Zurich
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_type_has_equal_space_templ.c
+gcc/isl-0.24/isl_type_has_equal_space_templ.c
 /*
  * Copyright 2010      INRIA Saclay
  *
@@ -1436,7 +1436,7 @@ sdk-src/sources/gcc/isl-0.24/isl_type_has_equal_space_templ.c
  * ZAC des vignes, 4 rue Jacques Monod, 91893 Orsay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_union_map.c
+gcc/isl-0.24/isl_union_map.c
 /*
  * Copyright 2010-2011 INRIA Saclay
  * Copyright 2013-2014 Ecole Normale Superieure
@@ -1452,7 +1452,7 @@ sdk-src/sources/gcc/isl-0.24/isl_union_map.c
  * B.P. 105 - 78153 Le Chesnay, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_union_multi.c
+gcc/isl-0.24/isl_union_multi.c
 /*
  * Copyright 2010      INRIA Saclay
  * Copyright 2013      Ecole Normale Superieure
@@ -1468,7 +1468,7 @@ sdk-src/sources/gcc/isl-0.24/isl_union_multi.c
  * 78153 Le Chesnay Cedex France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_union_templ.c
+gcc/isl-0.24/isl_union_templ.c
 /*
  * Copyright 2010      INRIA Saclay
  * Copyright 2013      Ecole Normale Superieure
@@ -1481,7 +1481,7 @@ sdk-src/sources/gcc/isl-0.24/isl_union_templ.c
  * and Ecole Normale Superieure, 45 rue d'Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/isl_vec.c
+gcc/isl-0.24/isl_vec.c
 /*
  * Copyright 2008-2009 Katholieke Universiteit Leuven
  * Copyright 2013      Ecole Normale Superieure
@@ -1493,7 +1493,7 @@ sdk-src/sources/gcc/isl-0.24/isl_vec.c
  * and Ecole Normale Superieure, 45 rue d’Ulm, 75230 Paris, France
  */
 
-sdk-src/sources/gcc/isl-0.24/schedule.c
+gcc/isl-0.24/schedule.c
 /*
  * Copyright 2016      Sven Verdoolaege
  *

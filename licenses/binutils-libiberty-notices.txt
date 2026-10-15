@@ -1,4 +1,4 @@
-sdk-src/sources/binutils/libiberty/_doprnt.c
+binutils/libiberty/_doprnt.c
 /* Provide a version of _doprnt in terms of fprintf.
    Copyright (C) 1998-2026 Free Software Foundation, Inc.
    Contributed by Kaveh Ghazi  (ghazi@caip.rutgers.edu)  3/29/98
@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/argv.c
+binutils/libiberty/argv.c
 /* Create and destroy argument vectors (argv's)
    Copyright (C) 1992-2026 Free Software Foundation, Inc.
    Written by Fred Fish @ Cygnus Support
@@ -38,7 +38,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/asprintf.c
+binutils/libiberty/asprintf.c
 /* Like sprintf but provides a pointer to malloc'd storage, which must
    be freed by the caller.
    Copyright (C) 1997-2026 Free Software Foundation, Inc.
@@ -60,20 +60,20 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/atexit.c
+binutils/libiberty/atexit.c
 /* This function is in the public domain.  --Mike Stump. */
 
-sdk-src/sources/binutils/libiberty/basename.c
+binutils/libiberty/basename.c
 /* Return the basename of a pathname.
    This file is in the public domain. */
 
-sdk-src/sources/binutils/libiberty/bcmp.c
+binutils/libiberty/bcmp.c
 /* bcmp
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/bsearch.c
-sdk-src/sources/binutils/libiberty/bsearch_r.c
-sdk-src/sources/binutils/libiberty/strtoul.c
+binutils/libiberty/bsearch.c
+binutils/libiberty/bsearch_r.c
+binutils/libiberty/strtoul.c
 /*
  * Copyright (c) 1990 Regents of the University of California.
  * All rights reserved.
@@ -104,16 +104,16 @@ sdk-src/sources/binutils/libiberty/strtoul.c
  * SUCH DAMAGE.
  */
 
-sdk-src/sources/binutils/libiberty/bzero.c
+binutils/libiberty/bzero.c
 /* Portable version of bzero for systems without it.
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/calloc.c
+binutils/libiberty/calloc.c
 /* calloc -- allocate memory which has been initialized to zero.
    This function is in the public domain. */
 
-sdk-src/sources/binutils/libiberty/choose-temp.c
-sdk-src/sources/binutils/libiberty/make-temp-file.c
+binutils/libiberty/choose-temp.c
+binutils/libiberty/make-temp-file.c
 /* Utility to pick a temporary filename prefix.
    Copyright (C) 1996-2026 Free Software Foundation, Inc.
 
@@ -133,7 +133,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/clock.c
+binutils/libiberty/clock.c
 /* ANSI-compatible clock function.
    Copyright (C) 1994-2026 Free Software Foundation, Inc.
 
@@ -158,7 +158,7 @@ the resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why
 the executable file might be covered by the GNU General Public License. */
 
-sdk-src/sources/binutils/libiberty/concat.c
+binutils/libiberty/concat.c
 /* Concatenate variable number of strings.
    Copyright (C) 1991-2026 Free Software Foundation, Inc.
    Written by Fred Fish @ Cygnus Support
@@ -179,7 +179,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/cp-demangle.c
+binutils/libiberty/cp-demangle.c
 /* Demangler for g++ V3 ABI.
    Copyright (C) 2003-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor <ian@wasabisystems.com>.
@@ -210,7 +210,7 @@ sdk-src/sources/binutils/libiberty/cp-demangle.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA. 
 */
 
-sdk-src/sources/binutils/libiberty/cp-demangle.h
+binutils/libiberty/cp-demangle.h
 /* Internal demangler interface for g++ V3 ABI.
    Copyright (C) 2003-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor <ian@wasabisystems.com>.
@@ -241,7 +241,7 @@ sdk-src/sources/binutils/libiberty/cp-demangle.h
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA. 
 */
 
-sdk-src/sources/binutils/libiberty/cp-demint.c
+binutils/libiberty/cp-demint.c
 /* Demangler component interface functions.
    Copyright (C) 2004-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor <ian@wasabisystems.com>.
@@ -272,7 +272,7 @@ sdk-src/sources/binutils/libiberty/cp-demint.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA. 
 */
 
-sdk-src/sources/binutils/libiberty/cplus-dem.c
+binutils/libiberty/cplus-dem.c
 /* Demangler for GNU C++
    Copyright (C) 1989-2026 Free Software Foundation, Inc.
    Written by James Clark (jjc@jclark.uucp)
@@ -304,7 +304,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/crc32.c
+binutils/libiberty/crc32.c
 /* crc32.c
    Copyright (C) 2009-2026 Free Software Foundation, Inc.
 
@@ -334,7 +334,7 @@ sdk-src/sources/binutils/libiberty/crc32.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-sdk-src/sources/binutils/libiberty/d-demangle.c
+binutils/libiberty/d-demangle.c
 /* Demangler for the D programming language
    Copyright (C) 2014-2026 Free Software Foundation, Inc.
    Written by Iain Buclaw (ibuclaw@gdcproject.org)
@@ -363,7 +363,7 @@ You should have received a copy of the GNU Library General Public
 License along with libiberty; see the file COPYING.LIB.
 If not, see <http://www.gnu.org/licenses/>.  */
 
-sdk-src/sources/binutils/libiberty/dwarfnames.c
+binutils/libiberty/dwarfnames.c
 /* Names of various DWARF tags.
    Copyright (C) 2012-2026 Free Software Foundation, Inc.
 
@@ -393,7 +393,7 @@ along with GNU CC; see the file COPYING.  If not, write to
 the Free Software Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/dyn-string.c
+binutils/libiberty/dyn-string.c
 /* An abstract string datatype.
    Copyright (C) 1998-2026 Free Software Foundation, Inc.
    Contributed by Mark Mitchell (mark@markmitchell.com).
@@ -424,7 +424,7 @@ along with GNU CC; see the file COPYING.  If not, write to
 the Free Software Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/fdmatch.c
+binutils/libiberty/fdmatch.c
 /* Compare two open file descriptors to see if they refer to the same file.
    Copyright (C) 1991-2026 Free Software Foundation, Inc.
 
@@ -444,7 +444,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/fibheap.c
+binutils/libiberty/fibheap.c
 /* A Fibonacci heap datatype.
    Copyright (C) 1998-2026 Free Software Foundation, Inc.
    Contributed by Daniel Berlin (dan@cgsoftware.com).
@@ -466,7 +466,7 @@ along with GNU CC; see the file COPYING.  If not, write to
 the Free Software Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/filedescriptor.c
+binutils/libiberty/filedescriptor.c
 /* File descriptor related functions.
 
    Copyright (C) 2019-2026 Free Software Foundation, Inc.
@@ -488,7 +488,7 @@ sdk-src/sources/binutils/libiberty/filedescriptor.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/filename_cmp.c
+binutils/libiberty/filename_cmp.c
 /* File name comparison routine.
 
    Copyright (C) 2007-2026 Free Software Foundation, Inc.
@@ -507,7 +507,7 @@ sdk-src/sources/binutils/libiberty/filename_cmp.c
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/floatformat.c
+binutils/libiberty/floatformat.c
 /* IEEE floating point support routines, for GDB, the GNU Debugger.
    Copyright (C) 1991-2026 Free Software Foundation, Inc.
 
@@ -527,7 +527,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/fnmatch.c
+binutils/libiberty/fnmatch.c
 /* Copyright (C) 1991-2026 Free Software Foundation, Inc.
 
 NOTE: This source is derived from an old version taken from the GNU C
@@ -548,7 +548,7 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/fopen_unlocked.c
+binutils/libiberty/fopen_unlocked.c
 /* Implement fopen_unlocked and related functions.
    Copyright (C) 2005-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -569,11 +569,11 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/getcwd.c
+binutils/libiberty/getcwd.c
 /* Emulate getcwd using getwd.
    This function is in the public domain. */
 
-sdk-src/sources/binutils/libiberty/getopt.c
+binutils/libiberty/getopt.c
 /* Getopt for GNU.
    NOTE: getopt is now part of the C library, so if you don't know what
    "Keep this file name-space clean" means, talk to drepper@gnu.org
@@ -599,7 +599,7 @@ sdk-src/sources/binutils/libiberty/getopt.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301,
    USA.  */
 
-sdk-src/sources/binutils/libiberty/getopt1.c
+binutils/libiberty/getopt1.c
 /* getopt_long and getopt_long_only entry points for GNU getopt.
    Copyright (C) 1987-2026 Free Software Foundation, Inc.
 
@@ -621,7 +621,7 @@ sdk-src/sources/binutils/libiberty/getopt1.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301,
    USA.  */
 
-sdk-src/sources/binutils/libiberty/getruntime.c
+binutils/libiberty/getruntime.c
 /* Return time used so far, in microseconds.
    Copyright (C) 1994-2026 Free Software Foundation, Inc.
 
@@ -641,7 +641,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/hashtab.c
+binutils/libiberty/hashtab.c
 /* An expandable hash tables datatype.  
    Copyright (C) 1999-2026 Free Software Foundation, Inc.
    Contributed by Vladimir Makarov (vmakarov@cygnus.com).
@@ -662,7 +662,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/hex.c
+binutils/libiberty/hex.c
 /* Hex character manipulation support.
    Copyright (C) 1995-2026 Free Software Foundation, Inc.
 
@@ -682,11 +682,11 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/insque.c
+binutils/libiberty/insque.c
 /* insque(3C) routines
    This file is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/lbasename.c
+binutils/libiberty/lbasename.c
 /* Libiberty basename.  Like basename, but is not overridden by the
    system C library.
    Copyright (C) 2001-2026 Free Software Foundation, Inc.
@@ -707,7 +707,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/ldirname.c
+binutils/libiberty/ldirname.c
 /* Libiberty dirname.  Like dirname, but is not overridden by the
    system C library.
    Copyright (C) 2025-2026 Free Software Foundation, Inc.
@@ -728,7 +728,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/lrealpath.c
+binutils/libiberty/lrealpath.c
 /* Libiberty realpath.  Like realpath, but more consistent behavior.
    Based on gdb_realpath from GDB.
 
@@ -751,7 +751,7 @@ sdk-src/sources/binutils/libiberty/lrealpath.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/make-relative-prefix.c
+binutils/libiberty/make-relative-prefix.c
 /* Relative (relocatable) prefix support.
    Copyright (C) 1987-2026 Free Software Foundation, Inc.
 
@@ -772,7 +772,7 @@ along with GCC; see the file COPYING.  If not, write to the Free
 Software Foundation, 51 Franklin Street - Fifth Floor, Boston, MA
 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/md5.c
+binutils/libiberty/md5.c
 /* md5.c - Functions to compute MD5 message digest of files or memory blocks
    according to the definition of MD5 in RFC 1321 from April 1992.
    Copyright (C) 1995-2026 Free Software Foundation, Inc.
@@ -794,15 +794,15 @@ sdk-src/sources/binutils/libiberty/md5.c
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/memcmp.c
+binutils/libiberty/memcmp.c
 /* memcmp -- compare two memory regions.
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/memcpy.c
+binutils/libiberty/memcpy.c
 /* memcpy (the standard C function)
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/memmem.c
+binutils/libiberty/memmem.c
 /* Copyright (C) 1991-2026 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -820,10 +820,10 @@ sdk-src/sources/binutils/libiberty/memmem.c
    with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/memmove.c
+binutils/libiberty/memmove.c
 /* This function is in the public domain.  --Per Bothner. */
 
-sdk-src/sources/binutils/libiberty/mempcpy.c
+binutils/libiberty/mempcpy.c
 /* Implement the mempcpy function.
    Copyright (C) 2003-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -844,11 +844,11 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/memset.c
+binutils/libiberty/memset.c
 /* memset
    This implementation is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/mkstemps.c
+binutils/libiberty/mkstemps.c
 /* Copyright (C) 1991-2026 Free Software Foundation, Inc.
    This file is derived from mkstemp.c from the GNU C Library.
 
@@ -867,7 +867,7 @@ sdk-src/sources/binutils/libiberty/mkstemps.c
    write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/objalloc.c
+binutils/libiberty/objalloc.c
 /* objalloc.c -- routines to allocate memory for objects
    Copyright (C) 1997-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor, Cygnus Solutions.
@@ -887,7 +887,7 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/obstack.c
+binutils/libiberty/obstack.c
 /* obstack.c - subroutines used implicitly by object stack macros
    Copyright (C) 1988-2026 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
@@ -906,7 +906,7 @@ sdk-src/sources/binutils/libiberty/obstack.c
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
-sdk-src/sources/binutils/libiberty/partition.c
+binutils/libiberty/partition.c
 /* List implementation of a partition of consecutive integers.
    Copyright (C) 2000-2026 Free Software Foundation, Inc.
    Contributed by CodeSourcery, LLC.
@@ -928,7 +928,7 @@ sdk-src/sources/binutils/libiberty/partition.c
    the Free Software Foundation, 51 Franklin Street - Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pex-common.c
+binutils/libiberty/pex-common.c
 /* Common code for executing a program in a sub-process.
    Copyright (C) 2005-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor <ian@airs.com>.
@@ -949,7 +949,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pex-common.h
+binutils/libiberty/pex-common.h
 /* Utilities to execute a program in a subprocess (possibly linked by pipes
    with other subprocesses), and wait for it.  Shared logic.
    Copyright (C) 1996-2026 Free Software Foundation, Inc.
@@ -970,7 +970,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pex-djgpp.c
+binutils/libiberty/pex-djgpp.c
 /* Utilities to execute a program in a subprocess (possibly linked by pipes
    with other subprocesses), and wait for it.  DJGPP specialization.
    Copyright (C) 1996-2026 Free Software Foundation, Inc.
@@ -991,7 +991,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pex-msdos.c
+binutils/libiberty/pex-msdos.c
 /* Utilities to execute a program in a subprocess (possibly linked by pipes
    with other subprocesses), and wait for it.  Generic MSDOS specialization.
    Copyright (C) 1996-2026 Free Software Foundation, Inc.
@@ -1012,7 +1012,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pex-one.c
+binutils/libiberty/pex-one.c
 /* Execute a program and wait for a result.
    Copyright (C) 2005-2026 Free Software Foundation, Inc.
 
@@ -1032,7 +1032,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pex-unix.c
+binutils/libiberty/pex-unix.c
 /* Utilities to execute a program in a subprocess (possibly linked by pipes
    with other subprocesses), and wait for it.  Generic Unix version
    (also used for UWIN and VMS).
@@ -1054,7 +1054,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pex-win32.c
+binutils/libiberty/pex-win32.c
 /* Utilities to execute a program in a subprocess (possibly linked by pipes
    with other subprocesses), and wait for it.  Generic Win32 specialization.
    Copyright (C) 1996-2026 Free Software Foundation, Inc.
@@ -1075,7 +1075,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/pexecute.c
+binutils/libiberty/pexecute.c
 /* Utilities to execute a program in a subprocess (possibly linked by pipes
    with other subprocesses), and wait for it.
    Copyright (C) 2004-2026 Free Software Foundation, Inc.
@@ -1096,7 +1096,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/physmem.c
+binutils/libiberty/physmem.c
 /* Calculate the size of physical memory.
    Copyright (C) 2000-2026 Free Software Foundation, Inc.
 
@@ -1114,7 +1114,7 @@ sdk-src/sources/binutils/libiberty/physmem.c
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/putenv.c
+binutils/libiberty/putenv.c
 /* Copyright (C) 1991-2026 Free Software Foundation, Inc.
    This file based on putenv.c in the GNU C Library.
 
@@ -1133,7 +1133,7 @@ sdk-src/sources/binutils/libiberty/putenv.c
    write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/random.c
+binutils/libiberty/random.c
 /*
  * Copyright (c) 1983 Regents of the University of California.
  * All rights reserved.
@@ -1164,7 +1164,7 @@ sdk-src/sources/binutils/libiberty/random.c
  * SUCH DAMAGE.
  */
 
-sdk-src/sources/binutils/libiberty/regex.c
+binutils/libiberty/regex.c
 /* Extended regular expression matching and search library,
    version 0.12.
    (Implements POSIX draft P1003.2/D11.2, except for some of the
@@ -1188,11 +1188,11 @@ sdk-src/sources/binutils/libiberty/regex.c
    Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-sdk-src/sources/binutils/libiberty/rename.c
+binutils/libiberty/rename.c
 /* rename -- rename a file
    This function is in the public domain. */
 
-sdk-src/sources/binutils/libiberty/rust-demangle.c
+binutils/libiberty/rust-demangle.c
 /* Demangler for the Rust programming language
    Copyright (C) 2016-2026 Free Software Foundation, Inc.
    Written by David Tolnay (dtolnay@gmail.com).
@@ -1222,7 +1222,7 @@ You should have received a copy of the GNU Library General Public
 License along with libiberty; see the file COPYING.LIB.
 If not, see <http://www.gnu.org/licenses/>.  */
 
-sdk-src/sources/binutils/libiberty/safe-ctype.c
+binutils/libiberty/safe-ctype.c
 /* <ctype.h> replacement macros.
 
    Copyright (C) 2000-2026 Free Software Foundation, Inc.
@@ -1244,7 +1244,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/setenv.c
+binutils/libiberty/setenv.c
 /* Copyright (C) 1992-2026 Free Software Foundation, Inc.
    This file based on setenv.c in the GNU C Library.
 
@@ -1263,7 +1263,7 @@ sdk-src/sources/binutils/libiberty/setenv.c
    write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/setproctitle.c
+binutils/libiberty/setproctitle.c
 /* Set the title of a process.
    Copyright (C) 2010-2026 Free Software Foundation, Inc.
 
@@ -1283,7 +1283,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/sha1.c
+binutils/libiberty/sha1.c
 /* sha1.c - Functions to compute SHA1 message digest of files or
    memory blocks according to the NIST specification FIPS-180-1.
 
@@ -1303,7 +1303,7 @@ sdk-src/sources/binutils/libiberty/sha1.c
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/simple-object-coff.c
+binutils/libiberty/simple-object-coff.c
 /* simple-object-coff.c -- routines to manipulate COFF object files.
    Copyright (C) 2010-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor, Google.
@@ -1323,7 +1323,7 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/simple-object-common.h
+binutils/libiberty/simple-object-common.h
 /* simple-object-common.h -- common structs for object file manipulation.
    Copyright (C) 2010-2026 Free Software Foundation, Inc.
 
@@ -1343,7 +1343,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/simple-object-elf.c
+binutils/libiberty/simple-object-elf.c
 /* simple-object-elf.c -- routines to manipulate ELF object files.
    Copyright (C) 2010-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor, Google.
@@ -1363,7 +1363,7 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/simple-object-mach-o.c
+binutils/libiberty/simple-object-mach-o.c
 /* simple-object-mach-o.c -- routines to manipulate Mach-O object files.
    Copyright (C) 2010-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor, Google.
@@ -1383,7 +1383,7 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/simple-object-xcoff.c
+binutils/libiberty/simple-object-xcoff.c
 /* simple-object-coff.c -- routines to manipulate XCOFF object files.
    Copyright (C) 2013-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor, Google and David Edelsohn, IBM.
@@ -1403,7 +1403,7 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/simple-object.c
+binutils/libiberty/simple-object.c
 /* simple-object.c -- simple routines to read and write object files.
    Copyright (C) 2010-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor, Google.
@@ -1423,7 +1423,7 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/snprintf.c
+binutils/libiberty/snprintf.c
 /* Implement the snprintf function.
    Copyright (C) 2003-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -1449,7 +1449,7 @@ the resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why
 the executable file might be covered by the GNU General Public License. */
 
-sdk-src/sources/binutils/libiberty/sort.c
+binutils/libiberty/sort.c
 /* Sorting algorithms.
    Copyright (C) 2000-2026 Free Software Foundation, Inc.
    Contributed by Mark Mitchell <mark@codesourcery.com>.
@@ -1471,7 +1471,7 @@ along with GNU CC; see the file COPYING.  If not, write to
 the Free Software Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/spaces.c
+binutils/libiberty/spaces.c
 /* Allocate memory region filled with spaces.
    Copyright (C) 1991-2026 Free Software Foundation, Inc.
 
@@ -1491,7 +1491,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/splay-tree.c
+binutils/libiberty/splay-tree.c
 /* A splay-tree datatype.  
    Copyright (C) 1998-2026 Free Software Foundation, Inc.
    Contributed by Mark Mitchell (mark@markmitchell.com).
@@ -1513,7 +1513,7 @@ along with GNU CC; see the file COPYING.  If not, write to
 the Free Software Foundation, 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/stack-limit.c
+binutils/libiberty/stack-limit.c
 /* Increase stack size limit if possible.
    Copyright (C) 2011-2026 Free Software Foundation, Inc.
 
@@ -1539,7 +1539,7 @@ the resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why
 the executable file might be covered by the GNU General Public License. */
 
-sdk-src/sources/binutils/libiberty/stpcpy.c
+binutils/libiberty/stpcpy.c
 /* Implement the stpcpy function.
    Copyright (C) 2003-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -1560,7 +1560,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/stpncpy.c
+binutils/libiberty/stpncpy.c
 /* Implement the stpncpy function.
    Copyright (C) 2003-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -1581,8 +1581,8 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/strcasecmp.c
-sdk-src/sources/binutils/libiberty/strncasecmp.c
+binutils/libiberty/strcasecmp.c
+binutils/libiberty/strncasecmp.c
 /*
  * Copyright (c) 1987 Regents of the University of California.
  * All rights reserved.
@@ -1595,20 +1595,20 @@ sdk-src/sources/binutils/libiberty/strncasecmp.c
  * is provided ``as is'' without express or implied warranty.
  */
 
-sdk-src/sources/binutils/libiberty/strchr.c
+binutils/libiberty/strchr.c
 /* Portable version of strchr()
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/strerror.c
+binutils/libiberty/strerror.c
 /* Extended support for using errno values.
    Written by Fred Fish.  fnf@cygnus.com
    This file is in the public domain.  --Per Bothner.  */
 
-sdk-src/sources/binutils/libiberty/strncmp.c
+binutils/libiberty/strncmp.c
 /* strncmp -- compare two strings, stop after n bytes.
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/strndup.c
+binutils/libiberty/strndup.c
 /* Implement the strndup function.
    Copyright (C) 2005-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -1629,24 +1629,24 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/strnlen.c
+binutils/libiberty/strnlen.c
 /* Portable version of strnlen.
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/strrchr.c
+binutils/libiberty/strrchr.c
 /* Portable version of strrchr().
    This function is in the public domain. */
 
-sdk-src/sources/binutils/libiberty/strsignal.c
+binutils/libiberty/strsignal.c
 /* Extended support for using signal values.
    Written by Fred Fish.  fnf@cygnus.com
    This file is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/strstr.c
+binutils/libiberty/strstr.c
 /* Simple implementation of strstr for systems without it.
    This function is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/strtod.c
+binutils/libiberty/strtod.c
 /* Implementation of strtod for systems with atof.
    Copyright (C) 1991-2026 Free Software Foundation, Inc.
 
@@ -1671,7 +1671,7 @@ the resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why
 the executable file might be covered by the GNU General Public License. */
 
-sdk-src/sources/binutils/libiberty/strtol.c
+binutils/libiberty/strtol.c
 /*-
  * Copyright (c) 1990 The Regents of the University of California.
  * All rights reserved.
@@ -1702,7 +1702,7 @@ sdk-src/sources/binutils/libiberty/strtol.c
  * SUCH DAMAGE.
  */
 
-sdk-src/sources/binutils/libiberty/strtoll.c
+binutils/libiberty/strtoll.c
 /*-
  * Copyright (c) 2014 The Regents of the University of California.
  * All rights reserved.
@@ -1733,7 +1733,7 @@ sdk-src/sources/binutils/libiberty/strtoll.c
  * SUCH DAMAGE.
  */
 
-sdk-src/sources/binutils/libiberty/strtoull.c
+binutils/libiberty/strtoull.c
 /*
  * Copyright (c) 2014 Regents of the University of California.
  * All rights reserved.
@@ -1764,7 +1764,7 @@ sdk-src/sources/binutils/libiberty/strtoull.c
  * SUCH DAMAGE.
  */
 
-sdk-src/sources/binutils/libiberty/strverscmp.c
+binutils/libiberty/strverscmp.c
 /* Compare strings while treating digits characters numerically.
    Copyright (C) 1997-2026 Free Software Foundation, Inc.
    This file is part of the libiberty library.
@@ -1785,7 +1785,7 @@ sdk-src/sources/binutils/libiberty/strverscmp.c
    Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-sdk-src/sources/binutils/libiberty/testsuite/demangler-fuzzer.c
+binutils/libiberty/testsuite/demangler-fuzzer.c
 /* Demangler fuzzer.
 
    Copyright (C) 2014-2026 Free Software Foundation, Inc.
@@ -1805,7 +1805,7 @@ sdk-src/sources/binutils/libiberty/testsuite/demangler-fuzzer.c
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-sdk-src/sources/binutils/libiberty/testsuite/test-demangle.c
+binutils/libiberty/testsuite/test-demangle.c
 /* Demangler test program,
    Copyright (C) 2002-2026 Free Software Foundation, Inc.
    Written by Zack Weinberg <zack@codesourcery.com
@@ -1827,7 +1827,7 @@ sdk-src/sources/binutils/libiberty/testsuite/test-demangle.c
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
 */
 
-sdk-src/sources/binutils/libiberty/testsuite/test-expandargv.c
+binutils/libiberty/testsuite/test-expandargv.c
 /* expandargv test program,
    Copyright (C) 2006-2026 Free Software Foundation, Inc.
    Written by Carlos O'Donell <carlos@codesourcery.com>
@@ -1858,7 +1858,7 @@ sdk-src/sources/binutils/libiberty/testsuite/test-expandargv.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA. 
 */
 
-sdk-src/sources/binutils/libiberty/testsuite/test-pexecute.c
+binutils/libiberty/testsuite/test-pexecute.c
 /* Pexecute test program,
    Copyright (C) 2005-2026 Free Software Foundation, Inc.
    Written by Ian Lance Taylor <ian@airs.com>.
@@ -1880,7 +1880,7 @@ sdk-src/sources/binutils/libiberty/testsuite/test-pexecute.c
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
 */
 
-sdk-src/sources/binutils/libiberty/testsuite/test-strtol.c
+binutils/libiberty/testsuite/test-strtol.c
 /* Test program for strtol family of funtions,
    Copyright (C) 2014-2026 Free Software Foundation, Inc.
    Written by Yury Gribov <y.gribov@samsung.com>
@@ -1911,7 +1911,7 @@ sdk-src/sources/binutils/libiberty/testsuite/test-strtol.c
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA. 
 */
 
-sdk-src/sources/binutils/libiberty/timeval-utils.c
+binutils/libiberty/timeval-utils.c
 /* Basic struct timeval utilities.
    Copyright (C) 2011-2026 Free Software Foundation, Inc.
 
@@ -1931,7 +1931,7 @@ License along with libiberty; see the file COPYING.LIB.  If not,
 write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/unlink-if-ordinary.c
+binutils/libiberty/unlink-if-ordinary.c
 /* unlink-if-ordinary.c - remove link to a file unless it is special
    Copyright (C) 2004-2026 Free Software Foundation, Inc.
 
@@ -1956,7 +1956,7 @@ the resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why
 the executable file might be covered by the GNU General Public License. */
 
-sdk-src/sources/binutils/libiberty/vasprintf.c
+binutils/libiberty/vasprintf.c
 /* Like vsprintf but provides a pointer to malloc'd storage, which must
    be freed by the caller.
    Copyright (C) 1994-2026 Free Software Foundation, Inc.
@@ -1977,17 +1977,17 @@ License along with libiberty; see the file COPYING.LIB.  If not, write
 to the Free Software Foundation, Inc., 51 Franklin Street - Fifth
 Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/vfork.c
+binutils/libiberty/vfork.c
 /* Emulate vfork using just plain fork, for systems without a real vfork.
    This function is in the public domain. */
 
-sdk-src/sources/binutils/libiberty/vfprintf.c
+binutils/libiberty/vfprintf.c
 /* Provide a version vfprintf in terms of _doprnt.
    By Kaveh Ghazi  (ghazi@caip.rutgers.edu)  3/29/98
    Copyright (C) 1998-2026 Free Software Foundation, Inc.
  */
 
-sdk-src/sources/binutils/libiberty/vprintf-support.c
+binutils/libiberty/vprintf-support.c
 /* Estimate the length of the string generated by a vprintf-like
    function.  Used by vasprintf and xvasprintf.
    Copyright (C) 1994-2026 Free Software Foundation, Inc.
@@ -2008,7 +2008,7 @@ License along with libiberty; see the file COPYING.LIB.  If not, write
 to the Free Software Foundation, Inc., 51 Franklin Street - Fifth
 Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/vprintf-support.h
+binutils/libiberty/vprintf-support.h
 /* Estimate the length of the string generated by a vprintf-like
    function.  Use by vasprintf and xvasprintf.
    Copyright (C) 1994-2026 Free Software Foundation, Inc.
@@ -2029,7 +2029,7 @@ License along with libiberty; see the file COPYING.LIB.  If not, write
 to the Free Software Foundation, Inc., 51 Franklin Street - Fifth
 Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/vsnprintf.c
+binutils/libiberty/vsnprintf.c
 /* Implement the vsnprintf function.
    Copyright (C) 2003-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -2055,7 +2055,7 @@ the resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why
 the executable file might be covered by the GNU General Public License. */
 
-sdk-src/sources/binutils/libiberty/vsprintf.c
+binutils/libiberty/vsprintf.c
 /* Simple implementation of vsprintf for systems without it.
    Highly system-dependent, but should work on most "traditional"
    implementations of stdio; newer ones should already have vsprintf.
@@ -2084,7 +2084,7 @@ the resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why
 the executable file might be covered by the GNU General Public License. */
 
-sdk-src/sources/binutils/libiberty/xasprintf.c
+binutils/libiberty/xasprintf.c
 /* Implement the xasprintf function.
    Copyright (C) 2014-2026 Free Software Foundation, Inc.
    Contributed by Manuel Lopez-Ibanez.
@@ -2105,7 +2105,7 @@ License along with libiberty; see the file COPYING.LIB.  If not, write
 to the Free Software Foundation, Inc., 51 Franklin Street - Fifth
 Floor, Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/xatexit.c
+binutils/libiberty/xatexit.c
 /*
  * Copyright (c) 1990 Regents of the University of California.
  * All rights reserved.
@@ -2113,7 +2113,7 @@ sdk-src/sources/binutils/libiberty/xatexit.c
  * %sccs.include.redist.c%
  */
 
-sdk-src/sources/binutils/libiberty/xexit.c
+binutils/libiberty/xexit.c
 /* xexit.c -- Run any exit handlers, then exit.
    Copyright (C) 1994-2026 Free Software Foundation, Inc.
 
@@ -2133,7 +2133,7 @@ License along with libiberty; see the file COPYING.LIB.  If not, write
 to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/xmalloc.c
+binutils/libiberty/xmalloc.c
 /* memory allocation routines with error checking.
    Copyright (C) 1989-2026 Free Software Foundation, Inc.
    
@@ -2153,22 +2153,22 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/xmemdup.c
+binutils/libiberty/xmemdup.c
 /* xmemdup.c -- Duplicate a memory buffer, using xmalloc.
    This trivial function is in the public domain.
    Jeff Garzik, September 1999.  */
 
-sdk-src/sources/binutils/libiberty/xstrdup.c
+binutils/libiberty/xstrdup.c
 /* xstrdup.c -- Duplicate a string in memory, using xmalloc.
    This trivial function is in the public domain.
    Ian Lance Taylor, Cygnus Support, December 1995.  */
 
-sdk-src/sources/binutils/libiberty/xstrerror.c
+binutils/libiberty/xstrerror.c
 /* xstrerror.c -- jacket routine for more robust strerror() usage.
    Fri Jun 16 18:30:00 1995  Pat Rankin  <rankin@eql.caltech.edu>
    This code is in the public domain.  */
 
-sdk-src/sources/binutils/libiberty/xstrndup.c
+binutils/libiberty/xstrndup.c
 /* Implement the xstrndup function.
    Copyright (C) 2005-2026 Free Software Foundation, Inc.
    Written by Kaveh R. Ghazi <ghazi@caip.rutgers.edu>.
@@ -2189,7 +2189,7 @@ License along with libiberty; see the file COPYING.LIB.  If
 not, write to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
 Boston, MA 02110-1301, USA.  */
 
-sdk-src/sources/binutils/libiberty/xvasprintf.c
+binutils/libiberty/xvasprintf.c
 /* Implement the xvasprintf function.
    Copyright (C) 2014-2026 Free Software Foundation, Inc.
    Contributed by Manuel Lopez-Ibanez.

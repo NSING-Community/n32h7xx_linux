@@ -1,42 +1,45 @@
-# License audit and implementation plan — 2026-10-15
+# Third-party license audit — 2026-10-15
 
-This records the audit and plan presented before changes. Scope:
-`bootloader/`, `kernel/`, `rootfs/`, `sdk/`, `tools/`; ignored maintainer sources
-were read as evidence. The working tree already contained many unrelated
-changes. They were preserved. This is an evidence audit, not legal certification.
+Scope: `bootloader/`, `kernel/`, `rootfs/`, `sdk/`, `tools/`. This is an
+evidence audit of the material selected for release, not legal certification.
+Every third-party component ships with its original declarations intact; the
+audit records distribution terms and embedded dependencies, it does not
+relicense anything.
 
-Owner clarifications during implementation supersede the initial authorization
-concerns below: Nations and NSING are the same company and their code is
-company-owned. Optional NSLink ns-flash is a company-owned closed binary.
-Neither case is treated as a missing third-party grant or an obligation to
-open that company's source. Original declarations remain intact; distribution
-terms and embedded third-party dependencies are recorded separately.
+Nations and NSING are the same company and their code is company-owned.
+Optional NSLink ns-flash is a company-owned closed binary. Neither is treated as
+a missing third-party grant or as an obligation to open that company's source.
 
-Additional owner clarification: `sdk/example/` contains company-written source.
-Its locally compiled binaries are not released. The packager excludes those
-build products from release inventories/archives and records the exclusions;
-it does not treat them as binaries missing build provenance or delete them.
+`sdk/example/` contains company-written source; its locally compiled binaries
+are not released. The packager excludes those build products from release
+inventories and archives and records the exclusions, rather than treating them
+as binaries missing build provenance or deleting them.
 
-Owner clarification: the new legal-info generator is internal maintainer tooling.
-Its implementation/tests reside in unpublished `tools-internal/`, and are not
-included in generated source/legal packages. The Makefile targets remain for
-maintainers and give a clear diagnostic when the internal tool is absent.
+The generated materials come from `make legal-info` and
+`make legal-info-sources`. They are host-side artifacts, written under `out/`:
+they are never copied into rootfs, SquashFS, the bootloader or an SPI NOR image,
+and building firmware does not depend on them.
 
 ## Findings
 
-These are the initial findings. Subsequent evidence and corrected source
-associations are recorded in [RESOLUTIONS.md](RESOLUTIONS.md); consult the
-generated report for current blockers rather than treating this history as
-the final status.
+Corrected source associations and the evidence behind them are recorded in
+[RESOLUTIONS.md](RESOLUTIONS.md); the generated report carries the current
+blockers. Read this list as the findings that shaped the release material, not
+as a status report.
 
 * Keep root BSD-3-Clause and Linux's original COPYING/per-file licenses.
   The former cannot license third-party software on its own.
-* Linux declares 7.3.0-rc6, pinned at 642dfc8ceae0e80cce8d9fcc92fcf8c992da279d
-  with dirty and untracked local changes. GPL-2.0-only; UAPI syscall exception
-  does not relax kernel binary distribution requirements.
+* Linux is **GPL-2.0-only**, and the UAPI syscall exception does not relax the
+  source obligations that come with distributing a kernel binary. The recorded
+  revision is a894130780a157e2f5a69a8a948e52b4f5bf227e (7.3.0-rc7, merge of
+  upstream 7.3.0-rc7) plus the local NSING changes carried in this repository.
+  The kernel evidence was regenerated for that revision from an isolated
+  rebuild of the published configuration; the recorded revision, version and
+  evidence therefore describe the tree that ships.
 * BusyBox 1.38.0 LICENSE explicitly restricts distribution to GPL version 2.
   Applets are links to one program, not separate packages. Five local patches
-  and runtime configuration are present in ignored `sdk-src/`.
+  and the runtime configuration belong to BusyBox's corresponding source and
+  must travel with it.
 * uClibc-ng 1.0.59 ships LGPL 2.1; printf.c explicitly permits LGPL 2 or later,
   ldso.c has a custom permissive grant, and malloc.c includes public-domain
   declarations. Preserve these, rather than infer all files' terms from a name.
@@ -52,7 +55,7 @@ the final status.
 * espeak-ng and pcaudiolib are GPL-3.0-or-later. Port glue is not the complete
   corresponding source; upstream data sources, linked code and build scripts
   must be accessible under an appropriate distribution option.
-* **Initial finding, superseded by owner clarification above:** representative Nations 1.2.0 peripheral, USB and device headers
+* Nations 1.2.0 peripheral, USB and device headers
   expressly restrict duplication/modification/distribution absent permission.
   They are company-owned, not a third-party permission blocker. Algorithm
   binary versions/build provenance remain unconfirmed. Preserve declarations.
@@ -60,19 +63,20 @@ the final status.
   source is not required merely because it is included in the SDK. Its precise
   external redistribution terms and third-party dependency inventory remain
   to be documented; this is a WARNING, not a demand to open the source.
-* **ERROR:** ignored `sdk-src/` does not accompany a public checkout. Source
-  version strings and upstream URLs do not prove correspondence to binaries.
+* A repository checkout is not a source release. Corresponding source,
+  modifications, configuration and build scripts must be published beside the
+  binaries they produced; version strings and upstream URLs do not by
+  themselves prove that a binary was built from a given source.
 
-## Implementation
+## What the materials contain
 
-1. Evidence registry and third-party notice index, with original attribution.
-2. Reuse existing texts; collect missing component-specific grants and NOTICEs.
-3. Host-only repeatable legal-info bundle, SHA-256 inventory and link ownership.
-4. Full working-source snapshot option, with recipes/configs/patches, and strict
-   release checks. Unknowns remain WARNING/ERROR rather than invented metadata.
-5. README Licensing explanation and corrections to identified misstatements.
-6. Verify unchanged rootfs/LICENSE/kernel COPYING/firmware hashes; repeat bundles
-   and exercise negative cases. No firmware rebuild or board write is needed.
+An evidence registry and third-party notice index with original attribution;
+the existing texts reused, plus the component-specific grants and NOTICEs that
+were missing; a host-only repeatable `legal-info` bundle with a SHA-256
+inventory and link ownership; and an optional full working-source snapshot with
+recipes, configurations and patches. Unknowns stay WARNING/ERROR rather than
+being filled in with invented metadata. See [README.md](README.md) for how to
+generate them and [RESOLUTIONS.md](RESOLUTIONS.md) for the evidence.
 
 ## Distribution duties to review
 
@@ -81,7 +85,7 @@ modifications and controlling build/install scripts) through a valid section 3
 option. A homepage pointer alone is insufficient. GPLv3 add-ons need a valid
 section 6 option, including installation information where applicable.
 
-LGPL library distribution includes library source/modifications and notices.
+LGPL library distribution includes the library's source, modifications and notices.
 Applications must allow the applicable replacement/relinking and debugging
 rights; static or nonshared portions require particular attention. GCC exception
 3.1 permits eligible combinations, but does not excuse distributing the runtime

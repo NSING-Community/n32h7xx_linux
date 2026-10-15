@@ -23,11 +23,11 @@ texts once by SHA-256 and maps every original path to that object. Different
 copyright notices must not be deduplicated merely because the license name matches.
 
 Run `make legal-info` to generate `out/legal-info/` and a companion tarball.
-This is a maintainer-only target: its implementation and tests reside in
-`tools-internal/`, which is ignored and not published. They are excluded from
-the generated legal and source archives. Public downloads contain the generated
-compliance materials; rebuilding firmware does not require this internal tool.
-It inventories all regular files and links under bootloader/kernel/rootfs/sdk/tools,
+Both targets write only under `out/`; no firmware image, rootfs or source tree
+is modified, and building firmware does not depend on them. The generated
+reports, inventories and archives are what a release ships as its compliance
+materials.
+The inventory covers all regular files and links under bootloader/kernel/rootfs/sdk/tools,
 without running target programs. Ignored kernel build artifacts are excluded;
 dirty and untracked source changes are retained. `sdk/example/`
 is company-owned source-only material: its local ELF binaries, object files,
@@ -46,8 +46,9 @@ actual local tree. Reviewed correspondence methods and limitations are recorded
 in evidence files and checked against source/input digests. Missing sources,
 uncertain grants, binary provenance and incomplete link audits remain visible
 blockers where applicable.
-The checkout's maintainer-only `sdk-src/` is ignored by Git: a source archive
-must be published separately, not assumed to accompany a repository clone.
+A source release is a separate artifact: the complete corresponding source,
+its modifications, configuration and build scripts must be published beside the
+binaries they correspond to. A repository clone is not a substitute for it.
 
 For a release use `make legal-info-sources LEGAL_STRICT=1`. A nonzero exit
 still leaves inspectable reports and archives. Resolve all ERRORs and manually

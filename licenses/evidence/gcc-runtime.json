@@ -8,8 +8,8 @@
   "details": {
     "source_version": "GCC 16.1.0",
     "recipes": [
-      "sdk-src/scripts/rebuild-toolchain.sh",
-      "sdk-src/scripts/rebuild-libstdcxx.sh"
+      "toolchain rebuild script delivered in the corresponding-source package",
+      "libstdc++ rebuild script delivered in the corresponding-source package"
     ]
   }
 }

@@ -9,7 +9,7 @@
   },
   "details": {
     "source_version": "16.1.0",
-    "source_location": "sdk-src/sources/gcc",
-    "rebuild_recipe": "sdk-src/scripts/rebuild-toolchain.sh"
+    "source_location": "GCC source tree in the corresponding-source package",
+    "rebuild_recipe": "toolchain rebuild script delivered in the corresponding-source package"
   }
 }
