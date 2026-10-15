@@ -13,18 +13,17 @@ USB 工具；完成后按 [快速上手](doc/quickstart.md) 编译、烧录并�
 
 ## 功能清单
 
-当前功能如下。USB 各角色的使用方法见 [doc/usb.md](doc/usb.md)，音频见
-[doc/audio.md](doc/audio.md)。
-
 **系统**
 
-- N32H787 上的 ARMv7-M NOMMU Linux，CM7 单核（CM4 保持复位）
-- CM7 bootloader：从 SPI NOR 启动内核，自身可作 U 盘刷机
-- 32 MiB SDRAM、I/D-cache、CM7 600 MHz、SDRAM 133 MHz
-- 高精度定时 / tickless idle / 抢占内核，SysTick + BTIM1
-- 用户态 fault 只杀进程不挂整机，FPU/VFP
-- FDPIC/FLAT 用户态，`devtmpfs` / `proc` / `sysfs`
-- 内核配置客制化：`make menuconfig`，见 [doc/kernel-config.md](doc/kernel-config.md)
+| 项目 | 说明 |
+| --- | --- |
+| SoC | N32H787 上的 ARMv7-M NOMMU Linux，CM7 单核（CM4 保持复位） |
+| Bootloader | CM7，从 SPI NOR 启动内核，自身可作 U 盘刷机 |
+| 内存与主频 | 32 MiB SDRAM、I/D-cache、CM7 600 MHz、SDRAM 133 MHz |
+| 定时与调度 | 高精度定时 / tickless idle / 抢占内核，SysTick + BTIM1 |
+| 异常处理 | 用户态 fault 只杀进程、不挂整机；FPU/VFP |
+| 用户态模型 | FDPIC/FLAT，`devtmpfs` / `proc` / `sysfs` |
+| 内核配置 | `make menuconfig`，见 [内核配置](doc/kernel-config.md) |
 
 **驱动**
 
@@ -37,38 +36,54 @@ USB 工具；完成后按 [快速上手](doc/quickstart.md) 编译、烧录并�
 | SPI NOR | XSPI2，16 MiB，MTD 四分区 |
 | RTC | LSE 时钟，无电池，开机 NTP 校时 |
 | I2C4 | 用户态 `/dev/i2c-4`（`i2cdetect` / `i2cget` / `i2cset`） |
-| 摄像头 | OV5640 / DVP1，V4L2；JPEG 最高 2592x1944，GREY / YUYV / RGB565，见 [摄像头使用](doc/camera.md) |
-| 音频 | WM8978 codec（I2C + I2S），ALSA 卡 0；8000..48000 Hz 七档、双声道，录音与播放可同时开，见 [音频使用](doc/audio.md) |
-| USB1 / USB2 | DWC2 HS Host / Device；USB1 默认 ADB，USB2 默认 Host；支持 DTB 配置及运行时角色切换，USB2 VBUS 自动控制 |
+| 摄像头 | OV5640 / DVP1，V4L2；JPEG 最高 2592x1944，GREY / YUYV / RGB565，见 [摄像头](doc/camera.md) |
+| 音频 | WM8978 codec，见 [音频](doc/audio.md) |
+| USB | DWC2 HS Host / Device，见 [USB](doc/usb.md) |
+
+**USB**
+
+| 控制器 | 说明 |
+| --- | --- |
+| USB1（`40100000`） | 默认 Device：ADB 交互 shell、文件 push/pull；开机自动启动，默认目录 `/system` |
+| USB2（`40060000`） | 默认 Host：U 盘、探针等外设；VBUS 由 PB4 控制 |
+
+角色由设备树决定，也可在运行中切换。
+
+**音频**
+
+| 项目 | 说明 |
+| --- | --- |
+| 控制器 | WM8978，I2C4 控制 + I2S 数据 |
+| ALSA 设备 | 卡 0、设备 0；录音与播放可同时进行 |
+| 格式 | 16-bit PCM，必须是双声道 |
+| 采样率 | 8000 / 11025 / 16000 / 22050 / 32000 / 44100 / 48000 Hz |
+| 用户态工具 | TinyALSA：`tinycap` / `tinyplay` / `tinymix` / `tinypcminfo` |
 
 **文件系统**
 
-- SquashFS 只读根 `/`
-- JFFS2 可写 `/system`
-- VFAT / exFAT（SD 卡、U 盘）
-- ramfs（`/tmp`、`/run`、`/var/log`）
+| 挂载点 | 说明 |
+| --- | --- |
+| `/` | SquashFS，只读根 |
+| `/system` | JFFS2，可写 |
+| `/tmp`、`/run`、`/var/log` | ramfs |
+| SD 卡、U 盘 | VFAT / exFAT，插卡 / 插盘自动挂载（mdev） |
 
 **网络与远程登录**
 
-- IPv4：DHCP 或静态；IPv6：双协议栈，SLAAC 或 DHCPv6
-- SSH（dropbear）、SCP、SFTP、Telnet，开发板默认 root 免密
-- NTP 自动校时
-- 插卡 / 插盘自动挂载（mdev）
+| 项目 | 说明 |
+| --- | --- |
+| IPv4 | DHCP 或静态 |
+| IPv6 | 双协议栈，SLAAC 或 DHCPv6 |
+| 远程登录 | SSH（dropbear）、SCP、SFTP、Telnet；开发板默认 root 免密 |
+| 校时 | NTP |
 
 **用户态**
 
-- BusyBox 1.38（168 个 applet）：shell、`vi`、`top`、`ip`、`fdisk`、`flashcp`、
-  `lsusb`、`hexdump`、`xxd`；脚本常用的 `awk` / `sed` / `grep` / `find`（含
-  `-maxdepth` / `-type` / `-size` / `-exec`）/ `xargs` / `expr` / `seq` / `cut` /
-  `sort` / `uniq` / `diff` / `md5sum` / `base64` / `patch` / `nc` / `nslookup`；
-  后台与进程管理 `nohup` / `setsid` / `pgrep` / `pkill` / `flock` / `crond`；
-  `timeout`（no-MMU 上本树已修，退出码是 143 不是 124，见
-  [SDK 文档](doc/sdk.md#智能体--逻辑脚本常要的东西)）
-- `/bin/gpio`：`/sys/class/gpio` 脚本封装，按 `gpiochipN/label` 反查基号，
-  用引脚名（`PB3`、`PF10`）而不是裸数字，见 [SDK 文档](doc/sdk.md#用-gpio-脚本操作引脚)
-- ALSA：TinyALSA 的 `tinycap` / `tinyplay` / `tinymix` / `tinypcminfo`
-- USB ADB：交互 shell、文件 push/pull；默认目录 `/system`，开机自动启动
-- `n32-flash`：分区擦写 / 回读校验 / 网络 OTA
+| 项目 | 说明 |
+| --- | --- |
+| BusyBox | 1.38（168 个 applet）：shell、`vi`、`top`、`ip`、`fdisk`、`flashcp`、`lsusb`、`hexdump`、`xxd`；脚本用 `awk` / `sed` / `grep` / `find`（含 `-maxdepth` / `-type` / `-size` / `-exec`）/ `xargs` / `expr` / `seq` / `cut` / `sort` / `uniq` / `diff` / `md5sum` / `base64` / `patch` / `nc` / `nslookup`；后台与进程管理 `nohup` / `setsid` / `pgrep` / `pkill` / `flock` / `crond`；`timeout`（no-MMU 上本树已修，退出码是 143 不是 124，见 [SDK 文档](doc/sdk.md#智能体--逻辑脚本常要的东西)） |
+| `/bin/gpio` | `/sys/class/gpio` 脚本封装，按 `gpiochipN/label` 反查基号，用引脚名（`PB3`、`PF10`）而不是裸数字，见 [SDK 文档](doc/sdk.md#用-gpio-脚本操作引脚) |
+| `n32-flash` | 分区擦写 / 回读校验 / 网络 OTA |
 
 ## 获取源码
 
