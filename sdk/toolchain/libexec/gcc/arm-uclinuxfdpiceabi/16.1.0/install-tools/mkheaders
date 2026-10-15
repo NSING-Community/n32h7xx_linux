@@ -53,7 +53,7 @@ if [ x$1 != x ] ; then
   prefix=$1
   shift
 else
-  prefix=/home/tobby/research/n32h7xx_linux/doc-internal/diagnostics/toolchain-release-2026-10-12/rebuild/sdk/toolchain
+  prefix=sdk/toolchain
 fi
 
 # Allow for alternate isysroot in which to find headers

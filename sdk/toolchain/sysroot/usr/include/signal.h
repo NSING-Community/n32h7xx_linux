@@ -292,13 +292,6 @@ extern int sigqueue (__pid_t __pid, int __sig, const union sigval __val)
 
 #ifdef __USE_BSD
 
-# ifdef __UCLIBC_HAS_SYS_SIGLIST__
-/* Names of the signals.  This variable exists only for compatibility.
-   Use `strsignal' instead (see <string.h>).  */
-#  define _sys_siglist sys_siglist
-extern const char *const sys_siglist[_NSIG];
-# endif
-
 /* Structure passed to `sigvec'.  */
 struct sigvec
   {

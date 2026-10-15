@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/tobby/research/n32h7xx_linux/doc-internal/diagnostics/toolchain-release-2026-10-12/rebuild/sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0'
+libdir='sdk/toolchain/libexec/gcc/arm-uclinuxfdpiceabi/16.1.0'

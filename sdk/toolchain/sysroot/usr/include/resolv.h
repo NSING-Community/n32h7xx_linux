@@ -124,6 +124,17 @@ struct __res_state {
 	u_int8_t ndots;			/* (was: unsigned:4) threshold for initial abs. query */
 	u_int8_t retrans;		/* (was: int) retransmission time interval */
 	u_int8_t retry;			/* (was: int) number of times to retransmit */
+	/* googling for "_res.defdname" says it's still sometimes used.
+	 * Pity. It's huge, I want to move it to EXTRA_COMPAT... */
+	char	defdname[256];		/* default domain (deprecated) */
+	u_int8_t nsort;			/* (was: unsigned:4) number of elements in sort_list[] */
+	u_int16_t pfcode;		/* (was: ulong) RES_PRF_ flags. Used by dig. */
+	unsigned short id;		/* current message id */
+	int	res_h_errno;		/* last one set for this context */
+	struct {
+		struct in_addr	addr;
+		u_int32_t	mask;
+	} sort_list[MAXRESOLVSORT];
 
 	/* I assume that the intention is to store all
 	 * DNS servers' addresses here, and duplicate in nsaddr_list[]
@@ -140,6 +151,14 @@ struct __res_state {
 		struct {
 			struct sockaddr_in6	*nsaddrs[MAXNS];
 			u_int8_t		nscount; /* (was: u_int16_t) */
+			/* rather obscure, and differs in BSD and glibc */
+			u_int16_t		nstimes[MAXNS];
+			int			nssocks[MAXNS];
+			u_int16_t		nscount6;
+			u_int16_t		nsinit;
+			/* glibc also has: */
+			/*u_int16_t		nsmap[MAXNS];*/
+			/*unsigned long long	initstamp;*/
 		} _ext;
 	} _u;
 

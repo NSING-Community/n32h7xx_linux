@@ -5,7 +5,7 @@
 ;;; This file should be parsed by the same gengtype which wrote it.
 
 (!version  "16.1.0")
-(!srcdir  "/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc")
+(!srcdir  "sdk-src/sources/gcc/gcc")
 (!languages 14 ada algol68 c cobol cp d fortran go jit lto m2 objc objcp rust)
 (!fileslist 264 0
  (!srcfile 16383  "../libcpp/include/line-map.h")
@@ -533,11 +533,11 @@
                       (!srcfileloc  "tree-core.h" 1157)
                       nil )
                      (!pair  "u"
-                      (!type union 26 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/tree-core.h:1159"
+                      (!type union 26 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/tree-core.h:1159"
                        (!srcfileloc  "tree-core.h" 1244)
                        (!fields 9 
                         (!pair  "bits"
-                         (!type struct 27 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/tree-core.h:1162"
+                         (!type struct 27 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/tree-core.h:1162"
                           (!srcfileloc  "tree-core.h" 1189)
                           (!fields 17 
                            (!pair  "lang_flag_0"
@@ -613,7 +613,7 @@
                          (!srcfileloc  "tree-core.h" 1189)
                          nil )
                         (!pair  "int_length"
-                         (!type struct 28 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/tree-core.h:1196"
+                         (!type struct 28 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/tree-core.h:1196"
                           (!srcfileloc  "tree-core.h" 1204)
                           (!fields 2 
                            (!pair  "unextended"
@@ -633,7 +633,7 @@
                          (!srcfileloc  "tree-core.h" 1207)
                          nil )
                         (!pair  "vector_cst"
-                         (!type struct 29 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/tree-core.h:1210"
+                         (!type struct 29 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/tree-core.h:1210"
                           (!srcfileloc  "tree-core.h" 1219)
                           (!fields 3 
                            (!pair  "log2_npatterns"
@@ -669,7 +669,7 @@
                          (!srcfileloc  "tree-core.h" 1231)
                          nil )
                         (!pair  "dependence_info"
-                         (!type struct 30 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/tree-core.h:1240"
+                         (!type struct 30 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/tree-core.h:1240"
                           (!srcfileloc  "tree-core.h" 1243)
                           (!fields 2 
                            (!pair  "clique"
@@ -3283,7 +3283,7 @@
                           (!srcfileloc  "rtl.h" 405)
                           nil )
                          (!pair  "u2"
-                          (!type union 154 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/rtl.h:407"
+                          (!type union 154 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/rtl.h:407"
                            (!srcfileloc  "rtl.h" 441)
                            (!fields 6 
                             (!pair  "original_regno"
@@ -3307,7 +3307,7 @@
                              (!srcfileloc  "rtl.h" 427)
                              nil )
                             (!pair  "const_vector"
-                             (!type struct 155 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/rtl.h:431"
+                             (!type struct 155 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/rtl.h:431"
                               (!srcfileloc  "rtl.h" 440)
                               (!fields 3 
                                (!pair  "npatterns"
@@ -7596,7 +7596,7 @@
                                        )
                                       )
                                       (!pair  "x"
-                                       (!type struct 352 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/basic-block.h:137"
+                                       (!type struct 352 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/basic-block.h:137"
                                         (!srcfileloc  "basic-block.h" 140)
                                         (!fields 2 
                                          (!pair  "head_"
@@ -10982,7 +10982,7 @@
                                       (!srcfileloc  "dwarf2out.h" 59)
                                       nil )
                                      (!pair  "dw_cfi_oprnd1"
-                                      (!type union 554 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/dwarf2out.h:49"
+                                      (!type union 554 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/dwarf2out.h:49"
                                        (!srcfileloc  "dwarf2out.h" 56)
                                        (!fields 5 
                                         (!pair  "dw_cfi_reg_num"
@@ -11628,7 +11628,7 @@
                                                       (!srcfileloc  "dwarf2out.h" 226)
                                                       nil )
                                                      (!pair  "v"
-                                                      (!type union 588 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/dwarf2out.h:228"
+                                                      (!type union 588 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/dwarf2out.h:228"
                                                        (!srcfileloc  "dwarf2out.h" 231)
                                                        (!fields 2 
                                                         (!pair  "sval"
@@ -13471,7 +13471,7 @@
                          )
                         )
                         (!pair  "loc"
-                         (!type union 648 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/tree-core.h:1712"
+                         (!type union 648 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/tree-core.h:1712"
                           (!srcfileloc  "tree-core.h" 1712)
                           (!fields 2 
                            (!pair  "stmt"
@@ -16660,7 +16660,7 @@
                                (!srcfileloc  "c/c-decl.cc" 229)
                                (!fields 11 
                                 (!pair  "u"
-                                 (!type union 736 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/c/c-decl.cc:215"
+                                 (!type union 736 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/c/c-decl.cc:215"
                                   (!srcfileloc  "c/c-decl.cc" 218)
                                   (!fields 2 
                                    (!pair  "type"
@@ -18483,11 +18483,11 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 833 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/../libcpp/include/cpplib.h:1507"nil 
+ (!type struct 833 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/../libcpp/include/cpplib.h:1507"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 834 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/../libcpp/include/cpplib.h:1518"nil 
+ (!type struct 834 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/../libcpp/include/cpplib.h:1518"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -18925,7 +18925,7 @@
     (!srcfileloc  "gimple.h" 364)
     nil )
    (!pair  "u"
-    (!type union 889 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/gimple.h:367"
+    (!type union 889 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/gimple.h:367"
      (!srcfileloc  "gimple.h" 370)
      (!fields 2 
       (!pair  "fntype"
@@ -20191,7 +20191,7 @@
  
  (!type already_seen 490)
  
- (!type struct 968 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/config/arm/arm.h:1633"nil 
+ (!type struct 968 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/config/arm/arm.h:1633"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -20237,7 +20237,7 @@
   (!srcfileloc  "wide-int.h" 1158)
   (!fields 3 
    (!pair  "u"
-    (!type union 979 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/wide-int.h:1129"
+    (!type union 979 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/wide-int.h:1129"
      (!srcfileloc  "wide-int.h" 1132)
      (!fields 2 
       (!pair  "val"
@@ -20521,7 +20521,7 @@
   )
   nil 16383 nil nil )
  
- (!type union 1013 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/wide-int.h:1492"
+ (!type union 1013 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/wide-int.h:1492"
   (!srcfileloc  "wide-int.h" 1495)
   (!fields 2 
    (!pair  "val"
@@ -26019,7 +26019,7 @@
        (!srcfileloc  "ctfc.h" 119)
        nil )
       (!pair  "_u"
-       (!type union 1530 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/ctfc.h:121"
+       (!type union 1530 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/ctfc.h:121"
         (!srcfileloc  "ctfc.h" 124)
         (!fields 2 
          (!pair  "_size"
@@ -26068,7 +26068,7 @@
     (!srcfileloc  "ctfc.h" 186)
     nil )
    (!pair  "dtd_u"
-    (!type union 1531 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/ctfc.h:190"
+    (!type union 1531 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/ctfc.h:190"
      (!srcfileloc  "ctfc.h" 203)
      (!fields 6 
       (!pair  "dtu_members"
@@ -27753,7 +27753,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type union 1695 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/mcf.cc:343"nil 
+ (!type union 1695 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/mcf.cc:343"nil 
   (!fields 0 )
   nil 0 nil )
  
@@ -28235,7 +28235,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type union 1758 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/tree-eh.cc:53"nil 
+ (!type union 1758 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/tree-eh.cc:53"nil 
   (!fields 0 )
   nil 0 nil )
  
@@ -28739,11 +28739,11 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1857 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/config/arm/arm.cc:2496"nil 
+ (!type struct 1857 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/config/arm/arm.cc:2496"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 1858 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/config/arm/arm.cc:4104"nil 
+ (!type struct 1858 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/config/arm/arm.cc:4104"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -29669,11 +29669,11 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 2024 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/config/arm/arm-builtins.cc:700"nil 
+ (!type struct 2024 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/config/arm/arm-builtins.cc:700"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 2025 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/config/arm/arm-builtins.cc:803"nil 
+ (!type struct 2025 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/config/arm/arm-builtins.cc:803"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -29907,7 +29907,7 @@
   )
  )
  
- (!type struct 2067 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/ada/gcc-interface/decl.cc:255"nil 
+ (!type struct 2067 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/ada/gcc-interface/decl.cc:255"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -30532,7 +30532,7 @@
     (!srcfileloc  "algol68/a68-types.h" 661)
     nil )
    (!pair  "scan_state"
-    (!type struct 2116 nil  gc_used "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/algol68/a68-types.h:663"
+    (!type struct 2116 nil  gc_used "anonymous:sdk-src/sources/gcc/gcc/algol68/a68-types.h:663"
      (!srcfileloc  "algol68/a68-types.h" 666)
      (!fields 3 
       (!pair  "save_l"
@@ -31570,7 +31570,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 2221 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/c/c-parser.cc:10295"nil 
+ (!type struct 2221 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/c/c-parser.cc:10295"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -35452,7 +35452,7 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 2621 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/fortran/trans.h:33"nil 
+ (!type struct 2621 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/fortran/trans.h:33"nil 
   (!fields 0 )
   nil 0 nil nil )
  
@@ -35480,11 +35480,11 @@
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 2628 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/fortran/trans.h:409"nil 
+ (!type struct 2628 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/fortran/trans.h:409"nil 
   (!fields 0 )
   nil 0 nil nil )
  
- (!type struct 2629 nil  gc_unused "anonymous:/home/tobby/research/n32h7xx_linux/sdk-src/sources/gcc/gcc/fortran/trans.h:421"nil 
+ (!type struct 2629 nil  gc_unused "anonymous:sdk-src/sources/gcc/gcc/fortran/trans.h:421"nil 
   (!fields 0 )
   nil 0 nil nil )
  

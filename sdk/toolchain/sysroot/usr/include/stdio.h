@@ -744,15 +744,6 @@ __BEGIN_NAMESPACE_STD
 extern void perror (const char *__s);
 __END_NAMESPACE_STD
 
-#ifdef __UCLIBC_HAS_SYS_ERRLIST__
-/* These variables normally should not be used directly.  The `strerror'
-   function provides all the needed functionality.  */
-#ifdef	__USE_BSD
-extern int sys_nerr;
-extern const char *const sys_errlist[];
-#endif
-#endif /* __UCLIBC_HAS_SYS_ERRLIST__ */
-
 
 #ifdef	__USE_POSIX
 /* Return the system file descriptor for STREAM.  */

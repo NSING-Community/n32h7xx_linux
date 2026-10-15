@@ -6,7 +6,7 @@
 OUTPUT_FORMAT("elf32-littlearm-fdpic", "elf32-bigarm-fdpic", "elf32-littlearm-fdpic")
 OUTPUT_ARCH(arm)
 ENTRY(_start)
-SEARCH_DIR("=/home/tobby/research/n32h7xx_linux/doc-internal/diagnostics/toolchain-release-2026-10-12/rebuild/sdk/toolchain/arm-uclinuxfdpiceabi/lib"); SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib");
+SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib");
 SECTIONS
 {
   PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x00010000));

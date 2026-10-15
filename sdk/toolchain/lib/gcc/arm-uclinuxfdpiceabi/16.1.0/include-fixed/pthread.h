@@ -2,7 +2,7 @@
 
     It has been auto-edited by fixincludes from:
 
-	"/home/tobby/research/n32h7xx_linux/doc-internal/diagnostics/toolchain-release-2026-10-12/rebuild/sdk/toolchain/sysroot/usr/include/pthread.h"
+	"sdk/toolchain/sysroot/usr/include/pthread.h"
 
     This had to be done to correct non-standard usages in the
     original, manufacturer supplied header file.  */
