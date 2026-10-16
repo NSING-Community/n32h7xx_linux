@@ -1,20 +1,21 @@
 {
   "component": "linux",
-  "method": "Isolated source rebuild: all allocated ELF sections identical after normalizing GNU build-id and minimal initramfs cpio mtimes; DTB identical",
+  "method": "Isolated source rebuild: all allocated ELF sections identical after normalizing GNU build-id and minimal initramfs cpio mtimes; both DTBs identical",
   "checks": {
-    "out/kernel/zImage": "72449eba58803cbd3bc1beadf32ce3ab3d974491e2e60694bc8e9a2f480a7e3d",
-    "out/kernel/n32h787-hmi.dtb": "2a754a08fcb3d727edbc3ab1ed70448ac9b1f5520ef7e4d8d1c0b0786b3c1be8",
+    "out/kernel/zImage": "01c2002c41cd84350e959637652f8a17a9500f7e448e50459d0d8e2dcf0c06ed",
+    "out/kernel/n32h787-hmi.dtb": "616e1b8c7e1144a56e9daab14f1216db65882be5b2686e5351ff2559471d270e",
+    "out/kernel/n32h787-hmi-no-camera.dtb": "502626c3e512a5106c7a86e259c382259b521365e2115169e74fdc8f9b97dde7",
     "out/kernel/build/.config": "be58a56bc5825364ef9123d6256fc0a889b0724aae7371863610c781494e4078"
   },
   "details": {
     "compiler": "arm-none-eabi-gcc 14.2.1 20241119",
     "config": "out/kernel/build/.config",
-    "revision": "a894130780a157e2f5a69a8a948e52b4f5bf227e",
+    "revision": "a37ebf65f125626eff70514e07f403b4c812fbe4",
     "recipe": "make -C kernel O=<isolated-output> ARCH=arm CROSS_COMPILE=arm-none-eabi- olddefconfig; make -j20 zImage dtbs",
     "build_environment": "KBUILD_BUILD_USER=tobby KBUILD_BUILD_HOST=n32-wsl, fixed KBUILD_BUILD_VERSION/TIMESTAMP and .version matching the published build, isolated output directory",
     "temporary_uts_header": "init/version.o is compiled against the \"# PREEMPT \" utsversion-tmp.h placeholder and the final UTS_VERSION comes from the separately compiled version-timestamp.o, as in the published build",
-    "original_build_id": "878779d5d8b8cb661a4ae6d5e6ee7190d3912adf",
-    "rebuild_build_id": "c44ec32ab215cc8125db980db87abbfeb708164e",
+    "original_build_id": "f3652dd92825bd83cb294d23a9b6679feb7644d3",
+    "rebuild_build_id": "8143ccdbc8846bf4cca335322d5735d1f45ead0f",
     "differing_allocated_sections": [
       ".notes",
       ".init.data"
@@ -40,15 +41,15 @@
     "rebuilt_minimal_initramfs": [
       {
         "name": "dev",
-        "mtime": 1792058672
+        "mtime": 1792155320
       },
       {
         "name": "dev/console",
-        "mtime": 1792058672
+        "mtime": 1792155320
       },
       {
         "name": "root",
-        "mtime": 1792058672
+        "mtime": 1792155320
       },
       {
         "name": "TRAILER!!!",
@@ -62,15 +63,15 @@
       },
       {
         "section": ".text",
-        "sha256": "9f7646f3fcceff21409c9372b669e83019c69be47d95fc2e9e405d4b5633ec46"
+        "sha256": "6642ded488093a2d68d67b99265b8c29666f0fff07acb0e1fe16b9c4a7a14f9b"
       },
       {
         "section": ".rodata",
-        "sha256": "c489f49866e211bed90ea82f6ee9efe6a6e85f88caafdd7a02f00d7ecb0db9aa"
+        "sha256": "ffefdcd186d69dcfccd512a8de998a2326880cd334dda9682612d23f48875347"
       },
       {
         "section": "__ksymtab",
-        "sha256": "5817341862a083970850d7fe4da0372c8f5611847b11d6ed114650f8dfd839c8"
+        "sha256": "fa5d9d2041212515c8bbeb789e8d3ed62175cc1d4494217ce8c84a405515f063"
       },
       {
         "section": "__kflagstab",
@@ -94,7 +95,7 @@
       },
       {
         "section": ".ARM.unwind_idx",
-        "sha256": "b4eb3652b7dbcf60091b5507cdf5c820486cfde889084ec8923375478cd7a24d"
+        "sha256": "112b19bd154cb99113c0c34a02ac7d3949b06045e9e9f526db6fac65d8f8ad87"
       },
       {
         "section": ".ARM.unwind_tab",
@@ -102,11 +103,11 @@
       },
       {
         "section": ".init.text",
-        "sha256": "52c1ac8d6d0aab5b240ae60d5b19369a6474f35569b46136f4b383a6aa606527"
+        "sha256": "e4924f5280cb2958a41c2532b6a489d0a8b241340715054dec9b1f2550f2e86d"
       },
       {
         "section": ".exit.text",
-        "sha256": "7fcde9e28b19cfb11529e4805637d197f3193ddc7ec087ca049e51debab04bdd"
+        "sha256": "5776431b08a57cb0263dd396392f960d1e5d516a56737291c658bbb18ff74d9a"
       },
       {
         "section": ".init.proc.info",
@@ -122,15 +123,15 @@
       },
       {
         "section": ".init.data",
-        "sha256": "dec801c5e9f22fb6ee4eca6b929894aba7f701999ca37d1c37bef4a6b206bf18"
+        "sha256": "b4da077ec72c3e3e35ae56b4e0a3701e2df757d71250e3ea4733058acf8be71f"
       },
       {
         "section": ".data",
-        "sha256": "056b0ad0555dcb8bd55b604e1d6fb1f8cf8062101275e5ed7dc97fd77ca3ff08"
+        "sha256": "e706d95042a606c05c9f862f5779136f358ed569f0710907a77bb2abd9d08340"
       },
       {
         "section": "__bug_table",
-        "sha256": "e7597c88433b259f69ba485e24495f69cc30caa34fa3300fe0d55450a979a627"
+        "sha256": "14bc975fd5ea401d6f2f2eddf49a1e4d14ea0420734eac0c35d7c047eb1337da"
       }
     ],
     "zimage_bit_identical": false,
