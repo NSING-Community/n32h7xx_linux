@@ -137,6 +137,34 @@ extern __IO uint32_t mwTick;
 #define BOOT_DMA_POOL_MPU_ATTR \
     ((3UL << MPU_RASR_AP_Pos) | (1UL << MPU_RASR_TEX_Pos))
 
+/*
+ * The DTB lives on for the whole kernel lifetime (initial_boot_params keeps
+ * pointing into it and /sys/firmware/fdt exposes it verbatim), so the hand-off
+ * makes the partition it was loaded into read-only:
+ *
+ *   - AP = 0b110: read-only at both privilege levels.  Reads have to keep
+ *     working, userspace included, because /sys/firmware/fdt hands the blob
+ *     out verbatim; a store from kernel or user code faults instead of
+ *     silently rewriting the live tree.
+ *   - XN, because there is nothing executable in it.
+ *   - The same TEX/C/B as the SDRAM region: cacheability must not change, or
+ *     the kernel could read a stale copy of what the bootloader just wrote.
+ *
+ * The region covers the whole DTB partition (BOOT_PART_DTB_MAX, pow2 16)
+ * rather than fdt_totalsize(), so the kernel has to keep the same 64 KiB out
+ * of the page allocator; arch/arm/boot/dts/nsing/n32h787-hmi.dts reserves it
+ * with a /memreserve/ entry at BOOT_DTB_LOAD_ADDR.
+ *
+ * Region 8 does not collide with 0..7 above; the core has 16 and the higher
+ * number wins on overlap.  Boot_MpuConfigureSdram() runs after Boot_LoadDtb(),
+ * so the load itself is not blocked by the protection it installs.
+ */
+#define BOOT_DTB_MPU_REGION (8U)
+#define BOOT_DTB_MPU_POW2   (16U)
+#define BOOT_DTB_MPU_ATTR \
+    ((6UL << MPU_RASR_AP_Pos) | (1UL << MPU_RASR_TEX_Pos) | \
+     MPU_RASR_C_Msk | MPU_RASR_B_Msk | MPU_RASR_XN_Msk)
+
 static bool g_msc_requested;
 
 static void Boot_KeyInit(void)
@@ -462,6 +490,9 @@ static void Boot_MpuConfigureSdram(void)
                       BOOT_DMA_POOL_MPU_ATTR, BOOT_DMA_POOL_POW2);
     Boot_MpuRegionSet(BOOT_SDRAM_MPU_REGION, BOOT_KERNEL_LOAD_ADDR,
                       BOOT_SDRAM_MPU_ATTR, BOOT_SDRAM_MPU_POW2);
+    /* Highest region number, so it wins over the SDRAM window above it. */
+    Boot_MpuRegionSet(BOOT_DTB_MPU_REGION, BOOT_DTB_LOAD_ADDR,
+                      BOOT_DTB_MPU_ATTR, BOOT_DTB_MPU_POW2);
 
     MPU->CTRL = MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_ENABLE_Msk;
     __DSB();
