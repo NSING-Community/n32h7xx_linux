@@ -48,7 +48,11 @@ start)
     ip link set "$iface" up || exit 1
     # No -b: compiled out on no-MMU (USE_FOR_MMU), so it fails option parsing.
     # udhcpc re-execs into the background anyway, so boot never waits.
-    udhcpc -i "$iface" -p /run/udhcpc.pid -s /usr/share/udhcpc/default.script;;
+    # -x hostname: offers option 12, which is what lets a router that keeps a
+    # local DNS record answer to the board's name.  The address is still the
+    # only thing every network is guaranteed to give.
+    udhcpc -i "$iface" -x "hostname:$(hostname)" \
+      -p /run/udhcpc.pid -s /usr/share/udhcpc/default.script;;
   *) echo 'Invalid NETWORK_MODE' >&2; exit 1;;
   esac
   if [ "$mode6" = dhcp6 ]; then

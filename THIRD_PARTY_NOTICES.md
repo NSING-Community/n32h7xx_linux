@@ -2,7 +2,7 @@
 
 The root BSD-3-Clause license covers project-owned material only. Original Linux, third-party and file-specific licenses and copyrights remain in force.
 
-Nations and NSING are the same company. Optional ns-flash is company-owned and closed-source; its program source is not published. `sdk/example/` is company-written source-only material; local build products are excluded.
+Nations and NSING are the same company. Optional ns-flash is company-owned and closed-source; its program source is not published. Optional WeniClaw ships as a reviewed binary with its notice texts; its port source is maintainer material and is not published with the release. `sdk/example/` is company-written source-only material; local build products are excluded.
 
 Each component's corresponding source - the original tree, the local modifications listed below, the configuration and the build scripts - is delivered in the source package published with the release, as described in [licenses/README.md](licenses/README.md). `tools/` and `sdk/example/` are project material and retain their file-specific licenses.
 
@@ -20,6 +20,9 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 | GNU Binutils including libdep plugin | 2.46.0.20260210 (host ld --version); source base 2.46.0 | `GPL-3.0-or-later` |
 | GCC bundled support libraries | GMP 6.3.0; MPFR 4.2.2; MPC 1.3.1; ISL 0.24; GCC 16.1.0 support libraries | `(LGPL-3.0-or-later OR GPL-2.0-or-later) AND LGPL-3.0-or-later AND LGPL-2.0-or-later AND MIT AND Apache-2.0 AND BSD-3-Clause AND GPL-3.0-or-later` |
 | Dropbear SSH server/client/key/scp with bundled crypto | 2026.94 (source declaration) | `MIT AND BSD-2-Clause AND LicenseRef-Dropbear-Mixed` |
+| curl command-line HTTP/HTTPS client | 8.23.0 | `curl` |
+| Mbed TLS shared libraries used by curl | 3.6.7 LTS | `Apache-2.0` |
+| Mozilla CA root bundle used by curl | certdata.txt as of 2026-09-25 03:12:01 GMT; 121 certificates | `MPL-2.0` |
 | microADB with Linux NOMMU HAL | 85cc7a9 + local port | `Apache-2.0` |
 | TinyALSA utilities and static library | 2.0.0 build value; pinned commit | `BSD-3-Clause` |
 | Arm CMSIS Core headers | CMSIS_5 5.6.0 (Core(M) 5.3; individual header versions retained) | `Apache-2.0` |
@@ -28,6 +31,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 | espeak-ng program and voice data | 1.53.0 / ba90c8e | `GPL-3.0-or-later AND Unicode-DFS-2016 AND LicenseRef-CC-CEDICT-Historical` |
 | pcaudiolib linked into optional espeak-ng | d6a6b00 | `GPL-3.0-or-later` |
 | NSLink optional ns-flash binary | 0.1.4 (README declaration) | `LicenseRef-Company-Proprietary` |
+| WeniClaw experimental agent and optional binary | repository snapshot | `BSD-3-Clause` |
 | GNU GCC and Binutils SDK manuals | shipped SDK snapshot | `GFDL-1.3-or-later AND GPL-3.0-or-later` |
 | Generated GNU ld linker scripts | SDK snapshot; generator binary 2.46.0.20260210 | `LicenseRef-Binutils-Linker-Script` |
 
@@ -62,7 +66,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - Version: 7.3.0-rc7
 - SPDX/classification: `GPL-2.0-only`
 - Source: https://github.com/NSING-Community/linux.git ; branch n32h7xx
-- Source revision: a894130780a157e2f5a69a8a948e52b4f5bf227e plus the local NSING changes in this repository, as reviewed; licenses/evidence/linux.json was regenerated for this revision from an isolated rebuild of the same configuration
+- Source revision: a37ebf65f125626eff70514e07f403b4c812fbe4 plus the local NSING changes in this repository, as reviewed; licenses/evidence/linux.json was regenerated for this revision from an isolated rebuild of the same configuration
 - Corresponding source: `kernel` (ships in this repository)
 - Modifications: Merge of upstream 7.3.0-rc7 plus the local NSING changes carried in this repository. UAPI: per-file licenses, including GPL-2.0-only WITH Linux-syscall-note.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
@@ -240,6 +244,45 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
   - [licenses/dropbear-file-notices.txt](licenses/dropbear-file-notices.txt)
   - [licenses/evidence/dropbear.json](licenses/evidence/dropbear.json)
 
+## curl command-line HTTP/HTTPS client
+
+- Version: 8.23.0
+- SPDX/classification: `curl`
+- Source: https://curl.se/download/ ; curl-8.23.0.tar.xz
+- Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
+- Modifications: No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time.
+- Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
+- Full licenses, NOTICEs and evidence:
+  - [licenses/curl/COPYING](licenses/curl/COPYING)
+  - [licenses/evidence/curl.json](licenses/evidence/curl.json)
+
+## Mbed TLS shared libraries used by curl
+
+- Version: 3.6.7 LTS
+- SPDX/classification: `Apache-2.0`
+- Source: https://github.com/Mbed-TLS/mbedtls ; mbedtls-3.6.7.tar.bz2
+- Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
+- Modifications: No source changes. sdk-src/configs/mbedtls-config.h selects a client-only TLS 1.2/1.3 configuration for this board, and the build script produces the three shared objects (SHARED=1) so every TLS client here links one copy instead of embedding its own; upstream is dual Apache-2.0 OR GPL-2.0-or-later and this build is distributed under Apache-2.0.
+- Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
+- Full licenses, NOTICEs and evidence:
+  - [licenses/mbedtls/LICENSE](licenses/mbedtls/LICENSE)
+  - [licenses/evidence/mbedtls.json](licenses/evidence/mbedtls.json)
+
+## Mozilla CA root bundle used by curl
+
+- Version: certdata.txt as of 2026-09-25 03:12:01 GMT; 121 certificates
+- SPDX/classification: `MPL-2.0`
+- Source: https://curl.se/ca/cacert.pem
+- Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
+- Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
+- Modifications: Unmodified published bundle (the source tree also carries the provenance README and the installer). It is data, not code: the NSS certdata.txt metadata is MPL-2.0 and the certificate bodies are public data published by each CA.
+- Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
+- Full licenses, NOTICEs and evidence:
+  - [licenses/ca-certificates/MPL-2.0.txt](licenses/ca-certificates/MPL-2.0.txt)
+  - [licenses/evidence/ca-certificates.json](licenses/evidence/ca-certificates.json)
+
 ## microADB with Linux NOMMU HAL
 
 - Version: 85cc7a9 + local port
@@ -365,6 +408,25 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
   - [licenses/evidence/ns-flash.json](licenses/evidence/ns-flash.json)
   - [sdk/optional/ns-flash/THIRD_PARTY_NOTICES.txt](sdk/optional/ns-flash/THIRD_PARTY_NOTICES.txt)
   - [sdk/optional/ns-flash/Zig-MIT.txt](sdk/optional/ns-flash/Zig-MIT.txt)
+
+## WeniClaw experimental agent and optional binary
+
+- Version: repository snapshot
+- SPDX/classification: `BSD-3-Clause`
+- Source: written for this project; the borrowed think-block scanner is https://github.com/nullclaw/nullclaw.git at commit 5f1cade05c19b6ecdfb9565ae3305e892e484da9
+- Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
+- Corresponding source: Not included; see the ownership/source statement above
+- Modifications: New BSD-3-Clause agent written for this board and linked with the SDK toolchain's C ABI. The reviewed ARM FDPIC binary is distributed in `sdk/optional/weniclaw` and installed to /system/bin by `sdk/optional/install.sh`. src/think.zig is the nullclaw think-block scanner, MIT, kept under its original notice.
+- Copyright: Copyright (c) 2026 Nsing Technologies Inc. for the WeniClaw additions; Copyright (c) 2026 nullclaw contributors for src/think.zig; Zig contributors and musl contributors for the build-time runtime and headers.
+- Full licenses, NOTICEs and evidence:
+  - [sdk/optional/weniclaw/README.md](sdk/optional/weniclaw/README.md)
+  - [sdk/optional/weniclaw/LICENSE](sdk/optional/weniclaw/LICENSE)
+  - [sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md](sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md)
+  - [sdk/optional/weniclaw/licenses/Zig-MIT.txt](sdk/optional/weniclaw/licenses/Zig-MIT.txt)
+  - [sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt](sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt)
+  - [sdk/optional/weniclaw/licenses/curl-COPYING.txt](sdk/optional/weniclaw/licenses/curl-COPYING.txt)
+  - [sdk/optional/weniclaw/licenses/nullclaw-MIT.txt](sdk/optional/weniclaw/licenses/nullclaw-MIT.txt)
+  - [licenses/evidence/weniclaw.json](licenses/evidence/weniclaw.json)
 
 ## GNU GCC and Binutils SDK manuals
 
