@@ -67,6 +67,20 @@ DIST_BOOTLOADER := $(DIST_OUT)/bootloader.bin
 
 # --- kernel -----------------------------------------------------------------
 BOARD          ?= n32h787-hmi
+# Select the board DTB without changing the user's kernel configuration.
+CAMERA         ?= 0
+ifneq ($(CAMERA),0)
+ifneq ($(CAMERA),1)
+$(error CAMERA must be 0 or 1)
+endif
+endif
+KERNEL_DTB_BOARD := $(BOARD)
+ifeq ($(CAMERA),0)
+ifneq ($(BOARD),n32h787-hmi)
+$(error CAMERA=0 is only supported for BOARD=n32h787-hmi)
+endif
+KERNEL_DTB_BOARD := $(BOARD)-no-camera
+endif
 # Seed configuration for the kernel: a name under arch/arm/configs/, or a path
 # to any defconfig-format file.  It only *seeds* out/kernel/build/.config; see
 # the kernel-menuconfig target below.
@@ -78,7 +92,7 @@ KERNEL_STAGE   := $(KERNEL_OUT)
 # their own SPI NOR partitions and are loaded to different RAM addresses.  They
 # must not be concatenated, or the decompressor rewrites the r2 DTB argument.
 KERNEL_ZIMAGE  := $(KERNEL_STAGE)/zImage
-KERNEL_DTB     := $(KERNEL_STAGE)/$(BOARD).dtb
+KERNEL_DTB     := $(KERNEL_STAGE)/$(KERNEL_DTB_BOARD).dtb
 # Where release.sh installs the loadable modules.  The rootfs packaging merges
 # this tree into the SquashFS image, so nothing has to be written next to the
 # rootfs/ sources.
@@ -124,7 +138,8 @@ TOOLS_DIR      := $(TOP)/tools
 SPI_IMAGE_TOOL := $(TOOLS_DIR)/spi_image.py
 
 .PHONY: all help bootloader kernel rootfs rootfs-squashfs busybox dropbear \
-        tools tinyalsa pcaudiolib sftp-server flash-image flash-kernel ota-check \
+        tools tinyalsa pcaudiolib sftp-server mbedtls curl ca-certificates \
+        flash-image flash-kernel ota-check \
         ota-rootfs ota-kernel ota-dtb publish-bin \
         flash-bootloader doctor \
         menuconfig kernel-menuconfig kernel-nconfig kernel-xconfig \
@@ -163,7 +178,7 @@ help:
 	@echo
 	@echo "  all              bootloader + kernel + rootfs + flash image (default)"
 	@echo "  bootloader       build the $(BOOT_STORAGE)-backed CM7 bootloader"
-	@echo "  kernel           build and stage the separate zImage + $(BOARD).dtb"
+	@echo "  kernel           build and stage the separate zImage + $(KERNEL_DTB_BOARD).dtb"
 	@echo "                   (also builds the loadable modules into out/kernel/modules)"
 	@echo "  menuconfig       change the kernel configuration (ncurses; 'kernel-menuconfig')"
 	@echo "  kernel-nconfig   same with the newer ncurses UI ('kernel-xconfig' for Qt)"
@@ -190,6 +205,7 @@ help:
 	@echo
 	@echo "Useful variables:"
 	@echo "  JOBS=$(JOBS)  BOOT_STORAGE=$(BOOT_STORAGE)  BOARD=$(BOARD)"
+	@echo "  CAMERA=$(CAMERA)  (1: camera + 2 MiB pool; 0: no camera, memory returned)"
 	@echo "  DEFCONFIG=$(DEFCONFIG)  (seed for the kernel configuration)"
 	@echo "  OUT_DIR=$(OUT_DIR)"
 	@echo "  KERNEL_ZIMAGE=$(KERNEL_ZIMAGE)"
@@ -228,7 +244,7 @@ kernel:
 	@# SDK ships a soft-float wrapper for this: sdk/toolchain/bin/arm-n32-linux-kernel-
 	@# BUILD_DIR/STAGE_DIR keep the kernel build out of the source tree: the
 	@# objects go to out/kernel/build and the staged artifacts to out/kernel.
-	JOBS=$(JOBS) BOARD=$(BOARD) CROSS_COMPILE=$(CROSS_COMPILE) \
+	JOBS=$(JOBS) BOARD=$(BOARD) CAMERA=$(CAMERA) CROSS_COMPILE=$(CROSS_COMPILE) \
 		DEFCONFIG=$(DEFCONFIG) \
 		BUILD_DIR=$(KERNEL_BUILD) STAGE_DIR=$(KERNEL_STAGE) \
 		$(KERNEL_DIR)/scripts/nsing/release.sh
@@ -323,9 +339,11 @@ rootfs-squashfs: $(ROOTFS_SQUASHFS)
 # ---------------------------------------------------------------------------
 # busybox - the one place applets are added or removed
 # ---------------------------------------------------------------------------
-# The six "rebuild a userland component" targets below are the only ones that
+# The nine "rebuild a userland component" targets below are the only ones that
 # need sdk-src/.  They check for it first and explain the situation instead of
-# failing with a bare "No such file or directory" from bash.
+# failing with a bare "No such file or directory" from bash.  Like the other
+# sdk-src targets they stay out of `make help`, which lists only what a
+# published checkout can actually build.
 SDK_SRC := $(TOP)/sdk-src
 
 define require-sdk-src
@@ -387,6 +405,34 @@ sftp-server:
 	$(call require-sdk-src,sftp-server)
 	@echo "==> sftp-server (sdk-src/project/src/sftp-server.c)"
 	bash $(TOP)/sdk-src/scripts/install-sftp-server.sh $(ROOTFS_TREE)
+	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
+
+# ---------------------------------------------------------------------------
+# curl, Mbed TLS and the CA bundle it validates against
+# ---------------------------------------------------------------------------
+# This BusyBox has no curl applet and its wget is built without https, so curl
+# is the board's only HTTPS client.  Mbed TLS is built as shared libraries
+# rather than statically linked so that curl - and anything added later - uses
+# one copy on the board.  'curl' therefore depends on 'mbedtls'.
+mbedtls:
+	$(call require-sdk-src,mbedtls)
+	@echo "==> mbedtls (sdk-src/configs/mbedtls-config.h)"
+	bash $(TOP)/sdk-src/scripts/install-mbedtls.sh $(ROOTFS_TREE)
+	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
+
+curl: mbedtls
+	$(call require-sdk-src,curl)
+	@echo "==> curl (sdk-src/sources/curl)"
+	bash $(TOP)/sdk-src/scripts/install-curl.sh $(ROOTFS_TREE)
+	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
+
+# curl is built with --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt, so
+# without this the https:// URLs fail with "error reading CA cert file".  Skip
+# it only if the product supplies its own trust store.
+ca-certificates:
+	$(call require-sdk-src,ca-certificates)
+	@echo "==> CA certificates (sdk-src/sources/ca-certificates)"
+	bash $(TOP)/sdk-src/scripts/install-ca-certificates.sh $(ROOTFS_TREE)
 	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
 
 # ---------------------------------------------------------------------------

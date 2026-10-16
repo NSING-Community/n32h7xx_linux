@@ -1,0 +1,21 @@
+{
+  "component": "curl",
+  "method": "In-tree build script reproduces the deployed stripped binary byte for byte; configure arguments, dynamic metadata and on-board transfers reviewed",
+  "checks": {
+    "rootfs/usr/bin/curl": "e3e270f43692d000a5f9e61297da7847fe7afc54cab6dd363ae4eb32b0f5445e",
+    "sdk-src/scripts/install-curl.sh": "be1b08e41febd260edfe3532e856efdd7590a4ce3c52be03f0a1d60226b6e3ca"
+  },
+  "details": {
+    "upstream_version": "8.23.0 (include/curl/curlver.h LIBCURL_VERSION)",
+    "release_archive": "curl-8.23.0.tar.xz, unpacked into sdk-src/sources/curl",
+    "configure_arguments": "--host=arm-uclinuxfdpiceabi --prefix=/usr --enable-static --disable-shared --enable-ipv6 --disable-threaded-resolver --with-mbedtls=<staged Mbed TLS> --with-default-ssl-backend=mbedtls --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt; all other TLS backends and the compression, HTTP/2, IDN, LDAP, SSH and mail/file-transfer protocol backends disabled",
+    "syscall_probe_override": "ac_cv_func_eventfd=no",
+    "reproduction": "make curl run twice from the published script; rootfs/usr/bin/curl identical both times (sha256 e3e270f4..., 464708 bytes stripped)",
+    "size": "Built -Os with -ffunction-sections/-fdata-sections and -Wl,--gc-sections: the text segment is 445836 bytes, so the no-MMU loader's single contiguous mapping for it fits an order-7 (512 KiB) buddy block. The default -O2 build produced a 552960-byte segment that needed order-8, and once those were gone the loader failed with 'nommu: Allocation of length 552960 from process N (curl) failed' and the program died; observed on hardware after the board had been up a while, gone from the shipped build.",
+    "linked_libraries": "libmbedtls.so.21, libmbedx509.so.7, libmbedcrypto.so.16, libc.so.0 (FDPIC shared objects; no TEXTREL, e_flags 0x05000400 hard-float matches rootfs libgcc_s.so.1)",
+    "protocols": "file ftp ftps http https ipfs ipns ws wss",
+    "features": "alt-svc HSTS HTTPS-proxy IPv6 Largefile SSL threadsafe UnixSockets",
+    "on_board": "Verified on the N32H787 board with the shipped rootfs: https://example.com/ and https://curl.se/ return 200 with certificate verification enabled, a self-signed host is rejected, and a 38 MB https download of a mirror index completes intact",
+    "licenses": "curl license (MIT/X derivative); COPYING preserved in licenses/curl/COPYING and installed in the rootfs"
+  }
+}

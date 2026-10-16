@@ -1,0 +1,23 @@
+{
+  "component": "mbedtls",
+  "method": "In-tree build script reproduces the three deployed shared objects byte for byte; configuration, dynamic metadata and on-board handshakes reviewed",
+  "checks": {
+    "rootfs/usr/lib/libmbedtls.so.21": "926ce1dfe22d23a865902e486cb2927fc0cacf0d087916023b94110d8c63bf4a",
+    "rootfs/usr/lib/libmbedx509.so.7": "5966b8e1a696a01462f37609934f3ee359f9fd16764d2548f9095573983f0850",
+    "rootfs/usr/lib/libmbedcrypto.so.16": "b5eb8bd9e11fb6628a19627b2a319ab03572484661216b361b6ac9a3e32a468e",
+    "sdk-src/configs/mbedtls-config.h": "ec7262b8a458e0868ec73d79ea711da4324825bab7503d1c0838ebfdd6345bb8",
+    "sdk-src/scripts/install-mbedtls.sh": "a1011453a9cd917df8d3f3a6bc3e623e15a5cf8f7129cb3d265d27471bcc90fe"
+  },
+  "details": {
+    "upstream_version": "3.6.7 LTS (include/mbedtls/build_info.h MBEDTLS_VERSION_STRING)",
+    "release_archive": "mbedtls-3.6.7.tar.bz2, unpacked into sdk-src/sources/mbedtls",
+    "license_choice": "Mbed TLS is dual Apache-2.0 OR GPL-2.0-or-later; this build is distributed under Apache-2.0 and no GPL-only component is linked",
+    "build": "make -C library SHARED=1 CC=arm-uclinuxfdpiceabi-gcc CFLAGS='-Os -g0 -I<build> -DMBEDTLS_CONFIG_FILE=\"mbedtls-config.h\"' WARNING_CFLAGS=; stripped with arm-uclinuxfdpiceabi-strip",
+    "configuration": "sdk-src/configs/mbedtls-config.h: TLS 1.2/1.3 client only, ECDHE/DHE-RSA/ECDSA and RSA key exchange, AES-GCM/CCM, ChaCha20-Poly1305, X25519 and P-256/384/521, SHA-1/SHA-2, MBEDTLS_FS_IO (curl parses CA files from disk), MBEDTLS_PSA_CRYPTO_C (required by TLS 1.3 in 3.6), MBEDTLS_DEBUG_C. Server mode, DTLS, PSK/ECJPAKE, legacy ciphers and the persistent PSA key store are disabled; MBEDTLS_ECDSA_DETERMINISTIC is left off because it fails check_config without further prerequisites",
+    "shared_not_static": "Built as the three shared objects so every TLS client on the board links one copy; curl is currently the only user",
+    "reproduction": "make mbedtls run twice from the published script; all three objects identical both times (207376 + 28640 + 119212 bytes stripped)",
+    "dynamic_metadata": "FDPIC shared objects, no TEXTREL, SONAMEs libmbedtls.so.21 / libmbedx509.so.7 / libmbedcrypto.so.16",
+    "on_board": "Verified on the N32H787 board: curl completes a TLS 1.3 handshake negotiated as TLS_CHACHA20_POLY1305_SHA256 against public servers",
+    "licenses": "Apache-2.0; LICENSE preserved in licenses/mbedtls/LICENSE and installed in the rootfs"
+  }
+}

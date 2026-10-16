@@ -1,0 +1,25 @@
+{
+  "component": "ca-certificates",
+  "method": "Published CA bundle downloaded and compared byte for byte; the copy installed in the rootfs is verified against the staged source file, and the per-certificate split is regenerated from it by the shipped installer",
+  "checks": {
+    "rootfs/etc/ssl/certs/ca-certificates.crt": "a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505",
+    "sdk-src/sources/ca-certificates/cacert.pem": "a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505",
+    "sdk-src/scripts/install-ca-certificates.sh": "6fc2f15497304c9337dce9927c0c9a6e815deeea907069031047f75d0151efac",
+    "rootfs/usr/share/licenses/ca-certificates/NOTICE": "2d98dded2d072d74c857d43b752882ba89c63440c9c733885d6061b7c22ac880"
+  },
+  "details": {
+    "upstream": "https://curl.se/ca/cacert.pem, downloaded 2026-10-16 and byte-identical to the published file",
+    "content": "121 certificates, 188900 bytes; Mozilla certdata.txt as of Fri Sep 25 03:12:01 2026 GMT, extracted with mk-ca-bundle.pl 1.33. The bundle header records the SHA-256 of its certdata.txt input (beb7e6df...), which is not the hash of this file",
+    "install_path": "/etc/ssl/certs/ca-certificates.crt, the path curl was compiled with, so https:// works with no --cacert",
+    "per_certificate_install": {
+      "path": "/etc/ssl/certs/roots",
+      "files": 121,
+      "sha256_of_sorted_members": "a55f4091fcafa76f8a7128cb59a2fafcb8f968d9ef709e7e1fb0811345aeb742",
+      "why": "mbedTLS parses a PEM file with one allocation as large as the whole file, so the 185 KiB bundle needs one contiguous 185 KiB block, which the no-MMU mmap path cannot always find once the board has been running. The installer splits the same bytes into one file per certificate so every allocation stays at one certificate.",
+      "derived_from": "sdk-src/sources/ca-certificates/cacert.pem; the installer re-splits and checks the file count on every install, so the split is regenerable from the checked bundle"
+    },
+    "license": "The NSS certdata.txt metadata is MPL-2.0; the certificate bodies are public data published by each CA. MPL-2.0 text preserved in licenses/ca-certificates/MPL-2.0.txt and installed in the rootfs",
+    "on_board": "Verified on the N32H787 board: https://example.com/ and https://curl.se/ return 200 with verification enabled, a self-signed host is rejected, and the installed file matches the staged source hash",
+    "refresh": "Download https://curl.se/ca/cacert.pem again and re-record this file, the version_checks entry in licenses/components.json and sdk-src/sources/ca-certificates/README.md"
+  }
+}

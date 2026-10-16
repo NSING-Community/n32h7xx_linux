@@ -12,7 +12,7 @@ sdk/
 │   └── share/cmake/    CMake 工具链文件（给客户自己的工程用）
 ├── example/            应用示例源码，只带一个 Makefile
 ├── optional/           可选附加组件（预编译二进制），不参与构建，自行取用
-└── optional-src/       上面这些组件的构建源码，同样不参与构建
+└── optional-src/       espeak-ng 的移植源码，同样不参与构建
 ```
 
 工具链只有这一处：`sdk/toolchain/`，直接用全路径调用即可。`optional/` 与
@@ -57,9 +57,10 @@ BOARD=<板子IP> USE=ssh sh install.sh # 走 ssh；BOARD 没有默认值
 | --- | --- | --- |
 | [espeak-ng](../sdk/optional/espeak-ng/README.md) | 语音合成，板上的放音设备直接出声 | 无（GPL-3.0-or-later，见该目录 README） |
 | [ns-flash](../sdk/optional/ns-flash/README.md) | 板子作 USB host，驱动外接 NSLink 探针烧写目标板 | 内核要有 USB host 与探针所用传输：bulk 探针走 usbfs，HID 探针要 `CONFIG_HIDRAW`（连同 `CONFIG_INPUT` / `CONFIG_HID_SUPPORT` / `CONFIG_HID` / `CONFIG_HID_GENERIC` / `CONFIG_USB_HID`） |
+| [WeniClaw](../sdk/optional/weniclaw/README.md) | 命令行与微信 AI 助手；FDPIC 程序，复用 rootfs 的 uClibc 和 Mbed TLS，不占大块连续内存 | 内核需有网络；没有配置文件时先开 80 端口配置页；走 https 用 rootfs 里已有的 CA 列表 |
 
 `ns-flash` 操作的是探针 SWD 那头接着的芯片，不是它自己跑着的这块板子。
-`sdk/optional-src/` 放上面这些组件的构建源码，同样不参与构建。
+`sdk/optional-src/` 放 espeak-ng 的移植源码，同样不参与构建。
 
 ## 工具链可以整体搬走
 
@@ -254,10 +255,15 @@ chip 一个端口，按 A..K 排。
 ```sh
 echo 531 > /sys/class/gpio/export
 echo out > /sys/class/gpio/gpio531/direction
-echo 1   > /sys/class/gpio/gpio531/value        # 点亮
-echo 0   > /sys/class/gpio/gpio531/value        # 熄灭
+echo 0   > /sys/class/gpio/gpio531/value        # 点亮（低电平点亮）
+echo 1   > /sys/class/gpio/gpio531/value        # 熄灭
 echo 531 > /sys/class/gpio/unexport
 ```
+
+三个用户 LED 都是**低电平点亮**：HMI V1.1 原理图里它们是
+`VCC_3.3V -> 串阻 -> LED -> MCU 引脚`，引脚灌电流才发光。所以 `set PB3 0`
+是点亮、`set PB3 1` 是熄灭。注意 `dir <PIN> out` 本身会把输出电平置 0，
+也就是说单独一条 `gpio dir PB3 out` 就会把灯点亮。
 
 `/sys/class/gpio` 和 `/dev/gpiochipN` 两套接口在本板都开着：前者是经典 ABI，
 不需要任何用户态库，脚本里最好用；后者是现在的推荐接口，需要 libgpiod 或自己
@@ -273,7 +279,7 @@ gpio list                 # 各 bank 的 label / base / 线数
 gpio num PB3              # 531
 gpio export PB3           # 占用（可重复执行）
 gpio dir PB3 out          # in | out
-gpio set PB3 1            # 拉高（未 export 会自动 export 并设为 out）
+gpio set PB3 1            # 拉高；板载 LED 低电平点亮，点亮要写 0
 gpio get PB3              # 0 或 1
 gpio edge PB3 rising      # none | rising | falling | both
 gpio info PB3             # direction / value / active_low / edge
@@ -298,6 +304,19 @@ gpio unexport PB3         # 释放
 `comm`、`diff`、`cmp`、`tee`、`md5sum`、`base64`、`patch`、`strings`、`od`、
 `hexdump`、`xxd`、`nc`、`nslookup`；后台与进程管理是 `nohup`、`setsid`、
 `pgrep`、`pkill`、`flock`、`crond`。
+
+要访问 `https://` 用 rootfs 里的 `curl`（8.23.0，动态链接 Mbed TLS 共享库）。
+本板 busybox 没有 `curl` applet，它的 `wget` 也没编进 TLS，所以 `https://`
+只有 `curl` 一条路；`ftp`、`file://` 等协议同样支持。
+
+```sh
+curl -O https://example.com/file.tar.gz
+curl --version
+```
+
+证书用的是只读 rootfs 里的 `/etc/ssl/certs/ca-certificates.crt`，也就是 curl 的
+内置默认路径，不需要 `--cacert`。这份信任列表随发行包提供、更新频率很低；要换成
+自建 CA，就把证书文件放进 `rootfs/etc/ssl/certs/` 重新打包 rootfs 分区。
 
 几条在这个 no-MMU 环境里会影响脚本写法的：
 
