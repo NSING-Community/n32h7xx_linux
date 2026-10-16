@@ -11,7 +11,7 @@ OpenAI 兼容的对话接口，也可以通过腾讯 iLink Claw 通道与微信�
 
 | 文件 | 说明 |
 | --- | --- |
-| `weniclaw` | ARM 二进制（已 strip，498640 字节） |
+| `weniclaw` | ARM 二进制（已 strip，507112 字节） |
 | `LICENSE`、`THIRD_PARTY_NOTICES.md`、`licenses/` | 随二进制附带的声明文本 |
 
 ## 运行要求

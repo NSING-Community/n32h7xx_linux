@@ -2,8 +2,8 @@
   "component": "weniclaw",
   "method": "Optional binary add-on: the reviewed ARM binary was reproduced from the ported source tree, and every third-party text it links or borrows ships beside the binary",
   "checks": {
-    "sdk/optional/weniclaw/weniclaw": "35db6d60a7dd2509719fbe1e770ad779ee752a1875c312a3036aeac7a335279e",
-    "sdk/optional/weniclaw/README.md": "a68b4120f816d86cb9f53364852fd367522af6d32989cb236954b282dc00e53c",
+    "sdk/optional/weniclaw/weniclaw": "aea68f0fcef7d4d82078784f28c98401d222996cc85da20927d08c36630fd575",
+    "sdk/optional/weniclaw/README.md": "b874558c8b2743ea29a02f11f5e169f34f6850a014b6b885f241be541bdc0de9",
     "sdk/optional/weniclaw/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
     "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "7f5a9755e6bbde087f052da7452874627ccd6ed7999fa62e991ab85483853f20",
     "sdk/optional/weniclaw/licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",
@@ -16,11 +16,11 @@
     "sdk/optional-src/weniclaw/build.zig": "506756866dddef62d7251d83085a61aea2639f56b043282ac73f4578908adfcf"
   },
   "details": {
-    "distribution": "sdk/optional/weniclaw ships the prebuilt ARM FDPIC binary (498640 B, sha256 above) with its README and notice texts; sdk/optional/install.sh installs it to /system/bin. The port source and its build script are maintainer material and are not part of the published tree; the reviewed build inputs stay recorded here for the audit. Zig build caches and output directories are local build state, excluded from the distribution inventory.",
+    "distribution": "sdk/optional/weniclaw ships the prebuilt ARM FDPIC binary (507112 B, sha256 above) with its README and notice texts; sdk/optional/install.sh installs it to /system/bin. The port source and its build script are maintainer material and are not part of the published tree; the reviewed build inputs stay recorded here for the audit. Zig build caches and output directories are local build state, excluded from the distribution inventory.",
     "license": "New WeniClaw code is BSD-3-Clause, copyright 2026 Nsing Technologies Inc. The one borrowed file is src/think.zig, the think-block scanner and stripping function from nullclaw commit 5f1cade05c19b6ecdfb9565ae3305e892e484da9, MIT, copyright 2026 nullclaw contributors; the full MIT text travels beside the binary and in the source tree.",
     "linked_code": "Built with Zig 0.16.0, whose runtime and bundled musl-derived Linux C declarations keep their own MIT and COPYRIGHT notices; both texts ship in sdk/optional/weniclaw/licenses/. The ARM link statically links libcurl (curl licence, shipped as licenses/curl-COPYING.txt, recorded by the curl component) and dynamically links the rootfs Mbed TLS shared objects (this build takes Mbed TLS under Apache-2.0, recorded by the mbedtls component). The WeChat text channel follows Tencent's published protocol documentation and is independently implemented; no Tencent plugin source or asset is included.",
     "build": "sdk/optional-src/weniclaw/build.sh host|arm, documented in sdk/optional-src/weniclaw/doc/build.md. The ARM build needs Zig 0.16.0, the SDK cross compiler, a libcurl archive built with eventfd disabled and the Mbed TLS headers; every input is either in this repository or a pinned upstream release.",
     "upstream": "WeniClaw is written for this project and is not a vendored upstream; the nullclaw file above is the only upstream text and is pinned by commit.",
-    "elf": "ARM FDPIC (ET_DYN, OS/ABI ARM FDPIC, interpreter /lib/ld-uClibc.so.0); NEEDED libmbedtls.so.21, libmbedx509.so.7, libmbedcrypto.so.16 and libc.so.0; the two PT_LOAD segments are 477924 B and 19736 B before page alignment, so no large contiguous mapping is required."
+    "elf": "ARM FDPIC (ET_DYN, OS/ABI ARM FDPIC, interpreter /lib/ld-uClibc.so.0); NEEDED libmbedtls.so.21, libmbedx509.so.7, libmbedcrypto.so.16 and libc.so.0; the two PT_LOAD segments are 486540 B and 18416 B before page alignment before page alignment, so no large contiguous mapping is required."
   }
 }

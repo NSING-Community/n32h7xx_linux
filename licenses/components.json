@@ -1101,15 +1101,15 @@
         ]
       ],
       "verification_files": {
-        "sdk/optional/weniclaw/weniclaw": "35db6d60a7dd2509719fbe1e770ad779ee752a1875c312a3036aeac7a335279e",
-        "sdk/optional/weniclaw/README.md": "a68b4120f816d86cb9f53364852fd367522af6d32989cb236954b282dc00e53c",
+        "sdk/optional/weniclaw/weniclaw": "aea68f0fcef7d4d82078784f28c98401d222996cc85da20927d08c36630fd575",
+        "sdk/optional/weniclaw/README.md": "b874558c8b2743ea29a02f11f5e169f34f6850a014b6b885f241be541bdc0de9",
         "sdk/optional/weniclaw/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
         "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "7f5a9755e6bbde087f052da7452874627ccd6ed7999fa62e991ab85483853f20",
         "sdk/optional/weniclaw/licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",
         "sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
         "sdk/optional/weniclaw/licenses/curl-COPYING.txt": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
         "sdk/optional/weniclaw/licenses/nullclaw-MIT.txt": "3239c83ea66a66234f0d4d2c71a9b4dbafd9883a5b659222e0752a32de2617a7",
-        "licenses/evidence/weniclaw.json": "e7191e41d58ad6c8784e3aebcf7d02cbcc1d22e0bbf832d300bbfac687a9fbde"
+        "licenses/evidence/weniclaw.json": "01c4fa9fffed52fa9f3c5f91b617e65c8f1c274750df8eb1f574cb3bb01d2734"
       },
       "copyright": "Copyright (c) 2026 Nsing Technologies Inc. for the WeniClaw additions; Copyright (c) 2026 nullclaw contributors for src/think.zig; Zig contributors and musl contributors for the build-time runtime and headers."
     },
