@@ -142,6 +142,9 @@ info)
 	for f in direction value active_low edge; do
 		[ -r "$DIR/$f" ] && printf '  %-10s %s\n' "$f" "$(cat "$DIR/$f")"
 	done
+	# Last [ -r ] above decides the loop's status; "info" itself succeeds even
+	# when a sysfs attribute (edge on this kernel) is absent.
+	exit 0
 	;;
 *)
 	die "unknown command: $1 (try: gpio help)"
