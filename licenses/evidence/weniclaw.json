@@ -3,7 +3,7 @@
   "method": "Optional binary add-on: the reviewed ARM binary was reproduced from the ported source tree, and every third-party text it links or borrows ships beside the binary",
   "checks": {
     "sdk/optional/weniclaw/weniclaw": "aea68f0fcef7d4d82078784f28c98401d222996cc85da20927d08c36630fd575",
-    "sdk/optional/weniclaw/README.md": "78a7eeb032d15bf3247d8ea95607150c5bd0b8b03fe9fd7bf2d237f780e99f7c",
+    "sdk/optional/weniclaw/README.md": "0dfe59340c409af886e0b31ad118eec84f0c82272f1a748f21dd43820579a8ce",
     "sdk/optional/weniclaw/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
     "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "7f5a9755e6bbde087f052da7452874627ccd6ed7999fa62e991ab85483853f20",
     "sdk/optional/weniclaw/licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",

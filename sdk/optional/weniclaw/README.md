@@ -133,12 +133,29 @@ fi
 
 ## 技能：外设操作说明
 
-`skills/` 里的四份技能教模型怎么用板上外设，安装到
-`/system/weniclaw/workspace/skills/`（`../install.sh` 会自动拷过去）。没有
-技能程序照常运行，只是模型不知道这些设备怎么用。技能是纯文本，直接用编辑器
-按板的实际情况改；要加自己的，在 `skills/` 下新建目录放 `SKILL.md`。
+技能是纯文本 Markdown，一个技能一个目录，位置固定在 workspace 下：
 
-system 提示里只出现技能路径，正文由模型按需读取，平时不占内存。
+```text
+/system/weniclaw/workspace/skills/<名称>/SKILL.md
+```
+
+（workspace 取自配置文件的 `workspace` 字段；标准安装即
+`/system/weniclaw/workspace`。）本目录的 `skills/` 里有四份现成技能：
+拍照 `camera`、录音放音 `audio`、点灯 `gpio-led`、存储位置 `storage`。
+
+`../install.sh` 会自动安装技能；手动安装就是拷贝这个目录：
+
+```sh
+mkdir -p /system/weniclaw/workspace
+scp -r sdk/optional/weniclaw/skills root@<板子IP>:/system/weniclaw/workspace/
+```
+
+加自己的技能：在 `skills/` 下新建 `<名称>/SKILL.md`，可以在这里编辑好后
+拷到板上，也可以让 agent 用 write_file 直接写。名称只用字母、数字、`_`、
+`-`（不要中文或空格），最多列出 16 个技能。每条消息都会重新扫描技能目录，
+改完不用重启。没有技能程序照常运行，只是模型不知道这些设备怎么用。
+
+模型只拿到技能路径清单，正文按需读取，平时不占内存。
 
 ## 限制
 
