@@ -120,14 +120,14 @@
         }
       ],
       "verification_files": {
-        "rootfs/bin/busybox": "bb14f3f5b09751a6655ef491bf3fd4378320ba57dcb097065e43273514f85d9d",
+        "rootfs/bin/busybox": "8f01f08f91fb7bf7ed596fa2cf56091d49c5fa94e2a9023bea9725c17809dc73",
         "sdk-src/configs/busybox-runtime.config": "b580783c875743a8d05f74ab48eb458d6ac8b025049f76957580b80e1579d921",
         "sdk-src/patches/busybox-timeout-nommu-reexec.patch": "500d656ddb9287ac95b359cc0b73041126be3abdf33131fa2478c6d38588f164",
         "sdk-src/patches/busybox-hwclock-uclibc-tm-gmtoff.patch": "25837c3073c2b30091d3800a9c94f1032897b1c185aedd2423e825e5bfa10e59",
         "sdk-src/patches/busybox-hush-tilde-expansion.patch": "e9a4d68b09ef572075c2dc2c03824de358923610fb93d786fdc7ead7d113f965",
         "sdk-src/patches/busybox-reboot-reason.patch": "a12c0982f68b67d503fe4c2a960b82f728736e5667b8890de1439a3cd120fae1",
         "sdk-src/patches/busybox-hush-errexit-loop-cond.patch": "4836d92882aa3b27f5359f1d057cd8042bce4f1626308b0ae26ece0efdc4e04c",
-        "licenses/evidence/busybox.json": "08c05afb92010e6848d1cb3a944f19c0775b164d6474d94632b4451ced313bea"
+        "licenses/evidence/busybox.json": "f8eceb4b7b2d0e9021dbb3539870413ebfda5e3d8977a8278a5381eab7cf400f"
       },
       "source_digest": {
         "sha256": "13a6153872cbee69097cbc5c80d6c10b361a93127807819d54e0dee98d4a1072",
@@ -171,7 +171,7 @@
         "licenses/evidence/uclibc.json": "eaf4bd239a7a823fe878692643b79866426a0437d6d17accbefd45f2f7a69613"
       },
       "source_digest": {
-        "sha256": "8c8808a54462fed91952ff95918eb1302ae74017a3328be4948b1cb8ef727dbe",
+        "sha256": "a1abd4438dfc5d8199b02d5d98c58268dad30f426bc69f75f1b50aa1506f6308",
         "files": 8482
       }
     },
@@ -451,7 +451,7 @@
         "licenses/curl/COPYING",
         "licenses/evidence/curl.json"
       ],
-      "changes": "No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time.",
+      "changes": "No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time. The shipped binary was rebuilt after the toolchain sysroot restored the xattr interface, so --xattr is now compiled in; the board was re-tested with it.",
       "source_required": false,
       "issues": [
         [
@@ -466,9 +466,9 @@
         }
       ],
       "verification_files": {
-        "rootfs/usr/bin/curl": "e3e270f43692d000a5f9e61297da7847fe7afc54cab6dd363ae4eb32b0f5445e",
+        "rootfs/usr/bin/curl": "487f1a46d76cb9a9a91b9cb894cc8a07ca57ec68659a76f9e5b446e1b4a2b4a0",
         "sdk-src/scripts/install-curl.sh": "be1b08e41febd260edfe3532e856efdd7590a4ce3c52be03f0a1d60226b6e3ca",
-        "licenses/evidence/curl.json": "fb6b004fecce81cbbd202695947827e9d19ca3ace86f6bb3de242b1de30a10c4"
+        "licenses/evidence/curl.json": "672781c2e9d58a8e48374e97f7c3d36b0a95f17d13a1053da0fccdc21fd9c3b7"
       },
       "source_digest": {
         "sha256": "2ab72263696facbc1b931260a98b522491128cc06e0617ec03b1c4f232a1eb35",
@@ -600,7 +600,7 @@
         "licenses/evidence/tinyalsa.json": "783e7c2e8b13d4a24068c58d3a62771fd05752d294a21d4847c2b43ccc4d4899"
       },
       "source_digest": {
-        "sha256": "701a40047ae3a2de57232eb4e358d2c5f9d0d074ca9a214f9609f37129cc3c05",
+        "sha256": "414db4a6adc402f231c961927d148b0a9a36f7dd1aa134c9a67e59650e34a25a",
         "files": 89
       }
     },
@@ -4925,7 +4925,7 @@
   "binary_sha256": {
     "bootloader/OpenocdCfg/cm4_flash_op/flash_op.bin": "63c71ff9a83dcfb37b9d4594f712f8514b35b95a7c31515b5d57dea90daee9fc",
     "bootloader/OpenocdCfg/cm7_flash_op/flash_op.bin": "01f2348be66507a1d75824c685393fc24f0a1ec79ea04b2849e4410a81666d10",
-    "rootfs/bin/busybox": "bb14f3f5b09751a6655ef491bf3fd4378320ba57dcb097065e43273514f85d9d",
+    "rootfs/bin/busybox": "8f01f08f91fb7bf7ed596fa2cf56091d49c5fa94e2a9023bea9725c17809dc73",
     "rootfs/bin/tinycap": "be9646a0726ed642fc6fd21291b32d15fd1c4b9b46fa1f002ed9fc5663fe972a",
     "rootfs/bin/tinymix": "5948ff9c9c92775594581646dcae90b79e7279e25328a7fbc795eb5427fde1ef",
     "rootfs/bin/tinypcminfo": "4afe2c5185869441e88f4d1da11bb649b656b358dbb0598b6b16f9d20e5a59f0",
@@ -5014,16 +5014,16 @@
     "sdk/toolchain/sysroot/usr/lib/crti.o": "ffcb26aaeedfebc5b899871eeeda3dbe8b7a7cae22f656219dfa34ed5b99b978",
     "sdk/toolchain/sysroot/usr/lib/crtn.o": "a95ff3cf3d9347d7187c0337827b4a6153a1a0c2a7114cd44340bba34eb686d0",
     "sdk/toolchain/sysroot/usr/lib/crtreloc.o": "48613fc778962d1d83fc24d471db31b38f5501e15dd5ee0d0fc82b31893edf85",
-    "sdk/toolchain/sysroot/usr/lib/libc.a": "a16803921e939cbf730f5bc7a068c769babebe5ced1e8b66c0c1045ea3d6b18c",
+    "sdk/toolchain/sysroot/usr/lib/libc.a": "4f68550d093d26aa537d5afc8b504525b6691349430f4ed478bb09cac1a9325e",
     "sdk/toolchain/sysroot/usr/lib/libcrypt.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libdl.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libm.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libnsl.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libpthread.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
-    "sdk/toolchain/sysroot/usr/lib/libpthread_nonshared.a": "3207a03b76bf154da404720e35bb857a98eb5adbb03db08f0628447e23b564d8",
+    "sdk/toolchain/sysroot/usr/lib/libpthread_nonshared.a": "d750fd4cdb7faff20b86b2639505cd4fbfe4084208fe64212e9462a7b5ef9237",
     "sdk/toolchain/sysroot/usr/lib/libresolv.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/librt.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
-    "sdk/toolchain/sysroot/usr/lib/uclibc_nonshared.a": "ac84072efa2b4d067f7a9bf105baba5cebeb6a15b990fc4d30456c85eedc2b3f",
+    "sdk/toolchain/sysroot/usr/lib/uclibc_nonshared.a": "7fabdb4f64ca9f4b0e5deb12cdc188efee2aebb7a6ad5b1b4c7289a4c776105a",
     "kernel/tools/testing/selftests/tc-testing/action-ebpf": "3ac0b8ebe3d292efdff15018dd4c34fb1dc43c478863b452a16654db48df2aff",
     "kernel/arch/x86/tools/vdso2c": "04366a5353b35a65e949493c486cc71a3e43c078e1b007d2584b9f1545dc5ec6",
     "kernel/arch/x86/tools/relocs": "69adc3fb3fa933b57c0901c9baeeeb460dc1dac88f83b590e12935de18ab2bf1",
@@ -5031,7 +5031,7 @@
     "kernel/drivers/media/i2c/ov5640.ko": "13c9df7160b9aafa32e1c18fee7cb43d68ec1e49b9227baa89c2ecef22b9c673",
     "kernel/drivers/media/i2c/ov5640.mod.o": "98e6e18950f5d5ff707cdce301abd64dd408e9e0125bc055ce980cf39b7be72e",
     "kernel/drivers/media/i2c/.module-common.o": "5e9ab4ae21acd740ed82d77acd05e76bd8515043b5c3a410fe248fa90d43f76f",
-    "rootfs/usr/bin/curl": "e3e270f43692d000a5f9e61297da7847fe7afc54cab6dd363ae4eb32b0f5445e",
+    "rootfs/usr/bin/curl": "487f1a46d76cb9a9a91b9cb894cc8a07ca57ec68659a76f9e5b446e1b4a2b4a0",
     "rootfs/usr/lib/libmbedtls.so.21": "926ce1dfe22d23a865902e486cb2927fc0cacf0d087916023b94110d8c63bf4a",
     "rootfs/usr/lib/libmbedx509.so.7": "5966b8e1a696a01462f37609934f3ee359f9fd16764d2548f9095573983f0850",
     "rootfs/usr/lib/libmbedcrypto.so.16": "b5eb8bd9e11fb6628a19627b2a319ab03572484661216b361b6ac9a3e32a468e"
@@ -5049,7 +5049,7 @@
       "files": 7
     },
     "sdk-src/scripts": {
-      "sha256": "8624e6d849d9cb16782e6a344fe6c0fbcc1938c2b2de0e7075bbf86ba65390f1",
+      "sha256": "75fe7706a463412824b6727545694f6b6c6d059c5587c63398cc966a7a1f5f99",
       "files": 22
     },
     "sdk-src/project/microadb": {

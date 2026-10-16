@@ -2,7 +2,7 @@
   "component": "busybox",
   "method": "Published BusyBox matches preserved runtime build output; source/config/patch set frozen by source digest",
   "checks": {
-    "rootfs/bin/busybox": "bb14f3f5b09751a6655ef491bf3fd4378320ba57dcb097065e43273514f85d9d",
+    "rootfs/bin/busybox": "8f01f08f91fb7bf7ed596fa2cf56091d49c5fa94e2a9023bea9725c17809dc73",
     "sdk-src/configs/busybox-runtime.config": "b580783c875743a8d05f74ab48eb458d6ac8b025049f76957580b80e1579d921",
     "sdk-src/patches/busybox-timeout-nommu-reexec.patch": "500d656ddb9287ac95b359cc0b73041126be3abdf33131fa2478c6d38588f164",
     "sdk-src/patches/busybox-hwclock-uclibc-tm-gmtoff.patch": "25837c3073c2b30091d3800a9c94f1032897b1c185aedd2423e825e5bfa10e59",
@@ -13,6 +13,7 @@
   "details": {
     "source_version": "1.38.0",
     "recipe": "BusyBox install script delivered in the corresponding-source package",
-    "scope": "Existing build association verified; no new runtime installation or board write performed"
+    "scope": "Existing build association verified; no new runtime installation or board write performed",
+    "rebuild": "Rebuilt 2026-10-16 from the same configuration during the full SDK rebuild; the published file is byte-identical to that build output and differs from the previous published binary only in the embedded compile timestamp."
   }
 }

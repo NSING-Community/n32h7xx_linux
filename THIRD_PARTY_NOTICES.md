@@ -251,7 +251,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 - Source: https://curl.se/download/ ; curl-8.23.0.tar.xz
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
 - Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
-- Modifications: No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time.
+- Modifications: No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time. The shipped binary was rebuilt after the toolchain sysroot restored the xattr interface, so --xattr is now compiled in; the board was re-tested with it.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
   - [licenses/curl/COPYING](licenses/curl/COPYING)
