@@ -23,6 +23,9 @@
 # taken as an already-computed sysfs line, for the odd case this helper cannot
 # name.  Not every pin exists in every package, and there is no GPIO irq here:
 # "edge" only makes /sys/.../value a poll source, it never raises an interrupt.
+#
+# The three on-board user LEDs (PB3, PF10, PI8) sink current from 3V3 through
+# a series resistor, so they are active low: 0 lights them, 1 turns them off.
 SYS=/sys/class/gpio
 
 die() { echo "gpio: $*" >&2; exit 1; }

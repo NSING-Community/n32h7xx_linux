@@ -1,7 +1,7 @@
 # BusyBox inetd resolves inetd.conf service names here; there is no numeric
 # fallback, so every name used in /run/inetd.conf must be listed.
 ssh		22/tcp
-telnet		23/tcp
+# telnet	23/tcp		(retired: cleartext, redundant with ssh)
 http		80/tcp
 https		443/tcp
 domain		53/tcp		domain		53/udp

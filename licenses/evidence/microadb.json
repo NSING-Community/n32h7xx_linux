@@ -2,7 +2,7 @@
   "component": "microadb",
   "method": "Published daemon matches preserved stripped runtime build output",
   "checks": {
-    "rootfs/usr/sbin/adbd": "eab8773180b0fa08ddd810f937a0f56196c6d49b416516c40dba03c7d78e55fa",
+    "rootfs/usr/sbin/adbd": "8b894914e253477036ac0ee52d624c2656826e5d25dc4d43fc5c94d4574eda6b",
     "sdk-src/project/microadb/port.c": "86123a8dc6e9d8665863fc508a9534de9e0b93f12fc6297cbfd2673d2a4aa10d",
     "sdk-src/project/microadb/config.h": "6f92e15eb8c82ab092421412884a02989e9287245891bedece94c8c9b966b672",
     "sdk-src/project/microadb/Makefile": "c4486539ec1e2de1f21d4b00062fde1e10b9281223971d16e30915456ab7e4fd"

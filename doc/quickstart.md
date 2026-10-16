@@ -69,7 +69,7 @@ exit
 登录；接网线时可用 `ssh root@<板子IP>`，IP 从串口、ADB 的 `ifconfig eth0` 或
 路由器 DHCP 租约查询。
 
-开发配置默认 root 空密码，SSH/Telnet 同时启用，USB ADB 免认证。
+开发配置默认 root 空密码，SSH 启用（Telnet 因明文传输且与 SSH 重复，已下线），USB ADB 免认证。
 修改登录配置应在构建树编辑 `rootfs/etc/defaults.conf` 和 `rootfs/etc/shadow`，
 重新打包并更新 rootfs；板上的 `/etc` 为只读，不能持久修改。ADB 服务控制及
 USB Host/Device 切换见 [USB 文档](usb.md)。
@@ -106,7 +106,7 @@ ssh-keygen -R <板子IP>
 | `NETWORK_IPV6` | `slaac` | `slaac` / `dhcp6` / `off` |
 | `NETWORK_IFACE` | `eth0` | 网口 |
 | `IPV4_ADDRESS`、`IPV4_GATEWAY`、`DNS1` | 见文件 | 只在 `NETWORK_MODE=static` 时使用 |
-| `REMOTE_LOGIN` | `both` | `off` / `telnet` / `ssh` / `both` |
+| `REMOTE_LOGIN` | `ssh` | `off` / `ssh`（`telnet`、`both` 按 `ssh` 处理） |
 | `USB_ADB` | `on` | USB1 的免认证调试 shell |
 | `USB_ADB_UDC` | `40100000.usb` | ADB 绑定的控制器 |
 | `CAMERA` | `on` | 开机确认摄像头就绪并生成 `/dev/video0`；驱动是模块时顺带加载 |

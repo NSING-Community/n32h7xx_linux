@@ -2,8 +2,12 @@
 /*
  * leds.c - board LED marquee for the N32H787 HMI board.
  *
- * The three user LEDs are wired to PB3, PF10 and PI8.  They are driven
- * through the classic /sys/class/gpio interface:
+ * The three user LEDs are wired to PB3, PF10 and PI8.  On this board they sit
+ * between a 3.3 V rail and the pin (VCC_3V3 -> series resistor -> LED -> pin,
+ * see the N32H787 HMI V1.1 schematic netlist), so the pin sinks the current
+ * and they are ACTIVE LOW: value 0 lights a LED, value 1 turns it off.
+ *
+ * They are driven through the classic /sys/class/gpio interface:
  *
  *   /sys/class/gpio/export           write a global GPIO number to claim it
  *   /sys/class/gpio/gpioN/direction  "in" or "out"
@@ -134,14 +138,18 @@ static int bank_base(const char *bank)
 	return base;
 }
 
-static void led_set(const struct led *led, int value)
+/* Board LED polarity, kept in one place: see the file header. */
+#define LED_LIT		0
+#define LED_DARK	1
+
+static void led_set(const struct led *led, int level)
 {
 	char path[SYSPATH_LEN];
 
 	if (led->number < 0)
 		return;
 	led_attr_path(led, "value", path, sizeof(path));
-	if (write_attr(path, value ? "1" : "0") != 0)
+	if (write_attr(path, level ? "1" : "0") != 0)
 		fprintf(stderr, "%s: can't write %s: %s\n", led->name, path,
 			strerror(errno));
 }
@@ -226,7 +234,7 @@ int main(int argc, char **argv)
 			int j;
 
 			for (j = 0; j < i; j++) {
-				led_set(&leds[j], 0);
+				led_set(&leds[j], LED_DARK);
 				led_unexport(&leds[j]);
 			}
 			return 1;
@@ -246,13 +254,13 @@ int main(int argc, char **argv)
 	for (round = 0; !stopping && (rounds == 0 || round < rounds); round++) {
 		for (step = 0; step < led_count && !stopping; step++) {
 			for (i = 0; i < led_count; i++)
-				led_set(&leds[i], i == step);
+				led_set(&leds[i], i == step ? LED_LIT : LED_DARK);
 			usleep((useconds_t)step_ms * 1000);
 		}
 	}
 
 	for (i = 0; i < led_count; i++) {
-		led_set(&leds[i], 0);
+		led_set(&leds[i], LED_DARK);
 		led_unexport(&leds[i]);
 	}
 	puts("leds: stopped, LEDs off");
