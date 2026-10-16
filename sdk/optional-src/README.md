@@ -1,10 +1,11 @@
 # Optional add-ons — source
 
-The source for what is in [`../optional/`](../optional/). Unlike the rest of
-`sdk/`, the contents here are **not built or installed by `make`**; they exist
-to supply the port code for the prebuilt binaries in `../optional/`. The full
-corresponding-source release must also contain upstream sources, dependencies,
-selected dictionary inputs, modifications and build materials required by GPLv3.
+The port source for the GPL-licensed add-ons in [`../optional/`](../optional/).
+Unlike the rest of `sdk/`, the contents here are **not built or installed by
+`make`**; they exist to supply the port code for the prebuilt binaries in
+`../optional/`. The full corresponding-source release must also contain
+upstream sources, dependencies, selected dictionary inputs, modifications and
+build materials required by GPLv3.
 
 | Directory | Feeds | Licence |
 | --- | --- | --- |

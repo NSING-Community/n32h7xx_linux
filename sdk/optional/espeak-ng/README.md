@@ -87,7 +87,7 @@ The directory is laid out so it runs from wherever you drop it: `espeak-ng-data`
 sits next to the binary, which is the one thing the program needs to find.
 
 **The quick way — one command.** [`../install.sh`](../install.sh), one directory
-up, copies both add-on directories onto the board's `/system`. It builds
+up, copies the add-on directories onto the board's `/system`. It builds
 nothing and translates nothing. Choose the transport with `USE`, and pass
 `BOARD` when you use ssh:
 

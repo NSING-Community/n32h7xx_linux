@@ -22,3 +22,7 @@ out/
 # Local source-rebuild environment (uClibc/GCC/busybox sources).  Deliberately
 # NOT published and NOT built by any target here.
 /sdk-src/
+
+# WeniClaw port source: maintainer material for now, not part of the published
+# tree.  The reviewed binary and its notices ship in sdk/optional/weniclaw/.
+/sdk/optional-src/weniclaw/

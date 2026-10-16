@@ -72,7 +72,7 @@ run will use the HID one, which is correct for a v1 probe.
 
 `../install.sh` is the one-click script for this directory: choose the transport
 with `USE` (`adb` by default; add `BOARD=<board-ip>` when you use `ssh`) and it
-copies both add-ons onto the board's `/system`. It builds nothing, creates no
+copies the add-ons onto the board's `/system`. It builds nothing, creates no
 directory and needs no `mkdir`. `BOARD` has no default because the board takes a
 DHCP lease — read the address on the board with `ifconfig eth0`. Or just put the
 binary where you want it:

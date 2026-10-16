@@ -8,9 +8,11 @@
 #
 # /system is the writable JFFS2 partition and survives kernel and rootfs
 # updates.  espeak-ng keeps a directory of its own there (/system/espeak-ng);
-# ns-flash is a single file and goes to /system/bin, which is where the board
-# looks for programs.  The root password is empty, so the ssh path answers the
-# prompt from a helper rather than asking you to press Enter.
+# ns-flash and weniclaw are single files and go to /system/bin, which is where
+# the board looks for programs.  Note that the whole partition is only a few
+# MiB on a 16 MiB NOR part: check "df /system" before copying all three.
+# The root password is empty, so the ssh path answers the prompt from a helper
+# rather than asking you to press Enter.
 #
 # BOARD has no default: the board takes a DHCP lease, so a baked-in address
 # would be someone else's bench and would just hang on an ssh timeout.  Read
@@ -51,7 +53,9 @@ esac
 if [ "$use" = adb ]; then
 	adb push "$here/espeak-ng" /system/
 	adb push "$here/ns-flash/ns-flash" /system/bin/
+	adb push "$here/weniclaw/weniclaw" /system/bin/
 else
 	$scp -r "$here/espeak-ng" "root@$board:/system/"
 	$scp "$here/ns-flash/ns-flash" "root@$board:/system/bin/"
+	$scp "$here/weniclaw/weniclaw" "root@$board:/system/bin/"
 fi
