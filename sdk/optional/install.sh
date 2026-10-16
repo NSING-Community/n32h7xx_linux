@@ -9,8 +9,10 @@
 # /system is the writable JFFS2 partition and survives kernel and rootfs
 # updates.  espeak-ng keeps a directory of its own there (/system/espeak-ng);
 # ns-flash and weniclaw are single files and go to /system/bin, which is where
-# the board looks for programs.  Note that the whole partition is only a few
-# MiB on a 16 MiB NOR part: check "df /system" before copying all three.
+# the board looks for programs.  weniclaw's peripheral skills go to the
+# workspace the agent reads (/system/weniclaw/workspace/skills).  Note that the
+# whole partition is only a few MiB on a 16 MiB NOR part: check "df /system"
+# before copying all three.
 # The root password is empty, so the ssh path answers the prompt from a helper
 # rather than asking you to press Enter.
 #
@@ -41,6 +43,7 @@ ssh)
 	export SSH_ASKPASS SSH_ASKPASS_REQUIRE
 	# setsid: with no terminal, ssh needs the helper above to answer itself.
 	scp="setsid scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+	ssh="setsid ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 	;;
 adb)
 	;;
@@ -54,8 +57,12 @@ if [ "$use" = adb ]; then
 	adb push "$here/espeak-ng" /system/
 	adb push "$here/ns-flash/ns-flash" /system/bin/
 	adb push "$here/weniclaw/weniclaw" /system/bin/
+	adb shell mkdir -p /system/weniclaw/workspace
+	adb push "$here/weniclaw/skills" /system/weniclaw/workspace/
 else
 	$scp -r "$here/espeak-ng" "root@$board:/system/"
 	$scp "$here/ns-flash/ns-flash" "root@$board:/system/bin/"
 	$scp "$here/weniclaw/weniclaw" "root@$board:/system/bin/"
+	$ssh "root@$board" "mkdir -p /system/weniclaw/workspace"
+	$scp -r "$here/weniclaw/skills" "root@$board:/system/weniclaw/workspace/"
 fi

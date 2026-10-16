@@ -1102,14 +1102,14 @@
       ],
       "verification_files": {
         "sdk/optional/weniclaw/weniclaw": "aea68f0fcef7d4d82078784f28c98401d222996cc85da20927d08c36630fd575",
-        "sdk/optional/weniclaw/README.md": "b874558c8b2743ea29a02f11f5e169f34f6850a014b6b885f241be541bdc0de9",
+        "sdk/optional/weniclaw/README.md": "78a7eeb032d15bf3247d8ea95607150c5bd0b8b03fe9fd7bf2d237f780e99f7c",
         "sdk/optional/weniclaw/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
         "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "7f5a9755e6bbde087f052da7452874627ccd6ed7999fa62e991ab85483853f20",
         "sdk/optional/weniclaw/licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",
         "sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
         "sdk/optional/weniclaw/licenses/curl-COPYING.txt": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
         "sdk/optional/weniclaw/licenses/nullclaw-MIT.txt": "3239c83ea66a66234f0d4d2c71a9b4dbafd9883a5b659222e0752a32de2617a7",
-        "licenses/evidence/weniclaw.json": "01c4fa9fffed52fa9f3c5f91b617e65c8f1c274750df8eb1f574cb3bb01d2734"
+        "licenses/evidence/weniclaw.json": "a160dd3c7ab5c5667bb555d8f95c15c566ad62e20121e054b261ea467706bd0d"
       },
       "copyright": "Copyright (c) 2026 Nsing Technologies Inc. for the WeniClaw additions; Copyright (c) 2026 nullclaw contributors for src/think.zig; Zig contributors and musl contributors for the build-time runtime and headers."
     },
@@ -4942,7 +4942,7 @@
     "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
     "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
     "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
-    "sdk/optional/weniclaw/weniclaw": "35db6d60a7dd2509719fbe1e770ad779ee752a1875c312a3036aeac7a335279e",
+    "sdk/optional/weniclaw/weniclaw": "aea68f0fcef7d4d82078784f28c98401d222996cc85da20927d08c36630fd575",
     "sdk/optional/ns-flash/ns-flash": "9cbf1bedfe9d5f454c6c2ef3de706403d2b9c8b0ad5605cb5c1707d88bbd5226",
     "sdk/toolchain/arm-uclinuxfdpiceabi/bin/ar": "f06223b03b0ca3db73df7985808e8aa51d1b571b50154d1c35a9c144c82ee9bf",
     "sdk/toolchain/arm-uclinuxfdpiceabi/bin/as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
@@ -5069,7 +5069,7 @@
       "files": 7
     },
     "sdk/optional-src": {
-      "sha256": "cf7340226ce5e4ab128900a7892a643b4d0725eaf6691a7113b821d6842f00e8",
+      "sha256": "16e8e9b8d2eaefae47559f18192dfd95ec83befa615bc9834e93c13a3ade4422",
       "files": 52
     },
     "sdk/toolchain/patches": {
