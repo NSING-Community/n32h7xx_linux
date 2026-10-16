@@ -78,7 +78,7 @@
           "Ignored source-tree build artifacts excluded; dirty tracked and untracked source changes preserved in snapshot"
         ]
       ],
-      "revision": "a894130780a157e2f5a69a8a948e52b4f5bf227e",
+      "revision": "a37ebf65f125626eff70514e07f403b4c812fbe4",
       "revision_note": "plus the local NSING changes in this repository, as reviewed; licenses/evidence/linux.json was regenerated for this revision from an isolated rebuild of the same configuration",
       "version_checks": [
         {
@@ -87,14 +87,15 @@
         }
       ],
       "verification_files": {
-        "out/kernel/zImage": "72449eba58803cbd3bc1beadf32ce3ab3d974491e2e60694bc8e9a2f480a7e3d",
-        "out/kernel/n32h787-hmi.dtb": "2a754a08fcb3d727edbc3ab1ed70448ac9b1f5520ef7e4d8d1c0b0786b3c1be8",
+        "out/kernel/zImage": "01c2002c41cd84350e959637652f8a17a9500f7e448e50459d0d8e2dcf0c06ed",
+        "out/kernel/n32h787-hmi.dtb": "616e1b8c7e1144a56e9daab14f1216db65882be5b2686e5351ff2559471d270e",
+        "out/kernel/n32h787-hmi-no-camera.dtb": "502626c3e512a5106c7a86e259c382259b521365e2115169e74fdc8f9b97dde7",
         "out/kernel/build/.config": "be58a56bc5825364ef9123d6256fc0a889b0724aae7371863610c781494e4078",
-        "licenses/evidence/linux.json": "37e77aebef9c17290d355c99a2b48cb02bf5bdc160a988492e5ae0d248ee34ac"
+        "licenses/evidence/linux.json": "65ad4623de0315cef0dc9beccdbabe1015c2e90ee0049a391ba0578e9f775802"
       },
       "source_digest": {
-        "sha256": "e391399f374649f1abdda95944d9c71bebc086e44583acc35839f71752752fbb",
-        "files": 96148
+        "sha256": "3addeea745d91ab4dbd46a97f57edf4f82b67f6a3d2e2da7b3e5de4fc9456071",
+        "files": 96149
       }
     },
     {
@@ -161,16 +162,17 @@
         }
       ],
       "verification_files": {
-        "rootfs/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+        "rootfs/lib/libuClibc-1.0.59.so": "d2a88feaf0d900ede513dd4d94609d4be7956cf0760f60dd05b2fb317721df1a",
         "rootfs/lib/ld-uClibc-1.0.59.so": "17a0a9fca030f2ae56616750c4a93d41f9a628c47f7ed4bfddd9e3ec0d6b54bd",
+        "sdk/toolchain/sysroot/lib/libuClibc-1.0.59.so": "d2a88feaf0d900ede513dd4d94609d4be7956cf0760f60dd05b2fb317721df1a",
         "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2": "87a6e4b7f38cd5fb19c573a86fe0ab6424a91ee2f0fa187e25ddfc21d717a3e2",
         "sdk-src/patches/uclibc-nsing-fdpic.patch": "5fec6d9581f6d2877435b7062282ba56d3c56bf5bb7d32718ffca85671390994",
-        "sdk-src/configs/uclibc.config": "3a43b98e246b5e611f2929df210f2f07188cc78eadbd24f6653edeac63b7d186",
-        "licenses/evidence/uclibc.json": "c26e675e759985d6a6e9b7471310d6df009a9d1db7172e3c362019bd6de2acc6"
+        "sdk-src/configs/uclibc.config": "ed4a1ec82ee8184369169c20a116e57d14a8839dc4278c825b3bdb51599293c9",
+        "licenses/evidence/uclibc.json": "eaf4bd239a7a823fe878692643b79866426a0437d6d17accbefd45f2f7a69613"
       },
       "source_digest": {
-        "sha256": "1b9c0452ae41b96ba88f33219af784faca9b40bed8d27aa0ffe4ee8a3fa5a93a",
-        "files": 8460
+        "sha256": "8c8808a54462fed91952ff95918eb1302ae74017a3328be4948b1cb8ef727dbe",
+        "files": 8482
       }
     },
     {
@@ -439,6 +441,115 @@
       }
     },
     {
+      "id": "curl",
+      "name": "curl command-line HTTP/HTTPS client",
+      "version": "8.23.0",
+      "license": "curl",
+      "source": "https://curl.se/download/ ; curl-8.23.0.tar.xz",
+      "source_path": "sdk-src/sources/curl",
+      "evidence": [
+        "licenses/curl/COPYING",
+        "licenses/evidence/curl.json"
+      ],
+      "changes": "No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "curl license retained with the Copyright and permission notice; deployed binary reproduced byte for byte from the pinned source, and https:// transfers including certificate rejection were exercised on hardware"
+        ]
+      ],
+      "version_checks": [
+        {
+          "path": "sdk-src/sources/curl/include/curl/curlver.h",
+          "pattern": "#define LIBCURL_VERSION \"8\\.23\\.0\""
+        }
+      ],
+      "verification_files": {
+        "rootfs/usr/bin/curl": "e3e270f43692d000a5f9e61297da7847fe7afc54cab6dd363ae4eb32b0f5445e",
+        "sdk-src/scripts/install-curl.sh": "be1b08e41febd260edfe3532e856efdd7590a4ce3c52be03f0a1d60226b6e3ca",
+        "licenses/evidence/curl.json": "fb6b004fecce81cbbd202695947827e9d19ca3ace86f6bb3de242b1de30a10c4"
+      },
+      "source_digest": {
+        "sha256": "2ab72263696facbc1b931260a98b522491128cc06e0617ec03b1c4f232a1eb35",
+        "files": 4515
+      }
+    },
+    {
+      "id": "mbedtls",
+      "name": "Mbed TLS shared libraries used by curl",
+      "version": "3.6.7 LTS",
+      "license": "Apache-2.0",
+      "source": "https://github.com/Mbed-TLS/mbedtls ; mbedtls-3.6.7.tar.bz2",
+      "source_path": "sdk-src/sources/mbedtls",
+      "evidence": [
+        "licenses/mbedtls/LICENSE",
+        "licenses/evidence/mbedtls.json"
+      ],
+      "changes": "No source changes. sdk-src/configs/mbedtls-config.h selects a client-only TLS 1.2/1.3 configuration for this board, and the build script produces the three shared objects (SHARED=1) so every TLS client here links one copy instead of embedding its own; upstream is dual Apache-2.0 OR GPL-2.0-or-later and this build is distributed under Apache-2.0.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Apache-2.0 chosen from the dual grant; no GPL-only code linked, and all three deployed objects reproduced byte for byte from the pinned source"
+        ]
+      ],
+      "version_checks": [
+        {
+          "path": "sdk-src/sources/mbedtls/include/mbedtls/build_info.h",
+          "pattern": "MBEDTLS_VERSION_STRING\\s+\"3\\.6\\.7\""
+        }
+      ],
+      "verification_files": {
+        "rootfs/usr/lib/libmbedtls.so.21": "926ce1dfe22d23a865902e486cb2927fc0cacf0d087916023b94110d8c63bf4a",
+        "rootfs/usr/lib/libmbedx509.so.7": "5966b8e1a696a01462f37609934f3ee359f9fd16764d2548f9095573983f0850",
+        "rootfs/usr/lib/libmbedcrypto.so.16": "b5eb8bd9e11fb6628a19627b2a319ab03572484661216b361b6ac9a3e32a468e",
+        "sdk-src/configs/mbedtls-config.h": "ec7262b8a458e0868ec73d79ea711da4324825bab7503d1c0838ebfdd6345bb8",
+        "sdk-src/scripts/install-mbedtls.sh": "a1011453a9cd917df8d3f3a6bc3e623e15a5cf8f7129cb3d265d27471bcc90fe",
+        "licenses/evidence/mbedtls.json": "7ec4d0176256ae628811b5a3668cb32b53e25b42513080f9c2541c84b7f36eab"
+      },
+      "source_digest": {
+        "sha256": "48669cbf8e5fe2b2849d8deb7553561e37649d2c1adab726d07f1cb15c51b37e",
+        "files": 2039
+      }
+    },
+    {
+      "id": "ca-certificates",
+      "name": "Mozilla CA root bundle used by curl",
+      "version": "certdata.txt as of 2026-09-25 03:12:01 GMT; 121 certificates",
+      "license": "MPL-2.0",
+      "source": "https://curl.se/ca/cacert.pem",
+      "source_path": "sdk-src/sources/ca-certificates",
+      "evidence": [
+        "licenses/ca-certificates/MPL-2.0.txt",
+        "licenses/evidence/ca-certificates.json"
+      ],
+      "changes": "Unmodified published bundle (the source tree also carries the provenance README and the installer). It is data, not code: the NSS certdata.txt metadata is MPL-2.0 and the certificate bodies are public data published by each CA.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Bundle byte-identical to the published file; the rootfs copy hash matches the staged source and https:// verification with a self-signed rejection was exercised on hardware"
+        ]
+      ],
+      "version_checks": [
+        {
+          "path": "sdk-src/sources/ca-certificates/cacert.pem",
+          "pattern": "Certificate data from Mozilla as of: Fri Sep 25 03:12:01 2026 GMT"
+        }
+      ],
+      "verification_files": {
+        "rootfs/etc/ssl/certs/ca-certificates.crt": "a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505",
+        "sdk-src/sources/ca-certificates/cacert.pem": "a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505",
+        "sdk-src/scripts/install-ca-certificates.sh": "6fc2f15497304c9337dce9927c0c9a6e815deeea907069031047f75d0151efac",
+        "licenses/evidence/ca-certificates.json": "66aa412f1ee1337feb10675b97a54ff5db25bd1eeb8963e984b22fc358d48c5b"
+      },
+      "source_digest": {
+        "sha256": "6454a66134516ba49d81b0f3c13b28c967dce2354598615de792f478d7fc0496",
+        "files": 2
+      }
+    },
+    {
       "id": "microadb",
       "name": "microADB with Linux NOMMU HAL",
       "version": "85cc7a9 + local port",
@@ -455,14 +566,14 @@
       "issues": [],
       "revision": "85cc7a90101b2ae76ee4112ba285141c8fba5012",
       "verification_files": {
-        "rootfs/usr/sbin/adbd": "eab8773180b0fa08ddd810f937a0f56196c6d49b416516c40dba03c7d78e55fa",
+        "rootfs/usr/sbin/adbd": "8b894914e253477036ac0ee52d624c2656826e5d25dc4d43fc5c94d4574eda6b",
         "sdk-src/project/microadb/port.c": "86123a8dc6e9d8665863fc508a9534de9e0b93f12fc6297cbfd2673d2a4aa10d",
         "sdk-src/project/microadb/config.h": "6f92e15eb8c82ab092421412884a02989e9287245891bedece94c8c9b966b672",
         "sdk-src/project/microadb/Makefile": "c4486539ec1e2de1f21d4b00062fde1e10b9281223971d16e30915456ab7e4fd",
-        "licenses/evidence/microadb.json": "2596beb134c1c45e2505e3f521ab4d8ffab9c70d889696da96ad0c398dcd1128"
+        "licenses/evidence/microadb.json": "72187d34872a9783b2365ba091a581e23abee30d148b534029ba8a03df5f8375"
       },
       "source_digest": {
-        "sha256": "9b56ad485f4985fe643b6a72bdd119528133cd7ba0bfaa8a0f83654b4dd2b65a",
+        "sha256": "98817d0121b4e6c7db63fbe277ed237c3957ed00960c610f9455703e4022f5a1",
         "files": 25
       }
     },
@@ -966,6 +1077,43 @@
       "copyright": "Nations/NSING company-owned program; Zig contributors for bundled Zig support."
     },
     {
+      "id": "weniclaw",
+      "name": "WeniClaw experimental agent and optional binary",
+      "version": "repository snapshot",
+      "license": "BSD-3-Clause",
+      "source": "written for this project; the borrowed think-block scanner is https://github.com/nullclaw/nullclaw.git at commit 5f1cade05c19b6ecdfb9565ae3305e892e484da9",
+      "evidence": [
+        "sdk/optional/weniclaw/README.md",
+        "sdk/optional/weniclaw/LICENSE",
+        "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md",
+        "sdk/optional/weniclaw/licenses/Zig-MIT.txt",
+        "sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt",
+        "sdk/optional/weniclaw/licenses/curl-COPYING.txt",
+        "sdk/optional/weniclaw/licenses/nullclaw-MIT.txt",
+        "licenses/evidence/weniclaw.json"
+      ],
+      "changes": "New BSD-3-Clause agent written for this board and linked with the SDK toolchain's C ABI. The reviewed ARM FDPIC binary is distributed in `sdk/optional/weniclaw` and installed to /system/bin by `sdk/optional/install.sh`. src/think.zig is the nullclaw think-block scanner, MIT, kept under its original notice.",
+      "source_required": false,
+      "issues": [
+        [
+          "INFO",
+          "Reviewed binary reproduced from the ported build script with Zig 0.16.0; the borrowed MIT file keeps its notice, and the static libcurl, dynamic Mbed TLS and Zig runtime terms are covered by the notice texts shipped with the binary and by those components"
+        ]
+      ],
+      "verification_files": {
+        "sdk/optional/weniclaw/weniclaw": "35db6d60a7dd2509719fbe1e770ad779ee752a1875c312a3036aeac7a335279e",
+        "sdk/optional/weniclaw/README.md": "a68b4120f816d86cb9f53364852fd367522af6d32989cb236954b282dc00e53c",
+        "sdk/optional/weniclaw/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
+        "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "7f5a9755e6bbde087f052da7452874627ccd6ed7999fa62e991ab85483853f20",
+        "sdk/optional/weniclaw/licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",
+        "sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
+        "sdk/optional/weniclaw/licenses/curl-COPYING.txt": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
+        "sdk/optional/weniclaw/licenses/nullclaw-MIT.txt": "3239c83ea66a66234f0d4d2c71a9b4dbafd9883a5b659222e0752a32de2617a7",
+        "licenses/evidence/weniclaw.json": "e7191e41d58ad6c8784e3aebcf7d02cbcc1d22e0bbf832d300bbfac687a9fbde"
+      },
+      "copyright": "Copyright (c) 2026 Nsing Technologies Inc. for the WeniClaw additions; Copyright (c) 2026 nullclaw contributors for src/think.zig; Zig contributors and musl contributors for the build-time runtime and headers."
+    },
+    {
       "id": "sdk-manuals",
       "name": "GNU GCC and Binutils SDK manuals",
       "version": "shipped SDK snapshot",
@@ -1095,6 +1243,50 @@
       "component": "gcc-runtime"
     },
     {
+      "prefix": "rootfs/usr/bin/curl",
+      "component": "curl"
+    },
+    {
+      "prefix": "rootfs/usr/share/licenses/curl",
+      "component": "curl"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libmbedtls.so",
+      "component": "mbedtls"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libmbedtls.so.21",
+      "component": "mbedtls"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libmbedx509.so",
+      "component": "mbedtls"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libmbedx509.so.7",
+      "component": "mbedtls"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libmbedcrypto.so",
+      "component": "mbedtls"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libmbedcrypto.so.16",
+      "component": "mbedtls"
+    },
+    {
+      "prefix": "rootfs/usr/share/licenses/mbedtls",
+      "component": "mbedtls"
+    },
+    {
+      "prefix": "rootfs/etc/ssl",
+      "component": "ca-certificates"
+    },
+    {
+      "prefix": "rootfs/usr/share/licenses/ca-certificates",
+      "component": "ca-certificates"
+    },
+    {
       "prefix": "rootfs/usr/lib",
       "component": "gcc-runtime"
     },
@@ -1189,6 +1381,10 @@
     {
       "prefix": "sdk/optional/ns-flash",
       "component": "ns-flash"
+    },
+    {
+      "prefix": "sdk/optional/weniclaw",
+      "component": "weniclaw"
     },
     {
       "prefix": "sdk/optional-src/espeak-ng",
@@ -4705,6 +4901,10 @@
     {
       "prefix": "sdk/toolchain/sysroot/usr/include/linux/media/arm/mali-c55-config.h",
       "component": "linux"
+    },
+    {
+      "prefix": "sdk/optional-src/weniclaw",
+      "component": "weniclaw"
     }
   ],
   "build_materials": [
@@ -4719,7 +4919,8 @@
     "sdk/toolchain/patches",
     "Makefile",
     "bootloader/Makefile",
-    "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2"
+    "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2",
+    "sdk-src/sources/ca-certificates"
   ],
   "binary_sha256": {
     "bootloader/OpenocdCfg/cm4_flash_op/flash_op.bin": "63c71ff9a83dcfb37b9d4594f712f8514b35b95a7c31515b5d57dea90daee9fc",
@@ -4731,16 +4932,17 @@
     "rootfs/bin/tinyplay": "956afffb03a3bfd6894519e2fe443972382f7c4b680ed2e89f4fec4fcec01304",
     "rootfs/lib/ld-uClibc-1.0.59.so": "17a0a9fca030f2ae56616750c4a93d41f9a628c47f7ed4bfddd9e3ec0d6b54bd",
     "rootfs/lib/libgcc_s.so.1": "dcd891b5181f14a3176ba4c486856834b1bf205c88e41be7f2cc80fac8dd12be",
-    "rootfs/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+    "rootfs/lib/libuClibc-1.0.59.so": "d2a88feaf0d900ede513dd4d94609d4be7956cf0760f60dd05b2fb317721df1a",
     "rootfs/sbin/n32-flash": "28fa224ede067114c0f80618714e9fdd6d900b8f259a98bec0b88b36bac8f7a5",
     "rootfs/usr/bin/dbclient": "cf3338d46d44352f38b9ff2a2bafc9fd20958fd06d4e696a5d530bb5bc1081e2",
     "rootfs/usr/bin/scp": "55d5e90444b08435f22891e5156f50be932ca050787939106cfce58c5720386c",
     "rootfs/usr/lib/libstdc++.so.6.0.35": "16a57e547ee3173a2c0a71bc92adf67b2ed310acd4690670bf1931b4d7453158",
     "rootfs/usr/libexec/sftp-server": "468980ec2954d5e8ae74d6d752852bea51d6e33cba5777bc9124e3e87425e52e",
-    "rootfs/usr/sbin/adbd": "eab8773180b0fa08ddd810f937a0f56196c6d49b416516c40dba03c7d78e55fa",
+    "rootfs/usr/sbin/adbd": "8b894914e253477036ac0ee52d624c2656826e5d25dc4d43fc5c94d4574eda6b",
     "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
     "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
     "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
+    "sdk/optional/weniclaw/weniclaw": "35db6d60a7dd2509719fbe1e770ad779ee752a1875c312a3036aeac7a335279e",
     "sdk/optional/ns-flash/ns-flash": "9cbf1bedfe9d5f454c6c2ef3de706403d2b9c8b0ad5605cb5c1707d88bbd5226",
     "sdk/toolchain/arm-uclinuxfdpiceabi/bin/ar": "f06223b03b0ca3db73df7985808e8aa51d1b571b50154d1c35a9c144c82ee9bf",
     "sdk/toolchain/arm-uclinuxfdpiceabi/bin/as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
@@ -4806,45 +5008,49 @@
     "sdk/toolchain/sysroot/lib/libstdc++exp.a": "71408e9637d00c828d124e11220e7d9fb105ab801105abe501f8fa9c7fb74921",
     "sdk/toolchain/sysroot/lib/libstdc++fs.a": "02533b9b90ae6dbd9f9616c7e6782357455413c288937af1e752229dae40ba9d",
     "sdk/toolchain/sysroot/lib/libsupc++.a": "5fc4a4deb053299e2413091688909bc23c058b873064f56d8e0c88e11b78380c",
-    "sdk/toolchain/sysroot/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+    "sdk/toolchain/sysroot/lib/libuClibc-1.0.59.so": "d2a88feaf0d900ede513dd4d94609d4be7956cf0760f60dd05b2fb317721df1a",
     "sdk/toolchain/sysroot/usr/lib/Scrt1.o": "ab2fd5118ae09848dc51445f0b8a60992373f43106a654a0e22d47045734b6c8",
     "sdk/toolchain/sysroot/usr/lib/crt1.o": "ab2fd5118ae09848dc51445f0b8a60992373f43106a654a0e22d47045734b6c8",
     "sdk/toolchain/sysroot/usr/lib/crti.o": "ffcb26aaeedfebc5b899871eeeda3dbe8b7a7cae22f656219dfa34ed5b99b978",
     "sdk/toolchain/sysroot/usr/lib/crtn.o": "a95ff3cf3d9347d7187c0337827b4a6153a1a0c2a7114cd44340bba34eb686d0",
     "sdk/toolchain/sysroot/usr/lib/crtreloc.o": "48613fc778962d1d83fc24d471db31b38f5501e15dd5ee0d0fc82b31893edf85",
-    "sdk/toolchain/sysroot/usr/lib/libc.a": "31b6a2adbba303b98a858a2df37dca00de51bcc9f68a5f57eb5be754bfa262f2",
+    "sdk/toolchain/sysroot/usr/lib/libc.a": "a16803921e939cbf730f5bc7a068c769babebe5ced1e8b66c0c1045ea3d6b18c",
     "sdk/toolchain/sysroot/usr/lib/libcrypt.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libdl.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libm.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libnsl.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/libpthread.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
-    "sdk/toolchain/sysroot/usr/lib/libpthread_nonshared.a": "c187d93e35b2adc1f295b0deba9f7f424f55d5dbcc757c1e43a85c1bf5089a7a",
+    "sdk/toolchain/sysroot/usr/lib/libpthread_nonshared.a": "3207a03b76bf154da404720e35bb857a98eb5adbb03db08f0628447e23b564d8",
     "sdk/toolchain/sysroot/usr/lib/libresolv.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
     "sdk/toolchain/sysroot/usr/lib/librt.a": "f0a17a43c74d2fe5474fa2fd29c8f14799e777d7d75a2cc4d11c20a6e7b161c5",
-    "sdk/toolchain/sysroot/usr/lib/uclibc_nonshared.a": "da39ab23048b83813664e5276fd676b8eb7c96a6dbb4069b991574095007ee42",
+    "sdk/toolchain/sysroot/usr/lib/uclibc_nonshared.a": "ac84072efa2b4d067f7a9bf105baba5cebeb6a15b990fc4d30456c85eedc2b3f",
     "kernel/tools/testing/selftests/tc-testing/action-ebpf": "3ac0b8ebe3d292efdff15018dd4c34fb1dc43c478863b452a16654db48df2aff",
     "kernel/arch/x86/tools/vdso2c": "04366a5353b35a65e949493c486cc71a3e43c078e1b007d2584b9f1545dc5ec6",
     "kernel/arch/x86/tools/relocs": "69adc3fb3fa933b57c0901c9baeeeb460dc1dac88f83b590e12935de18ab2bf1",
     "kernel/drivers/media/i2c/ov5640.o": "ae378358ef66d73ba881ab08bb8c06d900df7d88eca138b2bc1ed40218daafb7",
     "kernel/drivers/media/i2c/ov5640.ko": "13c9df7160b9aafa32e1c18fee7cb43d68ec1e49b9227baa89c2ecef22b9c673",
     "kernel/drivers/media/i2c/ov5640.mod.o": "98e6e18950f5d5ff707cdce301abd64dd408e9e0125bc055ce980cf39b7be72e",
-    "kernel/drivers/media/i2c/.module-common.o": "5e9ab4ae21acd740ed82d77acd05e76bd8515043b5c3a410fe248fa90d43f76f"
+    "kernel/drivers/media/i2c/.module-common.o": "5e9ab4ae21acd740ed82d77acd05e76bd8515043b5c3a410fe248fa90d43f76f",
+    "rootfs/usr/bin/curl": "e3e270f43692d000a5f9e61297da7847fe7afc54cab6dd363ae4eb32b0f5445e",
+    "rootfs/usr/lib/libmbedtls.so.21": "926ce1dfe22d23a865902e486cb2927fc0cacf0d087916023b94110d8c63bf4a",
+    "rootfs/usr/lib/libmbedx509.so.7": "5966b8e1a696a01462f37609934f3ee359f9fd16764d2548f9095573983f0850",
+    "rootfs/usr/lib/libmbedcrypto.so.16": "b5eb8bd9e11fb6628a19627b2a319ab03572484661216b361b6ac9a3e32a468e"
   },
   "source_only_paths": [
     "sdk/example"
   ],
   "build_material_digests": {
     "sdk-src/patches": {
-      "sha256": "7ceec3b11cc01ec5b9fb71c2ae77e2499110fb3f656998df912e48df3af15918",
-      "files": 8
+      "sha256": "b9b5db3c50187eaf5bedc57f2bbc78c87b1fefe9106396dd19941d1991abb9f0",
+      "files": 9
     },
     "sdk-src/configs": {
-      "sha256": "68630eb7309ef3bd155bdf06e592fb58ef71411c4e28744263cf1926216756eb",
-      "files": 5
+      "sha256": "4f68f3d64389aa88c975d4b5f432559796be9a3e3af71187c471aeae2a5e5f29",
+      "files": 7
     },
     "sdk-src/scripts": {
-      "sha256": "e8c3915a608b38c5cba50d2e65ee1f9bdb3033cd97859fa317142523f76caab6",
-      "files": 19
+      "sha256": "8624e6d849d9cb16782e6a344fe6c0fbcc1938c2b2de0e7075bbf86ba65390f1",
+      "files": 22
     },
     "sdk-src/project/microadb": {
       "sha256": "71a1b4a100b8b35b0d1207d8c816a502d58de2dc7e3146cc734e535e45de62e4",
@@ -4863,15 +5069,15 @@
       "files": 7
     },
     "sdk/optional-src": {
-      "sha256": "71c9241267499ea11e6d9544f90c98c8720ef3783a85c401b50cc263c88140c5",
-      "files": 19
+      "sha256": "cf7340226ce5e4ab128900a7892a643b4d0725eaf6691a7113b821d6842f00e8",
+      "files": 52
     },
     "sdk/toolchain/patches": {
       "sha256": "460bc1015f3f7bbe837aef41ffeb69bba4924182907644295dd7128a171779ca",
       "files": 3
     },
     "Makefile": {
-      "sha256": "9452c5e87903db653dc0626090858317463d813b6e15f9b915a82a56f8faa0d5",
+      "sha256": "3382c0181aaaa6b167d62f9e07ea50d3e7f196fe75c6ff083aca5f96f6fb4591",
       "files": 1
     },
     "bootloader/Makefile": {
@@ -4881,6 +5087,10 @@
     "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2": {
       "sha256": "4e5a368b6e65b9720b5c1f7416bca8ee764a2fef8e001033db9cf4cdb640dd8a",
       "files": 1
+    },
+    "sdk-src/sources/ca-certificates": {
+      "sha256": "6454a66134516ba49d81b0f3c13b28c967dce2354598615de792f478d7fc0496",
+      "files": 2
     }
   }
 }

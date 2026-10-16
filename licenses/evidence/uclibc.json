@@ -1,15 +1,41 @@
 {
   "component": "uclibc",
-  "method": "Fresh isolated rebuild of pinned tarball + actual patch/config reproduces deployed libc and loader byte for byte",
+  "method": "Fresh isolated rebuild of the pinned tarball plus the reviewed patch and configuration reproduces the deployed shared libc and loader byte for byte; the static archives match member by member",
   "checks": {
-    "rootfs/lib/libuClibc-1.0.59.so": "23f15f79563c016646703653969f7a6e622c1331ae85a2d08f4419a9c801b0bd",
+    "rootfs/lib/libuClibc-1.0.59.so": "d2a88feaf0d900ede513dd4d94609d4be7956cf0760f60dd05b2fb317721df1a",
     "rootfs/lib/ld-uClibc-1.0.59.so": "17a0a9fca030f2ae56616750c4a93d41f9a628c47f7ed4bfddd9e3ec0d6b54bd",
+    "sdk/toolchain/sysroot/lib/libuClibc-1.0.59.so": "d2a88feaf0d900ede513dd4d94609d4be7956cf0760f60dd05b2fb317721df1a",
     "sdk-src/sources/uClibc-ng-1.0.59.tar.bz2": "87a6e4b7f38cd5fb19c573a86fe0ab6424a91ee2f0fa187e25ddfc21d717a3e2",
     "sdk-src/patches/uclibc-nsing-fdpic.patch": "5fec6d9581f6d2877435b7062282ba56d3c56bf5bb7d32718ffca85671390994",
-    "sdk-src/configs/uclibc.config": "3a43b98e246b5e611f2929df210f2f07188cc78eadbd24f6653edeac63b7d186"
+    "sdk-src/configs/uclibc.config": "ed4a1ec82ee8184369169c20a116e57d14a8839dc4278c825b3bdb51599293c9"
   },
   "details": {
-    "recipe": "JOBS=8 bash rebuild-uclibc.sh <work-dir> (rebuild script and configuration delivered in the corresponding-source package; isolated proof build directory)",
+    "upstream_version": "1.0.59",
+    "recipe": "JOBS=$(nproc) bash sdk-src/scripts/rebuild-uclibc.sh out/legal-proof/uclibc-1.0.59 (rebuild script and configuration delivered in the corresponding-source package; isolated proof build directory)",
+    "reproduced_byte_for_byte": [
+      "rootfs/lib/libuClibc-1.0.59.so",
+      "sdk/toolchain/sysroot/lib/libuClibc-1.0.59.so",
+      "rootfs/lib/ld-uClibc-1.0.59.so",
+      "sdk/toolchain/sysroot/lib/ld-uClibc-1.0.59.so"
+    ],
+    "static_archives": [
+      {
+        "path": "sdk/toolchain/sysroot/usr/lib/libc.a",
+        "members": 1242,
+        "members_identical": 1242
+      },
+      {
+        "path": "sdk/toolchain/sysroot/usr/lib/libpthread_nonshared.a",
+        "members": 1,
+        "members_identical": 1
+      },
+      {
+        "path": "sdk/toolchain/sysroot/usr/lib/uclibc_nonshared.a",
+        "members": 6,
+        "members_identical": 6
+      }
+    ],
+    "static_archive_note": "ar records member timestamps, so the archives themselves are not byte-identical across builds; every member object is, which is what the comparison above records. The archives are identified by hash, not claimed reproducible.",
     "legacy_source_directory": "A legacy local libc tree is 1.0.57 and is deliberately NOT used as 1.0.59 corresponding source"
   }
 }

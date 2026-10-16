@@ -18,6 +18,35 @@ was accessed. No rootfs, SDK executable/library or firmware image was replaced.
 | Closed ns-flash | Original company ARM output matches the optional binary. Zig 0.16.0 MIT attribution supplied. Private program source stays unpublished. [Evidence](evidence/ns-flash.json) |
 | SDK manuals | Per-document grants retained, including GCC manuals and GPL CTF/SFrame specifications. GFDL invariant sections/cover texts preserved. [Evidence](evidence/sdk-manuals.json) |
 | microADB / TinyALSA | Current daemon matches its preserved stripped build. A fresh isolated TinyALSA build reproduces all four published utilities byte for byte; no identity claim for the static archive container. [microADB](evidence/microadb.json), [TinyALSA](evidence/tinyalsa.json) |
+| curl / Mbed TLS / CA bundle | Published build scripts reproduce the curl binary and all three Mbed TLS shared objects byte for byte from the pinned upstream releases; no source changes. Mbed TLS is dual Apache-2.0 OR GPL-2.0-or-later and this build is taken under Apache-2.0. The CA bundle is the published curl.se file, hash-matched against the staged copy and the rootfs copy, with its Mozilla certdata.txt revision recorded in the file header. Cross-compiled configure probes cannot run, so the curl build forces `ac_cv_func_eventfd=no` for this kernel. [curl](evidence/curl.json), [Mbed TLS](evidence/mbedtls.json), [CA bundle](evidence/ca-certificates.json) |
+
+## Evidence refresh — 2026-10-16
+
+Later work moved reviewed inputs again, so the record follows the edits instead
+of reading them as drift. `tools-internal/refresh_uclibc_evidence.py` and
+`tools-internal/refresh_release_evidence.py` re-record a component's hashes only
+after re-checking that the deployed files still come from the reviewed inputs;
+neither one edits a firmware input.
+
+`refresh_release_evidence.py --source-digest COMPONENT` re-derives the
+provenance digest of a source tree that was edited on purpose; it accepts only a
+component that already records a digest, so it can follow an edit to a reviewed
+tree but never start vouching for an unaudited one.
+
+| Finding | Evidence and resolution |
+| --- | --- |
+| uClibc configuration and libc changed | Seven switches the vendor configuration had silently turned off upstream defaults (including `MALLOC_SIMPLE` earlier) were restored. `sdk-src/configs/uclibc.config` and the deployed `libuClibc-1.0.59.so` were re-recorded; the loader is unchanged. The corresponding-source tree under `out/legal-proof/uclibc-1.0.59/src` was rebuilt from the pinned tarball, the FDPIC patch and the new configuration, and reproduces both deployed shared objects byte for byte; the static archives match member by member. [Evidence](evidence/uclibc.json) |
+| CA bundle installed one certificate per file | The installer now also writes `/etc/ssl/certs/roots`, one file per certificate, because mbedTLS parses a PEM file with a single allocation as large as the whole bundle and the no-MMU path cannot always find 185 KiB contiguously. The split is regenerated from the same checked `cacert.pem` on every install, and the script hash was re-recorded. [CA bundle](evidence/ca-certificates.json) |
+| WeniClaw add-on has no evidence record | The agent is distributed as **source only** — `sdk/optional/install.sh` does not install it and no binary ships — so it now has its own component record instead of being attributed to the project: BSD-3-Clause for the new code, the borrowed `src/think.zig` kept under its nullclaw MIT notice, and libcurl, Mbed TLS and the Zig runtime covered by those components. [Evidence](evidence/weniclaw.json) |
+| Zig build caches read as distributed binaries | `tools-internal/legal_info.py` now excludes `.zig-cache/` and `zig-out/` by directory name, at any depth, from the inventory, the source archives and the tree digests. They are regenerable build output that the tree's own `.gitignore` already excludes, so they are recorded in `excluded-files.json` rather than reported as binaries missing provenance. |
+| WeniClaw collapsed every failed config open into `OpenFailed` | A board with no `--config` file read exactly like a file the user may not open, and the hint sent them looking for permissions. The port now classifies the failed open (`FileNotFound` / `AccessDenied` / other), writes a 0600 starting template from `weniclaw.example.json` when the config is simply absent, and stops with instructions instead of running on the placeholder values. The edit moved the reviewed tree, so the component's `source_digest` was re-recorded with `--source-digest`. Still source only, no binary component. [Evidence](evidence/weniclaw.json) |
+| nullclaw withdrawn, WeniClaw binary published | The abandoned nullclaw add-on was removed from the release: `sdk/optional/nullclaw`, `sdk/optional-src/nullclaw` and the `nullclaw` component record were deleted, and `sdk/optional/install.sh` no longer carries it. `sdk/optional/weniclaw` now ships the reviewed ARM FDPIC binary (498640 B, `35db6d60…`) with its README, BSD-3-Clause license and the third-party notice texts it needs (Zig MIT, musl COPYRIGHT, curl COPYING, borrowed nullclaw MIT for `src/think.zig`), and the installer copies it to `/system/bin`. The component record was rewritten from source-only to binary distribution. [Evidence](evidence/weniclaw.json) |
+| WeniClaw port source withheld from the published tree | `sdk/optional-src/weniclaw` is maintainer material for now and is not published: the directory is git-ignored, the generated notices mark the WeniClaw corresponding source as not included, and `sdk/optional-src/` documents only the espeak-ng/pcaudiolib sources. The add-on keeps the reviewed binary and its notice texts; the component record retains the reviewed build-input hashes for the audit. [Evidence](evidence/weniclaw.json) |
+
+The linux component still pins the kernel built before the `CAMERA` switch
+landed. Its evidence is regenerated from an isolated rebuild of the final
+revision when the kernel tree is committed for release; until then that
+component stays flagged, and the flagged state is not published as compliant.
 
 ## Remaining historical data warning
 

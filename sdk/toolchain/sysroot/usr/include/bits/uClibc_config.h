@@ -64,7 +64,7 @@
 #undef __DO_XSI_MATH__
 #define __UCLIBC_HAS_FENV__ 1
 #define __UCLIBC_HAS_LONG_DOUBLE_MATH__ 1
-#define __KERNEL_HEADERS__ "sdk/toolchain/sysroot/usr/include"
+#define __KERNEL_HEADERS__ "/home/tobby/research/n32h7xx_linux/sdk/toolchain/sysroot/usr/include"
 #define __UCLIBC_UCLINUX_BROKEN_MUNMAP__ 1
 #define __HAVE_DOT_CONFIG__ 1
 
@@ -99,8 +99,8 @@
 #define __PTHREADS_STACK_DEFAULT_SIZE__ 65536
 #define __UCLIBC_HAS_SYSLOG__ 1
 #define __UCLIBC_HAS_LFS__ 1
-#undef __MALLOC__
-#define __MALLOC_SIMPLE__ 1
+#define __MALLOC__ 1
+#undef __MALLOC_SIMPLE__
 #define __UCLIBC_DYNAMIC_ATEXIT__ 1
 #undef __UCLIBC_HAS_UTMPX__
 #undef __UCLIBC_SUSV2_LEGACY__
@@ -111,16 +111,19 @@
 #undef __UCLIBC_STRICT_HEADERS__
 #undef __UCLIBC_HAS_STUBS__
 #define __UCLIBC_HAS_SHADOW__ 1
-#undef __UCLIBC_HAS_PROGRAM_INVOCATION_NAME__
-#undef __UCLIBC_HAS___PROGNAME__
+#define __UCLIBC_HAS_PROGRAM_INVOCATION_NAME__ 1
+#define __UCLIBC_HAS___PROGNAME__ 1
 #define __UCLIBC_HAS_PTY__ 1
 #define __ASSUME_DEVPTS__ 1
 #define __UNIX98PTY_ONLY__ 1
 #define __UCLIBC_HAS_GETPT__ 1
 #undef __UCLIBC_HAS_LIBUTIL__
 #undef __UCLIBC_HAS_TM_EXTENSIONS__
-#undef __UCLIBC_HAS_TZ_CACHING__
-#undef __UCLIBC_HAS_TZ_FILE__
+#define __UCLIBC_HAS_TZ_CACHING__ 1
+#define __UCLIBC_HAS_TZ_FILE__ 1
+#define __UCLIBC_HAS_TZ_FILE_READ_MANY__ 1
+#define __UCLIBC_TZ_FILE_PATH__ "/etc/TZ"
+#define __UCLIBC_FALLBACK_TO_ETC_LOCALTIME__ 1
 #undef __UCLIBC_USE_TIME64__
 
 /* Advanced Library Settings */
@@ -129,9 +132,9 @@
 
 /* Support various families of functions */
 #define __UCLIBC_LINUX_SPECIFIC__ 1
-#undef __UCLIBC_HAS_GNU_ERROR__
+#define __UCLIBC_HAS_GNU_ERROR__ 1
 #define __UCLIBC_BSD_SPECIFIC__ 1
-#undef __UCLIBC_HAS_BSD_ERR__
+#define __UCLIBC_HAS_BSD_ERR__ 1
 #undef __UCLIBC_HAS_OBSOLETE_BSD_SIGNAL__
 #undef __UCLIBC_HAS_BSD_B64_NTOP_B64_PTON__
 #undef __UCLIBC_HAS_OBSOLETE_SYSV_SIGNAL__
@@ -140,7 +143,7 @@
 #define __UCLIBC_HAS_REALTIME__ 1
 #define __UCLIBC_HAS_ADVANCED_REALTIME__ 1
 #define __UCLIBC_HAS_EPOLL__ 1
-#undef __UCLIBC_HAS_XATTR__
+#define __UCLIBC_HAS_XATTR__ 1
 #undef __UCLIBC_HAS_PROFILING__
 #define __UCLIBC_HAS_CRYPT_IMPL__ 1
 #define __UCLIBC_HAS_SHA256_CRYPT_IMPL__ 1
@@ -238,6 +241,7 @@
 #undef __DOASSERTS__
 #undef __SUPPORT_LD_DEBUG__
 #undef __SUPPORT_LD_DEBUG_EARLY__
+#undef __UCLIBC_MALLOC_DEBUGGING__
 #undef __UCLIBC_HAS_BACKTRACE__
 #define __WARNINGS__ "-Wall"
 #undef __EXTRA_WARNINGS__
