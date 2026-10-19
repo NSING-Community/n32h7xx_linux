@@ -25,6 +25,10 @@
 
 ## 快速体验
 
+烧录后可在串口终端查看启动过程：
+
+![N32H787 Linux 串口启动界面](doc/asset/terminal.png)
+
 不编译也能直接烧录 `bin/` 下的现成镜像。连接 NSLink 探针后打开：
 
 **[打开 Web 烧录页面](https://update.nationstech.com/ns-flash/index.html?target=n32h78x&firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fbootloader.bin&spi-firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fspi-nor-boot.img&algorithm=n32h787-xspi2&lang=zh)**
