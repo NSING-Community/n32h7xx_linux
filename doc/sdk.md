@@ -12,7 +12,7 @@ sdk/
 │   └── share/cmake/    CMake 工具链文件（给客户自己的工程用）
 ├── example/            应用示例源码，只带一个 Makefile
 ├── optional/           可选附加组件（预编译二进制），不参与构建，自行取用
-└── optional-src/       espeak-ng 的移植源码，同样不参与构建
+└── optional-src/       espeak-ng 与 human-detect 等可选组件源码，不参与默认构建
 ```
 
 工具链只有这一处：`sdk/toolchain/`，直接用全路径调用即可。`optional/` 与
@@ -39,6 +39,11 @@ sdk/
 声卡只收 16-bit 双声道、七档采样率，而 `tinyplay` 从 WAV 头取参数、又不做任何
 转换，所以不是这个格式的 WAV 得在传上板之前转好。
 
+`make CAMERA=1` 只启用摄像头设备树和采集内存，不编译、不打包
+`human-detect`。需要检测服务时，安装
+[可选组件 human-detect](../sdk/optional/human-detect/README.md)；单独执行
+`make human-detect` 只构建检测服务程序。
+
 ## 可选附加组件
 
 `sdk/optional/` 里是预编译好的附加程序，**不参与构建、不进任何镜像**，装不装、
@@ -58,9 +63,10 @@ BOARD=<板子IP> USE=ssh sh install.sh # 走 ssh；BOARD 没有默认值
 | [espeak-ng](../sdk/optional/espeak-ng/README.md) | 语音合成，板上的放音设备直接出声 | 无（GPL-3.0-or-later，见该目录 README） |
 | [ns-flash](../sdk/optional/ns-flash/README.md) | 板子作 USB host，驱动外接 NSLink 探针烧写目标板 | 内核要有 USB host 与探针所用传输：bulk 探针走 usbfs，HID 探针要 `CONFIG_HIDRAW`（连同 `CONFIG_INPUT` / `CONFIG_HID_SUPPORT` / `CONFIG_HID` / `CONFIG_HID_GENERIC` / `CONFIG_USB_HID`） |
 | [WeniClaw](../sdk/optional/weniclaw/README.md) | 命令行与微信 AI 助手；FDPIC 程序，复用 rootfs 的 uClibc 和 Mbed TLS，不占大块连续内存 | 内核需有网络；没有配置文件时先开 80 端口配置页；走 https 用 rootfs 里已有的 CA 列表 |
+| [human-detect](../sdk/optional/human-detect/README.md) | 人形位置检测、灰度 MJPEG 预览和彩色抓图；浏览器打开 8080 端口 | 内核需使用 `CAMERA=1` 构建，并且 OV5640 已连接 |
 
 `ns-flash` 操作的是探针 SWD 那头接着的芯片，不是它自己跑着的这块板子。
-`sdk/optional-src/` 放 espeak-ng 的移植源码，同样不参与构建。
+`sdk/optional-src/` 放 espeak-ng 和 human-detect 的可选组件源码，不参与默认构建。
 
 ## 工具链可以整体搬走
 

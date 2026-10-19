@@ -1,9 +1,10 @@
 # Optional add-ons — source
 
-The port source for the GPL-licensed add-ons in [`../optional/`](../optional/).
-Unlike the rest of `sdk/`, the contents here are **not built or installed by
-`make`**; they exist to supply the port code for the prebuilt binaries in
-`../optional/`. The full corresponding-source release must also contain
+The source for optional add-ons whose binaries live in
+[`../optional/`](../optional/). These components are **not part of the default
+`make` build**. `human-detect` has an explicit top-level build target; the GPL
+ports are supplied with the sources and build instructions required for their
+published binaries. The full corresponding-source release must also contain
 upstream sources, dependencies, selected dictionary inputs, modifications and
 build materials required by GPLv3.
 
@@ -11,6 +12,16 @@ build materials required by GPLv3.
 | --- | --- | --- |
 | `espeak-ng/` | `../optional/espeak-ng/` (the binary) | GPL-3.0-or-later |
 | `pcaudiolib/` | the same binary (its audio output layer) | GPL-3.0-or-later |
+| `human-detect/` | `../optional/human-detect/` (the binary) | BSD-3-Clause; bundled components use Apache-2.0 |
+
+## human-detect
+
+`human-detect/` is the complete source for the optional camera detection
+service. It embeds the trained detector model and the TensorFlow Lite Micro,
+CMSIS-NN, FlatBuffers and gemmlowp sources listed in its
+`THIRD_PARTY_NOTICES.md`. Build it from the repository root with
+`make human-detect`; the resulting binary stays in this source directory until
+`make publish-human-detect` refreshes the published copy.
 
 ## espeak-ng
 
@@ -71,7 +82,7 @@ git clone https://github.com/espeak-ng/espeak-ng          ~/espeak-ng-src
 git -C ~/espeak-ng-src checkout ba90c8e9f440ad544f674a790bb5f53878b6ffc5
 
 git clone https://github.com/tinyalsa/tinyalsa            ~/tinyalsa-src
-git clone https://github.com/alsa-project/pcaudiolib      ~/pcaudiolib-src
+git clone https://github.com/espeak-ng/pcaudiolib         ~/pcaudiolib-src
 git -C ~/pcaudiolib-src checkout d6a6b00aa4334b461c1a09c27b6c681eaac8da8a
 patch -p1 -d ~/pcaudiolib-src < pcaudiolib/pcaudiolib-tinyalsa-backend.patch
 

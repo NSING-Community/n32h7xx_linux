@@ -13,6 +13,10 @@ N32H787 HMI 当前使用 DVP1 接口，OV5640 经 I2C4 配置，Linux 通过 V4L
 make CAMERA=1
 ```
 
+`human-detect` 是独立的可选组件，此命令不编译、也不打包它。需要检测服务时，
+安装 [预编译组件](../sdk/optional/human-detect/README.md)；只有修改程序本身时才
+执行 `make human-detect`，更新发布件时再执行 `make publish-human-detect`。
+
 不需要摄像头时，关闭摄像头并将这 2 MiB 内存交回系统：
 
 ```sh
@@ -86,6 +90,60 @@ make -C sdk/example v4l2-capture
 adb push sdk/example/v4l2-capture /system/bin/v4l2-capture
 adb shell chmod 755 /system/bin/v4l2-capture
 ```
+
+## 人形位置检测、预览和彩色抓图
+
+TFLite 示例中的 `person_detect` 是二分类模型，只判断“有没有人”。本工程
+`human-detect` 使用自训练的位置检测模型，`/status` 除了 `human_detected`
+还会返回归一化的人形框坐标；两者不是同一种模型。
+
+`human-detect` 独占 `/dev/video0`。它持续用模型要求的 320x240 GREY 帧检测，
+`/preview.mjpg` 直接发布同一帧并画上检测框；`/snapshot.jpg` 才临时切换到
+JPEG，等待曝光稳定后返回彩色照片，再恢复检测。运行期间不要再启动
+`v4l2-capture` 或 `camera-matrix` 访问同一个相机。
+
+检测服务是可选组件，不随 `CAMERA=1` 编译或进入 rootfs。安装预编译版本：
+
+```sh
+BOARD=<板子IP> USE=ssh sh sdk/optional/human-detect/install.sh
+# 或 USB ADB：
+sh sdk/optional/human-detect/install.sh
+```
+
+程序安装在 `/system/bin`，升级 kernel 或 rootfs 不会丢失。安装脚本会立即启动
+服务，但不会注册开机自启。
+
+服务使用 `/run/human-detect.sock`，启动时同时监听 TCP 8080。局域网浏览器
+打开 `http://<板子IP>:8080/` 可以查看 HTML 仪表盘、实时预览、推理帧率、
+检测框和错误计数。
+下面的 `curl` 使用 Unix socket，不依赖网络地址：
+
+```sh
+/usr/bin/curl --unix-socket /run/human-detect.sock \
+    -sS http://localhost/status
+
+/usr/bin/curl --unix-socket /run/human-detect.sock \
+    -sS "http://localhost/preview.mjpg?fps=5&duration=30" -o preview.mjpg
+
+/usr/bin/curl --unix-socket /run/human-detect.sock \
+    -sS "http://localhost/snapshot.jpg?size=1024x768" -o /mnt/sd/photo.jpg
+```
+
+`/status` 的 `human_detected` 表示是否检测到人，`boxes` 是整幅画面的 16 位
+归一化坐标。`/preview.mjpg` 固定为 320x240、3~5 fps，默认 5 fps，持续到浏览器
+断开；需要定时采集时加 `duration=1..60`。只允许一个预览客户端。
+`/snapshot.jpg` 默认返回 1024x768 彩色 JPEG，可请求的分辨率与上表一致。抓图
+期间预览接口返回 409，避免两个操作同时切换相机。
+
+后台启动和停止：
+
+```sh
+setsid /system/bin/human-detect --socket /run/human-detect.sock \
+    --http-port 8080 >>/tmp/human-detect.log 2>&1 </dev/null &
+killall human-detect
+```
+
+日志位于 `/tmp/human-detect.log`。修改 `--http-port` 可以更换监听端口。
 
 DVP 采集驱动和 OV5640 传感器已**内建在内核里**，开机时由设备树自动 probe，
 `/dev/video0` 由内核创建（rootfs 的 camera 服务只负责确认设备是否起来了）。

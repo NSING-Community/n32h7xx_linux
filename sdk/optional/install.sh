@@ -9,10 +9,10 @@
 # /system is the writable JFFS2 partition and survives kernel and rootfs
 # updates.  espeak-ng keeps a directory of its own there (/system/espeak-ng);
 # ns-flash and weniclaw are single files and go to /system/bin, which is where
-# the board looks for programs.  weniclaw's peripheral skills go to the
+# the board looks for programs. WeniClaw's peripheral skills go to the
 # workspace the agent reads (/system/weniclaw/workspace/skills).  Note that the
 # whole partition is only a few MiB on a 16 MiB NOR part: check "df /system"
-# before copying all three.
+# before installing every component.
 # The root password is empty, so the ssh path answers the prompt from a helper
 # rather than asking you to press Enter.
 #
@@ -66,3 +66,5 @@ else
 	$ssh "root@$board" "mkdir -p /system/weniclaw/workspace"
 	$scp -r "$here/weniclaw/skills" "root@$board:/system/weniclaw/workspace/"
 fi
+
+USE="$use" BOARD="$board" sh "$here/human-detect/install.sh"

@@ -5,7 +5,7 @@ Built from two upstream projects; both are GNU GPL version 3 or later.
               Source commit: ba90c8e9f440ad544f674a790bb5f53878b6ffc5 (2026-09-22)
               Unmodified - not one file of it was patched.
 
-  pcaudiolib  https://github.com/alsa-project/pcaudiolib
+  pcaudiolib  https://github.com/espeak-ng/pcaudiolib
               Source commit: d6a6b00aa4334b461c1a09c27b6c681eaac8da8a (2018-03-10)
               Patched: a TinyALSA backend was added, since this board has no
               PulseAudio, ALSA, QSA or OSS.  The patch is three hunks and is
@@ -46,7 +46,7 @@ Corresponding source, as required by GPL-3.0 section 6:
     That repository holds both the program sources and the voice-data inputs
     (phsource/, dictsource/), which the data in ../espeak-ng-data comes from.
 
-  * Upstream pcaudiolib is at https://github.com/alsa-project/pcaudiolib ,
+  * Upstream pcaudiolib is at https://github.com/espeak-ng/pcaudiolib ,
     commit d6a6b00aa4334b461c1a09c27b6c681eaac8da8a (2018-03-10); apply
     sdk/optional-src/pcaudiolib/pcaudiolib-tinyalsa-backend.patch to it to get
     exactly the library that is linked into this binary.

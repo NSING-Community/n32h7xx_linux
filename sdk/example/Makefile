@@ -4,7 +4,7 @@
 # working directory, so the SDK can be unpacked anywhere and the examples can
 # be built with `make -C sdk/example`, `make -f <path>/Makefile`, or after
 # moving the whole tree.  Nothing here contains an absolute path.
-example_dir := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+example_dir := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 CROSS_COMPILE ?= $(example_dir)/../toolchain/bin/arm-uclinuxfdpiceabi-
 CC = $(CROSS_COMPILE)gcc
 CXX = $(CROSS_COMPILE)g++

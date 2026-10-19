@@ -98,6 +98,14 @@ KERNEL_DTB     := $(KERNEL_STAGE)/$(KERNEL_DTB_BOARD).dtb
 # rootfs/ sources.
 KERNEL_MODULES := $(KERNEL_STAGE)/modules
 
+# The detector is an optional application.  CAMERA=1 only selects the camera
+# device tree and kernel memory pool; building and installing the detector is a
+# separate action so ordinary camera firmware does not rebuild it every time.
+HUMAN_DETECT_DIR           := $(TOP)/sdk/optional-src/human-detect
+HUMAN_DETECT_BIN           := $(HUMAN_DETECT_DIR)/human-detect
+HUMAN_DETECT_OPTIONAL_DIR  := $(TOP)/sdk/optional/human-detect
+HUMAN_DETECT_CROSS_COMPILE := $(if $(CROSS_COMPILE),$(CROSS_COMPILE),$(TOP)/sdk/toolchain/bin/arm-uclinuxfdpiceabi-)
+
 # --- rootfs (packaging only) ------------------------------------------------
 # The tree that becomes the userland: the rootfs/ directory itself, which is the
 # one and only userland tree.  It is packed into SquashFS and lives in its own
@@ -137,7 +145,7 @@ FLASH_PREFIX   := $(DIST_OUT)/spi-nor-boot.img
 TOOLS_DIR      := $(TOP)/tools
 SPI_IMAGE_TOOL := $(TOOLS_DIR)/spi_image.py
 
-.PHONY: all help bootloader kernel rootfs rootfs-squashfs busybox dropbear \
+.PHONY: all help bootloader kernel human-detect publish-human-detect rootfs rootfs-squashfs busybox dropbear \
         tools tinyalsa pcaudiolib sftp-server mbedtls curl ca-certificates \
         flash-image flash-kernel ota-check \
         ota-rootfs ota-kernel ota-dtb publish-bin \
@@ -180,6 +188,8 @@ help:
 	@echo "  bootloader       build the $(BOOT_STORAGE)-backed CM7 bootloader"
 	@echo "  kernel           build and stage the separate zImage + $(KERNEL_DTB_BOARD).dtb"
 	@echo "                   (also builds the loadable modules into out/kernel/modules)"
+	@echo "  human-detect     build the optional person detector source"
+	@echo "  publish-human-detect  refresh the prebuilt sdk/optional/human-detect binary"
 	@echo "  menuconfig       change the kernel configuration (ncurses; 'kernel-menuconfig')"
 	@echo "  kernel-nconfig   same with the newer ncurses UI ('kernel-xconfig' for Qt)"
 	@echo "  kernel-oldconfig review the symbols a kernel update added, one by one"
@@ -205,7 +215,7 @@ help:
 	@echo
 	@echo "Useful variables:"
 	@echo "  JOBS=$(JOBS)  BOOT_STORAGE=$(BOOT_STORAGE)  BOARD=$(BOARD)"
-	@echo "  CAMERA=$(CAMERA)  (1: camera + 2 MiB pool; 0: no camera, memory returned)"
+	@echo "  CAMERA=$(CAMERA)  (1: camera + 2 MiB pool; 0: no camera)"
 	@echo "  DEFCONFIG=$(DEFCONFIG)  (seed for the kernel configuration)"
 	@echo "  OUT_DIR=$(OUT_DIR)"
 	@echo "  KERNEL_ZIMAGE=$(KERNEL_ZIMAGE)"
@@ -252,6 +262,17 @@ kernel:
 	@test -s $(KERNEL_DTB)
 	@ls -l $(KERNEL_ZIMAGE) $(KERNEL_DTB)
 	@echo "kernel: $(KERNEL_ZIMAGE) + $(KERNEL_DTB)"
+
+# The detector source keeps its SDK-friendly in-tree output. It links only libc and
+# embeds the N32 JPEG helper statically. Firmware targets do not depend on it.
+human-detect:
+	$(MAKE) -C $(HUMAN_DETECT_DIR) CROSS_COMPILE="$(HUMAN_DETECT_CROSS_COMPILE)"
+
+publish-human-detect: human-detect
+	@test -x $(HUMAN_DETECT_BIN)
+	@mkdir -p $(HUMAN_DETECT_OPTIONAL_DIR)
+	@install -m 0755 $(HUMAN_DETECT_BIN) $(HUMAN_DETECT_OPTIONAL_DIR)/human-detect
+	@echo "optional: $(HUMAN_DETECT_OPTIONAL_DIR)/human-detect"
 
 # --- kernel configuration ---------------------------------------------------
 # The customer-facing way to change the kernel.  The working configuration is
@@ -339,7 +360,7 @@ rootfs-squashfs: $(ROOTFS_SQUASHFS)
 # ---------------------------------------------------------------------------
 # busybox - the one place applets are added or removed
 # ---------------------------------------------------------------------------
-# The nine "rebuild a userland component" targets below are the only ones that
+# The userland component rebuild targets below are the only ones that
 # need sdk-src/.  They check for it first and explain the situation instead of
 # failing with a bare "No such file or directory" from bash.  Like the other
 # sdk-src targets they stay out of `make help`, which lists only what a

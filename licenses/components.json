@@ -1016,7 +1016,7 @@
       "name": "pcaudiolib linked into optional espeak-ng",
       "version": "d6a6b00",
       "license": "GPL-3.0-or-later",
-      "source": "https://github.com/alsa-project/pcaudiolib.git",
+      "source": "https://github.com/espeak-ng/pcaudiolib.git",
       "source_path": "sdk-src/sources/pcaudiolib",
       "evidence": [
         "sdk/optional/espeak-ng/licenses/COPYING",
@@ -5069,7 +5069,7 @@
       "files": 7
     },
     "sdk/optional-src": {
-      "sha256": "16e8e9b8d2eaefae47559f18192dfd95ec83befa615bc9834e93c13a3ade4422",
+      "sha256": "5281d8bde05eb9da2fe081b92da74fc5c64c417c1bb648f6769d628a224af54d",
       "files": 52
     },
     "sdk/toolchain/patches": {

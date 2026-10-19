@@ -377,7 +377,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 
 - Version: d6a6b00
 - SPDX/classification: `GPL-3.0-or-later`
-- Source: https://github.com/alsa-project/pcaudiolib.git
+- Source: https://github.com/espeak-ng/pcaudiolib.git
 - Source revision: d6a6b00aa4334b461c1a09c27b6c681eaac8da8a
 - Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
 - Modifications: TinyALSA backend patch and glue in sdk/optional-src/pcaudiolib.

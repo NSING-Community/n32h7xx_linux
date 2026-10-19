@@ -12,7 +12,7 @@ OpenAI 兼容的对话接口，也可以通过腾讯 iLink Claw 通道与微信�
 | 文件 | 说明 |
 | --- | --- |
 | `weniclaw` | ARM 二进制（已 strip，507112 字节） |
-| `skills/` | 四份现成外设技能（拍照、录音放音、点灯、存储位置） |
+| `skills/` | 五份现成外设技能（拍照、人形检测服务、录音放音、点灯、存储位置） |
 | `LICENSE`、`THIRD_PARTY_NOTICES.md`、`licenses/` | 随二进制附带的声明文本 |
 
 ## 运行要求
@@ -131,6 +131,29 @@ fi
 本板 no-MMU 的 shell 只能后台化真正的可执行文件，请保持这个写法，不要包成
 复合命令。日志写在 `/system` 会占用 NOR 空间；不想保留可以改到 `/tmp`。
 
+## 相机服务
+
+拍照技能依赖 `human-detect` 服务。它独占 `/dev/video0`，持续用
+320x240 GREY 做带位置框的人形检测，并通过 `/run/human-detect.sock` 提供状态、
+灰度预览和彩色 JPEG。它不同于 TFLite 示例里的 `person_detect` 二分类模型。
+`human-detect` 也是可选组件，不在标准固件中。安装：
+
+```sh
+BOARD=<板子IP> USE=ssh sh sdk/optional/human-detect/install.sh
+```
+
+手动启动和停止：
+
+```sh
+setsid /system/bin/human-detect --socket /run/human-detect.sock \
+    --http-port 8080 >>/tmp/human-detect.log 2>&1 </dev/null &
+pidof human-detect
+killall human-detect
+```
+
+服务运行时，智能体只通过 Unix socket 取图；不要再运行
+`v4l2-capture` 访问同一个相机。
+
 ## 技能：外设操作说明
 
 技能是纯文本 Markdown，一个技能一个目录，位置固定在 workspace 下：
@@ -140,8 +163,9 @@ fi
 ```
 
 （workspace 取自配置文件的 `workspace` 字段；标准安装即
-`/system/weniclaw/workspace`。）本目录的 `skills/` 里有四份现成技能：
-拍照 `camera`、录音放音 `audio`、点灯 `gpio-led`、存储位置 `storage`。
+`/system/weniclaw/workspace`。）本目录的 `skills/` 里有五份现成技能：
+拍照 `camera`、人形检测服务 `human-service`、录音放音 `audio`、点灯
+`gpio-led`、存储位置 `storage`。
 
 `../install.sh` 会自动安装技能；手动安装就是拷贝这个目录：
 

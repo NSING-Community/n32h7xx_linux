@@ -23,19 +23,14 @@ make
 ```
 
 完成后使用 `out/dist/spi-nor-boot.img`，它包含 dtb、kernel 和 rootfs，保留可写
-`system` 分区。构建目标及产物说明见 [README](../README.md#构建)。
+`system` 分区。构建目标及产物说明见
+[README 构建产物与存储布局](../README.md#构建产物与存储布局)。
 
 ## 3. USB 刷机
 
-按住 KEY1（PG3）复位或上电，让 bootloader 进入 MSC 模式。Windows PowerShell
-中用 `usbipd list` 找到 `19f5:5780`，首次管理员共享后 attach 到 WSL：
-
-```powershell
-usbipd bind --busid <MSC 的 busid>     # 首次，管理员 PowerShell
-usbipd attach --wsl --busid <MSC 的 busid>
-```
-
-在仓库根目录的 WSL 终端写入：
+按住 KEY1（PG3）复位或上电，让 bootloader 进入 MSC 模式。按
+[环境搭建的 usbipd 步骤](setup.md#2-windows-侧安装-usbipd) 把 `19f5:5780`
+attach 到 WSL，然后在仓库根目录写入：
 
 ```sh
 sudo tools/h787ctl msc-write out/dist/spi-nor-boot.img

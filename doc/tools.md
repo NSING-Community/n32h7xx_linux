@@ -63,7 +63,7 @@ sudo tools/h787ctl msc-write --dry-run out/dist/spi-nor-boot.img
 sudo tools/h787ctl msc-write out/rootfs/rootfs.squashfs --offset 0x410000 --magic none
 ```
 
-分区偏移统一见 [README 分区表](../README.md#分区与更新)。当前 bootloader 即使在
+分区偏移统一见 [README 存储分区](../README.md#存储分区)。当前 bootloader 即使在
 更大的 NOR 上也只上报 16 MiB，MSC 更新仍使用可容纳的 `spi-nor-boot.img`；整片
 大容量镜像需要能访问完整 NOR 的烧写方式。仅当设备实际的上报容量改变时，才用
 `--expect-bytes` 或 `H787_MSC_BYTES` 调整容量期望。
@@ -79,17 +79,6 @@ make flash-bootloader H787_RECOVER_TOOL=/path/to/ns-link/tools/h787_recover_flas
 
 该目标构建后写入 `out/dist/bootloader.bin`。ELF、HEX、MAP 等调试产物位于
 `out/bootloader/CM7/`。USB MSC 和网络 OTA 更新外部 NOR，不会更换片内 bootloader。
-
-## WSL 里找不到 MSC 设备
-
-板子的 USB MSC（`19f5:5780`）和 CMSIS-DAP 探针（`19f5:3106`）是两个 USB 设备。
-MSC 常常在 Windows 里是 `Shared` 但没有 attach 给 WSL，这时 `msc_image.py` 会报
-`N32H7xx MSC device not found`：
-
-```sh
-powershell.exe -NoProfile -Command "usbipd list"        # 先拿到当前 busid
-powershell.exe -NoProfile -Command "usbipd attach --wsl --busid <busid>"
-```
 
 ## 直接访问 DAP 和串口
 

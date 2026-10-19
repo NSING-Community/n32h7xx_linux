@@ -2,7 +2,7 @@
 
 本文只说明运行中的设备如何通过 SSH 更新 rootfs、kernel 或 dtb。
 普通应用和库部署见 [SDK](sdk.md#部署到设备)，USB MSC 恢复及片内 bootloader
-烧写见 [主机工具与烧写](tools.md)。分区布局统一见 [README](../README.md#分区与更新)。
+烧写见 [主机工具与烧写](tools.md)。分区布局统一见 [README](../README.md#存储分区)。
 
 ## 前提
 

@@ -36,8 +36,7 @@ fi
 # A failure here is ignored: the read-only rootfs alone must reach a shell.
 /etc/init.d/system start || echo 'WARNING: /system unavailable; continuing'
 
-# Camera.  The drivers are built into the kernel and probe on their own, so
-# this only reports whether /dev/video0 came up; nothing else depends on it.
+# Camera. The drivers are built into the kernel and probe on their own.
 if [ "$(conf_get CAMERA on)" != off ]; then
   /etc/init.d/camera start || echo 'WARNING: camera setup failed'
 fi
