@@ -27,7 +27,7 @@
 
 不编译也能直接烧录 `bin/` 下的现成镜像。连接 NSLink 探针后打开：
 
-**[打开 Web 烧录页面](https://update.nationstech.com/ns-flash/index.html?target=n32h78x&firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fbootloader.bin&sha256=55ca02750bf638f1ed84b1c537bca7093ccb75acc189d9f5c4527cb995a4c46e&spi-firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fspi-nor-boot.img&spi_sha256=09d0fda19d47d877f7a8d5808047907d184cd616d63d765137ca74f080bc0ac6&algorithm=n32h787-xspi2&lang=zh)**
+**[打开 Web 烧录页面](https://update.nationstech.com/ns-flash/index.html?target=n32h78x&firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fbootloader.bin&spi-firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fspi-nor-boot.img&algorithm=n32h787-xspi2&lang=zh)**
 
 需要 Chrome 或 Edge。镜像已填入，按页面提示烧录即可；`system` 分区不受影响。
 
