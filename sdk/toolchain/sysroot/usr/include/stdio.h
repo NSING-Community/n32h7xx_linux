@@ -275,6 +275,25 @@ extern FILE *freopen64 (const char *__restrict __filename,
 extern FILE *fdopen (int __fd, const char *__modes) __THROW __wur;
 #endif
 
+#ifdef	__USE_GNU
+/* Create a new stream that refers to the given magic cookie,
+   and uses the given functions for input and output.  */
+extern FILE *fopencookie (void *__restrict __magic_cookie,
+			  const char *__restrict __modes,
+			  _IO_cookie_io_functions_t __io_funcs) __THROW __wur;
+#endif
+
+#ifdef __USE_XOPEN2K8
+/* Create a new stream that refers to a memory buffer.  */
+extern FILE *fmemopen (void *__s, size_t __len, const char *__modes)
+  __THROW __wur;
+
+/* Open a stream that writes into a malloc'd buffer that is expanded as
+   necessary.  *BUFLOC and *SIZELOC are updated with the buffer's location
+   and the number of characters written on fflush or fclose.  */
+extern FILE *open_memstream (char **__bufloc, size_t *__sizeloc) __THROW __wur;
+#endif
+
 
 __BEGIN_NAMESPACE_STD
 /* If BUF is NULL, make STREAM unbuffered.

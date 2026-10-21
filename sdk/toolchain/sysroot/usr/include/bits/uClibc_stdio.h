@@ -52,6 +52,35 @@ typedef struct {
 typedef __off64_t __offmax_t;		/* TODO -- rename this? */
 
 /**********************************************************************/
+
+typedef __ssize_t __io_read_fn(void *__cookie, char *__buf, size_t __bufsize);
+typedef __ssize_t __io_write_fn(void *__cookie,
+					const char *__buf, size_t __bufsize);
+/* NOTE: GLIBC difference!!! -- fopencookie seek function
+ * For glibc, the type of pos is always (__off64_t *) but in our case
+ * it is type (__off_t *) when the lib is built without large file support.
+ */
+typedef int __io_seek_fn(void *__cookie, __offmax_t *__pos, int __whence);
+typedef int __io_close_fn(void *__cookie);
+
+typedef struct {
+	__io_read_fn  *read;
+	__io_write_fn *write;
+	__io_seek_fn  *seek;
+	__io_close_fn *close;
+} _IO_cookie_io_functions_t;
+
+#ifdef __USE_GNU
+
+typedef __io_read_fn cookie_read_function_t;
+typedef __io_write_fn cookie_write_function_t;
+typedef __io_seek_fn cookie_seek_function_t;
+typedef __io_close_fn cookie_close_function_t;
+
+typedef _IO_cookie_io_functions_t cookie_io_functions_t;
+
+#endif
+
 /**********************************************************************/
 
 #if defined __UCLIBC_HAS_THREADS__ && !defined __UCLIBC_IO_MUTEX
