@@ -106,6 +106,14 @@ HUMAN_DETECT_BIN           := $(HUMAN_DETECT_DIR)/human-detect
 HUMAN_DETECT_OPTIONAL_DIR  := $(TOP)/sdk/optional/human-detect
 HUMAN_DETECT_CROSS_COMPILE := $(if $(CROSS_COMPILE),$(CROSS_COMPILE),$(TOP)/sdk/toolchain/bin/arm-uclinuxfdpiceabi-)
 
+# Graphics userland.  libdrm is built with upstream Meson and staged under
+# out/libdrm/rootfs; LVGL uses the standard libdrm headers and shared library
+# from that staging tree.  These targets are not dependencies of `make all`,
+# but the libdrm runtime committed under rootfs/usr/lib is part of the rootfs.
+LIBDRM_DIR := $(TOP)/sdk/optional-src/libdrm
+LVGL_DIR   := $(TOP)/sdk/optional-src/lvgl
+GRAPHICS_CROSS_COMPILE ?= $(if $(CROSS_COMPILE),$(CROSS_COMPILE),$(TOP)/sdk/toolchain/bin/arm-uclinuxfdpiceabi-)
+
 # --- rootfs (packaging only) ------------------------------------------------
 # The tree that becomes the userland: the rootfs/ directory itself, which is the
 # one and only userland tree.  It is packed into SquashFS and lives in its own
@@ -145,7 +153,9 @@ FLASH_PREFIX   := $(DIST_OUT)/spi-nor-boot.img
 TOOLS_DIR      := $(TOP)/tools
 SPI_IMAGE_TOOL := $(TOOLS_DIR)/spi_image.py
 
-.PHONY: all help bootloader kernel human-detect publish-human-detect rootfs rootfs-squashfs busybox dropbear \
+.PHONY: all help bootloader kernel human-detect publish-human-detect \
+        libdrm install-libdrm lvgl-demo \
+        rootfs rootfs-squashfs busybox dropbear \
         tools tinyalsa pcaudiolib sftp-server mbedtls curl ca-certificates \
         flash-image flash-kernel ota-check \
         ota-rootfs ota-kernel ota-dtb publish-bin \
@@ -188,6 +198,9 @@ help:
 	@echo "  bootloader       build the $(BOOT_STORAGE)-backed CM7 bootloader"
 	@echo "  kernel           build and stage the separate zImage + $(KERNEL_DTB_BOARD).dtb"
 	@echo "                   (also builds the loadable modules into out/kernel/modules)"
+	@echo "  libdrm           build upstream libdrm into out/libdrm/rootfs/"
+	@echo "  install-libdrm   install libdrm.so.2 into rootfs/usr/lib (then repack rootfs)"
+	@echo "  lvgl-demo        build LVGL 9.6.0 and its DRM/fbdev demo into out/lvgl/"
 	@echo "  human-detect     build the optional person detector source"
 	@echo "  publish-human-detect  refresh the prebuilt sdk/optional/human-detect binary"
 	@echo "  menuconfig       change the kernel configuration (ncurses; 'kernel-menuconfig')"
@@ -262,6 +275,22 @@ kernel:
 	@test -s $(KERNEL_DTB)
 	@ls -l $(KERNEL_ZIMAGE) $(KERNEL_DTB)
 	@echo "kernel: $(KERNEL_ZIMAGE) + $(KERNEL_DTB)"
+
+# Upstream libdrm and LVGL are optional host-side builds.  They use the SDK
+# userspace compiler, not the kernel compiler, and never alter either source
+# tree in place.
+libdrm:
+	$(MAKE) -C $(LIBDRM_DIR) OUT_DIR=$(OUT_DIR) \
+		CROSS_COMPILE=$(GRAPHICS_CROSS_COMPILE)
+
+install-libdrm: libdrm
+	$(MAKE) -C $(LIBDRM_DIR) OUT_DIR=$(OUT_DIR) ROOTFS_TREE=$(ROOTFS_TREE) \
+		CROSS_COMPILE=$(GRAPHICS_CROSS_COMPILE) install-rootfs
+
+lvgl-demo: libdrm
+	$(MAKE) -C $(LVGL_DIR) OUT_DIR=$(OUT_DIR) \
+		LIBDRM_ROOT=$(OUT_DIR)/libdrm/rootfs \
+		CROSS_COMPILE=$(GRAPHICS_CROSS_COMPILE)
 
 # The detector source keeps its SDK-friendly in-tree output. It links only libc and
 # embeds the N32 JPEG helper statically. Firmware targets do not depend on it.

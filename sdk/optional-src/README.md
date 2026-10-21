@@ -13,6 +13,18 @@ build materials required by GPLv3.
 | `espeak-ng/` | `../optional/espeak-ng/` (the binary) | GPL-3.0-or-later |
 | `pcaudiolib/` | the same binary (its audio output layer) | GPL-3.0-or-later |
 | `human-detect/` | `../optional/human-detect/` (the binary) | BSD-3-Clause; bundled components use Apache-2.0 |
+| `lvgl/` | optional display applications and the `lvgl-demo` smoke test | MIT |
+| `libdrm/` | shared DRM/KMS userspace library for LVGL and applications | MIT |
+
+## lvgl and libdrm
+
+`lvgl/` contains LVGL v9.6.0 and its board configuration. `libdrm/` contains
+upstream libdrm 2.4.134 and the cross-build glue. Both upstream trees are
+unmodified. `make lvgl-demo` builds the DRM and fbdev demo; `make libdrm` only
+builds the standard library. See the README in each directory for build and
+runtime details. The libdrm runtime is installed in `rootfs/usr/lib` so that
+standard DRM applications can use it; LVGL itself and the demo are not part of
+the default firmware image.
 
 ## human-detect
 
