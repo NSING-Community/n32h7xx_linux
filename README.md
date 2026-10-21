@@ -32,7 +32,7 @@
 
 不编译也能直接烧录 `bin/` 下的现成镜像。连接 NSLink 探针后打开：
 
-**[打开 Web 烧录页面](https://update.nationstech.com/ns-flash/index.html?target=n32h78x&firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fbootloader.bin&spi-firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fspi-nor-boot.img&algorithm=n32h787-xspi2&lang=zh)**
+**[打开 Web 烧录页面](https://update.nsingtech.com/ns-flash/index.html?target=n32h78x&firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fbootloader.bin&spi-firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fspi-nor-boot.img&algorithm=n32h787-xspi2&lang=zh)**
 
 需要 Chrome 或 Edge。镜像已填入，按页面提示烧录即可；`system` 分区不受影响。
 
@@ -107,6 +107,9 @@ sudo tools/h787ctl msc-write out/dist/spi-nor-boot.img
 
 让板子进入 MSC，并把 `19f5:5780` attach 到 WSL 的步骤见
 [USB MSC 烧写](doc/tools.md#usb-msc-烧写)。
+
+不进入 MSC、直接用 NSLink 探针烧写片内 bootloader 或外部 SPI NOR 时，
+见[ns-flash 命令行烧录](tools/ns-flash/README.md)。
 
 ## 构建产物与存储布局
 

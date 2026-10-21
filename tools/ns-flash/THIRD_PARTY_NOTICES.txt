@@ -1,0 +1,11 @@
+NSLink ns-flash is Nations/NSING company-owned closed-source software.
+Inclusion in this SDK does not grant an open-source license to that program.
+
+The host builds in this directory (ns-flash-linux, ns-flash-win.exe) are
+static executables produced with the Zig standard library, Copyright (c) Zig
+contributors, under the MIT license. See accompanying Zig-MIT.txt.
+Upstream: https://ziglang.org/
+
+ns-link.bin is NS-Link debugger firmware supplied with the programmer, and
+n32h787-xspi2.nsalgo is the N32H787 XSPI2 flash algorithm. Neither is derived
+from an open-source project.
