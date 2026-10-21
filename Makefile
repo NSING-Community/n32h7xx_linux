@@ -74,12 +74,24 @@ ifneq ($(CAMERA),1)
 $(error CAMERA must be 0 or 1)
 endif
 endif
+LCD            ?= 1
+ifneq ($(LCD),0)
+ifneq ($(LCD),1)
+$(error LCD must be 0 or 1)
+endif
+endif
 KERNEL_DTB_BOARD := $(BOARD)
 ifeq ($(CAMERA),0)
 ifneq ($(BOARD),n32h787-hmi)
 $(error CAMERA=0 is only supported for BOARD=n32h787-hmi)
 endif
 KERNEL_DTB_BOARD := $(BOARD)-no-camera
+endif
+ifeq ($(LCD),0)
+ifneq ($(BOARD),n32h787-hmi)
+$(error LCD=0 is only supported for BOARD=n32h787-hmi)
+endif
+KERNEL_DTB_BOARD := $(KERNEL_DTB_BOARD)-no-display
 endif
 # Seed configuration for the kernel: a name under arch/arm/configs/, or a path
 # to any defconfig-format file.  It only *seeds* out/kernel/build/.config; see
@@ -197,6 +209,7 @@ help:
 	@echo "  all              bootloader + kernel + rootfs + flash image (default)"
 	@echo "  bootloader       build the $(BOOT_STORAGE)-backed CM7 bootloader"
 	@echo "  kernel           build and stage the separate zImage + $(KERNEL_DTB_BOARD).dtb"
+	@echo "  display-test     build the framebuffer/GPU/page-flip test into out/display/"
 	@echo "                   (also builds the loadable modules into out/kernel/modules)"
 	@echo "  libdrm           build upstream libdrm into out/libdrm/rootfs/"
 	@echo "  install-libdrm   install libdrm.so.2 into rootfs/usr/lib (then repack rootfs)"
@@ -229,6 +242,7 @@ help:
 	@echo "Useful variables:"
 	@echo "  JOBS=$(JOBS)  BOOT_STORAGE=$(BOOT_STORAGE)  BOARD=$(BOARD)"
 	@echo "  CAMERA=$(CAMERA)  (1: camera + 2 MiB pool; 0: no camera)"
+	@echo "  LCD=$(LCD)  (1: LCD/GPU + 4 MiB pool; 0: no LCD or GPU)"
 	@echo "  DEFCONFIG=$(DEFCONFIG)  (seed for the kernel configuration)"
 	@echo "  OUT_DIR=$(OUT_DIR)"
 	@echo "  KERNEL_ZIMAGE=$(KERNEL_ZIMAGE)"
@@ -267,7 +281,8 @@ kernel:
 	@# SDK ships a soft-float wrapper for this: sdk/toolchain/bin/arm-n32-linux-kernel-
 	@# BUILD_DIR/STAGE_DIR keep the kernel build out of the source tree: the
 	@# objects go to out/kernel/build and the staged artifacts to out/kernel.
-	JOBS=$(JOBS) BOARD=$(BOARD) CAMERA=$(CAMERA) CROSS_COMPILE=$(CROSS_COMPILE) \
+	JOBS=$(JOBS) BOARD=$(BOARD) CAMERA=$(CAMERA) LCD=$(LCD) \
+		CROSS_COMPILE=$(CROSS_COMPILE) \
 		DEFCONFIG=$(DEFCONFIG) \
 		BUILD_DIR=$(KERNEL_BUILD) STAGE_DIR=$(KERNEL_STAGE) \
 		$(KERNEL_DIR)/scripts/nsing/release.sh
@@ -275,6 +290,17 @@ kernel:
 	@test -s $(KERNEL_DTB)
 	@ls -l $(KERNEL_ZIMAGE) $(KERNEL_DTB)
 	@echo "kernel: $(KERNEL_ZIMAGE) + $(KERNEL_DTB)"
+
+# Export sanitized UAPI headers locally; leave the SDK sysroot untouched.
+DISPLAY_TEST_CC ?= $(TOP)/sdk/toolchain/bin/arm-uclinuxfdpiceabi-gcc
+.PHONY: display-test
+display-test:
+	@mkdir -p $(OUT_DIR)/display
+	$(MAKE) -C $(KERNEL_DIR) O=$(KERNEL_BUILD) ARCH=arm \
+		INSTALL_HDR_PATH=$(OUT_DIR)/display/headers headers_install
+	$(DISPLAY_TEST_CC) -Os -Wall -Wextra -Werror \
+		-I$(OUT_DIR)/display/headers/include \
+		$(TOP)/sdk/example/n32-display-test.c -o $(OUT_DIR)/display/n32-display-test
 
 # Upstream libdrm and LVGL are optional host-side builds.  They use the SDK
 # userspace compiler, not the kernel compiler, and never alter either source

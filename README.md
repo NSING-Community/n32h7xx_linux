@@ -20,6 +20,7 @@
 | USB | Host / Device 角色、ADB 终端与文件传输、虚拟串口、外设接入 |
 | 摄像头 | OV5640 图像采集；人形位置检测、MJPEG 预览与彩色抓图作为可选组件 |
 | 音频 | WM8978 录音与播放 |
+| 图形显示 | 可选 LVGL 9.6.0（CPU 绘制）；标准 DRM/KMS（libdrm）与 fbdev 后端；实验性 2D GPU 填充、批量矩形、混合、复制、多边形与曲线 |
 | 用户态 | BusyBox 命令、Shell 脚本、文本处理、网络与进程管理工具 |
 | 应用开发 | C / C++ 交叉工具链、运行库及应用示例 |
 
@@ -87,6 +88,7 @@ make kernel       # zImage + <BOARD>.dtb 和可加载模块
 make rootfs       # 打包 SquashFS rootfs
 make menuconfig   # 修改内核配置
 make CAMERA=1     # 带 OV5640 摄像头支持的完整镜像（默认不含）
+make LCD=0        # 不启用 LCD/GPU，交回 4 MiB 图形内存（默认启用）
 make help         # 查看全部目标和可覆盖变量
 ```
 
@@ -169,6 +171,7 @@ earlycon console=ttyS0,115200 root=/dev/mtdblock2 rootfstype=squashfs ro rootwai
 | [SDK 与应用开发](doc/sdk.md) | 编译、部署和运行应用 |
 | [USB](doc/usb.md) | ADB、虚拟串口、存储与角色切换 |
 | [摄像头](doc/camera.md) | 图像与视频采集 |
+| [LCD 显示与 GPU](doc/display.md) | 实验性显示接口、构建与验证步骤 |
 | [音频](doc/audio.md) | 录音、播放与音量设置 |
 
 ## 了解 NOMMU Linux
@@ -205,6 +208,7 @@ NOMMU Linux 是运行在**没有内存管理单元（MMU）**的处理器上的 
 | [ns-flash](sdk/optional/ns-flash/README.md) | 通过外接 NSLink 探针识别、烧写目标芯片 |
 | [WeniClaw](sdk/optional/weniclaw/README.md) | 轻量 AI 助手（命令行与微信） |
 | [human-detect](sdk/optional/human-detect/README.md) | 人形位置检测、灰度 MJPEG 预览和彩色抓图 |
+| [LVGL 图形库](sdk/optional-src/lvgl/README.md) | 标准 DRM/KMS 与 fbdev 后端、CPU 绘制的显示示例 |
 
 安装、使用和运行条件见各组件说明；espeak-ng、human-detect 等可选组件源码及构建说明见
 [可选组件源码](sdk/optional-src/README.md)。

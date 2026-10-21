@@ -28,8 +28,12 @@ make CAMERA=0
 `out/kernel/n32h787-hmi-no-camera.dtb`；最终 SPI NOR 镜像会自动包含所选 DTB。
 切换时不需要清理构建目录，后续构建请继续传入需要的 `CAMERA` 值；不传则使用默认值 `0`。
 
+如果同时不需要 LCD/GPU，可以加 `LCD=0`，例如 `make CAMERA=0 LCD=0`；这样会
+释放显示侧的 4 MiB 预留内存，具体见 [LCD 显示与 GPU](display.md)。
+
 切换后必须更新 DTB 并重启，只更新 zImage 不生效。关闭摄像头后不会创建
-`/dev/video0`，也不再预留采集内存。若使用网络更新，可执行
+`/dev/video0`，也不再预留采集内存。采集池紧贴主 RAM 顶部，关闭后这 2 MiB
+直接并入主 RAM，与原有连续内存连成一段，不会留下保留区之间的小块。若使用网络更新，可执行
 `make ota-dtb CAMERA=0 H787_BOARD=root@<板子IP>`，重新启用时将 `0` 改为 `1`。
 
 ## 分辨率支持
