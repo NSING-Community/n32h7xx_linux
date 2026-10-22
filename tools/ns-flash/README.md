@@ -11,7 +11,7 @@
 | `n32h787-xspi2.nsalgo` | N32H787 / XSPI2 / W25Q128（16 MiB）外部 SPI NOR 算法 |
 | `ns-link.bin` | NS-Link 调试器固件；用于网页在线升级或 ROM DFU 恢复 |
 
-版本：`0.1.5`。`ns-flash-linux` 没有动态库依赖，可直接运行。
+版本：`0.1.6`。`ns-flash-linux` 没有动态库依赖，可直接运行。
 
 探针只按 VID/PID 识别。固件 revision（`bcdDevice`）、接口类型和端点编号
 与内置表不完全一致时，工具会优先选择最接近的接口继续连接，并采用探针
