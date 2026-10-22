@@ -116,7 +116,10 @@ KERNEL_MODULES := $(KERNEL_STAGE)/modules
 HUMAN_DETECT_DIR           := $(TOP)/sdk/optional-src/human-detect
 HUMAN_DETECT_BIN           := $(HUMAN_DETECT_DIR)/human-detect
 HUMAN_DETECT_OPTIONAL_DIR  := $(TOP)/sdk/optional/human-detect
+HUMAN_DETECT_UI_BIN        := $(OUT_DIR)/lvgl/human-detect-ui
 HUMAN_DETECT_CROSS_COMPILE := $(if $(CROSS_COMPILE),$(CROSS_COMPILE),$(TOP)/sdk/toolchain/bin/arm-uclinuxfdpiceabi-)
+
+INPUT_EVENTS_DIR := $(TOP)/sdk/optional-src/input-events
 
 # Graphics userland.  libdrm is built with upstream Meson and staged under
 # out/libdrm/rootfs; LVGL uses the standard libdrm headers and shared library
@@ -166,7 +169,8 @@ TOOLS_DIR      := $(TOP)/tools
 SPI_IMAGE_TOOL := $(TOOLS_DIR)/spi_image.py
 
 .PHONY: all help bootloader kernel human-detect publish-human-detect \
-        libdrm install-libdrm lvgl-demo \
+        human-detect-ui publish-human-detect-ui input-events \
+        libdrm install-libdrm lvgl-demo lvgl-touch-demo \
         rootfs rootfs-squashfs busybox dropbear \
         tools tinyalsa pcaudiolib sftp-server mbedtls curl ca-certificates \
         flash-image flash-kernel ota-check \
@@ -214,8 +218,11 @@ help:
 	@echo "  libdrm           build upstream libdrm into out/libdrm/rootfs/"
 	@echo "  install-libdrm   install libdrm.so.2 into rootfs/usr/lib (then repack rootfs)"
 	@echo "  lvgl-demo        build LVGL 9.6.0 and its DRM/fbdev demo into out/lvgl/"
+	@echo "  lvgl-touch-demo  build the LVGL touchscreen coordinate demo into out/lvgl/"
+	@echo "  input-events     build the evdev touchscreen event reader into out/input-events/"
 	@echo "  human-detect     build the optional person detector source"
 	@echo "  publish-human-detect  refresh the prebuilt sdk/optional/human-detect binary"
+	@echo "  human-detect-ui  build the optional LVGL detector monitor"
 	@echo "  menuconfig       change the kernel configuration (ncurses; 'kernel-menuconfig')"
 	@echo "  kernel-nconfig   same with the newer ncurses UI ('kernel-xconfig' for Qt)"
 	@echo "  kernel-oldconfig review the symbols a kernel update added, one by one"
@@ -242,7 +249,7 @@ help:
 	@echo "Useful variables:"
 	@echo "  JOBS=$(JOBS)  BOOT_STORAGE=$(BOOT_STORAGE)  BOARD=$(BOARD)"
 	@echo "  CAMERA=$(CAMERA)  (1: camera + 2 MiB pool; 0: no camera)"
-	@echo "  LCD=$(LCD)  (1: LCD/GPU + 4 MiB pool; 0: no LCD or GPU)"
+	@echo "  LCD=$(LCD)  (1: LCD/GPU + 3 MiB pool; 0: no LCD or GPU)"
 	@echo "  DEFCONFIG=$(DEFCONFIG)  (seed for the kernel configuration)"
 	@echo "  OUT_DIR=$(OUT_DIR)"
 	@echo "  KERNEL_ZIMAGE=$(KERNEL_ZIMAGE)"
@@ -318,6 +325,15 @@ lvgl-demo: libdrm
 		LIBDRM_ROOT=$(OUT_DIR)/libdrm/rootfs \
 		CROSS_COMPILE=$(GRAPHICS_CROSS_COMPILE)
 
+lvgl-touch-demo: libdrm
+	$(MAKE) -C $(LVGL_DIR) touch-demo OUT_DIR=$(OUT_DIR) \
+		LIBDRM_ROOT=$(OUT_DIR)/libdrm/rootfs \
+		CROSS_COMPILE=$(GRAPHICS_CROSS_COMPILE)
+
+input-events:
+	$(MAKE) -C $(INPUT_EVENTS_DIR) OUT_DIR=$(OUT_DIR) \
+		CROSS_COMPILE=$(GRAPHICS_CROSS_COMPILE)
+
 # The detector source keeps its SDK-friendly in-tree output. It links only libc and
 # embeds the N32 JPEG helper statically. Firmware targets do not depend on it.
 human-detect:
@@ -328,6 +344,18 @@ publish-human-detect: human-detect
 	@mkdir -p $(HUMAN_DETECT_OPTIONAL_DIR)
 	@install -m 0755 $(HUMAN_DETECT_BIN) $(HUMAN_DETECT_OPTIONAL_DIR)/human-detect
 	@echo "optional: $(HUMAN_DETECT_OPTIONAL_DIR)/human-detect"
+
+human-detect-ui: libdrm
+	$(MAKE) -C $(LVGL_DIR) human-detect-ui OUT_DIR=$(OUT_DIR) \
+		LIBDRM_ROOT=$(OUT_DIR)/libdrm/rootfs \
+		CROSS_COMPILE=$(GRAPHICS_CROSS_COMPILE)
+
+publish-human-detect-ui: human-detect-ui
+	@test -x $(HUMAN_DETECT_UI_BIN)
+	@mkdir -p $(HUMAN_DETECT_OPTIONAL_DIR)
+	@install -m 0755 $(HUMAN_DETECT_UI_BIN) \
+		$(HUMAN_DETECT_OPTIONAL_DIR)/human-detect-ui
+	@echo "optional: $(HUMAN_DETECT_OPTIONAL_DIR)/human-detect-ui"
 
 # --- kernel configuration ---------------------------------------------------
 # The customer-facing way to change the kernel.  The working configuration is

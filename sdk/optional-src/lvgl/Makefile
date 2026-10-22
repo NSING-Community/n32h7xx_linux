@@ -33,7 +33,8 @@ CC := $(CROSS_COMPILE)gcc
 AR := $(CROSS_COMPILE)ar
 
 CPPFLAGS += -DLV_CONF_INCLUDE_SIMPLE -I$(lvgl_dir) -I$(upstream) \
-            -I$(LIBDRM_ROOT)/usr/include -I$(LIBDRM_ROOT)/usr/include/libdrm
+            -I$(LIBDRM_ROOT)/usr/include -I$(LIBDRM_ROOT)/usr/include/libdrm \
+            -idirafter $(TOP)/kernel/include/uapi
 CFLAGS   ?= -Os -Wall -Wextra
 CFLAGS   += -ffunction-sections -fdata-sections
 LDFLAGS  += -Wl,--gc-sections -Wl,-rpath,/usr/lib
@@ -51,7 +52,8 @@ lvgl_font  := $(upstream)/src/font/lv_font.c \
               $(upstream)/src/font/lv_font_montserrat_26.c
 lvgl_srcs  := $(filter-out $(upstream)/src/font/%,$(lvgl_nodrv)) $(lvgl_font) \
               $(upstream)/src/drivers/display/fb/lv_linux_fbdev.c \
-              $(upstream)/src/drivers/display/drm/lv_linux_drm.c
+              $(upstream)/src/drivers/display/drm/lv_linux_drm.c \
+              $(upstream)/src/drivers/evdev/lv_evdev.c
 
 lvgl_objs := $(patsubst $(upstream)/%.c,$(LVGL_BUILD)/obj/%.o,$(lvgl_srcs))
 lvgl_deps := $(lvgl_objs:.o=.d)
@@ -59,13 +61,26 @@ LVGL_LIB  := $(LVGL_BUILD)/liblvgl.a
 
 # --- demo program -----------------------------------------------------------
 DEMO_SRC := $(TOP)/sdk/example/lvgl-demo.c
+GPU_DEMO_SRC := $(TOP)/sdk/example/lvgl-gpu-backend.c
 DEMO_OBJ := $(LVGL_BUILD)/demo/lvgl-demo.o
+GPU_DEMO_OBJ := $(LVGL_BUILD)/demo/lvgl-gpu-backend.o
 DEMO_BIN := $(LVGL_BUILD)/lvgl-demo
+TOUCH_DEMO_SRC := $(TOP)/sdk/example/lvgl-touch-demo.c
+TOUCH_DEMO_OBJ := $(LVGL_BUILD)/demo/lvgl-touch-demo.o
+TOUCH_DEMO_BIN := $(LVGL_BUILD)/lvgl-touch-demo
+HUMAN_UI_DIR := $(TOP)/sdk/optional-src/human-detect
+HUMAN_UI_SRC := $(HUMAN_UI_DIR)/ui.c
+HUMAN_UI_OBJ := $(LVGL_BUILD)/optional/human-detect-ui.o
+HUMAN_UI_BIN := $(LVGL_BUILD)/human-detect-ui
 
-.PHONY: all lib clean
-all: $(DEMO_BIN)
+.PHONY: all lib touch-demo human-detect-ui clean
+all: $(DEMO_BIN) $(TOUCH_DEMO_BIN)
 
 lib: $(LVGL_LIB)
+
+touch-demo: $(TOUCH_DEMO_BIN)
+
+human-detect-ui: $(HUMAN_UI_BIN)
 
 $(LVGL_LIB): $(lvgl_objs)
 	@mkdir -p $(dir $@)
@@ -80,11 +95,34 @@ $(DEMO_OBJ): $(DEMO_SRC)
 	@mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
 
+$(GPU_DEMO_OBJ): $(GPU_DEMO_SRC)
+	@mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
+
+$(TOUCH_DEMO_OBJ): $(TOUCH_DEMO_SRC)
+	@mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
+
+$(HUMAN_UI_OBJ): $(HUMAN_UI_SRC) $(HUMAN_UI_DIR)/preview-gray8.h
+	@mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) -I$(HUMAN_UI_DIR) -I$(TOP)/sdk/example \
+		$(CFLAGS) -MMD -MP -c $< -o $@
+
 $(LIBDRM_SONAME):
 	$(MAKE) -C $(TOP)/sdk/optional-src/libdrm OUT_DIR=$(OUT_DIR) \
 		CROSS_COMPILE=$(CROSS_COMPILE)
 
-$(DEMO_BIN): $(DEMO_OBJ) $(LVGL_LIB) | $(LIBDRM_SONAME)
+$(DEMO_BIN): $(DEMO_OBJ) $(GPU_DEMO_OBJ) $(LVGL_LIB) | $(LIBDRM_SONAME)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	@echo
+	@$(CROSS_COMPILE)size $@
+
+$(TOUCH_DEMO_BIN): $(TOUCH_DEMO_OBJ) $(GPU_DEMO_OBJ) $(LVGL_LIB) | $(LIBDRM_SONAME)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	@echo
+	@$(CROSS_COMPILE)size $@
+
+$(HUMAN_UI_BIN): $(HUMAN_UI_OBJ) $(GPU_DEMO_OBJ) $(LVGL_LIB) | $(LIBDRM_SONAME)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@echo
 	@$(CROSS_COMPILE)size $@
@@ -92,4 +130,5 @@ $(DEMO_BIN): $(DEMO_OBJ) $(LVGL_LIB) | $(LIBDRM_SONAME)
 clean:
 	rm -rf $(LVGL_BUILD)
 
--include $(lvgl_deps) $(DEMO_OBJ:.o=.d)
+-include $(lvgl_deps) $(DEMO_OBJ:.o=.d) $(GPU_DEMO_OBJ:.o=.d) \
+	$(TOUCH_DEMO_OBJ:.o=.d) $(HUMAN_UI_OBJ:.o=.d)

@@ -1664,7 +1664,7 @@
 #define LV_USE_TFT_ESPI 0
 
 /** Read touchscreen, mouse and keyboard input from Linux /dev/input event devices. */
-#define LV_USE_EVDEV 0
+#define LV_USE_EVDEV 1
 
 /** Read pointer, touch and keyboard input through libinput, which must be available in the build. */
 #define LV_USE_LIBINPUT 0

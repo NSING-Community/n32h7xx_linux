@@ -19,25 +19,27 @@ make display-test
 `out/display/n32-display-test`。设备树和内核需要一起更新，具体操作见
 [固件更新](ota-update.md)。验证程序按普通文件传到板上可执行的位置。
 
-显示模式与 GPU 示例一致：RGB565 为默认格式，像素时钟为 AXI÷8；当前 AXI
+显示模式与 GPU 示例一致：固定使用 RGB565，像素时钟为 AXI÷8；当前 AXI
 配置对应 37.5 MHz。水平同步、后沿、前沿分别为 34、46、210，垂直分别为
-10、23、22。也支持 XRGB8888 扫描输出，应用必须使用驱动返回的实际 stride。
+10、23、22。扫描输出最高 800×480，应用必须使用驱动返回的实际 stride。
 
 系统启动时 LCDC 会自动套用这个模式并开始扫描 fbdev 的帧缓冲。本板控制台在
 串口上，没有 fbcon，所以屏幕上电后是稳定的黑色；这不表示显示驱动没有起来，
 只有向 `/dev/fb0` 写入后才会出现内容。
 
-LCD 与 GPU 共用 4 MiB 预留 DMA 内存，该部分不能再用于普通应用。相机采集池
-与其独立。分配按页及连续块取整，4 MiB 池不代表应用可同时分配任意组合的
-4 MiB 图像；需要计入 fbdev 和 GPU 命令缓冲区。800×480 RGB565 单块缓冲区
-为 768000 B，实际占 1 MiB；XRGB8888 单块为 2 MiB。当前 DRM/LVGL 的双缓冲
-RGB565 加上 fbdev 控制台约占 3 MiB，因此 4 MiB 是常用组合的下限附近，不是
-可以任意挥霍的余量。每块 GEM 缓冲区还需要一份同尺寸的普通内存作为 shmem
-后备，这部分不计入 4 MiB 图形池。
+LCDC 扫描读取默认使用最高 QoS，优先于 GPU 对 SDRAM 的写请求，以降低 GPU
+绘制期间扫描取数欠载造成的闪烁或取数错误。该设置由板级图形初始化自动完成，
+应用不需要额外配置。
+
+显示扫描输出限定为 RGB565、最高 800×480。LCD 与 GPU 共用 3 MiB 预留 DMA
+内存，该部分不能再用于普通应用。800×480 RGB565 单帧为 768000 B；fbdev
+加双缓冲应用共三帧，占 2304000 B（2.20 MiB），GPU 的 16 KiB 命令流和记账数据占用其余
+空间。每块 GEM 缓冲区还需要一份同尺寸的普通内存作为 shmem 后备，这部分
+不计入 3 MiB 图形池。
 
 ## 不预留显示内存
 
-不需要 LCD 或 GPU 时，可以关闭显示设备并把 4 MiB 图形池交回 Linux。默认仍然
+不需要 LCD 或 GPU 时，可以关闭显示设备并把 3 MiB 图形池交回 Linux。默认仍然
 预留；需要在电脑端构建时显式指定：
 
 ```sh
@@ -53,7 +55,7 @@ make CAMERA=1 LCD=0
 
 关闭后 LCDC、GPU、面板、背光和图形内存池都不会注册，启动后不会出现
 `/dev/fb0` 或 `/dev/dri/cardN`；正常情况下 `MemTotal` 会比默认 DTB 增加约
-4096 kB。图形池和相机采集池在物理地址上紧贴主 RAM 顶部排列，关闭哪一个，
+3072 kB。图形池和相机采集池在物理地址上紧贴主 RAM 顶部排列，关闭哪一个，
 释放的区间就直接并入主 RAM，不会留下夹在两个保留区之间的小块。它不会改变
 相机采集池、默认 DMA 池或 `system` 分区。切换 DTB 后必须
 重启；使用网络更新时可执行 `make ota-dtb LCD=0 H787_BOARD=root@<板子IP>`。
@@ -277,12 +279,12 @@ LCDC 的 DRM 驱动名为 `n32h7xx-lcdc`，GPU 的为 `n32h7xx-gpu`。可以通�
   alpha 的 `RGB565` 和 `XRGB8888`。
   `RGB888`、`NV12`、`XBGR8888` 和格式 0 都返回 `EINVAL`。未知 handle 返回
   `ENOENT`。
-- LCDC 只能扫描 `RGB565` 和 `XRGB8888`；`ARGB8888` 在 `ADDFB2` 就被拒绝。
-- 翻页不能改变像素格式（内核 DRM 的通用限制，不是本驱动加的）：显示
-  `XRGB8888` 要用 `SETCRTC` 或完整原子提交，不能从 RGB565 直接翻页过去。
+- LCDC 只能扫描 `RGB565`，最大 800×480；其他格式和更大模式会被拒绝。
+- 翻页不能改变像素格式（内核 DRM 的通用限制，不是本驱动加的）；LCDC
+  扫描输出只接受 RGB565。
 - PRIME 两个方向都通：GPU 缓冲区导出给 LCDC 扫描，LCDC 的 dumb 缓冲区也能
   导入 GPU 填充，适合让 GPU 直接画进合成器已有的缓冲。
-- 每块 GEM 缓冲区除了占用 4 MiB 图形池，还要一块**同尺寸的连续普通内存**做
+- 每块 GEM 缓冲区除了占用 3 MiB 图形池，还要一块**同尺寸的连续普通内存**做
   shmem 后备（NOMMU 下由内核预分配）。800×480 RGB565 占 768000 字节，按页和
   连续块向上取整为 1 MiB，即 order-8，所以两个
   800×480 客户端可能同时分配失败，小缓冲区可以并存。分配失败时先释放不用的
@@ -343,15 +345,16 @@ if (ioctl(gpu_fd, DRM_IOCTL_N32H7XX_RECT_BATCH, &batch))
 
 ## UI 库接入
 
-LVGL 接入采用标准 DRM/KMS 方案：使用上游 LVGL 自带的标准 DRM 后端和上游
-libdrm，不增加私有 DRM 封装，也不修改 LVGL 源码。DRM 路径通过标准
-`DRM_IOCTL_MODE_CREATE_DUMB` / `MAP_DUMB`、libdrm 的 `drmModeAddFB2`
-和原子 KMS 完成显示；LVGL 使用 direct mode，在两个 dumb buffer 中直接绘制，
-翻页时等待 KMS 完成事件。不需要 EGL 或 GBM。fbdev 后端仍可使用默认 RGB565
-帧缓冲作为兼容路径。触摸或键盘输入需要另外配置输入设备。
+LVGL 保留上游标准 DRM 和 fbdev 后端，不修改 LVGL 源码。示例另外提供可选的
+GPU draw unit：LVGL 使用 direct mode 在两张 GPU 缓冲区中绘制，支持的不透明
+纯色填充交给 GPU；文字、渐变、圆角和其他未支持任务仍由软件 draw unit 完成。
+完成后通过 PRIME 导入 LCDC，并使用 KMS page flip 显示。不需要 EGL 或 GBM。
+HMI 屏的 GT911 触摸通过内核 evdev 暴露为 `/dev/input/eventN`，LVGL 使用标准
+evdev pointer 驱动接入。
 
-当前两种后端都是 **CPU 绘制、LCDC 扫描输出**。GPU 尚未接入 LVGL 的
-draw unit，所以使用 DRM 显示不会自动获得 GPU 绘图加速。
+默认运行时会自动发现并启用 GPU；找不到 `n32h7xx-gpu` 时回退到标准 DRM/KMS
+软件绘制。需要明确测试软件路径时传入 `-g none`。小控件和文字不会因为启用了
+GPU 路径而自动变快，过小或过大的纯色填充也可能自动回退到软件绘制。
 
 ### 构建与运行 LVGL 示例
 
@@ -375,13 +378,54 @@ make rootfs-squashfs
 ```sh
 scp out/lvgl/lvgl-demo root@<BOARD_IP>:/system/bin/
 ssh root@<BOARD_IP>
-lvgl-demo -d '<LCDC_DRM_DEVICE>' -t 20 -r 16
+lvgl-demo -t 20 -r 16
 ```
 
-`-r 16` 把 LVGL 刷新周期设为 16 ms；省略时使用库内默认值。`-s` 在每个周期
-强制重绘整个屏幕，`-t 0` 持续运行到按 Ctrl-C。程序每秒打印一次渲染帧率、
-flush 次数和运行时间，退出时打印内存与 CPU 时间。`flush/s` 是提交显示的次数，
-不等于面板刷新率。
+显式指定设备并启用 GPU draw unit：
+
+```sh
+lvgl-demo -d '<LCDC_DRM_DEVICE>' -g '<GPU_DRM_DEVICE>' \
+    -i none -t 20 -r 16
+```
+
+测试软件绘制时使用 `-g none`。
+
+接入触摸时指定实际事件节点；不指定时默认尝试 `/dev/input/event0`：
+
+```sh
+cat /proc/bus/input/devices
+lvgl-demo -d '<LCDC_DRM_DEVICE>' -i /dev/input/event0 -t 20 -r 16
+```
+
+触摸绘图示例会实时显示触摸位置和按下状态。按下后连续拖动可绘制蓝色轨迹，
+触点圆环同步跟随；松开后保留本次轨迹，下一次按下时清空并开始新轨迹：
+
+```sh
+make lvgl-touch-demo
+lvgl-touch-demo -d /dev/fb0 -i /dev/input/event0
+```
+
+触摸读取默认使用 5 ms 周期，显示刷新使用 16 ms 周期。轨迹按小段绘制，
+每次只刷新当前新增线段覆盖的区域，避免整屏重绘拖慢触点更新。需要降低
+触摸轮询开销时可增大读取周期，例如 `-r 10` 为 100 Hz：
+
+```sh
+lvgl-touch-demo -d /dev/fb0 -i /dev/input/event0 -r 10
+```
+
+不传 `-t` 时持续运行，按 Ctrl-C 退出；`-t 30` 可运行 30 秒后自动退出。
+显示路径也可改用 `/dev/dri/cardN`。
+
+在 `/proc/bus/input/devices` 中按 Goodix 设备名确认 `Handlers` 对应的
+`eventN`。自动创建的设备节点不保证从 `event0` 开始。设备节点不存在时程序
+仍会显示，只会在终端提示触摸不可用。可用 `-i none` 明确关闭输入。HMI 屏的
+显示扫描和 GT911 的安装方向相差 180°，设备树已声明
+`touchscreen-inverted-x` 和 `touchscreen-inverted-y`，内核上报的 evdev 坐标
+已经与显示方向一致，应用不需要再做反向校准。不要通过修改 LCD 扫描方向迁就
+触摸坐标。
+
+`-r` 设置触摸读取周期；显示刷新周期固定为 16 ms。`-t 0` 持续运行到按
+Ctrl-C，程序退出时打印最后触点坐标。
 
 fbdev 兼容路径把设备换成帧缓冲节点：
 
@@ -531,9 +575,8 @@ RGBA5551   R5 G5 B5 A1        RGB565     R5 G6 B5
 内部或另用 `POLY` 补边，不要期待它在弦上出现灰阶过渡。
 
 当前 GPU 接口提供凸多边形填充、二次贝塞尔曲线填充与边缘抗锯齿；仍不提供
-线条、圆、非凸多边形，也没有 LVGL GPU 绘图后端、SDL 专用后端或
-EGL/OpenGL ES 实现。
-UI 库使用 DRM 显示不会自动获得 GPU 绘图加速。
+线条、圆、非凸多边形、SDL 专用后端或 EGL/OpenGL ES 实现。LVGL 的 GPU draw
+unit 当前只接管满足条件的纯色填充和部分圆弧任务，其余任务走软件绘制。
 
 90°/270° 的源访问天然是列优先，不能对所有方向都切成竖条：0°、180° 和
 单向镜像切成 2 像素竖条会明显变慢（400×240 的 1:1 实测从 6.1 ms 变成

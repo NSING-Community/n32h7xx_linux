@@ -1096,6 +1096,132 @@ out:
 	return ret;
 }
 
+/*
+ * Measure the same surface as bench_case, but submit it as a sequence of
+ * bounded-height fills.  This distinguishes area alone from the duration of a
+ * single uninterrupted GPU job, which is important while LCDC is scanning.
+ */
+static int bench_tiled_case(int gpu, uint32_t format, unsigned int width,
+			    unsigned int height, unsigned int pitch,
+			    unsigned int iters, unsigned int tile_height,
+			    unsigned int gap_us)
+{
+	struct drm_n32h7xx_create create = { 0 };
+	struct drm_n32h7xx_fill fill = { 0 };
+	struct drm_gem_close close_bo = { 0 };
+	unsigned int edge = iters / 10 ? iters / 10 : 1;
+	unsigned int tiles = (height + tile_height - 1) / tile_height;
+	double first = 0, last = 0, sum = 0, bytes;
+	double *sample;
+	unsigned int i;
+	int ret = -1;
+
+	if (!tile_height || tile_height > height)
+		return -1;
+	sample = malloc(iters * sizeof(*sample));
+	if (!sample)
+		return -1;
+	create.size = (uint64_t)pitch * height;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_CREATE, &create)) {
+		perror("GPU buffer allocation");
+		free(sample);
+		return -1;
+	}
+	fill.handle = create.handle;
+	fill.format = format;
+	fill.pitch = pitch;
+	fill.width = width;
+	for (i = 0; i < iters; i++) {
+		unsigned int row;
+		double t0 = now_sec();
+
+		fill.color = 0x1f << (i % 11);
+		for (row = 0; row < height; row += tile_height) {
+			unsigned int rows = height - row;
+
+			if (rows > tile_height)
+				rows = tile_height;
+			fill.offset = row * pitch;
+			fill.height = rows;
+			if (ioctl(gpu, DRM_IOCTL_N32H7XX_FILL, &fill)) {
+				perror("GPU tiled fill");
+				goto out;
+			}
+			if (gap_us && row + rows < height)
+				usleep(gap_us);
+		}
+		sample[i] = now_sec() - t0;
+	}
+	for (i = 0; i < edge; i++) {
+		first += sample[i];
+		last += sample[iters - 1 - i];
+	}
+	qsort(sample, iters, sizeof(*sample), cmp_double);
+	for (i = 0; i < iters; i++)
+		sum += sample[i];
+	bytes = (double)width * height * fourcc_cpp(format);
+	printf("  %-9s %4ux%-4u tile %3u gap %4u us (%u jobs) %6.3f ms avg  p50 %6.3f"
+	       "  p99 %6.3f  max %7.3f  %6.1f MB/s  first/last %5.2f/%5.2f\n",
+	       fourcc_name(format), width, height, tile_height, gap_us, tiles,
+	       sum / iters * 1000.0, sample[iters / 2] * 1000.0,
+	       sample[iters - 1 - iters / 100] * 1000.0,
+	       sample[iters - 1] * 1000.0,
+	       bytes / 1e6 / (sum / iters),
+	       first / edge * 1000.0, last / edge * 1000.0);
+	ret = 0;
+out:
+	close_bo.handle = create.handle;
+	ioctl(gpu, DRM_IOCTL_GEM_CLOSE, &close_bo);
+	free(sample);
+	return ret;
+}
+
+/* Apples-to-apples CPU fill into the same coherent GEM mapping used by LVGL. */
+static int bench_cpu_case(int gpu, unsigned int width, unsigned int height,
+			  unsigned int iters)
+{
+	struct drm_n32h7xx_create create = { 0 };
+	struct drm_gem_close close_bo = { 0 };
+	volatile uint32_t *pixels;
+	uint64_t words;
+	double t0, t1;
+	unsigned int i;
+	void *map;
+	int ret = -1;
+
+	create.size = (uint64_t)width * height * 2;
+	words = create.size / sizeof(uint32_t);
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_CREATE, &create)) {
+		perror("GPU buffer allocation");
+		return -1;
+	}
+	map = mmap(NULL, create.size, PROT_READ | PROT_WRITE, MAP_SHARED, gpu,
+		   create.mmap_offset);
+	if (map == MAP_FAILED) {
+		perror("GPU buffer mmap");
+		goto out;
+	}
+	pixels = map;
+	t0 = now_sec();
+	for (i = 0; i < iters; i++) {
+		uint32_t color = 0x001f001f | ((i % 11) << 21);
+		uint64_t word;
+
+		for (word = 0; word < words; word++)
+			pixels[word] = color;
+	}
+	t1 = now_sec();
+	printf("  CPU       %4ux%-4u %6.3f ms avg  %6.1f MB/s  (%u frames)\n",
+	       width, height, (t1 - t0) * 1000.0 / iters,
+	       iters * (double)create.size / 1e6 / (t1 - t0), iters);
+	munmap(map, create.size);
+	ret = 0;
+out:
+	close_bo.handle = create.handle;
+	ioctl(gpu, DRM_IOCTL_GEM_CLOSE, &close_bo);
+	return ret;
+}
+
 static int set_crtc(int card, uint32_t crtc_id, uint32_t fb_id,
 		    const struct drm_mode_modeinfo *mode, uint32_t connector_id);
 
@@ -2065,6 +2191,35 @@ static unsigned int poly_verify(int gpu, uint32_t handle, void *map,
 	return bad;
 }
 
+static void poly_batch_build(struct drm_n32h7xx_poly *polys,
+			     unsigned int count, uint32_t handle,
+			     unsigned int pitch, unsigned int width,
+			     unsigned int height)
+{
+	unsigned int i;
+
+	for (i = 0; i < count; i++) {
+		unsigned int x = 16 + (i % 16) * 32;
+		unsigned int y = 16 + (i / 16) * 64;
+
+		memset(&polys[i], 0, sizeof(polys[i]));
+		polys[i].handle = handle;
+		polys[i].format = DRM_FORMAT_RGB565;
+		polys[i].offset = y * pitch + x * 2;
+		polys[i].pitch = pitch;
+		polys[i].color = 0xff000000 | (i * 2654435761u);
+		polys[i].vertex_count = 3;
+		polys[i].x[0] = 1 << 16;
+		polys[i].y[0] = 1 << 16;
+		polys[i].x[1] = 14 << 16;
+		polys[i].y[1] = 1 << 16;
+		polys[i].x[2] = 1 << 16;
+		polys[i].y[2] = 14 << 16;
+		if (x + 14 >= width || y + 14 >= height)
+			polys[i].vertex_count = 0;
+	}
+}
+
 static int poly_test(int gpu, unsigned int width, unsigned int height,
 		     unsigned int iters)
 {
@@ -2108,10 +2263,13 @@ static int poly_test(int gpu, unsigned int width, unsigned int height,
 		.color = 0xff20c040,
 	};
 	struct drm_n32h7xx_poly poly = { 0 };
+	struct drm_n32h7xx_poly polys[DRM_N32H7XX_POLY_BATCH_MAX];
+	struct drm_n32h7xx_poly_batch poly_batch = { 0 };
+	struct drm_n32h7xx_fill fill = { 0 };
 	struct drm_n32h7xx_create create = { 0 };
 	struct drm_gem_close close_bo = { 0 };
 	unsigned int checked = 0, bad = 0, worst = 0, worst_area = 0, i;
-	unsigned int rejects = 0;
+	unsigned int rejects = 0, batch_rejects = 0;
 	struct timespec t0, t1;
 	double poly_ms;
 	void *map;
@@ -2162,6 +2320,105 @@ static int poly_test(int gpu, unsigned int width, unsigned int height,
 		rejects++;
 	printf("poly rejects: %u of 5 malformed requests refused\n", 5 - rejects);
 	bad += rejects;
+
+	poly_batch_build(polys, DRM_N32H7XX_POLY_BATCH_MAX, create.handle,
+			 width * 2, width, height);
+	poly_batch.handle = create.handle;
+	poly_batch.count = 1;
+	poly_batch.polys = (uint64_t)(uintptr_t)polys;
+	poly_batch.count = 0;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_POLY_BATCH, &poly_batch) != -1 ||
+	    errno != EINVAL)
+		batch_rejects++;
+	poly_batch.count = DRM_N32H7XX_POLY_BATCH_MAX + 1;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_POLY_BATCH, &poly_batch) != -1 ||
+	    errno != EINVAL)
+		batch_rejects++;
+	poly_batch.count = 4;
+	poly_batch.polys = 0;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_POLY_BATCH, &poly_batch) != -1 ||
+	    errno != EINVAL)
+		batch_rejects++;
+	poly_batch.polys = (uint64_t)(uintptr_t)polys;
+	poly_batch.reserved = 1;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_POLY_BATCH, &poly_batch) != -1 ||
+	    errno != EINVAL)
+		batch_rejects++;
+	poly_batch.reserved = 0;
+	polys[1].handle = create.handle + 1;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_POLY_BATCH, &poly_batch) != -1 ||
+	    errno != EINVAL)
+		batch_rejects++;
+	polys[1].handle = create.handle;
+	printf("poly batch rejects: %u of 5 malformed requests refused\n",
+	       5 - batch_rejects);
+	bad += batch_rejects;
+
+	fill.handle = create.handle;
+	fill.format = DRM_FORMAT_RGB565;
+	fill.pitch = width * 2;
+	fill.width = width;
+	fill.height = height;
+	fill.color = 0x1234;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_FILL, &fill)) {
+		perror("poly batch background");
+		bad++;
+	}
+	poly_batch.count = DRM_N32H7XX_POLY_BATCH_MAX;
+	if (ioctl(gpu, DRM_IOCTL_N32H7XX_POLY_BATCH, &poly_batch)) {
+		printf("poly batch draw: %s\n", strerror(errno));
+		bad++;
+	} else {
+		uint16_t *px = map;
+
+		for (i = 0; i < DRM_N32H7XX_POLY_BATCH_MAX; i++) {
+			unsigned int x = 16 + (i % 16) * 32;
+			unsigned int y = 16 + (i / 16) * 64;
+
+			if (px[(y + 5) * width + x + 5] !=
+			    argb565(polys[i].color))
+				bad++;
+			if (px[(y + 13) * width + x + 13] != 0x1234)
+				bad++;
+		}
+	}
+
+	{
+		static const unsigned int counts[] = { 1, 2, 4, 8, 16, 32, 64 };
+
+		for (i = 0; i < ARRAY_SIZE(counts); i++) {
+			static double sample[1024];
+			unsigned int count = counts[i];
+			unsigned int runs = 512 / count;
+			unsigned int n;
+
+			if (runs < 32)
+				runs = 32;
+			poly_batch.count = count;
+			for (n = 0; n < runs; n++) {
+				struct timespec a, b;
+
+				clock_gettime(CLOCK_MONOTONIC, &a);
+				if (ioctl(gpu, DRM_IOCTL_N32H7XX_POLY_BATCH,
+					  &poly_batch)) {
+					printf("poly batch %u: %s\n", count,
+					       strerror(errno));
+					bad++;
+					runs = 0;
+					break;
+				}
+				clock_gettime(CLOCK_MONOTONIC, &b);
+				sample[n] = (b.tv_sec - a.tv_sec) * 1e6 +
+					    (b.tv_nsec - a.tv_nsec) / 1e3;
+			}
+			if (!runs)
+				break;
+			qsort(sample, runs, sizeof(sample[0]), cmp_double);
+			printf("poly batch %2u: p50 %7.1f us/call, "
+			       "%5.2f us/poly\n", count, sample[runs / 2],
+			       sample[runs / 2] / count);
+		}
+	}
 
 	for (i = 0; i < ARRAY_SIZE(cases); i++) {
 		unsigned int n;
@@ -4315,7 +4572,7 @@ static int compat_gpu(int gpu, uint32_t width, uint32_t height)
 
 		if (ret && errno == ENOMEM)
 			snprintf(detail, sizeof(detail),
-				 "-> pool busy: 4 MiB shared with the LCDC");
+				 "-> shared graphics pool busy");
 		else if (ret)
 			snprintf(detail, sizeof(detail), "-> errno %d (%s)",
 				 errno, strerror(errno));
@@ -4810,10 +5067,11 @@ int main(int argc, char **argv)
 	uint32_t format;
 	int fd, ret;
 
-	if (argc < 3 || argc > 7 ||
+	if (argc < 3 || argc > 9 ||
 	    (strcmp(argv[1], "fb") && strcmp(argv[1], "gpu") &&
 	     strcmp(argv[1], "flip") && strcmp(argv[1], "perf") &&
 	     strcmp(argv[1], "bench") && strcmp(argv[1], "benchfill") &&
+	     strcmp(argv[1], "benchfilltile") && strcmp(argv[1], "benchcpufill") &&
 	     strcmp(argv[1], "verify") && strcmp(argv[1], "panel") &&
 	     strcmp(argv[1], "rect") && strcmp(argv[1], "blend") &&
 	     strcmp(argv[1], "blit") && strcmp(argv[1], "batch") &&
@@ -4824,7 +5082,10 @@ int main(int argc, char **argv)
 	    (!strcmp(argv[1], "fb") && argc > 4) ||
 	    (!strcmp(argv[1], "bench") && argc < 4) ||
 	    (!strcmp(argv[1], "compat") && argc < 4) ||
-	    (!strcmp(argv[1], "benchfill") && argc < 6) ||
+	    ((!strcmp(argv[1], "benchfill") ||
+	      !strcmp(argv[1], "benchfilltile")) && argc < 6) ||
+	    (!strcmp(argv[1], "benchfilltile") && argc < 7) ||
+	    (!strcmp(argv[1], "benchcpufill") && argc < 5) ||
 	    (!strcmp(argv[1], "verify") && argc < 5) ||
 	    (!strcmp(argv[1], "rect") && argc < 5) ||
 	    (!strcmp(argv[1], "blit") && argc < 5) ||
@@ -4838,6 +5099,8 @@ int main(int argc, char **argv)
 			"       %s perf <LCDC DRM node> [GPU DRM node] [frames]\n"
 			"       %s bench <LCDC DRM node> <GPU DRM node>\n"
 			"       %s benchfill <GPU DRM node> <width> <height> <iters> [rgb565|xrgb8888|argb8888]\n"
+		"       %s benchfilltile <GPU DRM node> <width> <height> <iters> <tile-height> [rgb565|xrgb8888|argb8888] [gap-us]\n"
+		"       %s benchcpufill <GPU DRM node> <width> <height> <iters>\n"
 			"       %s verify <GPU DRM node> <width> <height> [rgb565|xrgb8888|argb8888]\n"
 			"       %s rect <GPU DRM node> <width> <height> [iters]\n"
 			"       %s blend <GPU DRM node> <width> <height> [iters]\n"
@@ -4852,7 +5115,8 @@ int main(int argc, char **argv)
 			"       %s compat <LCDC DRM node> <GPU DRM node>\n",
 			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0],
 			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0],
-			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0]);
+			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0],
+			argv[0], argv[0]);
 		return 2;
 	}
 	fd = open(argv[2], O_RDWR | O_CLOEXEC);
@@ -4951,6 +5215,32 @@ int main(int argc, char **argv)
 					 width * fourcc_cpp(format),
 					 strtoul(argv[5], NULL, 0));
 		}
+	} else if (!strcmp(argv[1], "benchfilltile")) {
+		format = DRM_FORMAT_RGB565;
+		if (argc > 7) {
+			if (!strcmp(argv[7], "xrgb8888"))
+				format = DRM_FORMAT_XRGB8888;
+			else if (!strcmp(argv[7], "argb8888"))
+				format = DRM_FORMAT_ARGB8888;
+			else if (strcmp(argv[7], "rgb565")) {
+				fprintf(stderr, "Unknown format %s\n", argv[7]);
+				return 2;
+			}
+		}
+		{
+			uint32_t width = strtoul(argv[3], NULL, 0);
+			uint32_t height = strtoul(argv[4], NULL, 0);
+
+			ret = bench_tiled_case(fd, format, width, height,
+					       width * fourcc_cpp(format),
+					       strtoul(argv[5], NULL, 0),
+					       strtoul(argv[6], NULL, 0),
+					       argc > 8 ? strtoul(argv[8], NULL, 0) : 0);
+		}
+	} else if (!strcmp(argv[1], "benchcpufill")) {
+		ret = bench_cpu_case(fd, strtoul(argv[3], NULL, 0),
+				     strtoul(argv[4], NULL, 0),
+				     strtoul(argv[5], NULL, 0));
 	} else {
 		ret = framebuffer_test(fd, argc == 4 ? strtoul(argv[3], NULL, 0) : 5);
 	}

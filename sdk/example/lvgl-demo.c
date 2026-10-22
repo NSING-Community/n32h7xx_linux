@@ -7,7 +7,9 @@
  * once a second.  It is a self-contained check that the library, the display
  * backend and the board's LCDC path work together; it is not a benchmark.
  *
- * Usage: lvgl-demo [-d /dev/fb0|/dev/dri/card0] [-t seconds] [-r refresh_ms] [-s]
+ * Usage: lvgl-demo [-d /dev/fb0|/dev/dri/cardN] [-g auto|none|/dev/dri/cardN]
+ *                  [-i /dev/input/eventN|none]
+ *                  [-t seconds] [-r refresh_ms] [-s]
  */
 
 #include <signal.h>
@@ -17,6 +19,7 @@
 #include <unistd.h>
 
 #include "lvgl.h"
+#include "lvgl-gpu-backend.h"
 
 static volatile sig_atomic_t running = 1;
 
@@ -28,6 +31,7 @@ static uint32_t render_count;
 static uint32_t flush_count;
 static uint32_t window_start;
 static int stress_mode;
+static lvgl_gpu_backend_t *gpu_backend;
 
 static void on_signal(int sig)
 {
@@ -62,12 +66,30 @@ static void stats_timer_cb(lv_timer_t *timer)
     render_x10 = (render_count * 10000U + elapsed / 2U) / elapsed;
     flush_x10 = (flush_count * 10000U + elapsed / 2U) / elapsed;
 
-    lv_label_set_text_fmt(fps_label, "%u.%u fps  %u.%u flushes/s",
+    lv_label_set_text_fmt(fps_label,
+                          "%u.%u fps  %u.%u flushes/s  GPU %u/%u  SW big %u",
                           render_x10 / 10U, render_x10 % 10U,
-                          flush_x10 / 10U, flush_x10 % 10U);
-    printf("lvgl: %u.%u render fps, %u.%u flushes/s, %u ms uptime\n",
+                          flush_x10 / 10U, flush_x10 % 10U,
+                          gpu_backend ? lvgl_gpu_fill_count(gpu_backend) +
+                                        lvgl_gpu_polygon_count(gpu_backend) : 0U,
+                          gpu_backend ? lvgl_gpu_present_count(gpu_backend) : 0U,
+                          gpu_backend ?
+                          lvgl_gpu_large_fill_fallback_count(gpu_backend) : 0U);
+    printf("lvgl: %u.%u render fps, %u.%u flushes/s, "
+           "GPU fill/border/line/arc/tri/present/jobs/large-SW "
+           "%u/%u/%u/%u/%u/%u/%u+%u/%u, %u ms uptime\n",
            render_x10 / 10U, render_x10 % 10U,
-           flush_x10 / 10U, flush_x10 % 10U, now);
+           flush_x10 / 10U, flush_x10 % 10U,
+           gpu_backend ? lvgl_gpu_fill_count(gpu_backend) : 0U,
+           gpu_backend ? lvgl_gpu_border_count(gpu_backend) : 0U,
+           gpu_backend ? lvgl_gpu_line_count(gpu_backend) : 0U,
+           gpu_backend ? lvgl_gpu_arc_count(gpu_backend) : 0U,
+           gpu_backend ? lvgl_gpu_triangle_count(gpu_backend) : 0U,
+           gpu_backend ? lvgl_gpu_present_count(gpu_backend) : 0U,
+           gpu_backend ? lvgl_gpu_batch_count(gpu_backend) : 0U,
+           gpu_backend ? lvgl_gpu_poly_batch_count(gpu_backend) : 0U,
+           gpu_backend ?
+           lvgl_gpu_large_fill_fallback_count(gpu_backend) : 0U, now);
     fflush(stdout);
 
     render_count = 0;
@@ -265,19 +287,31 @@ static void print_cpu(void)
 
 int main(int argc, char **argv)
 {
-    const char *device = "/dev/fb0";
+    const char *requested_device = NULL;
+    const char *requested_gpu = "auto";
+    const char *device;
+    const char *input_device = "/dev/input/event0";
+    char found_lcdc[64] = "";
+    char found_gpu[64] = "";
     int seconds = 15;
     int refresh_ms = 0;
     char backend_desc[160];
     lv_display_t *disp;
+    lv_indev_t *indev;
     lv_timer_t *refr_timer;
     int opt;
     uint32_t start;
 
-    while ((opt = getopt(argc, argv, "d:t:r:sh")) != -1) {
+    while ((opt = getopt(argc, argv, "d:g:i:t:r:sh")) != -1) {
         switch (opt) {
         case 'd':
-            device = optarg;
+            requested_device = optarg;
+            break;
+        case 'g':
+            requested_gpu = optarg;
+            break;
+        case 'i':
+            input_device = optarg;
             break;
         case 't':
             seconds = atoi(optarg);
@@ -290,8 +324,10 @@ int main(int argc, char **argv)
             break;
         case 'h':
         default:
-            printf("usage: %s [-d /dev/fb0|/dev/dri/card0] [-t seconds]"
-                   " [-r refresh_ms] [-s]\n",
+            printf("usage: %s [-d /dev/fb0|/dev/dri/cardN]"
+                   " [-g auto|none|/dev/dri/cardN]"
+                   " [-i /dev/input/eventN|none]"
+                   " [-t seconds] [-r refresh_ms] [-s]\n",
                    argv[0]);
             return opt == 'h' ? 0 : 1;
         }
@@ -302,7 +338,29 @@ int main(int argc, char **argv)
 
     lv_init();
 
-    if (is_drm_path(device)) {
+    device = requested_device ? requested_device : "/dev/fb0";
+    if (strcmp(requested_gpu, "none") &&
+        (!requested_device || is_drm_path(requested_device))) {
+        if (!lvgl_gpu_discover(found_lcdc, sizeof(found_lcdc),
+                               found_gpu, sizeof(found_gpu))) {
+            const char *lcdc = requested_device ? requested_device : found_lcdc;
+            const char *gpu = strcmp(requested_gpu, "auto") ?
+                              requested_gpu : found_gpu;
+
+            gpu_backend = lvgl_gpu_display_create(&disp, lcdc, gpu);
+            if (!gpu_backend) {
+                fprintf(stderr,
+                        "lvgl: GPU backend unavailable; falling back to KMS\n");
+            }
+        }
+        if (!requested_device && found_lcdc[0])
+            device = found_lcdc;
+    }
+
+    if (gpu_backend) {
+        /* The GPU backend owns the display. */
+    }
+    else if (is_drm_path(device)) {
         disp = lv_linux_drm_create();
         if (disp == NULL) {
             fprintf(stderr, "lvgl: cannot create the DRM display\n");
@@ -334,13 +392,27 @@ int main(int argc, char **argv)
     if (refresh_ms > 0 && refr_timer != NULL)
         lv_timer_set_period(refr_timer, (uint32_t)refresh_ms);
 
-    snprintf(backend_desc, sizeof(backend_desc),
-             "%s  %dx%d  RGB565  %s",
-             is_drm_path(device) ? "DRM dumb buffers" : "fbdev",
+    indev = NULL;
+    if (input_device != NULL && strcmp(input_device, "none") != 0) {
+        indev = lv_evdev_create(LV_INDEV_TYPE_POINTER, input_device);
+        if (indev == NULL) {
+            fprintf(stderr,
+                    "lvgl: touchscreen %s is unavailable; display continues\n",
+                    input_device);
+        }
+        else {
+            lv_indev_set_display(indev, disp);
+        }
+    }
+
+    snprintf(backend_desc, sizeof(backend_desc), "%s  %dx%d  RGB565  %s",
+             gpu_backend ? "GPU GEM + draw unit" :
+             (is_drm_path(device) ? "DRM dumb buffers" : "fbdev"),
              (int)lv_display_get_horizontal_resolution(disp),
              (int)lv_display_get_vertical_resolution(disp),
-             is_drm_path(device) ? "direct mode / two buffers"
-                                 : "partial refresh");
+             gpu_backend ? "CPU fallback for unsupported tasks" :
+             (is_drm_path(device) ? "direct mode / two buffers"
+                                  : "partial refresh"));
     build_ui(backend_desc);
     lv_timer_create(stats_timer_cb, 500, NULL);
     if (stress_mode)
@@ -350,9 +422,16 @@ int main(int argc, char **argv)
      * start the statistics window here rather than assuming a zero origin. */
     window_start = lv_tick_get();
 
-    printf("lvgl: %s, %dx%d, %d s\n", device,
+    printf("lvgl: %s + %s, %dx%d, %d s\n",
+           gpu_backend ? lvgl_gpu_lcdc_device(gpu_backend) : device,
+           gpu_backend ? lvgl_gpu_gpu_device(gpu_backend) : "software",
            (int)lv_display_get_horizontal_resolution(disp),
            (int)lv_display_get_vertical_resolution(disp), seconds);
+    if (gpu_backend)
+        printf("lvgl: GPU plain-fill limit %u..%u pixels\n",
+               16384U, lvgl_gpu_max_fill_pixels(gpu_backend));
+    if (indev != NULL)
+        printf("lvgl: touchscreen pointer %s\n", input_device);
     if (stress_mode)
         printf("lvgl: full-screen stress mode\n");
 
@@ -368,6 +447,8 @@ int main(int argc, char **argv)
     print_memory();
     print_cpu();
     printf("lvgl: stopped after %u ms\n", lv_tick_get() - start);
+    if (gpu_backend)
+        lvgl_gpu_display_destroy(gpu_backend);
 
     return 0;
 }

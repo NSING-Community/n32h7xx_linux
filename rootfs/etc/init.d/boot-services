@@ -5,6 +5,14 @@
 # "( ... ) &" shell compound (no-MMU hush).
 export PATH=/bin:/sbin
 
+# The framebuffer console and graphical applications share the LCD scanout.
+# Stop fbcon's periodic cursor redraw once the shell is up.  This is optional:
+# kernels without fbcon still boot normally.
+if [ -w /sys/class/graphics/fbcon/cursor_blink ]; then
+  echo 0 > /sys/class/graphics/fbcon/cursor_blink ||
+    echo 'WARNING: disabling fbcon cursor blink failed'
+fi
+
 # Read-only board defaults.  Values are data, so this stays a plain text scan:
 # no sourcing, no eval, nothing in the file can run a command.
 conf_get()
