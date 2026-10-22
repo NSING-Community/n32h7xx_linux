@@ -52,3 +52,9 @@ close(fd);
 `n32jpeg-frame.jpg.0` 到 `.9`。程序会检查每帧的 SOI/EOI，并打印实际输出
 字节数。摄像头的 GREY 预览和通用 RGB 压缩仍在后续工作中，不要用当前库处理
 非 GREY8 输入。
+
+## 许可证
+
+`libn32jpeg`、头文件、测试程序和 N32H787 的 ioctl ABI 使用 BSD-3-Clause；
+完整文本见本目录的 `LICENSE`。内核中的 `/dev/jpeg` 驱动仍适用 Linux 内核的
+许可证。
