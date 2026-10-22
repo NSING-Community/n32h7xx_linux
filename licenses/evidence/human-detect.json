@@ -1,0 +1,26 @@
+{
+  "component": "human-detect",
+  "method": "Optional application and source snapshot reviewed together: the ARM binary is rebuilt from sdk/optional-src/human-detect, the model is project data, and each statically linked Apache-2.0 component ships its notice text",
+  "checks": {
+    "sdk/optional/human-detect/human-detect": "6b0074da0e49f3d47a5f1b376d652017fd9811b323ca53bd38e76fd158e9b0ba",
+    "sdk/optional/human-detect/README.md": "558246df3cb4b264d632b646ca82666238596f21985f75ad80783d07851824f7",
+    "sdk/optional/human-detect/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
+    "sdk/optional/human-detect/THIRD_PARTY_NOTICES.md": "2d626057beaf304ea177efdc8bdce605a03bf1eb42db91066f0ba99a03f6566b",
+    "sdk/optional/human-detect/licenses/TFLite-Micro-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "sdk/optional/human-detect/licenses/CMSIS-NN-LICENSE.txt": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "sdk/optional/human-detect/licenses/FlatBuffers-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "sdk/optional/human-detect/licenses/gemmlowp-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "sdk/optional-src/human-detect/Makefile": "3f275672bbbfe468214c5982395209a70b0ead08687c8626542a7fca7fa64b02",
+    "sdk/optional-src/human-detect/THIRD_PARTY_NOTICES.md": "bc99ccb510cced8f32f543ca8ddab2452c7f27725c65a72513b5f83f9a6bc5a5",
+    "sdk/optional-src/human-detect/service.cc": "1910fb1c42971e3c68bb7f3b74594b0faf3057fcd6b3953302d7d7afe215feaf",
+    "sdk/optional-src/human-detect/detector.cc": "20f0a5ec542c761031d5cceecde4f6f41bf845f8f7087cfa0a40b8502582618f"
+  },
+  "details": {
+    "distribution": "sdk/optional/human-detect ships the 237364-byte ARM binary and its complete notice set. sdk/optional-src/human-detect contains the reviewed source snapshot, project-owned model data and pinned third-party source trees; generated objects and the built executable are excluded from the source snapshot.",
+    "license": "Project code, dashboard assets and model data are BSD-3-Clause, copyright 2026 Nsing Technologies Inc. TensorFlow Lite Micro and CMSIS-NN are Apache-2.0; FlatBuffers and gemmlowp headers are Apache-2.0. The exact license texts ship in sdk/optional/human-detect/licenses/ and in the source tree.",
+    "linked_code": "The executable is linked as a C program with -nostdlib++ so it does not require libstdc++ at runtime. It dynamically needs only libc.so.0, supplied by the SDK uClibc runtime; TensorFlow Lite Micro, CMSIS-NN, FlatBuffers and gemmlowp code are linked into the executable.",
+    "build": "Reproduced with make human-detect using the repository ARM uClibc/FDPIC toolchain, then published byte-for-byte with make publish-human-detect. The source snapshot digest covers 513 distributable files and excludes generated build outputs.",
+    "model": "The person position model and its lookup tables under sdk/optional-src/human-detect/model/ were trained for this project. They are not copied from a TensorFlow sample or third-party model release.",
+    "elf": "ARM 32-bit PIE (ET_DYN, interpreter /lib/ld-uClibc.so.0, NEEDED libc.so.0). The read-only PT_LOAD is 181692 file/memory bytes; the writable PT_LOAD is 1484 file bytes and 488528 memory bytes including BSS. GNU_STACK is explicitly non-executable with a 32768-byte stack reservation."
+  }
+}

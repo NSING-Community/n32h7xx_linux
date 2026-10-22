@@ -29,7 +29,7 @@ make CAMERA=0
 切换时不需要清理构建目录，后续构建请继续传入需要的 `CAMERA` 值；不传则使用默认值 `0`。
 
 如果同时不需要 LCD/GPU，可以加 `LCD=0`，例如 `make CAMERA=0 LCD=0`；这样会
-释放显示侧的 4 MiB 预留内存，具体见 [LCD 显示与 GPU](display.md)。
+释放显示侧的 3 MiB 预留内存，具体见 [LCD 显示与 GPU](display.md)。
 
 切换后必须更新 DTB 并重启，只更新 zImage 不生效。关闭摄像头后不会创建
 `/dev/video0`，也不再预留采集内存。采集池紧贴主 RAM 顶部，关闭后这 2 MiB
@@ -148,6 +148,12 @@ killall human-detect
 ```
 
 日志位于 `/tmp/human-detect.log`。修改 `--http-port` 可以更换监听端口。
+
+检测到人形从无到有时，服务还可以把 `human.detected` 事件提交给本机运行的
+WeniClaw，由它通过已配对的微信发送通知。这个功能复用
+`/run/weniclaw/control.sock`，不会启动第二个常驻程序；未安装 WeniClaw 或接口
+不在线时，人形检测、预览和抓图仍正常工作。去重、重试和接入方式见
+[WeniClaw 本机任务接口](../sdk/optional/weniclaw/README.md#本机任务接口)。
 
 DVP 采集驱动和 OV5640 传感器已**内建在内核里**，开机时由设备树自动 probe，
 `/dev/video0` 由内核创建（rootfs 的 camera 服务只负责确认设备是否起来了）。

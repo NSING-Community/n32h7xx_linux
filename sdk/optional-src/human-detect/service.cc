@@ -10,6 +10,7 @@
 #include "detector.h"
 #include "dashboard.h"
 #include "n32jpeg.h"
+#include "preview-gray8.h"
 
 #include <arpa/inet.h>
 #include <errno.h>
@@ -48,8 +49,18 @@ constexpr int kPreviewDefaultSeconds = 0; /* until the client disconnects */
 constexpr int kPreviewMaxSeconds = 60;
 constexpr uint64_t kPreviewWriteTimeoutMs = 3000;
 constexpr size_t kPreviewJpegMax = 128 * 1024;
+constexpr size_t kPreviewGrayBytes =
+	sizeof(struct human_detect_gray_header) +
+	HUMAN_DETECT_PREVIEW_WIDTH * HUMAN_DETECT_PREVIEW_HEIGHT;
 constexpr size_t kHttpRequestMax = 4096;
 constexpr const char *kDefaultSocket = "/run/human-detect.sock";
+constexpr const char *kDefaultTaskSocket = "/run/weniclaw/control.sock";
+constexpr const char *kDefaultEventImage =
+	"/system/weniclaw/workspace/latest-human.jpg";
+constexpr uint64_t kTaskDedupeWindowMs = 5 * 60 * 1000;
+constexpr uint64_t kTaskRetryMs = 30 * 1000;
+constexpr int kTaskConnectTimeoutMs = 100;
+constexpr int kTaskResponseTimeoutMs = 300;
 
 struct ImageSize {
 	uint32_t width;
@@ -64,12 +75,27 @@ constexpr ImageSize kSnapshotSizes[] = {
 };
 
 constexpr ImageSize kDefaultSnapshot = { 1024, 768 };
+constexpr ImageSize kEventSnapshotSize = { 1024, 768 };
 constexpr ImageSize kPreviewSize = { kDetectWidth, kDetectHeight };
 constexpr ImageSize kPreviewSizes[] = { kPreviewSize };
+
+static_assert(sizeof(struct human_detect_preview_box) == 10,
+	      "gray8 preview box ABI changed");
+static_assert(sizeof(struct human_detect_gray_header) ==
+		      HUMAN_DETECT_GRAY_HEADER_SIZE,
+	      "gray8 preview header ABI changed");
+
+enum class PreviewMode {
+	None,
+	Mjpeg,
+	Gray8,
+};
 
 struct Config {
 	const char *device = "/dev/video0";
 	const char *socket_path = kDefaultSocket;
+	const char *task_socket_path = kDefaultTaskSocket;
+	const char *event_image_path = kDefaultEventImage;
 	const char *json_path = nullptr;
 	unsigned int threshold = 102;
 	uint16_t http_port = 0;
@@ -87,6 +113,8 @@ struct ServiceState {
 	bool camera_ready = false;
 	bool camera_stream_synced = false;
 	bool human_present = false;
+	bool task_pending = false;
+	bool event_image_ready = false;
 	bool have_result = false;
 	bool preview_active = false;
 	uint64_t frames = 0;
@@ -96,10 +124,15 @@ struct ServiceState {
 	uint64_t snapshots = 0;
 	uint64_t previews = 0;
 	uint64_t preview_frames = 0;
+	uint64_t task_submissions = 0;
+	uint64_t task_submit_errors = 0;
 	uint64_t rate_window_frames = 0;
 	uint64_t rate_window_started_ms = 0;
 	uint64_t last_frame_ms = 0;
 	uint64_t last_human_change_ms = 0;
+	uint64_t last_task_submit_ms = 0;
+	uint64_t next_task_submit_ms = 0;
+	uint64_t task_event_epoch_s = 0;
 	uint64_t last_snapshot_ms = 0;
 	uint64_t last_preview_ms = 0;
 	uint32_t snapshot_ms = 0;
@@ -114,17 +147,21 @@ struct ServiceState {
 struct PreviewClient {
 	int fd = -1;
 	int jpeg_fd = -1;
+	PreviewMode mode = PreviewMode::None;
 	uint64_t started_ms = 0;
 	uint64_t deadline_ms = 0;
 	uint64_t next_frame_ms = 0;
 	uint64_t last_io_ms = 0;
 	unsigned int fps = kPreviewDefaultFps;
 	uint8_t *jpeg = nullptr;
+	uint8_t *gray_packet = nullptr;
 	char prefix[192];
 	size_t prefix_length = 0;
 	size_t prefix_offset = 0;
 	size_t jpeg_length = 0;
 	size_t jpeg_offset = 0;
+	size_t gray_length = 0;
+	size_t gray_offset = 0;
 	size_t suffix_offset = 0;
 	bool pending = false;
 };
@@ -133,6 +170,11 @@ struct HttpRequest {
 	char method[16];
 	char target[512];
 };
+
+void preview_close(PreviewClient *preview, ServiceState *state,
+		   const char *reason);
+bool save_event_snapshot(Camera *camera, ServiceState *state,
+			 PreviewClient *preview, const char *path);
 
 volatile sig_atomic_t g_stop;
 
@@ -525,6 +567,55 @@ int send_all(int fd, const void *data, size_t length)
 	return 0;
 }
 
+bool write_file_atomic(const char *path, const void *data, size_t length)
+{
+	char temporary[512];
+	const uint8_t *cursor = static_cast<const uint8_t *>(data);
+	size_t remaining = length;
+	int written;
+	int fd;
+
+	if (!path || !*path || strlen(path) + 16 >= sizeof(temporary))
+		return false;
+	written = snprintf(temporary, sizeof(temporary), "%s.tmp.XXXXXX", path);
+	if (written < 0 || static_cast<size_t>(written) >= sizeof(temporary))
+		return false;
+	fd = mkstemp(temporary);
+	if (fd < 0)
+		return false;
+	if (fchmod(fd, 0600) < 0)
+		goto failed;
+	while (remaining) {
+		ssize_t result = write(fd, cursor, remaining);
+
+		if (result > 0) {
+			cursor += result;
+			remaining -= static_cast<size_t>(result);
+			continue;
+		}
+		if (result < 0 && errno == EINTR)
+			continue;
+		goto failed;
+	}
+	if (fsync(fd) < 0)
+		goto failed;
+	if (close(fd) < 0) {
+		fd = -1;
+		goto failed_after_close;
+	}
+	fd = -1;
+	if (rename(temporary, path) < 0)
+		goto failed;
+	return true;
+
+failed:
+	if (fd >= 0)
+		close(fd);
+failed_after_close:
+	unlink(temporary);
+	return false;
+}
+
 int send_http_headers(int fd, int status, const char *reason,
 		      const char *content_type, size_t content_length)
 {
@@ -581,12 +672,15 @@ size_t build_status_json(char *buffer, size_t capacity,
 		    "\"camera_ready\":%s,\"have_result\":%s,\"frames\":%llu,"
 		    "\"camera_errors\":%llu,\"inference_errors\":%llu,"
 		    "\"preview_errors\":%llu,\"snapshots\":%llu,\"previews\":%llu,"
-		    "\"preview_active\":%s,\"preview_frames\":%llu,"
+			    "\"preview_active\":%s,\"preview_frames\":%llu,"
+			    "\"event_image_ready\":%s,"
 		    "\"last_frame_ms\":%llu,\"last_snapshot_ms\":%llu,"
 		    "\"snapshot_ms\":%u,\"last_preview_ms\":%llu,\"preview_ms\":%u,"
 		    "\"uptime_ms\":%llu,\"prepare_us\":%u,\"inference_us\":%u,"
 		    "\"inference_fps\":%u.%02u,"
 		    "\"human_detected\":%s,\"human_changed_ms\":%llu,"
+			    "\"task_pending\":%s,\"task_submissions\":%llu,"
+			    "\"task_submit_errors\":%llu,\"last_task_submit_ms\":%llu,"
 		    "\"preview_default\":\"%ux%u\",\"preview_fps\":%d,"
 		    "\"preview_max_seconds\":%d,\"count\":%u,\"boxes\":[",
 		    state->camera_ready ? "true" : "false",
@@ -599,6 +693,7 @@ size_t build_status_json(char *buffer, size_t capacity,
 		    static_cast<unsigned long long>(state->previews),
 		    state->preview_active ? "true" : "false",
 		    static_cast<unsigned long long>(state->preview_frames),
+			    state->event_image_ready ? "true" : "false",
 		    static_cast<unsigned long long>(state->last_frame_ms),
 		    static_cast<unsigned long long>(state->last_snapshot_ms),
 		    state->snapshot_ms,
@@ -609,6 +704,10 @@ size_t build_status_json(char *buffer, size_t capacity,
 		    state->inference_fps_x100 % 100,
 		    state->human_present ? "true" : "false",
 		    static_cast<unsigned long long>(state->last_human_change_ms),
+			    state->task_pending ? "true" : "false",
+			    static_cast<unsigned long long>(state->task_submissions),
+			    static_cast<unsigned long long>(state->task_submit_errors),
+			    static_cast<unsigned long long>(state->last_task_submit_ms),
 		    kPreviewSize.width, kPreviewSize.height,
 		    kPreviewDefaultFps, kPreviewMaxSeconds, state->result.count))
 		return 0;
@@ -687,7 +786,205 @@ bool detection_changed(const struct human_detect_result &old_result,
 	return false;
 }
 
-int process_detection_frame(Camera *camera, ServiceState *state, FILE *json)
+bool wait_for_fd(int fd, short events, int timeout_ms)
+{
+	uint64_t deadline = monotonic_ms() + static_cast<uint64_t>(timeout_ms);
+
+	for (;;) {
+		struct pollfd descriptor;
+		uint64_t now = monotonic_ms();
+		int timeout;
+		int ready;
+
+		descriptor.fd = fd;
+		descriptor.events = events;
+		descriptor.revents = 0;
+		if (now >= deadline)
+			return false;
+		timeout = static_cast<int>(deadline - now);
+		ready = poll(&descriptor, 1, timeout);
+		if (ready > 0)
+			return (descriptor.revents & (events | POLLERR | POLLHUP | POLLNVAL)) != 0;
+		if (ready == 0)
+			return false;
+		if (errno != EINTR)
+			return false;
+	}
+}
+
+bool send_all_local(int fd, const char *data, size_t length)
+{
+	size_t sent = 0;
+
+	while (sent < length) {
+		ssize_t written = send(fd, data + sent, length - sent, 0);
+
+		if (written > 0) {
+			sent += static_cast<size_t>(written);
+			continue;
+		}
+		if (written < 0 && errno == EINTR)
+			continue;
+		if (written < 0 && (errno == EAGAIN || errno == EWOULDBLOCK) &&
+		    wait_for_fd(fd, POLLOUT, kTaskConnectTimeoutMs))
+			continue;
+		return false;
+	}
+	return true;
+}
+
+bool submit_human_task(const Config *config, const struct human_detect_result &result,
+		       uint64_t *event_epoch_s, const char *image_path)
+{
+	static constexpr char kText[] =
+		"\xE6\xA3\x80\xE6\xB5\x8B\xE5\x88\xB0\xE4\xBA\xBA\xE5\x91\x98";
+	static constexpr char kImageDeliverTemplate[] =
+		"\xE6\xA3\x80\xE6\xB5\x8B\xE5\x88\xB0\xE4\xBA\xBA\xE5\x91\x98\xEF\xBC\x9A"
+		"{{payload.count}} \xE4\xBA\xBA\\n"
+		"\xE7\xAB\xAF\xE4\xBE\xA7\xE6\xA8\xA1\xE5\x9E\x8B\xE6\xA3\x80\xE6\xB5\x8B"
+		"\xE5\xAE\x8C\xE6\x88\x90\xEF\xBC\x8C\xE5\xBD\xA9\xE8\x89\xB2\xE4\xBA\x8B"
+		"\xE4\xBB\xB6\xE5\x9B\xBE\xE7\x89\x87\xE9\x9A\x8F\xE5\x90\x8E\xE5\x8F\x91"
+		"\xE9\x80\x81\xE3\x80\x82";
+	static constexpr char kTextDeliverTemplate[] =
+		"\xE6\xA3\x80\xE6\xB5\x8B\xE5\x88\xB0\xE4\xBA\xBA\xE5\x91\x98\xEF\xBC\x9A"
+		"{{payload.count}} \xE4\xBA\xBA\\n"
+		"\xE4\xBA\x8B\xE4\xBB\xB6\xE5\xBD\xA9\xE8\x89\xB2\xE5\x9B\xBE\xE7\x89\x87"
+		"\xE6\x8D\x95\xE8\x8E\xB7\xE5\xA4\xB1\xE8\xB4\xA5\xEF\xBC\x8C\xE8\xAF\xB7"
+		"\xE6\xA3\x80\xE6\x9F\xA5\xE6\x91\x84\xE5\x83\x8F\xE5\xA4\xB4\xE7\x8A\xB6"
+		"\xE6\x80\x81\xE3\x80\x82";
+	static constexpr char kImageRememberTemplate[] =
+		"\xE7\xAB\xAF\xE4\xBE\xA7\xE6\xA8\xA1\xE5\x9E\x8B\xE6\xA3\x80\xE6\xB5\x8B"
+		"\xE5\xAE\x8C\xE6\x88\x90\xEF\xBC\x8C\xE4\xBA\x8B\xE4\xBB\xB6\xE5\xBD\xA9"
+		"\xE8\x89\xB2 JPEG \xE5\xB7\xB2\xE6\x8D\x95\xE8\x8E\xB7\xEF\xBC\x9B\xE6"
+		"\xA3\x80\xE6\xB5\x8B\xE8\xBE\x93\xE5\x85\xA5\xE4\xB8\xBA 320x240 GREY\xE3"
+		"\x80\x82\xE5\x9B\xBE\xE7\x89\x87\xE7\x94\xB1\xE5\x90\x8C\xE4\xB8\x80\xE6"
+		"\x91\x84\xE5\x83\x8F\xE5\xA4\xB4\xE5\x9C\xA8\xE4\xBA\x8B\xE4\xBB\xB6\xE5"
+		"\x8F\x91\xE7\x94\x9F\xE6\x97\xB6\xE6\x8B\x8D\xE6\x91\x84\xEF\xBC\x8C\xE8"
+		"\xB7\xAF\xE5\xBE\x84\xE8\xA7\x81 payload.image\xE3\x80\x82";
+	static constexpr char kTextRememberTemplate[] =
+		"\xE7\xAB\xAF\xE4\xBE\xA7\xE6\xA8\xA1\xE5\x9E\x8B\xE6\xA3\x80\xE6\xB5\x8B"
+		"\xE5\xAE\x8C\xE6\x88\x90\xEF\xBC\x8C\xE4\xBD\x86\xE4\xBA\x8B\xE4\xBB\xB6"
+		"\xE5\xBD\xA9\xE8\x89\xB2 JPEG \xE6\x9C\xAA\xE6\x8D\x95\xE8\x8E\xB7\xEF\xBC"
+		"\x9B\xE6\xA3\x80\xE6\xB5\x8B\xE8\xBE\x93\xE5\x85\xA5\xE4\xB8\xBA 320x240 "
+		"GREY\xE3\x80\x82";
+	char payload[4096];
+	char request[6144];
+	char response[128];
+	struct sockaddr_un address;
+	size_t offset;
+	int payload_length;
+	int request_length;
+	int fd;
+	int flags;
+	unsigned int boxes = result.count;
+	bool has_image = image_path && image_path[0];
+
+	if (boxes > HUMAN_DETECT_MAX_BOXES)
+		boxes = HUMAN_DETECT_MAX_BOXES;
+	if (!event_epoch_s)
+		return false;
+	if (!*event_epoch_s) {
+		struct timespec wall;
+
+		if (clock_gettime(CLOCK_REALTIME, &wall) < 0 || wall.tv_sec <= 0)
+			return false;
+		*event_epoch_s = static_cast<uint64_t>(wall.tv_sec);
+	}
+	if (!config->task_socket_path || strlen(config->task_socket_path) >= sizeof(address.sun_path))
+		return false;
+	payload_length = snprintf(
+		payload, sizeof(payload),
+		"{\"schema\":\"weniclaw.task.v1\",\"source\":\"human-detect\","
+		"\"event\":\"human.detected\",\"payload\":{\"text\":\"%s\","
+			"\"count\":%u,\"captured_at_s\":%llu,\"input\":\"320x240 GREY\","
+			"\"input_width\":320,\"input_height\":240%s%s%s,\"boxes\":[",
+		kText, boxes, static_cast<unsigned long long>(*event_epoch_s),
+		has_image ? ",\"image\":\"" : "", has_image ? image_path : "",
+		has_image ? "\"" : "");
+	if (payload_length < 0 || static_cast<size_t>(payload_length) >= sizeof(payload))
+		return false;
+	offset = static_cast<size_t>(payload_length);
+	for (unsigned int i = 0; i < boxes; ++i) {
+		const struct human_detect_box &box = result.boxes[i];
+		int written = snprintf(
+			payload + offset, sizeof(payload) - offset,
+			"%s{\"x0\":%u,\"y0\":%u,\"x1\":%u,\"y1\":%u,\"score\":%u}",
+			i ? "," : "", box.x0, box.y0, box.x1, box.y1, box.score);
+
+		if (written < 0 || static_cast<size_t>(written) >= sizeof(payload) - offset)
+			return false;
+		offset += static_cast<size_t>(written);
+	}
+	if (has_image) {
+		payload_length = snprintf(
+			payload + offset, sizeof(payload) - offset,
+			"]},\"pipeline\":[{\"type\":\"remember\",\"template\":\"%s\"},"
+			"{\"type\":\"deliver\",\"channel\":\"wechat\",\"template\":\"%s\"},"
+			"{\"type\":\"media\",\"channel\":\"wechat\",\"path\":\"{{payload.image}}\"}],"
+			"\"idempotency_key\":\"human-detect-%llu\","
+			"\"dedupe\":{\"window_s\":300}}",
+			kImageRememberTemplate, kImageDeliverTemplate,
+			static_cast<unsigned long long>(*event_epoch_s));
+	} else {
+		payload_length = snprintf(
+			payload + offset, sizeof(payload) - offset,
+			"]},\"pipeline\":[{\"type\":\"remember\",\"template\":\"%s\"},"
+			"{\"type\":\"deliver\",\"channel\":\"wechat\",\"template\":\"%s\"}],"
+			"\"idempotency_key\":\"human-detect-%llu\","
+			"\"dedupe\":{\"window_s\":300}}",
+			kTextRememberTemplate, kTextDeliverTemplate,
+			static_cast<unsigned long long>(*event_epoch_s));
+	}
+	if (payload_length < 0 || static_cast<size_t>(payload_length) >= sizeof(payload) - offset)
+		return false;
+	offset += static_cast<size_t>(payload_length);
+	request_length = snprintf(
+		request, sizeof(request),
+		"POST /v1/tasks HTTP/1.1\r\nHost: local\r\n"
+		"Content-Type: application/json\r\nContent-Length: %zu\r\n"
+		"Connection: close\r\n\r\n%s",
+		offset, payload);
+	if (request_length < 0 || static_cast<size_t>(request_length) >= sizeof(request))
+		return false;
+
+	fd = socket(AF_UNIX, SOCK_STREAM, 0);
+	if (fd < 0)
+		return false;
+	flags = fcntl(fd, F_GETFL, 0);
+	if (flags < 0 || fcntl(fd, F_SETFL, flags | O_NONBLOCK) < 0 ||
+	    fcntl(fd, F_SETFD, FD_CLOEXEC) < 0) {
+		close(fd);
+		return false;
+	}
+	memset(&address, 0, sizeof(address));
+	address.sun_family = AF_UNIX;
+	strcpy(address.sun_path, config->task_socket_path);
+	if (connect(fd, reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) < 0) {
+		int connect_error;
+		socklen_t error_length = sizeof(connect_error);
+
+		if (errno != EINPROGRESS || !wait_for_fd(fd, POLLOUT, kTaskConnectTimeoutMs) ||
+		    getsockopt(fd, SOL_SOCKET, SO_ERROR, &connect_error, &error_length) < 0 ||
+		    connect_error != 0) {
+			close(fd);
+			return false;
+		}
+	}
+	if (!send_all_local(fd, request, static_cast<size_t>(request_length))) {
+		close(fd);
+		return false;
+	}
+	if (!wait_for_fd(fd, POLLIN, kTaskResponseTimeoutMs)) {
+		close(fd);
+		return false;
+	}
+	ssize_t received = recv(fd, response, sizeof(response), 0);
+	close(fd);
+	return received >= 12 && !memcmp(response, "HTTP/1.1 202", 12);
+}
+
+int process_detection_frame(Camera *camera, ServiceState *state, FILE *json,
+			    PreviewClient *preview, const Config *config)
 {
 	struct v4l2_buffer buffer;
 	struct human_detect_result result = {};
@@ -768,7 +1065,44 @@ int process_detection_frame(Camera *camera, ServiceState *state, FILE *json)
 	if (present != state->human_present) {
 		state->human_present = present;
 		state->last_human_change_ms = state->last_frame_ms;
+		if (!present) {
+			state->task_pending = false;
+			state->event_image_ready = false;
+		} else if (!state->last_task_submit_ms ||
+			   state->last_frame_ms - state->last_task_submit_ms >=
+				   kTaskDedupeWindowMs) {
+			state->task_event_epoch_s = 0;
+			state->event_image_ready = false;
+			state->task_pending = true;
+			state->next_task_submit_ms = state->last_frame_ms;
+		}
 		changed = true;
+	}
+	if (state->task_pending && state->last_frame_ms >= state->next_task_submit_ms) {
+		if (!state->event_image_ready) {
+			state->event_image_ready = save_event_snapshot(
+				camera, state, preview, config->event_image_path);
+			log_msg(state->event_image_ready ?
+					"event color JPEG saved to %s" :
+					"event color JPEG unavailable; sending detector result only",
+				config->event_image_path);
+		}
+		const char *image_path = state->event_image_ready ?
+			config->event_image_path : nullptr;
+		if (submit_human_task(config, result, &state->task_event_epoch_s,
+				      image_path)) {
+			state->task_pending = false;
+			state->last_task_submit_ms = monotonic_ms();
+			state->task_submissions++;
+			log_msg("human event submitted to WeniClaw (%s)",
+				state->event_image_ready ? "with image" : "text only");
+		} else {
+			state->task_submit_errors++;
+			state->next_task_submit_ms = state->last_frame_ms + kTaskRetryMs;
+			if (state->task_submit_errors == 1 || state->task_submit_errors % 10 == 0)
+				log_msg("WeniClaw task socket unavailable; retrying in %llu seconds",
+					static_cast<unsigned long long>(kTaskRetryMs / 1000));
+		}
 	}
 	if (changed)
 		write_detection_json(json, state);
@@ -901,9 +1235,13 @@ void preview_close(PreviewClient *preview, ServiceState *state,
 	}
 	n32jpeg_free(preview->jpeg);
 	preview->jpeg = nullptr;
+	n32jpeg_free(preview->gray_packet);
+	preview->gray_packet = nullptr;
+	preview->mode = PreviewMode::None;
 	preview->pending = false;
 	preview->prefix_length = preview->prefix_offset = 0;
 	preview->jpeg_length = preview->jpeg_offset = 0;
+	preview->gray_length = preview->gray_offset = 0;
 	preview->suffix_offset = 0;
 	state->preview_active = false;
 	state->last_preview_ms = monotonic_ms();
@@ -913,27 +1251,166 @@ void preview_close(PreviewClient *preview, ServiceState *state,
 	preview->started_ms = 0;
 }
 
-bool preview_begin(PreviewClient *preview, ServiceState *state, int client,
-		   unsigned int fps, unsigned int seconds, uint64_t now)
+bool save_event_snapshot(Camera *camera, ServiceState *state,
+			 PreviewClient *preview, const char *path)
 {
-	static const char headers[] =
+	struct v4l2_buffer buffer;
+	const char *failure = nullptr;
+	bool controls_live = true;
+	bool captured = false;
+	unsigned int frames = 0;
+	uint32_t last_bytes = 0;
+	uint32_t last_flags = 0;
+	long exposure = -1;
+	long gain = -1;
+	long previous_exposure = -2;
+	long previous_gain = -2;
+	int stable = 0;
+	uint64_t started = monotonic_ms();
+
+	if (!path || !*path)
+		return false;
+	if (preview && preview->fd >= 0)
+		preview_close(preview, state, "event snapshot");
+
+	camera_stop(camera);
+	state->camera_ready = false;
+	if (camera->fd < 0) {
+		failure = "camera is closed";
+		goto restore;
+	}
+	if (camera_start(camera, V4L2_PIX_FMT_JPEG, kEventSnapshotSize.width,
+			 kEventSnapshotSize.height) < 0) {
+		failure = "cannot start event JPEG capture";
+		goto restore;
+	}
+
+	for (int frame = 0; frame < kSnapshotMaxFrames; ++frame) {
+		bool usable;
+		int ready = camera_dequeue(camera, &buffer);
+
+		if (ready <= 0) {
+			failure = ready == 0 ? "timed out waiting for an event JPEG" :
+					       "event JPEG capture failed";
+			break;
+		}
+		frames++;
+		last_bytes = buffer.bytesused;
+		last_flags = buffer.flags;
+
+		usable = frame >= kSnapshotMinWarmup;
+		if (controls_live) {
+			if (ctrl_get(camera->fd, V4L2_CID_EXPOSURE, &exposure) < 0 ||
+			    (ctrl_get(camera->fd, V4L2_CID_ANALOGUE_GAIN, &gain) < 0 &&
+			     ctrl_get(camera->fd, V4L2_CID_GAIN, &gain) < 0)) {
+				controls_live = false;
+			} else if (exposure == previous_exposure &&
+				   gain == previous_gain) {
+				stable++;
+			} else {
+				stable = 0;
+				previous_exposure = exposure;
+				previous_gain = gain;
+			}
+		}
+		if (usable && controls_live &&
+		    stable < kSnapshotSettleFrames &&
+		    frame + 1 < kSnapshotMaxFrames)
+			usable = false;
+
+		if (usable && jpeg_is_complete(camera, buffer)) {
+			captured = write_file_atomic(path, camera->mapping,
+						     buffer.bytesused);
+			if (!captured)
+				failure = "cannot write event JPEG";
+			(void)camera_queue(camera, &buffer);
+			break;
+		}
+		if (camera_queue(camera, &buffer) < 0) {
+			failure = "cannot requeue event JPEG buffer";
+			break;
+		}
+	}
+
+	if (!captured && !failure) {
+		if (!frames)
+			failure = "camera produced no event JPEG frames";
+		else
+			failure = "no complete event JPEG after AEC warm-up";
+	}
+
+restore:
+	camera_stop(camera);
+	if (camera_start_grey(camera) == 0) {
+		state->camera_ready = true;
+		state->camera_stream_synced = false;
+	} else {
+		log_msg("event snapshot: failed to restore GREY detection");
+		camera_close(camera);
+		state->camera_errors++;
+	}
+	state->last_snapshot_ms = monotonic_ms();
+	state->snapshot_ms = static_cast<uint32_t>(state->last_snapshot_ms -
+						    started);
+	if (captured) {
+		state->snapshots++;
+		return true;
+	}
+
+	state->camera_errors++;
+	log_msg("event snapshot failed: %s (frames=%u last_bytes=%u flags=0x%x)",
+		failure ? failure : "unknown error", frames, last_bytes, last_flags);
+	return false;
+}
+
+bool preview_begin(PreviewClient *preview, ServiceState *state, int client,
+		   PreviewMode mode, unsigned int fps, unsigned int seconds,
+		   uint64_t now)
+{
+	static const char mjpeg_headers[] =
 		"HTTP/1.1 200 OK\r\n"
 		"Content-Type: multipart/x-mixed-replace; boundary=frame\r\n"
 		"Cache-Control: no-store\r\n"
 		"Pragma: no-cache\r\n"
 		"Connection: close\r\n\r\n";
+	static const char gray8_headers[] =
+		"HTTP/1.1 200 OK\r\n"
+		"Content-Type: application/x-n32h787-gray8\r\n"
+		"Cache-Control: no-store\r\n"
+		"Pragma: no-cache\r\n"
+		"Connection: close\r\n\r\n";
+	const char *headers;
+	size_t headers_length;
 
 	if (preview->fd >= 0) {
 		send_http_text(client, 409, "Conflict",
 			       "a preview client is already connected\n");
 		return false;
 	}
-	if (!preview->jpeg && preview_open_jpeg(preview, state->gray_frame) < 0) {
+	if (mode == PreviewMode::Mjpeg &&
+	    !preview->jpeg && preview_open_jpeg(preview, state->gray_frame) < 0) {
 		send_http_text(client, 503, "Service Unavailable",
 			       "hardware JPEG is unavailable\n");
 		return false;
 	}
-	if (send_all(client, headers, sizeof(headers) - 1) < 0) {
+	if (mode == PreviewMode::Gray8 && !preview->gray_packet) {
+		preview->gray_packet = static_cast<uint8_t *>(
+			n32jpeg_alloc(kPreviewGrayBytes));
+		if (!preview->gray_packet) {
+			send_http_text(client, 503, "Service Unavailable",
+				       "cannot allocate gray8 preview buffer\n");
+			return false;
+		}
+	}
+	preview->mode = mode;
+	if (mode == PreviewMode::Gray8) {
+		headers = gray8_headers;
+		headers_length = sizeof(gray8_headers) - 1;
+	} else {
+		headers = mjpeg_headers;
+		headers_length = sizeof(mjpeg_headers) - 1;
+	}
+	if (send_all(client, headers, headers_length) < 0) {
 		preview_close(preview, state, nullptr);
 		return false;
 	}
@@ -952,10 +1429,12 @@ bool preview_begin(PreviewClient *preview, ServiceState *state, int client,
 	state->preview_active = true;
 	state->previews++;
 	if (seconds)
-		log_msg("preview started at %ux%u GREY, %u fps for %u s",
+		log_msg("%s preview started at %ux%u GREY, %u fps for %u s",
+			mode == PreviewMode::Gray8 ? "gray8" : "MJPEG",
 			kDetectWidth, kDetectHeight, fps, seconds);
 	else
-		log_msg("preview started at %ux%u GREY, %u fps until disconnect",
+		log_msg("%s preview started at %ux%u GREY, %u fps until disconnect",
+			mode == PreviewMode::Gray8 ? "gray8" : "MJPEG",
 			kDetectWidth, kDetectHeight, fps);
 	return true;
 }
@@ -988,6 +1467,15 @@ int preview_flush(PreviewClient *preview)
 
 	if (!preview->pending)
 		return 1;
+	if (preview->mode == PreviewMode::Gray8) {
+		result = send_preview_bytes(preview, preview->gray_packet,
+					    preview->gray_length,
+					    &preview->gray_offset);
+		if (result <= 0)
+			return result;
+		preview->pending = false;
+		return 1;
+	}
 	result = send_preview_bytes(
 		preview, reinterpret_cast<const uint8_t *>(preview->prefix),
 		preview->prefix_length, &preview->prefix_offset);
@@ -1008,6 +1496,8 @@ int preview_flush(PreviewClient *preview)
 int preview_tick(PreviewClient *preview, ServiceState *state)
 {
 	uint64_t now = monotonic_ms();
+	struct human_detect_gray_header *header;
+	uint8_t *pixels;
 	int result;
 
 	if (preview->fd < 0)
@@ -1036,29 +1526,69 @@ int preview_tick(PreviewClient *preview, ServiceState *state)
 	    !state->have_result)
 		return 0;
 
-	draw_detection_boxes(state->gray_frame, state->result);
-	if (encode_gray_jpeg(preview, state->gray_frame) < 0) {
-		state->preview_errors++;
-		log_msg("hardware JPEG preview encode failed: %s",
-			strerror(errno));
-		preview_close(preview, state, "hardware JPEG encode failed");
-		return 0;
-	}
+	if (preview->mode == PreviewMode::Gray8) {
+		header = reinterpret_cast<struct human_detect_gray_header *>(
+			preview->gray_packet);
+		pixels = preview->gray_packet + HUMAN_DETECT_GRAY_HEADER_SIZE;
+		memset(header, 0, sizeof(*header));
+		header->magic = HUMAN_DETECT_GRAY_MAGIC;
+		header->version = HUMAN_DETECT_GRAY_VERSION;
+		header->header_size = HUMAN_DETECT_GRAY_HEADER_SIZE;
+		header->width = kDetectWidth;
+		header->height = kDetectHeight;
+		header->stride = kDetectWidth;
+		header->sequence = state->preview_frames;
+		header->frames = state->frames;
+		header->camera_errors = state->camera_errors > UINT32_MAX ?
+			UINT32_MAX : static_cast<uint32_t>(state->camera_errors);
+		header->inference_errors = state->inference_errors > UINT32_MAX ?
+			UINT32_MAX : static_cast<uint32_t>(state->inference_errors);
+		header->inference_fps_x100 = state->inference_fps_x100;
+		header->prepare_us = state->prepare_us;
+		header->inference_us = state->inference_us;
+		header->frame_age_ms = state->last_frame_ms && now >= state->last_frame_ms ?
+			static_cast<uint32_t>(now - state->last_frame_ms) : 0;
+		header->human_present = state->human_present ? 1 : 0;
+		header->box_count = state->result.count > HUMAN_DETECT_PREVIEW_BOXES ?
+			HUMAN_DETECT_PREVIEW_BOXES : state->result.count;
+		header->camera_ready = state->camera_ready ? 1 : 0;
+		for (unsigned int i = 0; i < header->box_count; ++i) {
+			header->boxes[i].x0 = state->result.boxes[i].x0;
+			header->boxes[i].y0 = state->result.boxes[i].y0;
+			header->boxes[i].x1 = state->result.boxes[i].x1;
+			header->boxes[i].y1 = state->result.boxes[i].y1;
+			header->boxes[i].score = state->result.boxes[i].score;
+		}
+		memcpy(pixels, state->gray_frame, kDetectWidth * kDetectHeight);
+		preview->gray_length = kPreviewGrayBytes;
+		preview->gray_offset = 0;
+	} else {
+		int written;
 
-	int written = snprintf(preview->prefix, sizeof(preview->prefix),
-			       "--frame\r\nContent-Type: image/jpeg\r\n"
-			       "Content-Length: %zu\r\n\r\n",
-			       preview->jpeg_length);
-	if (written < 0 ||
-	    static_cast<size_t>(written) >= sizeof(preview->prefix)) {
-		state->preview_errors++;
-		preview_close(preview, state, "frame header overflow");
-		return -1;
+		draw_detection_boxes(state->gray_frame, state->result);
+		if (encode_gray_jpeg(preview, state->gray_frame) < 0) {
+			state->preview_errors++;
+			log_msg("hardware JPEG preview encode failed: %s",
+				strerror(errno));
+			preview_close(preview, state, "hardware JPEG encode failed");
+			return 0;
+		}
+
+		written = snprintf(preview->prefix, sizeof(preview->prefix),
+				   "--frame\r\nContent-Type: image/jpeg\r\n"
+				   "Content-Length: %zu\r\n\r\n",
+				   preview->jpeg_length);
+		if (written < 0 ||
+		    static_cast<size_t>(written) >= sizeof(preview->prefix)) {
+			state->preview_errors++;
+			preview_close(preview, state, "frame header overflow");
+			return -1;
+		}
+		preview->prefix_length = static_cast<size_t>(written);
+		preview->prefix_offset = 0;
+		preview->jpeg_offset = 0;
+		preview->suffix_offset = 0;
 	}
-	preview->prefix_length = static_cast<size_t>(written);
-	preview->prefix_offset = 0;
-	preview->jpeg_offset = 0;
-	preview->suffix_offset = 0;
 	preview->pending = true;
 	preview->next_frame_ms = now + (1000 + preview->fps / 2) / preview->fps;
 	state->preview_frames++;
@@ -1195,7 +1725,8 @@ failed:
 }
 
 bool handle_http_client(int client, const Config &config, Camera *camera,
-			ServiceState *state, PreviewClient *preview)
+			ServiceState *state, PreviewClient *preview,
+			bool local_only)
 {
 	HttpRequest request;
 	char *query;
@@ -1280,8 +1811,37 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 				       "a preview client is already connected\n");
 			return false;
 		}
-		return preview_begin(preview, state, client, fps, seconds,
+		return preview_begin(preview, state, client, PreviewMode::Mjpeg,
+				     fps, seconds,
 				     monotonic_ms());
+	}
+	if (!strcmp(request.target, "/preview.gray8")) {
+		unsigned int fps = kPreviewDefaultFps;
+		unsigned int seconds = kPreviewDefaultSeconds;
+
+		if (!local_only) {
+			send_http_text(client, 403, "Forbidden",
+				       "gray8 preview is local-only\n");
+			return false;
+		}
+		if (!parse_image_options(query, kPreviewSize, kPreviewSizes,
+					 &size, &fps, &seconds)) {
+			send_http_text(client, 400, "Bad Request",
+				       "preview is fixed at 320x240; fps must be 3..5\n");
+			return false;
+		}
+		if (!state->camera_ready) {
+			send_http_text(client, 503, "Service Unavailable",
+				       "camera is unavailable\n");
+			return false;
+		}
+		if (preview->fd >= 0) {
+			send_http_text(client, 409, "Conflict",
+				       "a preview client is already connected\n");
+			return false;
+		}
+		return preview_begin(preview, state, client, PreviewMode::Gray8,
+				     fps, seconds, monotonic_ms());
 	}
 	if (strcmp(request.target, "/snapshot.jpg") &&
 	    strcmp(request.target, "/snapshot")) {
@@ -1427,11 +1987,12 @@ void usage(const char *program)
 		"usage: %s [options]\n"
 		"  --device PATH      V4L2 camera (default /dev/video0)\n"
 		"  --socket PATH      Unix socket (default %s)\n"
+		"  --task-socket PATH WeniClaw control socket (default %s)\n"
 		"  --http-port PORT   also serve HTTP on 0.0.0.0:PORT\n"
 		"  --threshold N      objectness threshold 0..255 (default 102)\n"
 		"  --json FILE        append JSON when the detection changes\n"
 		"  -h, --help         show this help\n",
-		program, kDefaultSocket);
+		program, kDefaultSocket, kDefaultTaskSocket);
 }
 
 bool parse_options(int argc, char **argv, Config *config)
@@ -1446,6 +2007,8 @@ bool parse_options(int argc, char **argv, Config *config)
 			config->device = argv[++i];
 		} else if (!strcmp(arg, "--socket") && i + 1 < argc) {
 			config->socket_path = argv[++i];
+		} else if (!strcmp(arg, "--task-socket") && i + 1 < argc) {
+			config->task_socket_path = argv[++i];
 		} else if (!strcmp(arg, "--http-port") && i + 1 < argc) {
 			char *end = nullptr;
 			unsigned long value = strtoul(argv[++i], &end, 10);
@@ -1475,7 +2038,8 @@ bool parse_options(int argc, char **argv, Config *config)
 }
 
 bool accept_http_client(int listener, const Config &config, Camera *camera,
-			ServiceState *state, PreviewClient *preview)
+			ServiceState *state, PreviewClient *preview,
+			bool local_only)
 {
 	int client = accept(listener, nullptr, nullptr);
 	int flags;
@@ -1486,7 +2050,8 @@ bool accept_http_client(int listener, const Config &config, Camera *camera,
 	flags = fcntl(client, F_GETFL, 0);
 	if (flags >= 0)
 		fcntl(client, F_SETFL, flags | O_NONBLOCK);
-	adopted = handle_http_client(client, config, camera, state, preview);
+	adopted = handle_http_client(client, config, camera, state, preview,
+				     local_only);
 	if (!adopted)
 		close(client);
 	return adopted;
@@ -1633,7 +2198,8 @@ int main(int argc, char **argv)
 		    descriptors[camera_index].revents &
 			(POLLIN | POLLERR | POLLHUP | POLLNVAL)) {
 			int processed =
-				process_detection_frame(&camera, &state, json);
+						process_detection_frame(&camera, &state, json,
+									&preview, &config);
 
 			if (processed < 0) {
 				log_msg("camera capture failed; reopening %s",
@@ -1658,12 +2224,12 @@ int main(int argc, char **argv)
 
 		if (descriptors[unix_index].revents & POLLIN)
 			accept_http_client(unix_listener, config, &camera, &state,
-					   &preview);
+					   &preview, true);
 		if (tcp_index >= 0 && descriptors[tcp_index].revents & POLLIN) {
 			uint64_t snapshot_before = state.last_snapshot_ms;
 
 			accept_http_client(tcp_listener, config, &camera, &state,
-					   &preview);
+						   &preview, false);
 			if (state.camera_ready &&
 			    state.last_snapshot_ms != snapshot_before)
 				camera_progress_at = monotonic_ms();
