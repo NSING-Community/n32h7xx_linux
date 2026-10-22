@@ -20,16 +20,31 @@
 读完本技能直接执行需要的命令，不要先做额外探测或信息收集。
 
 
-## 板上三个用户 LED：PB3、PF10、PI8
+## 板上三个用户 LED
 
-LED 接 3V3 经限流电阻到引脚，**低电平点亮：0 亮，1 灭**。
+LED 接 3V3 经限流电阻到引脚，三路都是**低电平点亮：0 亮，1 灭**。
 
-    gpio set PB3 0            # 点亮
-    gpio set PB3 1            # 熄灭
+| 颜色 | 引脚 | 点亮 | 熄灭 |
+| --- | --- | --- | --- |
+| 红色 | `PB3` | `gpio set PB3 0` | `gpio set PB3 1` |
+| 绿色 | `PF10` | `gpio set PF10 0` | `gpio set PF10 1` |
+| 蓝色 | `PI8` | `gpio set PI8 0` | `gpio set PI8 1` |
 
-闪 3 次（每次亮 1 秒、灭 1 秒；`gpio set` 会自动 export 和设 out）：
+用户只说“点亮 LED”时点亮红色 `PB3`；明确说颜色时使用对应引脚。
+三色全亮或全灭要放在同一条 exec 中：
+
+    gpio set PB3 0; gpio set PF10 0; gpio set PI8 0    # 红绿蓝全亮
+    gpio set PB3 1; gpio set PF10 1; gpio set PI8 1    # 红绿蓝全灭
+
+闪指定颜色 3 次（红、亮 1 秒、灭 1 秒；`gpio set` 会自动 export 和设 out）：
 
     for i in 1 2 3; do gpio set PB3 0; sleep 1; gpio set PB3 1; sleep 1; done
+
+三色依次点亮（每条 exec 内执行完整个序列）：
+
+    gpio set PB3 0; sleep 1; gpio set PB3 1
+    gpio set PF10 0; sleep 1; gpio set PF10 1
+    gpio set PI8 0; sleep 1; gpio set PI8 1
 
 **整个序列必须放在一条 exec 命令里执行**（每条消息工具轮次有限，
 一次一条 `gpio set` 会把轮次用光）。板上 `sleep` 只收整数秒，没有
@@ -43,5 +58,6 @@ KEY1 = PG3（低有效，按住为 0）。上电时按住 KEY1 会进入 USB MSC
 
 ## 注意
 
-- 输出状态会保持，不会自动复位；做完把 LED 恢复熄灭（`gpio set PB3 1`）。
+- 输出状态会保持，不会自动复位；临时测试结束后熄灭用过的 LED。用户明确要求
+  保持点亮时，按请求保留状态。
 - exec 命令默认 10 秒超时：闪烁轮数要控制在超时内，超时命令会被终止。

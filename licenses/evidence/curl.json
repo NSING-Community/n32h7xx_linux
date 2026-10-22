@@ -1,21 +1,22 @@
 {
   "component": "curl",
-  "method": "In-tree build script reproduces the deployed stripped binary byte for byte; configure arguments, dynamic metadata and on-board transfers reviewed",
+  "method": "In-tree build script reproduces the deployed stripped curl executable and public FDPIC libcurl byte for byte; configure arguments, ELF layout and on-board transfers reviewed",
   "checks": {
-    "rootfs/usr/bin/curl": "487f1a46d76cb9a9a91b9cb894cc8a07ca57ec68659a76f9e5b446e1b4a2b4a0",
-    "sdk-src/scripts/install-curl.sh": "be1b08e41febd260edfe3532e856efdd7590a4ce3c52be03f0a1d60226b6e3ca"
+    "rootfs/usr/bin/curl": "09bb89674f110a235b749816fb51c7f92cf1c9a294a1c5e98ea2c3e0b419d8ca",
+    "rootfs/usr/lib/libcurl.so.4.8.0": "4190f0a26d5a6b1a5a5cc988cabb771a90389adfe3ecf0aea1d07350e4dbd8c7",
+    "sdk-src/scripts/install-curl.sh": "71495e64c07077e1bf7416e4d2c83216939c8f36363e0bfaa8be81d289c18cfc"
   },
   "details": {
     "upstream_version": "8.23.0 (include/curl/curlver.h LIBCURL_VERSION)",
     "release_archive": "curl-8.23.0.tar.xz, unpacked into sdk-src/sources/curl",
-    "configure_arguments": "--host=arm-uclinuxfdpiceabi --prefix=/usr --enable-static --disable-shared --enable-ipv6 --disable-threaded-resolver --with-mbedtls=<staged Mbed TLS> --with-default-ssl-backend=mbedtls --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt; all other TLS backends and the compression, HTTP/2, IDN, LDAP, SSH and mail/file-transfer protocol backends disabled",
+    "configure_arguments": "--host=arm-linux-uclibc --prefix=/usr --enable-shared --disable-static --enable-ipv6 --disable-threaded-resolver --with-mbedtls=<staged Mbed TLS> --with-default-ssl-backend=mbedtls --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt; compression, HTTP/2, IDN, LDAP, SSH and the unused protocol backends are disabled",
     "syscall_probe_override": "ac_cv_func_eventfd=no",
-    "reproduction": "make curl run twice from the published script; rootfs/usr/bin/curl identical both times (sha256 487f1a46..., 465364 bytes stripped)",
-    "size": "Built -Os with -ffunction-sections/-fdata-sections and -Wl,--gc-sections: the text segment is 446444 bytes, so the no-MMU loader's single contiguous mapping for it fits an order-7 (512 KiB) buddy block. The default -O2 build produced a 552960-byte segment that needed order-8, and once those were gone the loader failed with 'nommu: Allocation of length 552960 from process N (curl) failed' and the program died; observed on hardware after the board had been up a while, gone from the shipped build.",
-    "linked_libraries": "libmbedtls.so.21, libmbedx509.so.7, libmbedcrypto.so.16, libc.so.0 (FDPIC shared objects; no TEXTREL, e_flags 0x05000400 hard-float matches rootfs libgcc_s.so.1)",
-    "protocols": "file ftp ftps http https ipfs ipns ws wss",
-    "features": "alt-svc HSTS HTTPS-proxy IPv6 Largefile SSL threadsafe UnixSockets",
-    "on_board": "Verified on the N32H787 board with the shipped rootfs: https://example.com/ and https://curl.se/ return 200 with certificate verification enabled, a self-signed host is rejected, and a 38 MB https download of a mirror index completes intact",
+    "reproduction": "The published script was run from a clean staged source tree twice; rootfs/usr/lib/libcurl.so.4.8.0 is 363524 bytes (sha256 4190f0a2...), rootfs/usr/bin/curl is 125836 bytes (sha256 09bb8967...), and both are stripped",
+    "size": "Built with -Os, section GC and -z noseparate-code. curl has a 114692-byte largest PT_LOAD; public libcurl has a 346176-byte largest PT_LOAD. Both fit an order-7 (512 KiB) buddy block, while keeping text and .rodata together so the FDPIC compiler's default PC-relative read-only-data addressing remains valid on the no-MMU loader.",
+    "linked_libraries": "curl NEEDs libcurl.so.4, libmbedtls.so.21, libmbedx509.so.7, libmbedcrypto.so.16 and libc.so.0; libcurl has SONAME libcurl.so.4 and NEEDs the three Mbed TLS libraries plus libc.so.0. All are FDPIC shared objects and neither output has TEXTREL.",
+    "protocols": "file ftp ftps http https",
+    "features": "HTTPS-proxy IPv6 Largefile SSL threadsafe UnixSockets",
+    "on_board": "Verified on the N32H787 board with libcurl staged outside the old rootfs: 20 consecutive curl --version calls reported curl/libcurl 8.23.0 and mbedTLS/3.6.7; HTTP and HTTPS example.com returned 200, and four simultaneous HTTP/HTTPS transfers all completed. The dynamic WeniClaw build also fetched example.com through the same libcurl.so.4.",
     "licenses": "curl license (MIT/X derivative); COPYING preserved in licenses/curl/COPYING and installed in the rootfs",
     "xattr": "Rebuilt after the toolchain sysroot restored the xattr interface (UCLIBC_HAS_XATTR): the binary now carries curl's fsetxattr path. On the board, --xattr on a filesystem without xattr support prints \"Operation not supported\", still saves the file and exits 0."
   }

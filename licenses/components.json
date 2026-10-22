@@ -442,7 +442,7 @@
     },
     {
       "id": "curl",
-      "name": "curl command-line HTTP/HTTPS client",
+      "name": "curl command-line client and public FDPIC libcurl",
       "version": "8.23.0",
       "license": "curl",
       "source": "https://curl.se/download/ ; curl-8.23.0.tar.xz",
@@ -451,12 +451,12 @@
         "licenses/curl/COPYING",
         "licenses/evidence/curl.json"
       ],
-      "changes": "No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time. The shipped binary was rebuilt after the toolchain sysroot restored the xattr interface, so --xattr is now compiled in; the board was re-tested with it.",
+      "changes": "No source changes. The local build script fixes the configure arguments for this board, builds a public FDPIC libcurl shared library and a dynamically linked curl command, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time. Both outputs use a two-PT_LOAD layout with -z noseparate-code so the target compiler's default PIC data addressing remains valid on the no-MMU loader.",
       "source_required": false,
       "issues": [
         [
           "INFO",
-          "curl license retained with the Copyright and permission notice; deployed binary reproduced byte for byte from the pinned source, and https:// transfers including certificate rejection were exercised on hardware"
+          "curl license retained with the Copyright and permission notice; the deployed curl executable and public libcurl shared library were reproduced byte for byte from the pinned source, and HTTP/HTTPS transfers through the shared library were exercised on hardware"
         ]
       ],
       "version_checks": [
@@ -466,9 +466,10 @@
         }
       ],
       "verification_files": {
-        "rootfs/usr/bin/curl": "487f1a46d76cb9a9a91b9cb894cc8a07ca57ec68659a76f9e5b446e1b4a2b4a0",
-        "sdk-src/scripts/install-curl.sh": "be1b08e41febd260edfe3532e856efdd7590a4ce3c52be03f0a1d60226b6e3ca",
-        "licenses/evidence/curl.json": "672781c2e9d58a8e48374e97f7c3d36b0a95f17d13a1053da0fccdc21fd9c3b7"
+        "rootfs/usr/bin/curl": "09bb89674f110a235b749816fb51c7f92cf1c9a294a1c5e98ea2c3e0b419d8ca",
+        "rootfs/usr/lib/libcurl.so.4.8.0": "4190f0a26d5a6b1a5a5cc988cabb771a90389adfe3ecf0aea1d07350e4dbd8c7",
+        "sdk-src/scripts/install-curl.sh": "71495e64c07077e1bf7416e4d2c83216939c8f36363e0bfaa8be81d289c18cfc",
+        "licenses/evidence/curl.json": "a50bd2be5ebe1e33c85ccd954094bec2c7c15cc51277f786b0029cbaa2bda2e1"
       },
       "source_digest": {
         "sha256": "2ab72263696facbc1b931260a98b522491128cc06e0617ec03b1c4f232a1eb35",
@@ -1081,7 +1082,7 @@
       "name": "WeniClaw experimental agent and optional binary",
       "version": "repository snapshot",
       "license": "BSD-3-Clause",
-      "source": "written for this project; the borrowed think-block scanner is https://github.com/nullclaw/nullclaw.git at commit 5f1cade05c19b6ecdfb9565ae3305e892e484da9",
+      "source": "written for this project; no third-party source is vendored or adapted for WeniClaw's think-block handling",
       "evidence": [
         "sdk/optional/weniclaw/README.md",
         "sdk/optional/weniclaw/LICENSE",
@@ -1089,29 +1090,115 @@
         "sdk/optional/weniclaw/licenses/Zig-MIT.txt",
         "sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt",
         "sdk/optional/weniclaw/licenses/curl-COPYING.txt",
-        "sdk/optional/weniclaw/licenses/nullclaw-MIT.txt",
         "licenses/evidence/weniclaw.json"
       ],
-      "changes": "New BSD-3-Clause agent written for this board and linked with the SDK toolchain's C ABI. The reviewed ARM FDPIC binary is distributed in `sdk/optional/weniclaw` and installed to /system/bin by `sdk/optional/install.sh`. src/think.zig is the nullclaw think-block scanner, MIT, kept under its original notice.",
+      "changes": "BSD-3-Clause agent written for this board and linked with the SDK toolchain's C ABI. The think-block parser is independently implemented in this project. The reviewed ARM FDPIC binary is distributed in `sdk/optional/weniclaw` and installed to /system/bin by `sdk/optional/install.sh`.",
       "source_required": false,
       "issues": [
         [
           "INFO",
-          "Reviewed binary reproduced from the ported build script with Zig 0.16.0; the borrowed MIT file keeps its notice, and the static libcurl, dynamic Mbed TLS and Zig runtime terms are covered by the notice texts shipped with the binary and by those components"
+          "Reviewed binary reproduced from the project build script with Zig 0.16.0; the dynamic libcurl, dynamic Mbed TLS and Zig runtime terms are covered by the notice texts shipped with the binary and by those components"
         ]
       ],
       "verification_files": {
-        "sdk/optional/weniclaw/weniclaw": "aea68f0fcef7d4d82078784f28c98401d222996cc85da20927d08c36630fd575",
-        "sdk/optional/weniclaw/README.md": "0dfe59340c409af886e0b31ad118eec84f0c82272f1a748f21dd43820579a8ce",
+        "sdk/optional/weniclaw/weniclaw": "72377a512a08d17038b15be1626ecf66a9a34b98920aa9393147d831470a54b8",
+        "sdk/optional/weniclaw/README.md": "716e0e57d04e87d1ab16db19039bb375d69b98f1bcbac1e102a47e8ab1642a03",
         "sdk/optional/weniclaw/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
-        "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "7f5a9755e6bbde087f052da7452874627ccd6ed7999fa62e991ab85483853f20",
+        "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "feb87b288ea00cc8b95e173aca67304da5c4a60dde61a4228a847270f2a173ca",
         "sdk/optional/weniclaw/licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",
         "sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
         "sdk/optional/weniclaw/licenses/curl-COPYING.txt": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
-        "sdk/optional/weniclaw/licenses/nullclaw-MIT.txt": "3239c83ea66a66234f0d4d2c71a9b4dbafd9883a5b659222e0752a32de2617a7",
-        "licenses/evidence/weniclaw.json": "c7fbfca7bf633af5268c58ad2eae0db65299f449e7809d3205fed62f3985a965"
+        "sdk/optional/weniclaw/skills/audio/SKILL.md": "144d3576a8c645a74e2e0c12c815bffcad46a70a3d6a0638c7b81b340189cfc3",
+        "sdk/optional/weniclaw/skills/camera/SKILL.md": "7d09555770ecc444b3b2a3c4981338f5d59476fa7fbbb5746331469c8f104281",
+        "sdk/optional/weniclaw/skills/gpio-led/SKILL.md": "b2c4c9a00865e41c6d18cf4d4d70de247b6f5efecae75586bdbc81bf4d8683b5",
+        "sdk/optional/weniclaw/skills/human-service/SKILL.md": "a484f506d01fb1f3b2e58acbfd5c888e5e917b8ed5f1d0e34ab76be67172a84f",
+        "sdk/optional/weniclaw/skills/storage/SKILL.md": "703568d1e9422edebad4026b05ab2ce5e8e85e67d538f4f0c03d5f1b10a70e6d",
+        "licenses/evidence/weniclaw.json": "f4d38230698b431fcf2277d756b0507d4cc81ff3d958e8bc3992c8a31f74ffa4"
       },
-      "copyright": "Copyright (c) 2026 Nsing Technologies Inc. for the WeniClaw additions; Copyright (c) 2026 nullclaw contributors for src/think.zig; Zig contributors and musl contributors for the build-time runtime and headers."
+      "copyright": "Copyright (c) 2026 Nsing Technologies Inc. for WeniClaw; Zig contributors and musl contributors for the build-time runtime and headers."
+    },
+    {
+      "id": "n32jpeg",
+      "name": "N32H7xx hardware JPEG userspace library",
+      "version": "repository snapshot",
+      "license": "BSD-3-Clause",
+      "source": "written for this project",
+      "source_path": "sdk/n32jpeg",
+      "evidence": [
+        "sdk/n32jpeg/LICENSE",
+        "sdk/n32jpeg/README.md",
+        "sdk/n32jpeg/n32jpeg.c",
+        "sdk/n32jpeg/n32jpeg.h",
+        "sdk/n32jpeg/n32jpeg-test.c",
+        "licenses/evidence/n32jpeg.json"
+      ],
+      "changes": "Company-owned userspace wrapper for the NSING /dev/jpeg ioctl ABI. The source and prebuilt static/shared libraries are distributed together so applications can use either linking model.",
+      "source_required": true,
+      "issues": [],
+      "verification_files": {
+        "sdk/n32jpeg/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
+        "sdk/n32jpeg/README.md": "6c00f59deaa4d948c789277646c07c154847efc243710dc72a53bd171fe4b005",
+        "sdk/n32jpeg/Makefile": "0a34bb98c229d414c10220c8975172c3ca448fadb71e4fbe94434c4d8278f563",
+        "sdk/n32jpeg/n32jpeg.c": "7ef7662673a614407d85f56b77e5c07e257585c71626b17f35af18810558725d",
+        "sdk/n32jpeg/n32jpeg.h": "b99c24873d15cbd6eae515bc5816b843113d7c0785789fbfb55c8087160258c0",
+        "sdk/n32jpeg/n32jpeg-test.c": "afd5bef80a2d34397b91fae2db739d56cfd7f65eed2a67ff4a21dfde6041ef1f",
+        "sdk/n32jpeg/libn32jpeg.a": "c939fa199c1cd4a37f9d4d52e522da6489a22f20cb86112d11c16df32f625ae0",
+        "sdk/n32jpeg/libn32jpeg.so": "c56da7d5267ef45fc65e3b8b2dd633f8b190646ba4cf20f823fdb4febcf7fe07",
+        "sdk/n32jpeg/n32jpeg-test": "144348ac73f24b826e1f46be035316e0a3bacf9d4b69fbf6508b305a407a3769",
+        "sdk/n32jpeg/n32jpeg.o": "f2b6987e640e9067cd4b1fe8e02c9476204ec1d8a5fc9700e8bbad3364f41794",
+        "licenses/evidence/n32jpeg.json": "PENDING"
+      },
+      "source_digest": {
+        "sha256": "3579088abde9c55dafe98391829572bebf420bb5de9b50fde0bab6b27544086a",
+        "files": 10
+      },
+      "copyright": "Copyright (c) 2026 Nsing Technologies Inc."
+    },
+    {
+      "id": "human-detect",
+      "name": "Human position detector and camera service",
+      "version": "repository snapshot",
+      "license": "BSD-3-Clause AND Apache-2.0",
+      "source": "project code and model data; statically linked TensorFlow Lite Micro, CMSIS-NN, FlatBuffers and gemmlowp revisions are recorded in THIRD_PARTY_NOTICES.md",
+      "source_path": "sdk/optional-src/human-detect",
+      "evidence": [
+        "sdk/optional/human-detect/LICENSE",
+        "sdk/optional/human-detect/THIRD_PARTY_NOTICES.md",
+        "sdk/optional/human-detect/licenses/TFLite-Micro-LICENSE.txt",
+        "sdk/optional/human-detect/licenses/CMSIS-NN-LICENSE.txt",
+        "sdk/optional/human-detect/licenses/FlatBuffers-LICENSE.txt",
+        "sdk/optional/human-detect/licenses/gemmlowp-LICENSE.txt",
+        "sdk/optional-src/human-detect/THIRD_PARTY_NOTICES.md",
+        "licenses/evidence/human-detect.json"
+      ],
+      "changes": "Project code performs no-MMU-safe V4L2 capture, QVGA integer person detection, JPEG snapshots, MJPEG preview and an HTTP dashboard. The self-trained model is project data. TensorFlow Lite Micro, CMSIS-NN, FlatBuffers and gemmlowp are statically linked under Apache-2.0; N32JPEG is project code under BSD-3-Clause and is recorded separately.",
+      "source_required": true,
+      "issues": [
+        [
+          "INFO",
+          "Executable and build tree reviewed together; generated objects are excluded as source-only build outputs, while the deployable binary has its own pinned hash and notice bundle"
+        ]
+      ],
+      "verification_files": {
+        "sdk/optional/human-detect/human-detect": "6b0074da0e49f3d47a5f1b376d652017fd9811b323ca53bd38e76fd158e9b0ba",
+        "sdk/optional/human-detect/README.md": "558246df3cb4b264d632b646ca82666238596f21985f75ad80783d07851824f7",
+        "sdk/optional/human-detect/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
+        "sdk/optional/human-detect/THIRD_PARTY_NOTICES.md": "2d626057beaf304ea177efdc8bdce605a03bf1eb42db91066f0ba99a03f6566b",
+        "sdk/optional/human-detect/licenses/TFLite-Micro-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "sdk/optional/human-detect/licenses/CMSIS-NN-LICENSE.txt": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+        "sdk/optional/human-detect/licenses/FlatBuffers-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "sdk/optional/human-detect/licenses/gemmlowp-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "sdk/optional-src/human-detect/Makefile": "3f275672bbbfe468214c5982395209a70b0ead08687c8626542a7fca7fa64b02",
+        "sdk/optional-src/human-detect/THIRD_PARTY_NOTICES.md": "bc99ccb510cced8f32f543ca8ddab2452c7f27725c65a72513b5f83f9a6bc5a5",
+        "sdk/optional-src/human-detect/service.cc": "1910fb1c42971e3c68bb7f3b74594b0faf3057fcd6b3953302d7d7afe215feaf",
+        "sdk/optional-src/human-detect/detector.cc": "20f0a5ec542c761031d5cceecde4f6f41bf845f8f7087cfa0a40b8502582618f",
+        "licenses/evidence/human-detect.json": "30f59c27b931cdf87229d266b17ec2b382ac6623185a37761ba57b81025c859d"
+      },
+      "source_digest": {
+        "sha256": "b65ab270c9c6604ec6d08cbff4e3b3aba8f3ea43bd2e514f33e988bcac4f8ae0",
+        "files": 513
+      },
+      "copyright": "Copyright (c) 2026 Nsing Technologies Inc. for the project code and model; TensorFlow, Arm and their respective contributors for the Apache-2.0 libraries identified in the notice file."
     },
     {
       "id": "sdk-manuals",
@@ -1244,6 +1331,14 @@
     },
     {
       "prefix": "rootfs/usr/bin/curl",
+      "component": "curl"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libcurl.so.4",
+      "component": "curl"
+    },
+    {
+      "prefix": "rootfs/usr/lib/libcurl.so.4.8.0",
       "component": "curl"
     },
     {
@@ -1385,6 +1480,18 @@
     {
       "prefix": "sdk/optional/weniclaw",
       "component": "weniclaw"
+    },
+    {
+      "prefix": "sdk/optional/human-detect",
+      "component": "human-detect"
+    },
+    {
+      "prefix": "sdk/optional-src/human-detect",
+      "component": "human-detect"
+    },
+    {
+      "prefix": "sdk/n32jpeg",
+      "component": "n32jpeg"
     },
     {
       "prefix": "sdk/optional-src/espeak-ng",
@@ -4942,7 +5049,12 @@
     "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
     "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
     "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
-    "sdk/optional/weniclaw/weniclaw": "aea68f0fcef7d4d82078784f28c98401d222996cc85da20927d08c36630fd575",
+    "sdk/optional/weniclaw/weniclaw": "72377a512a08d17038b15be1626ecf66a9a34b98920aa9393147d831470a54b8",
+    "sdk/optional/human-detect/human-detect": "6b0074da0e49f3d47a5f1b376d652017fd9811b323ca53bd38e76fd158e9b0ba",
+    "sdk/n32jpeg/libn32jpeg.a": "c939fa199c1cd4a37f9d4d52e522da6489a22f20cb86112d11c16df32f625ae0",
+    "sdk/n32jpeg/libn32jpeg.so": "c56da7d5267ef45fc65e3b8b2dd633f8b190646ba4cf20f823fdb4febcf7fe07",
+    "sdk/n32jpeg/n32jpeg-test": "144348ac73f24b826e1f46be035316e0a3bacf9d4b69fbf6508b305a407a3769",
+    "sdk/n32jpeg/n32jpeg.o": "f2b6987e640e9067cd4b1fe8e02c9476204ec1d8a5fc9700e8bbad3364f41794",
     "sdk/optional/ns-flash/ns-flash": "9cbf1bedfe9d5f454c6c2ef3de706403d2b9c8b0ad5605cb5c1707d88bbd5226",
     "sdk/toolchain/arm-uclinuxfdpiceabi/bin/ar": "f06223b03b0ca3db73df7985808e8aa51d1b571b50154d1c35a9c144c82ee9bf",
     "sdk/toolchain/arm-uclinuxfdpiceabi/bin/as": "55345d6b014ee6c8efd13e712714d7b9455ff986089a9b59dab64e21ff32b312",
@@ -5031,13 +5143,15 @@
     "kernel/drivers/media/i2c/ov5640.ko": "13c9df7160b9aafa32e1c18fee7cb43d68ec1e49b9227baa89c2ecef22b9c673",
     "kernel/drivers/media/i2c/ov5640.mod.o": "98e6e18950f5d5ff707cdce301abd64dd408e9e0125bc055ce980cf39b7be72e",
     "kernel/drivers/media/i2c/.module-common.o": "5e9ab4ae21acd740ed82d77acd05e76bd8515043b5c3a410fe248fa90d43f76f",
-    "rootfs/usr/bin/curl": "487f1a46d76cb9a9a91b9cb894cc8a07ca57ec68659a76f9e5b446e1b4a2b4a0",
+    "rootfs/usr/bin/curl": "09bb89674f110a235b749816fb51c7f92cf1c9a294a1c5e98ea2c3e0b419d8ca",
     "rootfs/usr/lib/libmbedtls.so.21": "926ce1dfe22d23a865902e486cb2927fc0cacf0d087916023b94110d8c63bf4a",
     "rootfs/usr/lib/libmbedx509.so.7": "5966b8e1a696a01462f37609934f3ee359f9fd16764d2548f9095573983f0850",
-    "rootfs/usr/lib/libmbedcrypto.so.16": "b5eb8bd9e11fb6628a19627b2a319ab03572484661216b361b6ac9a3e32a468e"
+    "rootfs/usr/lib/libmbedcrypto.so.16": "b5eb8bd9e11fb6628a19627b2a319ab03572484661216b361b6ac9a3e32a468e",
+    "rootfs/usr/lib/libcurl.so.4.8.0": "4190f0a26d5a6b1a5a5cc988cabb771a90389adfe3ecf0aea1d07350e4dbd8c7"
   },
   "source_only_paths": [
-    "sdk/example"
+    "sdk/example",
+    "sdk/optional-src/human-detect"
   ],
   "build_material_digests": {
     "sdk-src/patches": {
@@ -5045,12 +5159,12 @@
       "files": 9
     },
     "sdk-src/configs": {
-      "sha256": "4f68f3d64389aa88c975d4b5f432559796be9a3e3af71187c471aeae2a5e5f29",
+      "sha256": "6054b6ae1b742f1907f885c5809b5ef71b3ead75cdf3121edbe0e2aeb32b79d2",
       "files": 7
     },
     "sdk-src/scripts": {
-      "sha256": "75fe7706a463412824b6727545694f6b6c6d059c5587c63398cc966a7a1f5f99",
-      "files": 22
+      "sha256": "a568f44efa5dc4f46396a2486155ec74ab958a65e0ed6c0ccb8ef4ea4ead0887",
+      "files": 23
     },
     "sdk-src/project/microadb": {
       "sha256": "71a1b4a100b8b35b0d1207d8c816a502d58de2dc7e3146cc734e535e45de62e4",
@@ -5069,15 +5183,15 @@
       "files": 7
     },
     "sdk/optional-src": {
-      "sha256": "5281d8bde05eb9da2fe081b92da74fc5c64c417c1bb648f6769d628a224af54d",
-      "files": 52
+      "sha256": "2b340970be8b004d2b65f0f97ca894a353dd5691c474ce254649147475e83a9f",
+      "files": 2371
     },
     "sdk/toolchain/patches": {
       "sha256": "460bc1015f3f7bbe837aef41ffeb69bba4924182907644295dd7128a171779ca",
       "files": 3
     },
     "Makefile": {
-      "sha256": "3382c0181aaaa6b167d62f9e07ea50d3e7f196fe75c6ff083aca5f96f6fb4591",
+      "sha256": "007b9e592b40a3003c935eb7996ce0212e8966d0ae91b3224cb65810aaf99d84",
       "files": 1
     },
     "bootloader/Makefile": {

@@ -62,7 +62,7 @@ BOARD=<板子IP> USE=ssh sh install.sh # 走 ssh；BOARD 没有默认值
 | --- | --- | --- |
 | [espeak-ng](../sdk/optional/espeak-ng/README.md) | 语音合成，板上的放音设备直接出声 | 无（GPL-3.0-or-later，见该目录 README） |
 | [ns-flash](../sdk/optional/ns-flash/README.md) | 板子作 USB host，驱动外接 NSLink 探针烧写目标板 | 内核要有 USB host 与探针所用传输：bulk 探针走 usbfs，HID 探针要 `CONFIG_HIDRAW`（连同 `CONFIG_INPUT` / `CONFIG_HID_SUPPORT` / `CONFIG_HID` / `CONFIG_HID_GENERIC` / `CONFIG_USB_HID`） |
-| [WeniClaw](../sdk/optional/weniclaw/README.md) | 命令行与微信 AI 助手；FDPIC 程序，复用 rootfs 的 uClibc 和 Mbed TLS，不占大块连续内存 | 内核需有网络；没有配置文件时先开 80 端口配置页；走 https 用 rootfs 里已有的 CA 列表 |
+| [WeniClaw](../sdk/optional/weniclaw/README.md) | 命令行与微信 AI 助手；FDPIC 程序，复用 rootfs 的 uClibc、libcurl 和 Mbed TLS | 内核需有网络；没有配置文件时先开 80 端口配置页；走 https 用 rootfs 里已有的 CA 列表 |
 | [human-detect](../sdk/optional/human-detect/README.md) | 人形位置检测、灰度 MJPEG 预览和彩色抓图；浏览器打开 8080 端口 | 内核需使用 `CAMERA=1` 构建，并且 OV5640 已连接 |
 
 `ns-flash` 操作的是探针 SWD 那头接着的芯片，不是它自己跑着的这块板子。
@@ -311,7 +311,8 @@ gpio unexport PB3         # 释放
 `hexdump`、`xxd`、`nc`、`nslookup`；后台与进程管理是 `nohup`、`setsid`、
 `pgrep`、`pkill`、`flock`、`crond`。
 
-要访问 `https://` 用 rootfs 里的 `curl`（8.23.0，动态链接 Mbed TLS 共享库）。
+要访问 `https://` 用 rootfs 里的 `curl`（8.23.0，动态链接公共 `libcurl.so.4`
+和 Mbed TLS 共享库）。
 本板 busybox 没有 `curl` applet，它的 `wget` 也没编进 TLS，所以 `https://`
 只有 `curl` 一条路；`ftp`、`file://` 等协议同样支持。
 

@@ -20,7 +20,7 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 | GNU Binutils including libdep plugin | 2.46.0.20260210 (host ld --version); source base 2.46.0 | `GPL-3.0-or-later` |
 | GCC bundled support libraries | GMP 6.3.0; MPFR 4.2.2; MPC 1.3.1; ISL 0.24; GCC 16.1.0 support libraries | `(LGPL-3.0-or-later OR GPL-2.0-or-later) AND LGPL-3.0-or-later AND LGPL-2.0-or-later AND MIT AND Apache-2.0 AND BSD-3-Clause AND GPL-3.0-or-later` |
 | Dropbear SSH server/client/key/scp with bundled crypto | 2026.94 (source declaration) | `MIT AND BSD-2-Clause AND LicenseRef-Dropbear-Mixed` |
-| curl command-line HTTP/HTTPS client | 8.23.0 | `curl` |
+| curl command-line client and public FDPIC libcurl | 8.23.0 | `curl` |
 | Mbed TLS shared libraries used by curl | 3.6.7 LTS | `Apache-2.0` |
 | Mozilla CA root bundle used by curl | certdata.txt as of 2026-09-25 03:12:01 GMT; 121 certificates | `MPL-2.0` |
 | microADB with Linux NOMMU HAL | 85cc7a9 + local port | `Apache-2.0` |
@@ -32,6 +32,8 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 | pcaudiolib linked into optional espeak-ng | d6a6b00 | `GPL-3.0-or-later` |
 | NSLink optional ns-flash binary | 0.1.4 (README declaration) | `LicenseRef-Company-Proprietary` |
 | WeniClaw experimental agent and optional binary | repository snapshot | `BSD-3-Clause` |
+| N32H7xx hardware JPEG userspace library | repository snapshot | `BSD-3-Clause` |
+| Human position detector and camera service | repository snapshot | `BSD-3-Clause AND Apache-2.0` |
 | GNU GCC and Binutils SDK manuals | shipped SDK snapshot | `GFDL-1.3-or-later AND GPL-3.0-or-later` |
 | Generated GNU ld linker scripts | SDK snapshot; generator binary 2.46.0.20260210 | `LicenseRef-Binutils-Linker-Script` |
 
@@ -244,14 +246,14 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
   - [licenses/dropbear-file-notices.txt](licenses/dropbear-file-notices.txt)
   - [licenses/evidence/dropbear.json](licenses/evidence/dropbear.json)
 
-## curl command-line HTTP/HTTPS client
+## curl command-line client and public FDPIC libcurl
 
 - Version: 8.23.0
 - SPDX/classification: `curl`
 - Source: https://curl.se/download/ ; curl-8.23.0.tar.xz
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
 - Corresponding source: published with the release; see [licenses/README.md](licenses/README.md)
-- Modifications: No source changes. The local build script fixes the configure arguments for this board, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time. The shipped binary was rebuilt after the toolchain sysroot restored the xattr interface, so --xattr is now compiled in; the board was re-tested with it.
+- Modifications: No source changes. The local build script fixes the configure arguments for this board, builds a public FDPIC libcurl shared library and a dynamically linked curl command, links the Mbed TLS shared libraries, bakes in the CA bundle path, and forces ac_cv_func_eventfd=no because the kernel has no eventfd(); the cross-configure probe can only compile, never run, so it would otherwise take the eventfd wakeup path and fail at run time. Both outputs use a two-PT_LOAD layout with -z noseparate-code so the target compiler's default PIC data addressing remains valid on the no-MMU loader.
 - Copyright: Original component/file copyright holders; complete declarations in the referenced materials.
 - Full licenses, NOTICEs and evidence:
   - [licenses/curl/COPYING](licenses/curl/COPYING)
@@ -413,11 +415,11 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
 
 - Version: repository snapshot
 - SPDX/classification: `BSD-3-Clause`
-- Source: written for this project; the borrowed think-block scanner is https://github.com/nullclaw/nullclaw.git at commit 5f1cade05c19b6ecdfb9565ae3305e892e484da9
+- Source: written for this project; no third-party source is vendored or adapted for WeniClaw's think-block handling
 - Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
 - Corresponding source: Not included; see the ownership/source statement above
-- Modifications: New BSD-3-Clause agent written for this board and linked with the SDK toolchain's C ABI. The reviewed ARM FDPIC binary is distributed in `sdk/optional/weniclaw` and installed to /system/bin by `sdk/optional/install.sh`. src/think.zig is the nullclaw think-block scanner, MIT, kept under its original notice.
-- Copyright: Copyright (c) 2026 Nsing Technologies Inc. for the WeniClaw additions; Copyright (c) 2026 nullclaw contributors for src/think.zig; Zig contributors and musl contributors for the build-time runtime and headers.
+- Modifications: BSD-3-Clause agent written for this board and linked with the SDK toolchain's C ABI. The think-block parser is independently implemented in this project. The reviewed ARM FDPIC binary is distributed in `sdk/optional/weniclaw` and installed to /system/bin by `sdk/optional/install.sh`.
+- Copyright: Copyright (c) 2026 Nsing Technologies Inc. for WeniClaw; Zig contributors and musl contributors for the build-time runtime and headers.
 - Full licenses, NOTICEs and evidence:
   - [sdk/optional/weniclaw/README.md](sdk/optional/weniclaw/README.md)
   - [sdk/optional/weniclaw/LICENSE](sdk/optional/weniclaw/LICENSE)
@@ -425,8 +427,43 @@ Use `make legal-info` for the metadata companion and `make legal-info-sources LE
   - [sdk/optional/weniclaw/licenses/Zig-MIT.txt](sdk/optional/weniclaw/licenses/Zig-MIT.txt)
   - [sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt](sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt)
   - [sdk/optional/weniclaw/licenses/curl-COPYING.txt](sdk/optional/weniclaw/licenses/curl-COPYING.txt)
-  - [sdk/optional/weniclaw/licenses/nullclaw-MIT.txt](sdk/optional/weniclaw/licenses/nullclaw-MIT.txt)
   - [licenses/evidence/weniclaw.json](licenses/evidence/weniclaw.json)
+
+## N32H7xx hardware JPEG userspace library
+
+- Version: repository snapshot
+- SPDX/classification: `BSD-3-Clause`
+- Source: written for this project
+- Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
+- Corresponding source: `sdk/n32jpeg` (ships in this repository)
+- Modifications: Company-owned userspace wrapper for the NSING /dev/jpeg ioctl ABI. The source and prebuilt static/shared libraries are distributed together so applications can use either linking model.
+- Copyright: Copyright (c) 2026 Nsing Technologies Inc.
+- Full licenses, NOTICEs and evidence:
+  - [sdk/n32jpeg/LICENSE](sdk/n32jpeg/LICENSE)
+  - [sdk/n32jpeg/README.md](sdk/n32jpeg/README.md)
+  - [sdk/n32jpeg/n32jpeg.c](sdk/n32jpeg/n32jpeg.c)
+  - [sdk/n32jpeg/n32jpeg.h](sdk/n32jpeg/n32jpeg.h)
+  - [sdk/n32jpeg/n32jpeg-test.c](sdk/n32jpeg/n32jpeg-test.c)
+  - [licenses/evidence/n32jpeg.json](licenses/evidence/n32jpeg.json)
+
+## Human position detector and camera service
+
+- Version: repository snapshot
+- SPDX/classification: `BSD-3-Clause AND Apache-2.0`
+- Source: project code and model data; statically linked TensorFlow Lite Micro, CMSIS-NN, FlatBuffers and gemmlowp revisions are recorded in THIRD_PARTY_NOTICES.md
+- Source revision: Per-file SHA-256 / source snapshot; no upstream commit asserted
+- Corresponding source: `sdk/optional-src/human-detect` (ships in this repository)
+- Modifications: Project code performs no-MMU-safe V4L2 capture, QVGA integer person detection, JPEG snapshots, MJPEG preview and an HTTP dashboard. The self-trained model is project data. TensorFlow Lite Micro, CMSIS-NN, FlatBuffers and gemmlowp are statically linked under Apache-2.0; N32JPEG is project code under BSD-3-Clause and is recorded separately.
+- Copyright: Copyright (c) 2026 Nsing Technologies Inc. for the project code and model; TensorFlow, Arm and their respective contributors for the Apache-2.0 libraries identified in the notice file.
+- Full licenses, NOTICEs and evidence:
+  - [sdk/optional/human-detect/LICENSE](sdk/optional/human-detect/LICENSE)
+  - [sdk/optional/human-detect/THIRD_PARTY_NOTICES.md](sdk/optional/human-detect/THIRD_PARTY_NOTICES.md)
+  - [sdk/optional/human-detect/licenses/TFLite-Micro-LICENSE.txt](sdk/optional/human-detect/licenses/TFLite-Micro-LICENSE.txt)
+  - [sdk/optional/human-detect/licenses/CMSIS-NN-LICENSE.txt](sdk/optional/human-detect/licenses/CMSIS-NN-LICENSE.txt)
+  - [sdk/optional/human-detect/licenses/FlatBuffers-LICENSE.txt](sdk/optional/human-detect/licenses/FlatBuffers-LICENSE.txt)
+  - [sdk/optional/human-detect/licenses/gemmlowp-LICENSE.txt](sdk/optional/human-detect/licenses/gemmlowp-LICENSE.txt)
+  - [sdk/optional-src/human-detect/THIRD_PARTY_NOTICES.md](sdk/optional-src/human-detect/THIRD_PARTY_NOTICES.md)
+  - [licenses/evidence/human-detect.json](licenses/evidence/human-detect.json)
 
 ## GNU GCC and Binutils SDK manuals
 
