@@ -1,7 +1,7 @@
 # CA bundle for curl
 
-`sdk-src/sources/ca-certificates/cacert.pem` is the CA root bundle curl uses to
-validate `https://` servers. It is the file published at
+This CA root bundle lets curl validate `https://` servers. It is the bundle
+published at
 <https://curl.se/ca/cacert.pem>, kept byte for byte as downloaded:
 
 ```sh
