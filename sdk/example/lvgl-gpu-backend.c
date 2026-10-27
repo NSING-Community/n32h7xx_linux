@@ -26,6 +26,7 @@
 #include <drm_fourcc.h>
 #include <drm_mode.h>
 #include <drm/n32h7xx_drm.h>
+#include <xf86drmMode.h>
 
 #include "include/lvgl/draw/lv_draw_arc.h"
 #include "include/lvgl/draw/lv_draw_line.h"
@@ -69,8 +70,10 @@ struct lvgl_gpu_backend {
     char gpu_node[64];
     uint32_t crtc_id;
     uint32_t old_fb;
+    uint32_t connector_id;
     uint32_t width;
     uint32_t height;
+    struct drm_mode_modeinfo mode;
     struct gpu_buffer buffers[GPU_BUFFER_COUNT];
     uint32_t scanout_buffer;
     bool master;
@@ -170,12 +173,22 @@ static int get_crtc_state(lvgl_gpu_backend_t *backend)
     struct drm_mode_card_res resources = { 0 };
     struct drm_mode_crtc crtc = { 0 };
     uint32_t crtcs[4];
+    uint32_t connectors[8];
+    int found_connector = 0;
 
     resources.count_crtcs = 4;
     resources.crtc_id_ptr = (uint64_t)(uintptr_t)crtcs;
+    resources.count_connectors = 8;
+    resources.connector_id_ptr = (uint64_t)(uintptr_t)connectors;
     if (ioctl(backend->lcdc_fd, DRM_IOCTL_MODE_GETRESOURCES, &resources) ||
-        resources.count_crtcs == 0) {
+        resources.count_crtcs == 0 || resources.count_connectors == 0) {
         perror("lvgl-gpu: MODE_GETRESOURCES");
+        return -1;
+    }
+    if (resources.count_crtcs > 4 || resources.count_connectors > 8) {
+        fprintf(stderr,
+                "lvgl-gpu: LCDC has too many KMS objects (CRTC=%u connector=%u)\n",
+                resources.count_crtcs, resources.count_connectors);
         return -1;
     }
 
@@ -186,10 +199,57 @@ static int get_crtc_state(lvgl_gpu_backend_t *backend)
         return -1;
     }
 
+    for (uint32_t i = 0; i < resources.count_connectors; i++) {
+        struct drm_mode_get_connector connector = {
+            .connector_id = connectors[i],
+        };
+        struct drm_mode_get_encoder encoder = { 0 };
+
+        if (ioctl(backend->lcdc_fd, DRM_IOCTL_MODE_GETCONNECTOR, &connector)) {
+            perror("lvgl-gpu: MODE_GETCONNECTOR");
+            return -1;
+        }
+        if (connector.connection != DRM_MODE_CONNECTED ||
+            !connector.encoder_id)
+            continue;
+        encoder.encoder_id = connector.encoder_id;
+        if (ioctl(backend->lcdc_fd, DRM_IOCTL_MODE_GETENCODER, &encoder)) {
+            perror("lvgl-gpu: MODE_GETENCODER");
+            return -1;
+        }
+        if (encoder.crtc_id == crtc.crtc_id) {
+            backend->connector_id = connector.connector_id;
+            found_connector = 1;
+            break;
+        }
+    }
+    if (!found_connector) {
+        fprintf(stderr, "lvgl-gpu: LCDC has no connected connector\n");
+        return -1;
+    }
+
     backend->crtc_id = crtc.crtc_id;
     backend->old_fb = crtc.fb_id;
     backend->width = crtc.mode.hdisplay;
     backend->height = crtc.mode.vdisplay;
+    backend->mode = crtc.mode;
+    return 0;
+}
+
+static int activate_crtc(lvgl_gpu_backend_t *backend)
+{
+    struct drm_mode_crtc set = {
+        .set_connectors_ptr = (uint64_t)(uintptr_t)&backend->connector_id,
+        .count_connectors = 1,
+        .crtc_id = backend->crtc_id,
+        .fb_id = backend->old_fb,
+        .mode = backend->mode,
+    };
+
+    if (ioctl(backend->lcdc_fd, DRM_IOCTL_MODE_SETCRTC, &set)) {
+        perror("lvgl-gpu: MODE_SETCRTC");
+        return -1;
+    }
     return 0;
 }
 
@@ -1706,8 +1766,14 @@ lvgl_gpu_backend_t *lvgl_gpu_display_create(lv_display_t **display,
         goto fail;
     }
     backend->master = true;
-    if (flip_and_wait(backend, backend->buffers[1].fb_id))
-        goto fail;
+    if (flip_and_wait(backend, backend->buffers[1].fb_id)) {
+        /* fbdev normally activates the CRTC when the UI unblanks fb0.  If
+         * another client left it inactive, legacy page flip is rejected by
+         * DRM before reaching the driver, so restore the saved modeset once. */
+        if (activate_crtc(backend) ||
+            flip_and_wait(backend, backend->buffers[1].fb_id))
+            goto fail;
+    }
     backend->scanout_buffer = 1;
 
     disp = lv_display_create(backend->width, backend->height);

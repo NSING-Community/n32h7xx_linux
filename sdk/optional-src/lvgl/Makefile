@@ -118,7 +118,7 @@ $(DEMO_BIN): $(DEMO_OBJ) $(GPU_DEMO_OBJ) $(LVGL_LIB) | $(LIBDRM_SONAME)
 	@$(CROSS_COMPILE)size $@
 
 $(TOUCH_DEMO_BIN): $(TOUCH_DEMO_OBJ) $(GPU_DEMO_OBJ) $(LVGL_LIB) | $(LIBDRM_SONAME)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) -pthread $^ $(LDLIBS) -o $@
 	@echo
 	@$(CROSS_COMPILE)size $@
 
