@@ -23,17 +23,16 @@ make CAMERA=1
 make CAMERA=0
 ```
 
-这个选项选择设备树，不修改已有的内核配置。`CAMERA=1` 使用
-`out/kernel/n32h787-hmi.dtb`，`CAMERA=0` 使用
-`out/kernel/n32h787-hmi-no-camera.dtb`；最终 SPI NOR 镜像会自动包含所选 DTB。
+这个选项选择是否合并摄像头 overlay，不修改已有的内核配置。最终文件始终是
+`out/kernel/n32h787-hmi.dtb`，SPI NOR 镜像会自动包含它。
 切换时不需要清理构建目录，后续构建请继续传入需要的 `CAMERA` 值；不传则使用默认值 `0`。
 
 如果同时不需要 LCD/GPU，可以加 `LCD=0`，例如 `make CAMERA=0 LCD=0`；这样会
 释放显示侧的 3 MiB 预留内存，具体见 [LCD 显示与 GPU](display.md)。
 
 切换后必须更新 DTB 并重启，只更新 zImage 不生效。关闭摄像头后不会创建
-`/dev/video0`，也不再预留采集内存。采集池紧贴主 RAM 顶部，关闭后这 2 MiB
-直接并入主 RAM，与原有连续内存连成一段，不会留下保留区之间的小块。若使用网络更新，可执行
+`/dev/video0`，也不再预留采集内存。采集池位于图形池上方、DTB 槽下方，
+关闭后这 2 MiB 直接并入主 RAM。若使用网络更新，可执行
 `make ota-dtb CAMERA=0 H787_BOARD=root@<板子IP>`，重新启用时将 `0` 改为 `1`。
 
 ## 分辨率支持
@@ -118,7 +117,7 @@ sh sdk/optional/human-detect/install.sh
 服务，但不会注册开机自启。
 
 服务使用 `/run/human-detect.sock`，启动时同时监听 TCP 8080。局域网浏览器
-打开 `http://<板子IP>:8080/` 可以查看 HTML 仪表盘、实时预览、推理帧率、
+打开 `http://<板子IP>:8080/` 可以查看 HTML 仪表盘、实时预览、相机帧率、
 检测框和错误计数。
 下面的 `curl` 使用 Unix socket，不依赖网络地址：
 
@@ -127,17 +126,22 @@ sh sdk/optional/human-detect/install.sh
     -sS http://localhost/status
 
 /usr/bin/curl --unix-socket /run/human-detect.sock \
-    -sS "http://localhost/preview.mjpg?fps=5&duration=30" -o preview.mjpg
+    -sS "http://localhost/preview.mjpg?fps=15&duration=30" -o preview.mjpg
 
 /usr/bin/curl --unix-socket /run/human-detect.sock \
     -sS "http://localhost/snapshot.jpg?size=1024x768" -o /mnt/sd/photo.jpg
 ```
 
 `/status` 的 `human_detected` 表示是否检测到人，`boxes` 是整幅画面的 16 位
-归一化坐标。`/preview.mjpg` 固定为 320x240、3~5 fps，默认 5 fps，持续到浏览器
+归一化坐标。`/preview.mjpg` 固定为 320x240、3~15 fps，默认 15 fps，持续到浏览器
 断开；需要定时采集时加 `duration=1..60`。只允许一个预览客户端。
 `/snapshot.jpg` 默认返回 1024x768 彩色 JPEG，可请求的分辨率与上表一致。抓图
 期间预览接口返回 409，避免两个操作同时切换相机。
+
+没有客户端连接 `/preview.mjpg` 时，服务只采集 Gray8 帧，不执行 JPEG 预览编码。
+板端 UI 的 `/preview.gray8` 同样不经过 JPEG。`/status` 同时提供独立的
+`camera_fps`、`camera_frames` 和 `jpeg_preview_encodes`；关闭大模型推理后，
+相机帧率和采集计数仍会持续更新。
 
 后台启动和停止：
 

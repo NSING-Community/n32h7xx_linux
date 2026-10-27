@@ -30,7 +30,8 @@ sdk/
 | `hello-cxx` | C++ 与 libstdc++ |
 | `shared-app` + `libgreeting.so` | 自建共享库、`DT_RPATH` 找库 |
 | `pthread-app` | uClibc pthread |
-| `leds` | `/sys/class/gpio` 跑马灯（PB3 / PF10 / PI8） |
+| `leds` | `/sys/class/leds` 跑马灯（red / green / blue） |
+| `gpioctl` | GPIO / LED class：查询、读写、定时闪烁、软件 PWM、呼吸灯 |
 | `net-echo` | TCP echo 服务器：poll() 与线程两种模型、IPv6 双栈、背压 |
 | `v4l2-capture` | V4L2 采集单帧 / MJPEG，见 [摄像头](camera.md) |
 | `camera-matrix` | 摄像头全格式 x 分辨率验证，见 [摄像头](camera.md) |
@@ -223,11 +224,11 @@ export LD_LIBRARY_PATH=/system/lib:/lib
 
 为脚本设置可执行权限。后台任务使用实际可执行程序，NOMMU 下的限制见本文末尾。
 
-## 板载 LED 示例（/sys/class/gpio）
+## 板载 LED 示例（/sys/class/leds）
 
-`leds.c` 是个跑马灯：三个用户 LED 接在 **PB3 / PF10 / PI8**，程序走经典
-`/sys/class/gpio` 接口驱动它们。它不需要 libc 以外的任何库，也是看懂这块板
-"从用户态碰硬件"最短的一条路。
+`leds.c` 是个跑马灯。设备树把 **PB3 / PF10 / PI8** 分别注册为 `red`、
+`green`、`blue` 三个低电平有效的 `gpio-leds`，驱动负责引脚极性和所有权，
+应用程序只操作标准 LED class。
 
 ```sh
 make -C sdk/example leds
@@ -236,71 +237,67 @@ ssh root@<板子IP> '/system/bin/leds'          # 一直跑，Ctrl-C 停
 ssh root@<板子IP> '/system/bin/leds 5 120'    # 5 轮，每步 120 ms
 ```
 
-启动时会打印它算出来的编号，退出时（含 Ctrl-C）会关灯并 unexport 自己
-export 过的线；如果那些线是别人 export 的，它只驱动、不动别人的状态。
-
-### GPIO 编号不等于引脚名
-
-gpiolib 在启动时给每个 bank 分配一个**基号**，本板是 512..672：一颗 16 线的
-chip 一个端口，按 A..K 排。
-
-| 端口 | chip label | base | 全局编号 |
-| --- | --- | --- | --- |
-| A | `GPIOA` | 512 | 512..527 |
-| B | `GPIOB` | 528 | 528..543 |
-| F | `GPIOF` | 592 | 592..607 |
-| I | `GPIOI` | 640 | 640..655 |
-| K | `GPIOK` | 672 | 672..687 |
-
-所以 **PB3 = 528+3 = 531**、**PF10 = 592+10 = 602**、**PI8 = 640+8 = 648**。
-基号是运行时分配的，不是固件常量，所以 `leds.c` 不写死，而是读
-`/sys/class/gpio/gpiochipN/label` 找到 `GPIOB`/`GPIOF`/`GPIOI` 再算。
-
-命令行手玩同一件事：
+命令行控制：
 
 ```sh
-echo 531 > /sys/class/gpio/export
-echo out > /sys/class/gpio/gpio531/direction
-echo 0   > /sys/class/gpio/gpio531/value        # 点亮（低电平点亮）
-echo 1   > /sys/class/gpio/gpio531/value        # 熄灭
-echo 531 > /sys/class/gpio/unexport
+echo 1 > /sys/class/leds/red/brightness          # 点亮红色
+echo 0 > /sys/class/leds/red/brightness          # 熄灭红色
+cat /sys/class/leds/red/trigger                  # 查看可用 trigger
 ```
 
-三个用户 LED 都是**低电平点亮**：HMI V1.1 原理图里它们是
-`VCC_3.3V -> 串阻 -> LED -> MCU 引脚`，引脚灌电流才发光。所以 `set PB3 0`
-是点亮、`set PB3 1` 是熄灭。注意 `dir <PIN> out` 本身会把输出电平置 0，
-也就是说单独一条 `gpio dir PB3 out` 就会把灯点亮。
-
-`/sys/class/gpio` 和 `/dev/gpiochipN` 两套接口在本板都开着：前者是经典 ABI，
-不需要任何用户态库，脚本里最好用；后者是现在的推荐接口，需要 libgpiod 或自己
-写 ioctl。
-
-### 用 gpio 脚本操作引脚
-
-基号是运行时分配的，把 `531` 写进脚本就会在别次开机上变错。板上的 `/bin/gpio`
-按 `gpiochipN/label` 反查，所以脚本里写引脚名即可：
+设备树里的 `GPIO_ACTIVE_LOW` 已经处理了硬件极性，所以 `brightness=1` 表示
+点亮。也可以用 timer trigger 让内核闪烁：
 
 ```sh
-gpio list                 # 各 bank 的 label / base / 线数
-gpio num PB3              # 531
-gpio export PB3           # 占用（可重复执行）
-gpio dir PB3 out          # in | out
-gpio set PB3 1            # 拉高；板载 LED 低电平点亮，点亮要写 0
-gpio get PB3              # 0 或 1
-gpio edge PB3 rising      # none | rising | falling | both
-gpio info PB3             # direction / value / active_low / edge
-gpio unexport PB3         # 释放
+echo timer > /sys/class/leds/green/trigger
+echo 500 > /sys/class/leds/green/delay_on
+echo 500 > /sys/class/leds/green/delay_off
 ```
 
-`gpio` 带 `#` 注释的头就是它自己的帮助，`gpio help` 打印的即本文这一段之前的
-那个列表。`set` / `dir` 会按需 export，但**不会**替你 unexport——脚本结束前
-自己 `gpio unexport`，否则那根线会一直被占用到重启（`gpio info` 会显示别的进程
-不认得的占用状态）。三个用户 LED 是 **PB3 / PF10 / PI8**，试引脚就从它们开始。
+这三个 GPIO 由 LED 驱动占用，不能直接通过 `/sys/class/gpio` 或
+`/dev/gpiochipN` 重复申请。下面的 `gpioctl` 会按 LED label 自动选中
+`/sys/class/leds` 后端。
 
-注意两点：`gpio edge` 只让 `/sys/class/gpio/gpioN/value` 可以被 `poll()`，
-**本板没有 GPIO 中断**（pinctrl 驱动没有 `irq_chip`），所以它不是真的外部中断源；
-另外本板 busybox **没有** `gpio` applet，`/bin/gpio` 是板上唯一一个，不用担心
-被哪个 applet 顶掉。
+### C GPIO 工具：gpioctl
+
+`gpioctl` 先按 label 精确匹配 `/sys/class/leds/<label>`；没有匹配时才把
+`GPIOB` 这样的 chip label 和线内 offset 解析为 GPIO。因此 DTS 把 `red`、
+`green` 或任意 LED label 改到别的 GPIO 后，命令不需要修改。普通 GPIO 的
+查询和定时波形使用 GPIO character-device ABI v2；一次性 `set` 由 sysfs
+持有该线，程序退出后电平和方向不会丢失。
+
+```sh
+make -C sdk/example gpioctl
+adb push sdk/example/gpioctl /system/bin/gpioctl
+
+gpioctl list
+gpioctl info red
+gpioctl set red 1
+gpioctl get red
+gpioctl blink blue --period-ms 500 --duration-ms 5000
+gpioctl breathe green --cycle-ms 3000 --duration-ms 10000
+```
+
+一次性 `set` 返回后保持状态，直到再次设置、`release` 或重启。`blink`、
+`pwm`、`breathe` 结束时恢复为 inactive。LED 目标先关闭活动 trigger，再写
+标准 `brightness`；GPIO 目标结束时会释放 character-device line。
+
+`gpioctl` 自己用 `CLOCK_MONOTONIC` 和绝对 deadline 产生周期，因此不会像
+逐次 `sleep 1` 那样累积漂移。`pwm` 和 `breathe` 会自动切换到
+`SCHED_FIFO` 优先级 20，避免普通进程调度拉长高电平、造成可见闪烁；该模式
+需要 `root` 或 `CAP_SYS_NICE`，权限不足时会直接退出。当前内核没有启用 PWM
+framework，板上也没有 `/sys/class/pwm`，所以这里的波形仍由 GPIO 和内核
+高精度定时器产生，不是硬件 PWM。需要更高速率或不受 CPU 负载影响时，应在
+内核中增加 N32 定时器 PWM 驱动。
+
+`/sys/class/gpio`、`/dev/gpiochipN` 和 `/sys/class/leds` 在本板都保持开启。
+同一个目标名优先按 LED class 解析；需要操作未被 LED 驱动占用的其他线时，
+直接使用 `PG3` 这类 GPIO 名。
+
+GPIO 控制器提供标准 Linux GPIO interrupt domain，DTS 中的 `interrupts`
+会走 pinctrl/gpiolib 的 irqchip；GT911 的 `PD11` 中断就是这条路径。
+经典 `/sys/class/gpio` 的 `edge` 仍可用于 `poll()`，新程序也可以通过
+GPIO character-device ABI v2 申请带事件读取的输入线。
 
 ### 智能体 / 逻辑脚本常要的东西
 

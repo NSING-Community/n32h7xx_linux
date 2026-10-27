@@ -13,7 +13,7 @@
 | --- | --- |
 | 系统 | Linux 运行环境、进程管理、定时与调度、内核配置定制 |
 | 启动与更新 | Bootloader、USB 刷机、探针烧录、网络固件更新 |
-| 板级外设 | 串口控制台、GPIO、引脚配置、I2C、RTC |
+| 板级外设 | 串口控制台、标准 LED class、GPIO、引脚配置、I2C、RTC |
 | 网络 | 以太网、IPv4 / IPv6、自动获取地址、网络校时、HTTPS 客户端（curl + Mbed TLS） |
 | 远程访问 | SSH、SCP、SFTP |
 | 存储 | SPI NOR、SD 卡、U 盘、只读根文件系统和可写数据分区 |
@@ -23,6 +23,76 @@
 | 图形显示 | 可选 LVGL 9.6.0（默认自动启用 2D GPU，支持软件回退）；标准 DRM/KMS（libdrm）与 fbdev 后端；2D GPU 填充、批量矩形、混合、复制、多边形与曲线 |
 | 用户态 | BusyBox 命令、Shell 脚本、文本处理、网络与进程管理工具 |
 | 应用开发 | C / C++ 交叉工具链、运行库及应用示例 |
+
+## 硬件平台
+
+本项目当前发布的板级配置对应 **N32H787_HMI_V1.1**，设备树为
+`kernel/arch/arm/boot/dts/nsing/n32h787-hmi.dts`。
+
+![N32H787_HMI_V1.1 开发板](doc/asset/n32h787-hmi-v1.1.png)
+
+### 硬件总览
+
+| 部件 | 当前配置 |
+| --- | --- |
+| SoC | NSING N32H787XIB7_BGA240，Cortex-M7，ARMv7-M，运行 NOMMU Linux |
+| 主内存 | 32 MiB SDRAM，物理地址 `0xc0000000` |
+| 片内 Flash | 约 2 MiB，保存 bootloader |
+| 外部 SPI NOR | XSPI2 上的 W25Q128，16 MiB，保存 DTB、kernel、rootfs 和 system |
+| 启动控制台 | USART1，`PA9=TX`、`PA10=RX`，`115200 8N1` |
+
+### 理论最小启动核心
+
+对当前 kernel 和 rootfs，理论最小启动核心是：N32H7xx，运行 kernel 的 32 MiB
+SDRAM，以及保存 DTB、kernel 和 rootfs 的 W25Q128 SPI NOR。sdmmc、LCD、触摸、
+摄像头、音频、以太网、USB 和 GPIO 外设都不在启动必经路径上。
+
+```mermaid
+flowchart LR
+    SOC["N32H7xx<br/>Cortex-M7 / ARMv7-M<br/>NOMMU Linux"]
+    SOC <-->|XSPI2| NOR["W25Q128<br/>16 MiB SPI NOR<br/>DTB / kernel / rootfs / system"]
+    SOC <-->|代码、数据与 DMA| RAM["32 MiB SDRAM<br/>0xc0000000"]
+```
+
+### N32H787_HMI_V1.1 外设
+
+| 类别 | 板载器件与接口 | 发布镜像支持 |
+| --- | --- | --- |
+| 显示 | 4.3 英寸 800x480 RGB565 屏，NTW430T40X005A / ST7262，25 MHz；LCDC 和 2D GPU | 默认启用；`LCD=0` 可关闭并交回图形预留内存 |
+| 触摸 | GT911，I2C1（`PD4/PD5`），中断 `PD11`，复位 `PD6`，坐标翻转后对应 800x480 屏 | 默认启用 |
+| 摄像头 | OV5640，DVP1 8-bit，I2C4 地址 `0x3c`，模块自带 24 MHz 时钟，复位 `PC13` | 可选；使用 `make CAMERA=1` 构建 |
+| 音频 | WM8978，I2C4 地址 `0x1a`，I2S1：MCLK `PA3`、BCLK `PA5`、WS `PG10`、SDI `PG9`、SDO `PD7` | 默认启用，支持录音和播放 |
+| 图像处理 | 片内硬件 JPEG 编解码器，设备节点 `/dev/jpeg` | 默认启用，独立于摄像头 |
+| 以太网 | ETH1 RMII，NET1001A / JL1111B 兼容 PHY，MDIO 地址 1，复位 `PB1`，支持 100 Mbps 全双工 | 默认启用 |
+| USB1 | Device / OTG，`PA11/PA12`；bootloader 用作 USB MSC，Linux 用作 ADB | 默认启用 |
+| USB2 | Host / OTG，`PB14/PB15`，VBUS 控制 `PB4`；可接 U 盘和 CMSIS-DAP | 默认启用 |
+| SD 卡 | SDMMC1 4-bit，CLK `PC12`、CMD `PD2`、D0-D3 `PC8-PC11` | 默认启用 |
+| RTC | SoC 内置 RTC；板上没有 VBAT 电池，断电后时间丢失，可由 NTP 校准 | 默认启用 |
+| LED 与 GPIO | PB3/PF10/PI8 三色 LED 通过 `/sys/class/leds` 控制；GPIO 可用于其他外设和状态指示 | 默认启用 |
+| 调试 | 外部 NSLink / CMSIS-DAP；USART1 串口控制台 | 开发接口，不属于板载外设 |
+
+板级拓扑如下：
+
+```mermaid
+flowchart TB
+    SOC["N32H787<br/>Cortex-M7 / ARMv7-M<br/>NOMMU Linux"]
+    MEM["存储与启动<br/>SDRAM 32 MiB<br/>片内 Flash 约 2 MiB<br/>XSPI2 W25Q128 16 MiB"]
+    UI["显示与输入<br/>LCDC + 2D GPU<br/>800x480 ST7262 RGB565<br/>GT911 触摸"]
+    MEDIA["图像与音频<br/>OV5640 DVP1<br/>硬件 JPEG<br/>WM8978 I2S1"]
+    CONNECT["网络、USB 与存储卡<br/>ETH1 RMII 100 Mbps<br/>USB1 Device / OTG<br/>USB2 Host / OTG<br/>SDMMC1 microSD"]
+    IO["调试、RTC 与 GPIO<br/>USART1 控制台<br/>RTC（无 VBAT）<br/>PB3 / PF10 / PI8 LED"]
+
+    SOC <--> MEM
+    SOC <--> UI
+    SOC <--> MEDIA
+    SOC <--> CONNECT
+    SOC <--> IO
+```
+
+默认构建启用 LCD/GPU，不包含 OV5640 摄像头驱动组合。需要摄像头时必须使用
+`make CAMERA=1`；不需要显示时可使用 `make LCD=0`。SPI NOR 中的具体分区见
+[存储分区](#存储分区)。这两个选项只在构建时合并对应的设备树 overlay，
+最终产物始终是 `out/kernel/n32h787-hmi.dtb`。
 
 ## 快速体验
 
@@ -34,7 +104,8 @@
 
 **[打开 Web 烧录页面](https://update.nsingtech.com/ns-flash/index.html?target=n32h78x&firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fbootloader.bin&spi-firmware=https%3A%2F%2Fraw.githubusercontent.com%2FNSING-Community%2Fn32h7xx_linux%2Fmain%2Fbin%2Fspi-nor-boot.img&algorithm=n32h787-xspi2&lang=zh)**
 
-需要 Chrome 或 Edge。镜像已填入，按页面提示烧录即可；`system` 分区不受影响。
+该页面和预填镜像针对 **N32H787_HMI_V1.1**。需要 Chrome 或 Edge，按页面提示
+烧录即可；`system` 分区不受影响。
 
 ## 快速开始
 
