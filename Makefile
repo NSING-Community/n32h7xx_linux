@@ -2,8 +2,7 @@
 # N32H7xx Linux top-level build entry.
 #
 # Daily use only touches bootloader/, kernel/, rootfs/ and sdk/.  Everything
-# needed for that ships in this tree; the component-rebuild targets further down
-# additionally use the local sdk-src/ working tree and are not part of `make help`.
+# needed for that ships in this tree.
 #
 #   make            build everything and assemble the flash image (same as `all`)
 #   make bootloader build the SPI-backed CM7 bootloader
@@ -42,8 +41,6 @@ ROOTFS_OUT   := $(OUT_DIR)/rootfs
 DIST_OUT     := $(OUT_DIR)/dist
 WORK_OUT     := $(OUT_DIR)/work
 
-# The sdk-src build scripts (busybox, dropbear, the /sbin tools) keep their
-# scratch directories in $OUT_DIR/work rather than next to the sources.
 export OUT_DIR
 
 BOOTLOADER_DIR := $(TOP)/bootloader
@@ -80,19 +77,6 @@ ifneq ($(LCD),1)
 $(error LCD must be 0 or 1)
 endif
 endif
-KERNEL_DTB_BOARD := $(BOARD)
-ifeq ($(CAMERA),0)
-ifneq ($(BOARD),n32h787-hmi)
-$(error CAMERA=0 is only supported for BOARD=n32h787-hmi)
-endif
-KERNEL_DTB_BOARD := $(BOARD)-no-camera
-endif
-ifeq ($(LCD),0)
-ifneq ($(BOARD),n32h787-hmi)
-$(error LCD=0 is only supported for BOARD=n32h787-hmi)
-endif
-KERNEL_DTB_BOARD := $(KERNEL_DTB_BOARD)-no-display
-endif
 # Seed configuration for the kernel: a name under arch/arm/configs/, or a path
 # to any defconfig-format file.  It only *seeds* out/kernel/build/.config; see
 # the kernel-menuconfig target below.
@@ -104,7 +88,7 @@ KERNEL_STAGE   := $(KERNEL_OUT)
 # their own SPI NOR partitions and are loaded to different RAM addresses.  They
 # must not be concatenated, or the decompressor rewrites the r2 DTB argument.
 KERNEL_ZIMAGE  := $(KERNEL_STAGE)/zImage
-KERNEL_DTB     := $(KERNEL_STAGE)/$(KERNEL_DTB_BOARD).dtb
+KERNEL_DTB     := $(KERNEL_STAGE)/$(BOARD).dtb
 # Where release.sh installs the loadable modules.  The rootfs packaging merges
 # this tree into the SquashFS image, so nothing has to be written next to the
 # rootfs/ sources.
@@ -171,8 +155,7 @@ SPI_IMAGE_TOOL := $(TOOLS_DIR)/spi_image.py
 .PHONY: all help bootloader kernel human-detect publish-human-detect \
         human-detect-ui publish-human-detect-ui input-events \
         libdrm install-libdrm lvgl-demo lvgl-touch-demo \
-        rootfs rootfs-squashfs busybox dropbear \
-        tools tinyalsa pcaudiolib sftp-server mbedtls curl ca-certificates \
+        rootfs rootfs-squashfs \
         flash-image flash-kernel ota-check \
         ota-rootfs ota-kernel ota-dtb publish-bin \
         flash-bootloader doctor \
@@ -212,7 +195,7 @@ help:
 	@echo
 	@echo "  all              bootloader + kernel + rootfs + flash image (default)"
 	@echo "  bootloader       build the $(BOOT_STORAGE)-backed CM7 bootloader"
-	@echo "  kernel           build and stage the separate zImage + $(KERNEL_DTB_BOARD).dtb"
+	@echo "  kernel           build and stage the separate zImage + $(BOARD).dtb"
 	@echo "  display-test     build the framebuffer/GPU/page-flip test into out/display/"
 	@echo "                   (also builds the loadable modules into out/kernel/modules)"
 	@echo "  libdrm           build upstream libdrm into out/libdrm/rootfs/"
@@ -439,105 +422,6 @@ $(ROOTFS_SQUASHFS): $(ROOTFS_MANIFEST)
 # tiny built-in cpio list; that is kbuild's business, not ours.
 rootfs: $(ROOTFS_SQUASHFS)
 rootfs-squashfs: $(ROOTFS_SQUASHFS)
-
-# ---------------------------------------------------------------------------
-# busybox - the one place applets are added or removed
-# ---------------------------------------------------------------------------
-# The userland component rebuild targets below are the only ones that
-# need sdk-src/.  They check for it first and explain the situation instead of
-# failing with a bare "No such file or directory" from bash.  Like the other
-# sdk-src targets they stay out of `make help`, which lists only what a
-# published checkout can actually build.
-SDK_SRC := $(TOP)/sdk-src
-
-define require-sdk-src
-	@test -d $(SDK_SRC)/scripts || { \
-		echo "error: the $(1) rebuild target is not available in this checkout." >&2; \
-		echo "       bootloader/, kernel/, rootfs/ and flash-image build from" >&2; \
-		echo "       the sources present here and do not need it." >&2; \
-		exit 1; }
-endef
-
-# Edit sdk-src/configs/busybox-runtime.config, run this, then repack the rootfs
-# image.  Every applet is a symlink to one binary, so only the applet *code*
-# costs space.
-busybox:
-	$(call require-sdk-src,busybox)
-	@echo "==> busybox (sdk-src/configs/busybox-runtime.config)"
-	bash $(TOP)/sdk-src/scripts/install-busybox.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
-
-# ---------------------------------------------------------------------------
-# dropbear and the in-project /sbin tools
-# ---------------------------------------------------------------------------
-# These are separate from busybox because they are separate programs with their
-# own sources.  Like busybox they must be rebuilt after any libc ABI change.
-dropbear:
-	$(call require-sdk-src,dropbear)
-	@echo "==> dropbear (sdk-src/configs/dropbear-localoptions.h)"
-	bash $(TOP)/sdk-src/scripts/install-dropbear.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
-
-tools:
-	$(call require-sdk-src,tools)
-	@echo "==> board tools (n32-flash)"
-	bash $(TOP)/sdk-src/scripts/install-n32-tools.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
-
-# BusyBox ships no audio applets.  The ALSA user space on this board is the
-# upstream TinyALSA utilities: tinyplay (playback), tinycap (capture),
-# tinymix (mixer controls) and tinypcminfo (PCM capabilities).
-tinyalsa:
-	$(call require-sdk-src,tinyalsa)
-	@echo "==> tinyalsa (sdk-src/sources/tinyalsa)"
-	bash $(TOP)/sdk-src/scripts/install-tinyalsa.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
-
-# pcaudiolib is espeak-ng's audio sink and has no ALSA/PulseAudio/OSS/QSA to
-# talk to here, so the port at sdk-src/project/pcaudiolib/ adds a TinyALSA
-# backend.  Unlike the targets above this installs nothing: it produces a
-# static library under out/work/, which is what the espeak-ng cross build links.
-# Run 'make tinyalsa' first - the backend links TinyALSA's archive.
-pcaudiolib:
-	$(call require-sdk-src,pcaudiolib)
-	@echo "==> pcaudiolib (sdk-src/sources/pcaudiolib + TinyALSA backend)"
-	$(MAKE) -C $(TOP)/sdk-src/project/pcaudiolib
-
-# Dropbear execs SFTPSERVER_PATH for the SSH "sftp" subsystem (used by "sftp"
-# and by "scp" in its default mode); nothing in busybox or dropbear provides it.
-sftp-server:
-	$(call require-sdk-src,sftp-server)
-	@echo "==> sftp-server (sdk-src/project/src/sftp-server.c)"
-	bash $(TOP)/sdk-src/scripts/install-sftp-server.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
-
-# ---------------------------------------------------------------------------
-# curl, Mbed TLS and the CA bundle it validates against
-# ---------------------------------------------------------------------------
-# This BusyBox has no curl applet and its wget is built without https, so curl
-# is the board's only HTTPS client.  Mbed TLS is built as shared libraries
-# rather than statically linked so that curl - and anything added later - uses
-# one copy on the board.  'curl' therefore depends on 'mbedtls'.
-mbedtls:
-	$(call require-sdk-src,mbedtls)
-	@echo "==> mbedtls (sdk-src/configs/mbedtls-config.h)"
-	bash $(TOP)/sdk-src/scripts/install-mbedtls.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
-
-curl: mbedtls
-	$(call require-sdk-src,curl)
-	@echo "==> curl (sdk-src/sources/curl)"
-	bash $(TOP)/sdk-src/scripts/install-curl.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
-
-# curl is built with --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt, so
-# without this the https:// URLs fail with "error reading CA cert file".  Skip
-# it only if the product supplies its own trust store.
-ca-certificates:
-	$(call require-sdk-src,ca-certificates)
-	@echo "==> CA certificates (sdk-src/sources/ca-certificates)"
-	bash $(TOP)/sdk-src/scripts/install-ca-certificates.sh $(ROOTFS_TREE)
-	@echo "now rerun 'make rootfs-squashfs' to repack the rootfs partition"
 
 # ---------------------------------------------------------------------------
 # flash images
