@@ -3,7 +3,7 @@
 #
 # Convenience bring-up, kept out of rcS so it is never inlined as a
 # "( ... ) &" shell compound (no-MMU hush).
-export PATH=/bin:/sbin
+export PATH=/bin:/sbin:/usr/bin
 
 # The framebuffer console and graphical applications share the LCD scanout.
 # Stop fbcon's periodic cursor redraw once the shell is up.  This is optional:
@@ -49,8 +49,8 @@ if [ "$(conf_get CAMERA on)" != off ]; then
   /etc/init.d/camera start || echo 'WARNING: camera setup failed'
 fi
 
-# USB login works independently of Ethernet and starts shells in /system.
-/etc/init.d/adbd start || echo 'WARNING: USB ADB setup failed'
+# USB ADB is opt-in; start it manually with '/etc/init.d/adbd start'.
+#/etc/init.d/adbd start || echo 'WARNING: USB ADB setup failed'
 
 network_mode=$(conf_get NETWORK_MODE off)
 

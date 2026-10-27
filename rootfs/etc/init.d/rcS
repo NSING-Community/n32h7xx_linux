@@ -4,7 +4,7 @@
 # Runs under BusyBox hush on no-MMU: a background shell compound "( ... ) &"
 # shares the caller's memory and clobbers it.  Keep this strictly sequential.
 exec </dev/console >/dev/console 2>&1
-export PATH=/bin:/sbin
+export PATH=/bin:/sbin:/usr/bin
 umask 022
 
 mount -t proc proc /proc || echo 'WARNING: proc mount failed'

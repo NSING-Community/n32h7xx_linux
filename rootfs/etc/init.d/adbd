@@ -8,7 +8,7 @@
 # non-login -- it never reads /etc/profile -- so without this the SDK contract
 # ("user programs live in /system/bin") would only hold for an interactive
 # session.  Keep this list in step with /etc/profile.
-export PATH=/bin:/sbin:/usr/sbin:/system/bin
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/system/bin
 G=/sys/kernel/config/usb_gadget/n32-adb
 FFS=/dev/ffs-adb
 PIDFILE=/run/adbd.pid

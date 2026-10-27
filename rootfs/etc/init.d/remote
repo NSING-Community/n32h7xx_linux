@@ -9,7 +9,7 @@
 # (vfork+exec, safe here).
 #
 # no-MMU hush: only background real executables, never a shell compound.
-export PATH=/bin:/sbin:/usr/sbin
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
 # Read-only board defaults (/etc/defaults.conf).  Data-only scan; see
 # boot-services for the rationale.

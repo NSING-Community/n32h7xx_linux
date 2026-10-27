@@ -1,7 +1,7 @@
 # /system is the writable userland (JFFS2, SDK contract): user programs in
 # /system/bin, libraries in /system/lib.  Appended last so it cannot shadow
 # a system tool.
-export PATH=/bin:/sbin:/system/bin
+export PATH=/bin:/sbin:/usr/bin:/system/bin
 
 # uClibc's ld.so here was built without LDSO_CACHE_SUPPORT: no /etc/ld.so.conf,
 # only /lib and /usr/lib built in, so /system/lib needs LD_LIBRARY_PATH.  A
