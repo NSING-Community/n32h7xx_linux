@@ -24,6 +24,7 @@ main{max-width:1160px;margin:auto;padding:22px 24px 30px}
 .layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.85fr);gap:20px;align-items:start}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px}
 .section-head{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .eyebrow{display:block;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 h2{margin:3px 0 0;font-size:16px;font-weight:650;letter-spacing:0}
 button{font:inherit;font-size:12px;font-weight:650;color:#174d3a;background:#edf5f1;border:1px solid #a8c5b7;border-radius:6px;padding:7px 11px;cursor:pointer}
@@ -39,6 +40,7 @@ button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .person-panel{padding:16px}
 .person-state{margin-top:5px;font-size:25px;line-height:1.15;font-weight:700}
 .person-state.clear{color:var(--green)}.person-state.alert{color:var(--red)}
+.person-state.paused{color:var(--muted)}
 .person-meta{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:var(--muted);font-size:12px}
 .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .metric{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:12px;min-height:76px}
@@ -75,7 +77,10 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
     <section class="panel">
       <div class="section-head">
         <div><span class="eyebrow">实时预览</span><h2>检测画面</h2></div>
-        <button id="reconnect" type="button">重新连接</button>
+        <div class="actions">
+          <button id="inferenceToggle" type="button">开启大模型检测</button>
+          <button id="reconnect" type="button">重新连接</button>
+        </div>
       </div>
       <div class="viewport">
         <img id="preview" alt="实时人形检测画面">
@@ -93,9 +98,9 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
         <div class="person-meta"><span id="boxCount">尚未出帧</span><span id="frameAge">无画面</span></div>
       </section>
       <div class="metrics">
-        <article class="metric"><div class="metric-label">推理帧率</div><div id="fps" class="metric-value">--</div><div class="metric-note">滚动窗口</div></article>
+        <article class="metric"><div class="metric-label">相机帧率</div><div id="fps" class="metric-value">--</div><div class="metric-note">采集滚动窗口</div></article>
         <article class="metric"><div class="metric-label">推理耗时</div><div id="inferTime" class="metric-value">--</div><div class="metric-note">上一帧</div></article>
-        <article class="metric"><div class="metric-label">累计帧数</div><div id="frames" class="metric-value">--</div><div class="metric-note">已完成</div></article>
+        <article class="metric"><div class="metric-label">累计相机帧</div><div id="frames" class="metric-value">--</div><div class="metric-note">已完成采集</div></article>
         <article class="metric"><div class="metric-label">运行时间</div><div id="uptime" class="metric-value">--</div><div class="metric-note">服务</div></article>
       </div>
     </aside>
@@ -111,9 +116,11 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
       <div class="counters">
         <div class="counter-row"><span>相机</span><span id="camera">--</span></div>
         <div class="counter-row"><span>相机错误</span><span id="cameraErrors">--</span></div>
+        <div class="counter-row"><span>推理帧数</span><span id="inferenceFrames">--</span></div>
         <div class="counter-row"><span>推理错误</span><span id="inferenceErrors">--</span></div>
         <div class="counter-row"><span>预览错误</span><span id="previewErrors">--</span></div>
         <div class="counter-row"><span>预览帧数</span><span id="previewFrames">--</span></div>
+        <div class="counter-row"><span>MJPEG 编码</span><span id="jpegEncodes">--</span></div>
         <div class="counter-row"><span>抓图 / 预览次数</span><span id="sessions">--</span></div>
       </div>
     </section>
@@ -126,10 +133,12 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
   "use strict";
   var $=function(id){return document.getElementById(id);};
   var preview=$("preview");
-  var stream="/preview.mjpg?fps=5";
+  var stream="/preview.mjpg?fps=15";
   var retryTimer=0;
   var streamStarted=false;
   var cameraOnline=false;
+  var inferenceEnabled=false;
+  var inferenceBusy=false;
 
   function formatDuration(ms){
     if(!Number.isFinite(ms)||ms<0) return "--";
@@ -151,6 +160,10 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
   function renderBoxes(s){
     var list=$("boxList");
     while(list.firstChild) list.removeChild(list.firstChild);
+    if(!s.inference_enabled){
+      $("boxCount").textContent="大模型检测已关闭";
+      var paused=document.createElement("div");paused.className="empty";paused.textContent="摄像头预览仍在运行";list.appendChild(paused);return;
+    }
     var boxes=Array.isArray(s.boxes)?s.boxes:[];
     $("boxCount").textContent=boxes.length?(boxes.length+" 个目标"):"未检测到人物";
     if(!boxes.length){var empty=document.createElement("div");empty.className="empty";empty.textContent="当前没有检测框";list.appendChild(empty);return;}
@@ -164,21 +177,26 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
   }
   function render(s){
     var online=!!s.camera_ready;
+    inferenceEnabled=!!s.inference_enabled;
     cameraOnline=online;
     $("connection").className="connection "+(online?"online":"offline");
     $("connectionText").textContent=online?"已连接":"相机不可用";
     $("camera").textContent=online?"在线":"离线";
-    $("person").textContent=s.have_result===false?"等待首帧":(s.human_detected?"检测到人物":"画面无人");
-    $("person").className="person-state "+(s.human_detected?"alert":"clear");
-    $("fps").textContent=Number.isFinite(Number(s.inference_fps))?Number(s.inference_fps).toFixed(2):"--";
-    $("inferTime").textContent=Number.isFinite(Number(s.inference_us))?Math.round(Number(s.inference_us)/100)/10+" ms":"--";
-    $("frames").textContent=Number(s.frames||0).toLocaleString();
+    $("person").textContent=!inferenceEnabled?"大模型检测已关闭":(s.have_result===false?"等待首帧":(s.human_detected?"检测到人物":"画面无人"));
+    $("person").className="person-state "+(!inferenceEnabled?"paused":(s.human_detected?"alert":"clear"));
+    $("inferenceToggle").textContent=inferenceEnabled?"关闭大模型检测":"开启大模型检测";
+    $("inferenceToggle").dataset.enabled=inferenceEnabled?"true":"false";
+    $("fps").textContent=Number.isFinite(Number(s.camera_fps))?Number(s.camera_fps).toFixed(2):"--";
+    $("inferTime").textContent=inferenceEnabled&&Number.isFinite(Number(s.inference_us))?Math.round(Number(s.inference_us)/100)/10+" ms":"--";
+    $("frames").textContent=Number(s.camera_frames||0).toLocaleString();
     $("uptime").textContent=formatDuration(Number(s.uptime_ms));
-    $("frameAge").textContent=s.frames?formatDuration(s.uptime_ms-s.last_frame_ms)+" 前":"无画面";
+    $("frameAge").textContent=s.last_camera_frame_ms?formatDuration(s.uptime_ms-s.last_camera_frame_ms)+" 前":"无画面";
     $("cameraErrors").textContent=s.camera_errors;
+    $("inferenceFrames").textContent=Number(s.frames||0).toLocaleString();
     $("inferenceErrors").textContent=s.inference_errors;
     $("previewErrors").textContent=s.preview_errors;
     $("previewFrames").textContent=s.preview_frames;
+    $("jpegEncodes").textContent=Number(s.jpeg_preview_encodes||0).toLocaleString();
     $("sessions").textContent=s.snapshots+" / "+s.previews;
     $("cameraErrors").parentNode.classList.toggle("warn",Number(s.camera_errors)>0);
     $("inferenceErrors").parentNode.classList.toggle("warn",Number(s.inference_errors)>0);
@@ -201,6 +219,24 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
     }
     setTimeout(poll,1000);
   }
+  $("inferenceToggle").addEventListener("click",async function(){
+    if(inferenceBusy) return;
+    inferenceBusy=true;
+    this.disabled=true;
+    try{
+      var response=await fetch("/inference?enabled="+(inferenceEnabled?"0":"1"),{method:"POST",cache:"no-store"});
+      if(!response.ok) throw new Error("HTTP "+response.status);
+      var result=await response.json();
+      inferenceEnabled=!!result.inference_enabled;
+      var status=await fetch("/status",{cache:"no-store"});
+      if(status.ok) render(await status.json());
+    }catch(error){
+      $("updated").textContent="大模型检测开关切换失败";
+    }finally{
+      inferenceBusy=false;
+      this.disabled=false;
+    }
+  });
   preview.addEventListener("load",function(){streamStarted=true;$("previewMessage").hidden=true;});
   preview.addEventListener("error",function(){
     $("previewMessage").hidden=false;

@@ -37,14 +37,16 @@ namespace {
 
 constexpr int kDetectWidth = 320;
 constexpr int kDetectHeight = 240;
+constexpr unsigned int kCameraBufferCount = 2;
 constexpr int kFrameTimeoutMs = 3000;
 constexpr uint64_t kCameraStallMs = 5000;
 constexpr int kSnapshotMinWarmup = 3;
 constexpr int kSnapshotMaxFrames = 20;
 constexpr int kSnapshotSettleFrames = 3;
-constexpr int kPreviewDefaultFps = 5;
+constexpr int kPreviewDefaultFps = 15;
 constexpr int kPreviewMinFps = 3;
-constexpr int kPreviewMaxFps = 5;
+constexpr int kPreviewMaxFps = 15;
+constexpr size_t kPreviewClientCount = 2;
 constexpr int kPreviewDefaultSeconds = 0; /* until the client disconnects */
 constexpr int kPreviewMaxSeconds = 60;
 constexpr uint64_t kPreviewWriteTimeoutMs = 3000;
@@ -104,19 +106,22 @@ struct Config {
 struct Camera {
 	int fd = -1;
 	bool streaming = false;
-	void *mapping = nullptr;
-	size_t mapping_length = 0;
+	void *mapping[kCameraBufferCount] = {};
+	size_t mapping_length[kCameraBufferCount] = {};
+	unsigned int buffer_count = 0;
 	struct v4l2_format format;
 };
 
 struct ServiceState {
 	bool camera_ready = false;
 	bool camera_stream_synced = false;
+	bool inference_enabled = false;
+	bool gray_frame_ready = false;
 	bool human_present = false;
 	bool task_pending = false;
 	bool event_image_ready = false;
 	bool have_result = false;
-	bool preview_active = false;
+	unsigned int preview_active = 0;
 	uint64_t frames = 0;
 	uint64_t camera_errors = 0;
 	uint64_t inference_errors = 0;
@@ -126,8 +131,12 @@ struct ServiceState {
 	uint64_t preview_frames = 0;
 	uint64_t task_submissions = 0;
 	uint64_t task_submit_errors = 0;
+	uint64_t camera_frames = 0;
+	uint64_t camera_rate_window_frames = 0;
 	uint64_t rate_window_frames = 0;
+	uint64_t camera_rate_window_started_ms = 0;
 	uint64_t rate_window_started_ms = 0;
+	uint64_t last_camera_frame_ms = 0;
 	uint64_t last_frame_ms = 0;
 	uint64_t last_human_change_ms = 0;
 	uint64_t last_task_submit_ms = 0;
@@ -139,7 +148,9 @@ struct ServiceState {
 	uint32_t preview_ms = 0;
 	uint32_t prepare_us = 0;
 	uint32_t inference_us = 0;
+	uint32_t camera_fps_x100 = 0;
 	uint32_t inference_fps_x100 = 0;
+	uint64_t jpeg_preview_encodes = 0;
 	struct human_detect_result result = {};
 	alignas(16) uint8_t gray_frame[kDetectWidth * kDetectHeight];
 };
@@ -174,7 +185,8 @@ struct HttpRequest {
 void preview_close(PreviewClient *preview, ServiceState *state,
 		   const char *reason);
 bool save_event_snapshot(Camera *camera, ServiceState *state,
-			 PreviewClient *preview, const char *path);
+			 PreviewClient *previews, size_t preview_count,
+			 const char *path);
 
 volatile sig_atomic_t g_stop;
 
@@ -214,6 +226,33 @@ void log_msg(const char *format, ...)
 	fputc('\n', stderr);
 }
 
+void update_rate(uint64_t now, uint64_t frames, uint64_t *window_start,
+		 uint64_t *window_frames, uint32_t *fps_x100)
+{
+	if (!*window_start) {
+		*window_start = now;
+		*window_frames = frames;
+		return;
+	}
+
+	uint64_t elapsed = now - *window_start;
+	if (elapsed < 2000)
+		return;
+
+	uint64_t completed = frames - *window_frames;
+	*fps_x100 = static_cast<uint32_t>(
+		(completed * 100000 + elapsed / 2) / elapsed);
+	*window_start = now;
+	*window_frames = frames;
+}
+
+void reset_camera_rate(ServiceState *state)
+{
+	state->camera_rate_window_started_ms = 0;
+	state->camera_rate_window_frames = 0;
+	state->camera_fps_x100 = 0;
+}
+
 const char *fourcc_string(uint32_t fourcc, char text[5])
 {
 	text[0] = static_cast<char>(fourcc & 0xff);
@@ -234,11 +273,13 @@ void camera_stop(Camera *camera)
 	}
 	camera->streaming = false;
 
-	if (camera->mapping && camera->mapping != MAP_FAILED) {
-		munmap(camera->mapping, camera->mapping_length);
-		camera->mapping = nullptr;
-		camera->mapping_length = 0;
+	for (unsigned int i = 0; i < camera->buffer_count; ++i) {
+		if (camera->mapping[i] && camera->mapping[i] != MAP_FAILED)
+			munmap(camera->mapping[i], camera->mapping_length[i]);
+		camera->mapping[i] = nullptr;
+		camera->mapping_length[i] = 0;
 	}
+	camera->buffer_count = 0;
 
 	if (camera->fd >= 0) {
 		struct v4l2_requestbuffers request;
@@ -278,6 +319,7 @@ int camera_start(Camera *camera, uint32_t pixel_format, uint32_t width,
 	struct v4l2_requestbuffers request;
 	struct v4l2_buffer buffer;
 	enum v4l2_buf_type type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+	unsigned int wanted_buffers;
 	char code[5];
 
 	camera_stop(camera);
@@ -305,47 +347,63 @@ int camera_start(Camera *camera, uint32_t pixel_format, uint32_t width,
 		return -1;
 	}
 
+	/* Detection is a continuous GREY stream. JPEG snapshots are variable-size
+	 * and only need one frame at a time, so do not reserve two large buffers. */
+	wanted_buffers = pixel_format == V4L2_PIX_FMT_GREY ?
+			 kCameraBufferCount : 1;
 	memset(&request, 0, sizeof(request));
-	request.count = 1;
+	request.count = wanted_buffers;
 	request.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	request.memory = V4L2_MEMORY_MMAP;
 	if (ioctl(camera->fd, VIDIOC_REQBUFS, &request) < 0) {
 		log_msg("VIDIOC_REQBUFS: %s", strerror(errno));
 		return -1;
 	}
-	if (request.count < 1) {
-		log_msg("camera allocated no buffers");
+	if (request.count < wanted_buffers) {
+		log_msg("camera allocated %u buffers, need %u",
+			request.count, wanted_buffers);
 		return -1;
 	}
-
-	memset(&buffer, 0, sizeof(buffer));
-	buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-	buffer.memory = V4L2_MEMORY_MMAP;
-	buffer.index = 0;
-	if (ioctl(camera->fd, VIDIOC_QUERYBUF, &buffer) < 0) {
-		log_msg("VIDIOC_QUERYBUF: %s", strerror(errno));
-		camera_stop(camera);
-		return -1;
-	}
-	camera->mapping_length = buffer.length;
-	camera->mapping = mmap(nullptr, buffer.length, PROT_READ | PROT_WRITE,
-			       MAP_SHARED, camera->fd, buffer.m.offset);
-	if (camera->mapping == MAP_FAILED) {
-		camera->mapping = nullptr;
-		camera->mapping_length = 0;
-		log_msg("mmap: %s", strerror(errno));
+	if (request.count > kCameraBufferCount) {
+		log_msg("camera allocated unsupported buffer count %u", request.count);
 		camera_stop(camera);
 		return -1;
 	}
 
-	memset(&buffer, 0, sizeof(buffer));
-	buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-	buffer.memory = V4L2_MEMORY_MMAP;
-	buffer.index = 0;
-	if (ioctl(camera->fd, VIDIOC_QBUF, &buffer) < 0) {
-		log_msg("VIDIOC_QBUF: %s", strerror(errno));
-		camera_stop(camera);
-		return -1;
+	for (unsigned int i = 0; i < request.count; ++i) {
+		memset(&buffer, 0, sizeof(buffer));
+		buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+		buffer.memory = V4L2_MEMORY_MMAP;
+		buffer.index = i;
+		if (ioctl(camera->fd, VIDIOC_QUERYBUF, &buffer) < 0) {
+			log_msg("VIDIOC_QUERYBUF(%u): %s", i, strerror(errno));
+			camera_stop(camera);
+			return -1;
+		}
+		camera->mapping_length[i] = buffer.length;
+		camera->mapping[i] = mmap(nullptr, buffer.length,
+					 PROT_READ | PROT_WRITE, MAP_SHARED,
+					 camera->fd, buffer.m.offset);
+		if (camera->mapping[i] == MAP_FAILED) {
+			camera->mapping[i] = nullptr;
+			camera->mapping_length[i] = 0;
+			log_msg("mmap(%u): %s", i, strerror(errno));
+			camera_stop(camera);
+			return -1;
+		}
+		camera->buffer_count++;
+	}
+
+	for (unsigned int i = 0; i < camera->buffer_count; ++i) {
+		memset(&buffer, 0, sizeof(buffer));
+		buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+		buffer.memory = V4L2_MEMORY_MMAP;
+		buffer.index = i;
+		if (ioctl(camera->fd, VIDIOC_QBUF, &buffer) < 0) {
+			log_msg("VIDIOC_QBUF(%u): %s", i, strerror(errno));
+			camera_stop(camera);
+			return -1;
+		}
 	}
 	if (ioctl(camera->fd, VIDIOC_STREAMON, &type) < 0) {
 		log_msg("VIDIOC_STREAMON: %s", strerror(errno));
@@ -423,6 +481,20 @@ int camera_queue(Camera *camera, struct v4l2_buffer *buffer)
 	return 0;
 }
 
+void *camera_mapping(const Camera *camera, unsigned int index)
+{
+	if (index >= camera->buffer_count)
+		return nullptr;
+	return camera->mapping[index];
+}
+
+size_t camera_mapping_length(const Camera *camera, unsigned int index)
+{
+	if (index >= camera->buffer_count)
+		return 0;
+	return camera->mapping_length[index];
+}
+
 int ctrl_get(int fd, unsigned int id, long *value)
 {
 	struct v4l2_control control;
@@ -437,12 +509,14 @@ int ctrl_get(int fd, unsigned int id, long *value)
 
 bool jpeg_is_complete(const Camera *camera, const struct v4l2_buffer &buffer)
 {
-	const uint8_t *data = static_cast<const uint8_t *>(camera->mapping);
+	const uint8_t *data = static_cast<const uint8_t *>(
+		camera_mapping(camera, buffer.index));
+	const size_t mapping_length = camera_mapping_length(camera, buffer.index);
 	const uint32_t length = buffer.bytesused;
 
 	if (buffer.flags & V4L2_BUF_FLAG_ERROR)
 		return false;
-	if (length < 4 || length > camera->mapping_length)
+	if (!data || length < 4 || length > mapping_length)
 		return false;
 	/* A frame that exactly fills the driver buffer may have been truncated. */
 	if (length >= camera->format.fmt.pix.sizeimage)
@@ -669,23 +743,30 @@ size_t build_status_json(char *buffer, size_t capacity,
 		    buffer, capacity, &used,
 		    "{\"type\":\"human_detector.status\",\"version\":1,"
 		    "\"model_type\":\"object_detection\",\"input\":\"320x240 GREY\","
-		    "\"camera_ready\":%s,\"have_result\":%s,\"frames\":%llu,"
+		    "\"camera_ready\":%s,\"inference_enabled\":%s,"
+		    "\"gray_frame_ready\":%s,\"have_result\":%s,\"frames\":%llu,"
+		    "\"camera_frames\":%llu,"
 		    "\"camera_errors\":%llu,\"inference_errors\":%llu,"
 		    "\"preview_errors\":%llu,\"snapshots\":%llu,\"previews\":%llu,"
 			    "\"preview_active\":%s,\"preview_frames\":%llu,"
 			    "\"event_image_ready\":%s,"
-		    "\"last_frame_ms\":%llu,\"last_snapshot_ms\":%llu,"
+		    "\"last_camera_frame_ms\":%llu,\"last_frame_ms\":%llu,"
+		    "\"last_snapshot_ms\":%llu,"
 		    "\"snapshot_ms\":%u,\"last_preview_ms\":%llu,\"preview_ms\":%u,"
 		    "\"uptime_ms\":%llu,\"prepare_us\":%u,\"inference_us\":%u,"
-		    "\"inference_fps\":%u.%02u,"
+		    "\"camera_fps\":%u.%02u,\"inference_fps\":%u.%02u,"
+		    "\"jpeg_preview_encodes\":%llu,"
 		    "\"human_detected\":%s,\"human_changed_ms\":%llu,"
 			    "\"task_pending\":%s,\"task_submissions\":%llu,"
 			    "\"task_submit_errors\":%llu,\"last_task_submit_ms\":%llu,"
 		    "\"preview_default\":\"%ux%u\",\"preview_fps\":%d,"
 		    "\"preview_max_seconds\":%d,\"count\":%u,\"boxes\":[",
 		    state->camera_ready ? "true" : "false",
+		    state->inference_enabled ? "true" : "false",
+		    state->gray_frame_ready ? "true" : "false",
 		    state->have_result ? "true" : "false",
 		    static_cast<unsigned long long>(state->frames),
+		    static_cast<unsigned long long>(state->camera_frames),
 		    static_cast<unsigned long long>(state->camera_errors),
 		    static_cast<unsigned long long>(state->inference_errors),
 		    static_cast<unsigned long long>(state->preview_errors),
@@ -694,14 +775,18 @@ size_t build_status_json(char *buffer, size_t capacity,
 		    state->preview_active ? "true" : "false",
 		    static_cast<unsigned long long>(state->preview_frames),
 			    state->event_image_ready ? "true" : "false",
+		    static_cast<unsigned long long>(state->last_camera_frame_ms),
 		    static_cast<unsigned long long>(state->last_frame_ms),
 		    static_cast<unsigned long long>(state->last_snapshot_ms),
 		    state->snapshot_ms,
 		    static_cast<unsigned long long>(state->last_preview_ms),
 		    state->preview_ms, static_cast<unsigned long long>(now),
 		    state->prepare_us, state->inference_us,
+		    state->camera_fps_x100 / 100,
+		    state->camera_fps_x100 % 100,
 		    state->inference_fps_x100 / 100,
 		    state->inference_fps_x100 % 100,
+		    static_cast<unsigned long long>(state->jpeg_preview_encodes),
 		    state->human_present ? "true" : "false",
 		    static_cast<unsigned long long>(state->last_human_change_ms),
 			    state->task_pending ? "true" : "false",
@@ -784,6 +869,31 @@ bool detection_changed(const struct human_detect_result &old_result,
 			return true;
 	}
 	return false;
+}
+
+void set_inference_enabled(ServiceState *state, bool enabled)
+{
+	if (state->inference_enabled == enabled)
+		return;
+
+	state->inference_enabled = enabled;
+	state->have_result = false;
+	state->human_present = false;
+	state->task_pending = false;
+	state->event_image_ready = false;
+	state->task_event_epoch_s = 0;
+	state->next_task_submit_ms = 0;
+	state->last_frame_ms = 0;
+	state->last_human_change_ms = monotonic_ms();
+	state->rate_window_started_ms = 0;
+	state->rate_window_frames = 0;
+	state->inference_fps_x100 = 0;
+	state->prepare_us = 0;
+	state->inference_us = 0;
+	memset(&state->result, 0, sizeof(state->result));
+	log_msg("large-model inference %s; camera preview remains %s",
+		enabled ? "enabled" : "disabled",
+		state->camera_ready ? "available" : "unavailable");
 }
 
 bool wait_for_fd(int fd, short events, int timeout_ms)
@@ -984,12 +1094,14 @@ bool submit_human_task(const Config *config, const struct human_detect_result &r
 }
 
 int process_detection_frame(Camera *camera, ServiceState *state, FILE *json,
-			    PreviewClient *preview, const Config *config)
+			    PreviewClient *previews, size_t preview_count,
+			    const Config *config)
 {
 	struct v4l2_buffer buffer;
 	struct human_detect_result result = {};
 	const size_t stride = camera->format.fmt.pix.bytesperline;
 	const size_t needed = stride * kDetectHeight;
+	void *frame;
 	uint64_t started;
 	uint64_t prepared;
 	uint64_t invoked;
@@ -998,8 +1110,9 @@ int process_detection_frame(Camera *camera, ServiceState *state, FILE *json,
 	ready = camera_dequeue(camera, &buffer);
 	if (ready <= 0)
 		return ready;
+	frame = camera_mapping(camera, buffer.index);
 
-	if ((buffer.flags & V4L2_BUF_FLAG_ERROR) || !camera->mapping ||
+	if ((buffer.flags & V4L2_BUF_FLAG_ERROR) || !frame ||
 	    stride < kDetectWidth || buffer.bytesused < needed) {
 		/* The sensor commonly emits a few short frames immediately after
 		 * STREAMON while its first VSYNC boundary settles. */
@@ -1013,7 +1126,7 @@ int process_detection_frame(Camera *camera, ServiceState *state, FILE *json,
 	started = monotonic_us();
 	for (int row = 0; row < kDetectHeight; ++row) {
 		const uint8_t *source =
-			static_cast<const uint8_t *>(camera->mapping) + row * stride;
+			static_cast<const uint8_t *>(frame) + row * stride;
 
 		memcpy(state->gray_frame + row * kDetectWidth, source,
 		       kDetectWidth);
@@ -1022,6 +1135,16 @@ int process_detection_frame(Camera *camera, ServiceState *state, FILE *json,
 	 * preview use the private, tightly packed copy above. */
 	if (camera_queue(camera, &buffer) < 0)
 		return -1;
+
+	state->gray_frame_ready = true;
+	state->last_camera_frame_ms = monotonic_ms();
+	state->camera_frames++;
+	update_rate(state->last_camera_frame_ms, state->camera_frames,
+		    &state->camera_rate_window_started_ms,
+		    &state->camera_rate_window_frames,
+		    &state->camera_fps_x100);
+	if (!state->inference_enabled)
+		return 1;
 
 	if (human_detector_prepare_gray8(state->gray_frame, kDetectWidth) < 0) {
 		if (state->inference_errors++ == 0)
@@ -1081,7 +1204,8 @@ int process_detection_frame(Camera *camera, ServiceState *state, FILE *json,
 	if (state->task_pending && state->last_frame_ms >= state->next_task_submit_ms) {
 		if (!state->event_image_ready) {
 			state->event_image_ready = save_event_snapshot(
-				camera, state, preview, config->event_image_path);
+				camera, state, previews, preview_count,
+				config->event_image_path);
 			log_msg(state->event_image_ready ?
 					"event color JPEG saved to %s" :
 					"event color JPEG unavailable; sending detector result only",
@@ -1152,7 +1276,8 @@ void draw_detection_boxes(uint8_t *frame,
 	}
 }
 
-int encode_gray_jpeg(PreviewClient *preview, const uint8_t *frame)
+int encode_gray_jpeg(PreviewClient *preview, ServiceState *state,
+		     const uint8_t *frame)
 {
 	__u32 encoded = 0;
 
@@ -1161,12 +1286,13 @@ int encode_gray_jpeg(PreviewClient *preview, const uint8_t *frame)
 				 kPreviewJpegMax, &encoded) < 0)
 		return -1;
 	preview->jpeg_length = encoded;
-	return preview->jpeg_length >= 4 && preview->jpeg[0] == 0xff &&
-		       preview->jpeg[1] == 0xd8 &&
-		       preview->jpeg[preview->jpeg_length - 2] == 0xff &&
-		       preview->jpeg[preview->jpeg_length - 1] == 0xd9
-	       ? 0
-	       : -1;
+	if (preview->jpeg_length < 4 || preview->jpeg[0] != 0xff ||
+	    preview->jpeg[1] != 0xd8 ||
+	    preview->jpeg[preview->jpeg_length - 2] != 0xff ||
+	    preview->jpeg[preview->jpeg_length - 1] != 0xd9)
+		return -1;
+	state->jpeg_preview_encodes++;
+	return 0;
 }
 
 int preview_open_jpeg(PreviewClient *preview, const uint8_t *input)
@@ -1223,6 +1349,8 @@ int preview_open_jpeg(PreviewClient *preview, const uint8_t *input)
 void preview_close(PreviewClient *preview, ServiceState *state,
 		   const char *reason)
 {
+	bool was_open = preview->fd >= 0;
+
 	if (preview->fd >= 0) {
 		close(preview->fd);
 		preview->fd = -1;
@@ -1243,7 +1371,8 @@ void preview_close(PreviewClient *preview, ServiceState *state,
 	preview->jpeg_length = preview->jpeg_offset = 0;
 	preview->gray_length = preview->gray_offset = 0;
 	preview->suffix_offset = 0;
-	state->preview_active = false;
+	if (was_open && state->preview_active)
+		state->preview_active--;
 	state->last_preview_ms = monotonic_ms();
 	if (preview->started_ms)
 		state->preview_ms = static_cast<uint32_t>(
@@ -1252,7 +1381,8 @@ void preview_close(PreviewClient *preview, ServiceState *state,
 }
 
 bool save_event_snapshot(Camera *camera, ServiceState *state,
-			 PreviewClient *preview, const char *path)
+			 PreviewClient *previews, size_t preview_count,
+			 const char *path)
 {
 	struct v4l2_buffer buffer;
 	const char *failure = nullptr;
@@ -1270,11 +1400,14 @@ bool save_event_snapshot(Camera *camera, ServiceState *state,
 
 	if (!path || !*path)
 		return false;
-	if (preview && preview->fd >= 0)
-		preview_close(preview, state, "event snapshot");
+	for (size_t i = 0; i < preview_count; ++i) {
+		if (previews[i].fd >= 0)
+			preview_close(&previews[i], state, "event snapshot");
+	}
 
 	camera_stop(camera);
 	state->camera_ready = false;
+	reset_camera_rate(state);
 	if (camera->fd < 0) {
 		failure = "camera is closed";
 		goto restore;
@@ -1319,7 +1452,8 @@ bool save_event_snapshot(Camera *camera, ServiceState *state,
 			usable = false;
 
 		if (usable && jpeg_is_complete(camera, buffer)) {
-			captured = write_file_atomic(path, camera->mapping,
+			captured = write_file_atomic(path,
+						     camera_mapping(camera, buffer.index),
 						     buffer.bytesused);
 			if (!captured)
 				failure = "cannot write event JPEG";
@@ -1344,6 +1478,7 @@ restore:
 	if (camera_start_grey(camera) == 0) {
 		state->camera_ready = true;
 		state->camera_stream_synced = false;
+		reset_camera_rate(state);
 	} else {
 		log_msg("event snapshot: failed to restore GREY detection");
 		camera_close(camera);
@@ -1363,9 +1498,9 @@ restore:
 	return false;
 }
 
-bool preview_begin(PreviewClient *preview, ServiceState *state, int client,
-		   PreviewMode mode, unsigned int fps, unsigned int seconds,
-		   uint64_t now)
+bool preview_begin(PreviewClient *previews, size_t preview_count,
+		   ServiceState *state, int client, PreviewMode mode,
+		   unsigned int fps, unsigned int seconds, uint64_t now)
 {
 	static const char mjpeg_headers[] =
 		"HTTP/1.1 200 OK\r\n"
@@ -1381,10 +1516,18 @@ bool preview_begin(PreviewClient *preview, ServiceState *state, int client,
 		"Connection: close\r\n\r\n";
 	const char *headers;
 	size_t headers_length;
+	PreviewClient *preview = nullptr;
 
-	if (preview->fd >= 0) {
+	for (size_t i = 0; i < preview_count; ++i) {
+		if (previews[i].fd < 0) {
+			preview = &previews[i];
+			break;
+		}
+	}
+
+	if (!preview) {
 		send_http_text(client, 409, "Conflict",
-			       "a preview client is already connected\n");
+			       "both preview clients are already connected\n");
 		return false;
 	}
 	if (mode == PreviewMode::Mjpeg &&
@@ -1426,7 +1569,7 @@ bool preview_begin(PreviewClient *preview, ServiceState *state, int client,
 	preview->prefix_length = preview->prefix_offset = 0;
 	preview->jpeg_length = preview->jpeg_offset = 0;
 	preview->suffix_offset = 0;
-	state->preview_active = true;
+	state->preview_active++;
 	state->previews++;
 	if (seconds)
 		log_msg("%s preview started at %ux%u GREY, %u fps for %u s",
@@ -1523,7 +1666,7 @@ int preview_tick(PreviewClient *preview, ServiceState *state)
 		return 0;
 	}
 	if (preview->pending || now < preview->next_frame_ms ||
-	    !state->have_result)
+	    !state->gray_frame_ready)
 		return 0;
 
 	if (preview->mode == PreviewMode::Gray8) {
@@ -1543,15 +1686,18 @@ int preview_tick(PreviewClient *preview, ServiceState *state)
 			UINT32_MAX : static_cast<uint32_t>(state->camera_errors);
 		header->inference_errors = state->inference_errors > UINT32_MAX ?
 			UINT32_MAX : static_cast<uint32_t>(state->inference_errors);
-		header->inference_fps_x100 = state->inference_fps_x100;
+		header->camera_fps_x100 = state->camera_fps_x100;
 		header->prepare_us = state->prepare_us;
 		header->inference_us = state->inference_us;
-		header->frame_age_ms = state->last_frame_ms && now >= state->last_frame_ms ?
-			static_cast<uint32_t>(now - state->last_frame_ms) : 0;
+		header->frame_age_ms = state->last_camera_frame_ms &&
+			now >= state->last_camera_frame_ms ?
+			static_cast<uint32_t>(now - state->last_camera_frame_ms) : 0;
 		header->human_present = state->human_present ? 1 : 0;
 		header->box_count = state->result.count > HUMAN_DETECT_PREVIEW_BOXES ?
 			HUMAN_DETECT_PREVIEW_BOXES : state->result.count;
 		header->camera_ready = state->camera_ready ? 1 : 0;
+		header->inference_enabled = state->inference_enabled ? 1 : 0;
+		header->camera_frames = state->camera_frames;
 		for (unsigned int i = 0; i < header->box_count; ++i) {
 			header->boxes[i].x0 = state->result.boxes[i].x0;
 			header->boxes[i].y0 = state->result.boxes[i].y0;
@@ -1562,11 +1708,11 @@ int preview_tick(PreviewClient *preview, ServiceState *state)
 		memcpy(pixels, state->gray_frame, kDetectWidth * kDetectHeight);
 		preview->gray_length = kPreviewGrayBytes;
 		preview->gray_offset = 0;
-	} else {
+	} else if (preview->mode == PreviewMode::Mjpeg) {
 		int written;
 
 		draw_detection_boxes(state->gray_frame, state->result);
-		if (encode_gray_jpeg(preview, state->gray_frame) < 0) {
+		if (encode_gray_jpeg(preview, state, state->gray_frame) < 0) {
 			state->preview_errors++;
 			log_msg("hardware JPEG preview encode failed: %s",
 				strerror(errno));
@@ -1588,6 +1734,10 @@ int preview_tick(PreviewClient *preview, ServiceState *state)
 		preview->prefix_offset = 0;
 		preview->jpeg_offset = 0;
 		preview->suffix_offset = 0;
+	} else {
+		state->preview_errors++;
+		preview_close(preview, state, "unknown preview mode");
+		return -1;
 	}
 	preview->pending = true;
 	preview->next_frame_ms = now + (1000 + preview->fps / 2) / preview->fps;
@@ -1606,7 +1756,8 @@ void send_snapshot_response(int client, const Camera *camera,
 {
 	if (send_http_headers(client, 200, "OK", "image/jpeg",
 			      buffer.bytesused) == 0)
-		send_all(client, camera->mapping, buffer.bytesused);
+		send_all(client, camera_mapping(camera, buffer.index),
+			 buffer.bytesused);
 }
 
 void handle_snapshot(int client, const Config &config, Camera *camera,
@@ -1690,6 +1841,7 @@ void handle_snapshot(int client, const Config &config, Camera *camera,
 	if (camera_start_grey(camera) == 0) {
 		state->camera_ready = true;
 		state->camera_stream_synced = false;
+		reset_camera_rate(state);
 	} else {
 		log_msg("snapshot %ux%u: failed to restore GREY detection",
 			size.width, size.height);
@@ -1725,7 +1877,8 @@ failed:
 }
 
 bool handle_http_client(int client, const Config &config, Camera *camera,
-			ServiceState *state, PreviewClient *preview,
+			ServiceState *state, PreviewClient *previews,
+			size_t preview_count,
 			bool local_only)
 {
 	HttpRequest request;
@@ -1736,15 +1889,45 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 		send_http_text(client, 400, "Bad Request", "bad HTTP request\n");
 		return false;
 	}
-	if (strcmp(request.method, "GET")) {
-		send_http_text(client, 405, "Method Not Allowed",
-			       "only GET is supported\n");
-		return false;
-	}
 
 	query = strchr(request.target, '?');
 	if (query)
 		*query++ = '\0';
+
+	if (!strcmp(request.target, "/inference")) {
+		char response[48];
+		int length;
+
+		if (strcmp(request.method, "POST")) {
+			send_http_text(client, 405, "Method Not Allowed",
+				       "inference control requires POST\n");
+			return false;
+		}
+		if (!query || (strcmp(query, "enabled=0") && strcmp(query, "enabled=false") &&
+			       strcmp(query, "enabled=1") && strcmp(query, "enabled=true"))) {
+			send_http_text(client, 400, "Bad Request",
+				       "enabled must be 0, 1, false, or true\n");
+			return false;
+		}
+		set_inference_enabled(
+			state, !strcmp(query, "enabled=1") || !strcmp(query, "enabled=true"));
+		length = snprintf(response, sizeof(response),
+				  "{\"inference_enabled\":%s}\n",
+				  state->inference_enabled ? "true" : "false");
+		if (length < 0 || static_cast<size_t>(length) >= sizeof(response) ||
+		    send_http_headers(client, 200, "OK", "application/json",
+				      static_cast<size_t>(length)) < 0)
+			send_http_text(client, 500, "Internal Server Error",
+				       "inference control failed\n");
+		else
+			send_all(client, response, static_cast<size_t>(length));
+		return false;
+	}
+	if (strcmp(request.method, "GET")) {
+		send_http_text(client, 405, "Method Not Allowed",
+			       "only GET is supported for this endpoint\n");
+		return false;
+	}
 
 	if (!strcmp(request.target, "/") || !strcmp(request.target, "/dashboard")) {
 		const size_t length = sizeof(kDashboardHtml) - 1;
@@ -1761,9 +1944,10 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 			"human-detect position detection service\n"
 			"GET /                              HTML dashboard\n"
 			"GET /status                         detector JSON\n"
-			"GET /preview.mjpg[?fps=3..5&duration=1..60]\n"
+			"POST /inference?enabled=0|1         runtime inference control\n"
+			"GET /preview.mjpg[?fps=3..15&duration=1..60]\n"
 			"GET /snapshot.jpg[?size=WxH]        color JPEG\n"
-			"preview: 320x240 GREY with boxes, default 5 fps until disconnect\n"
+			"preview: 320x240 GREY with boxes, default 10 fps until disconnect\n"
 			"snapshot sizes: 160x120 176x144 320x240 640x480 720x480 "
 			"720x576 1024x768 1280x720 1920x1080 2592x1944\n");
 
@@ -1798,7 +1982,7 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 		if (!parse_image_options(query, kPreviewSize, kPreviewSizes,
 					 &size, &fps, &seconds)) {
 			send_http_text(client, 400, "Bad Request",
-				       "preview is fixed at 320x240; fps must be 3..5\n");
+				       "preview is fixed at 320x240; fps must be 3..15\n");
 			return false;
 		}
 		if (!state->camera_ready) {
@@ -1806,13 +1990,8 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 				       "camera is unavailable\n");
 			return false;
 		}
-		if (preview->fd >= 0) {
-			send_http_text(client, 409, "Conflict",
-				       "a preview client is already connected\n");
-			return false;
-		}
-		return preview_begin(preview, state, client, PreviewMode::Mjpeg,
-				     fps, seconds,
+		return preview_begin(previews, preview_count, state, client,
+				     PreviewMode::Mjpeg, fps, seconds,
 				     monotonic_ms());
 	}
 	if (!strcmp(request.target, "/preview.gray8")) {
@@ -1827,7 +2006,7 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 		if (!parse_image_options(query, kPreviewSize, kPreviewSizes,
 					 &size, &fps, &seconds)) {
 			send_http_text(client, 400, "Bad Request",
-				       "preview is fixed at 320x240; fps must be 3..5\n");
+				       "preview is fixed at 320x240; fps must be 3..15\n");
 			return false;
 		}
 		if (!state->camera_ready) {
@@ -1835,13 +2014,9 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 				       "camera is unavailable\n");
 			return false;
 		}
-		if (preview->fd >= 0) {
-			send_http_text(client, 409, "Conflict",
-				       "a preview client is already connected\n");
-			return false;
-		}
-		return preview_begin(preview, state, client, PreviewMode::Gray8,
-				     fps, seconds, monotonic_ms());
+		return preview_begin(previews, preview_count, state, client,
+				     PreviewMode::Gray8, fps, seconds,
+				     monotonic_ms());
 	}
 	if (strcmp(request.target, "/snapshot.jpg") &&
 	    strcmp(request.target, "/snapshot")) {
@@ -1854,7 +2029,7 @@ bool handle_http_client(int client, const Config &config, Camera *camera,
 			       "unsupported image size\n");
 		return false;
 	}
-	if (preview->fd >= 0) {
+	if (state->preview_active) {
 		send_http_text(client, 409, "Conflict",
 			       "stop the MJPEG preview before taking a snapshot\n");
 		return false;
@@ -2038,7 +2213,8 @@ bool parse_options(int argc, char **argv, Config *config)
 }
 
 bool accept_http_client(int listener, const Config &config, Camera *camera,
-			ServiceState *state, PreviewClient *preview,
+			ServiceState *state, PreviewClient *previews,
+			size_t preview_count,
 			bool local_only)
 {
 	int client = accept(listener, nullptr, nullptr);
@@ -2050,8 +2226,8 @@ bool accept_http_client(int listener, const Config &config, Camera *camera,
 	flags = fcntl(client, F_GETFL, 0);
 	if (flags >= 0)
 		fcntl(client, F_SETFL, flags | O_NONBLOCK);
-	adopted = handle_http_client(client, config, camera, state, preview,
-				     local_only);
+	adopted = handle_http_client(client, config, camera, state, previews,
+				     preview_count, local_only);
 	if (!adopted)
 		close(client);
 	return adopted;
@@ -2064,7 +2240,7 @@ int main(int argc, char **argv)
 	static ServiceState state;
 	Config config;
 	Camera camera;
-	PreviewClient preview;
+	PreviewClient previews[kPreviewClientCount];
 	FILE *json = nullptr;
 	struct sigaction action;
 	int unix_listener;
@@ -2118,6 +2294,7 @@ int main(int argc, char **argv)
 	if (camera_open(&camera, config.device) == 0 &&
 	    camera_start_grey(&camera) == 0) {
 		state.camera_ready = true;
+		reset_camera_rate(&state);
 		camera_progress_at = monotonic_ms();
 		log_msg("camera ready on %s, detection %dx%d GREY", config.device,
 			kDetectWidth, kDetectHeight);
@@ -2131,15 +2308,23 @@ int main(int argc, char **argv)
 		log_msg("serving HTTP on 0.0.0.0:%u", config.http_port);
 
 	while (!g_stop) {
-		struct pollfd descriptors[4];
+		struct pollfd descriptors[2 + 1 + kPreviewClientCount];
 		int unix_index;
 		int tcp_index = -1;
 		int camera_index = -1;
-		int preview_index = -1;
 		int count = 0;
 		uint64_t now = monotonic_ms();
-		int timeout = preview.fd >= 0 ? 100 : 1000;
+		bool any_preview = false;
+		int preview_indices[kPreviewClientCount];
+		int timeout;
 		int ready;
+
+		for (size_t i = 0; i < kPreviewClientCount; ++i) {
+			preview_indices[i] = -1;
+			if (previews[i].fd >= 0)
+				any_preview = true;
+		}
+		timeout = any_preview ? 100 : 1000;
 
 		if (state.camera_ready &&
 		    now - camera_progress_at >= kCameraStallMs) {
@@ -2147,15 +2332,18 @@ int main(int argc, char **argv)
 				static_cast<unsigned long long>(kCameraStallMs),
 				config.device);
 			state.camera_errors++;
-			preview_close(&preview, &state, "camera stalled");
+			for (size_t i = 0; i < kPreviewClientCount; ++i)
+				preview_close(&previews[i], &state, "camera stalled");
 			camera_close(&camera);
 			state.camera_ready = false;
+				reset_camera_rate(&state);
 			retry_at = now + 1000;
 		}
 		if (!state.camera_ready && now >= retry_at) {
 			if (camera_recover_grey(&camera, config.device) == 0) {
 				state.camera_ready = true;
-					state.camera_stream_synced = false;
+				state.camera_stream_synced = false;
+				reset_camera_rate(&state);
 				camera_progress_at = monotonic_ms();
 				log_msg("camera recovered");
 			} else {
@@ -2179,9 +2367,11 @@ int main(int argc, char **argv)
 			descriptors[count].events = POLLIN;
 			descriptors[count++].revents = 0;
 		}
-		if (preview.fd >= 0) {
-			preview_index = count;
-			descriptors[count].fd = preview.fd;
+		for (size_t i = 0; i < kPreviewClientCount; ++i) {
+			if (previews[i].fd < 0)
+				continue;
+			preview_indices[i] = count;
+			descriptors[count].fd = previews[i].fd;
 			descriptors[count].events = POLLOUT;
 			descriptors[count++].revents = 0;
 		}
@@ -2197,48 +2387,56 @@ int main(int argc, char **argv)
 		if (camera_index >= 0 &&
 		    descriptors[camera_index].revents &
 			(POLLIN | POLLERR | POLLHUP | POLLNVAL)) {
-			int processed =
-						process_detection_frame(&camera, &state, json,
-									&preview, &config);
+			int processed = process_detection_frame(
+				&camera, &state, json, previews,
+				kPreviewClientCount, &config);
 
 			if (processed < 0) {
 				log_msg("camera capture failed; reopening %s",
 					config.device);
 				state.camera_errors++;
-				preview_close(&preview, &state,
-					      "camera capture failed");
+				for (size_t i = 0; i < kPreviewClientCount; ++i)
+					preview_close(&previews[i], &state,
+						      "camera capture failed");
 				camera_close(&camera);
 				state.camera_ready = false;
+				reset_camera_rate(&state);
 				retry_at = monotonic_ms() + 1000;
 			} else if (processed > 0) {
 				camera_progress_at = monotonic_ms();
 			}
 		}
 
-		if (preview_index >= 0 &&
-		    descriptors[preview_index].revents &
-			(POLLERR | POLLHUP | POLLNVAL)) {
-			state.preview_errors++;
-			preview_close(&preview, &state, "client disconnected");
+		for (size_t i = 0; i < kPreviewClientCount; ++i) {
+			int index = preview_indices[i];
+
+			if (index >= 0 && descriptors[index].revents &
+			    (POLLERR | POLLHUP | POLLNVAL)) {
+				state.preview_errors++;
+				preview_close(&previews[i], &state,
+					      "client disconnected");
+			}
 		}
 
 		if (descriptors[unix_index].revents & POLLIN)
 			accept_http_client(unix_listener, config, &camera, &state,
-					   &preview, true);
+					   previews, kPreviewClientCount, true);
 		if (tcp_index >= 0 && descriptors[tcp_index].revents & POLLIN) {
 			uint64_t snapshot_before = state.last_snapshot_ms;
 
 			accept_http_client(tcp_listener, config, &camera, &state,
-						   &preview, false);
+					   previews, kPreviewClientCount, false);
 			if (state.camera_ready &&
 			    state.last_snapshot_ms != snapshot_before)
 				camera_progress_at = monotonic_ms();
 		}
 
-		preview_tick(&preview, &state);
+		for (size_t i = 0; i < kPreviewClientCount; ++i)
+			preview_tick(&previews[i], &state);
 	}
 
-	preview_close(&preview, &state, nullptr);
+	for (size_t i = 0; i < kPreviewClientCount; ++i)
+		preview_close(&previews[i], &state, nullptr);
 	camera_close(&camera);
 	if (tcp_listener >= 0)
 		close(tcp_listener);

@@ -29,7 +29,11 @@
 #define FRAME_WIDTH HUMAN_DETECT_PREVIEW_WIDTH
 #define FRAME_HEIGHT HUMAN_DETECT_PREVIEW_HEIGHT
 #define HTTP_BUFFER_SIZE 512
+#define RECEIVE_BUFFER_SIZE 4096
+#define RECEIVE_PASS_LIMIT 32
 #define CONNECT_RETRY_MS 2000
+#define CONTROL_TIMEOUT_MS 600
+#define DISPLAY_BLANK_PATH "/sys/class/graphics/fb0/blank"
 
 enum stream_stage {
 	STREAM_DISCONNECTED,
@@ -56,12 +60,14 @@ static lv_obj_t *boxes_label;
 static lv_obj_t *frame_label;
 static lv_obj_t *errors_label;
 static lv_obj_t *pause_button_label;
+static lv_obj_t *inference_button_label;
 static lv_obj_t *boxes_button_label;
 static lv_obj_t *detection_boxes[HUMAN_DETECT_PREVIEW_BOXES];
 
 static const char *socket_path = "/run/human-detect.sock";
-static int preview_fps = 3;
+static int preview_fps = 15;
 static bool paused;
+static bool inference_enabled;
 static bool boxes_visible = true;
 static bool have_frame;
 
@@ -78,6 +84,9 @@ static size_t packet_header_length;
 static size_t frame_length;
 static uint64_t received_packets;
 static char last_reported_status[24];
+static uint64_t last_metrics_update_ms;
+static struct human_detect_preview_box last_boxes[HUMAN_DETECT_PREVIEW_BOXES];
+static uint8_t last_box_count;
 
 static void begin_request(uint64_t now);
 
@@ -95,6 +104,104 @@ static uint64_t monotonic_ms(void)
 		return 0;
 	return (uint64_t)now.tv_sec * 1000ULL +
 	       (uint64_t)now.tv_nsec / 1000000ULL;
+}
+
+static int set_display_blank(bool blank)
+{
+	const char *value = blank ? "4\n" : "0\n";
+	size_t length = strlen(value);
+	ssize_t written;
+	int fd;
+
+	fd = open(DISPLAY_BLANK_PATH, O_WRONLY | O_CLOEXEC);
+	if (fd < 0)
+		return -1;
+	written = write(fd, value, length);
+	close(fd);
+	return written == (ssize_t)length ? 0 : -1;
+}
+
+static bool wait_socket(int fd, short events)
+{
+	struct pollfd descriptor = {
+		.fd = fd,
+		.events = events,
+		.revents = 0,
+	};
+
+	while (poll(&descriptor, 1, CONTROL_TIMEOUT_MS) < 0 && errno == EINTR)
+		;
+	return descriptor.revents & (events | POLLERR | POLLHUP | POLLNVAL);
+}
+
+static bool set_inference_on_board(bool enabled)
+{
+	struct sockaddr_un address;
+	char request[160];
+	char response[192];
+	int request_length;
+	size_t sent = 0;
+	ssize_t received;
+	int connect_error = 0;
+	socklen_t error_length = sizeof(connect_error);
+	int flags;
+	int fd;
+
+	fd = socket(AF_UNIX, SOCK_STREAM, 0);
+	if (fd < 0)
+		return false;
+	flags = fcntl(fd, F_GETFL, 0);
+	if (flags < 0 || fcntl(fd, F_SETFL, flags | O_NONBLOCK) < 0 ||
+	    fcntl(fd, F_SETFD, FD_CLOEXEC) < 0) {
+		close(fd);
+		return false;
+	}
+	memset(&address, 0, sizeof(address));
+	address.sun_family = AF_UNIX;
+	strncpy(address.sun_path, socket_path, sizeof(address.sun_path) - 1);
+	if (connect(fd, (const struct sockaddr *)&address, sizeof(address)) < 0) {
+		if (errno != EINPROGRESS || !wait_socket(fd, POLLOUT) ||
+		    getsockopt(fd, SOL_SOCKET, SO_ERROR, &connect_error, &error_length) < 0 ||
+		    connect_error != 0) {
+			close(fd);
+			return false;
+		}
+	}
+
+	request_length = snprintf(request, sizeof(request),
+				  "POST /inference?enabled=%d HTTP/1.0\r\n"
+				  "Host: localhost\r\nContent-Length: 0\r\n\r\n",
+				  enabled ? 1 : 0);
+	if (request_length < 0 || (size_t)request_length >= sizeof(request)) {
+		close(fd);
+		return false;
+	}
+	while (sent < (size_t)request_length) {
+		ssize_t written = send(fd, request + sent, (size_t)request_length - sent, 0);
+
+		if (written > 0) {
+			sent += (size_t)written;
+			continue;
+		}
+		if (written < 0 && errno == EINTR)
+			continue;
+		if (written < 0 && (errno == EAGAIN || errno == EWOULDBLOCK) &&
+		    wait_socket(fd, POLLOUT))
+			continue;
+		close(fd);
+		return false;
+	}
+
+	if (!wait_socket(fd, POLLIN)) {
+		close(fd);
+		return false;
+	}
+	received = recv(fd, response, sizeof(response) - 1, 0);
+	close(fd);
+	if (received <= 0)
+		return false;
+	response[received] = '\0';
+	return strncmp(response, "HTTP/1.1 200", 12) == 0;
 }
 
 static void set_connection(const char *text, uint32_t color)
@@ -115,6 +222,19 @@ static void set_connection(const char *text, uint32_t color)
 	lv_obj_set_style_text_color(connection_label, lv_color_hex(color), 0);
 }
 
+static void clear_camera_metrics(void)
+{
+	last_metrics_update_ms = 0;
+	if (no_signal)
+		lv_obj_set_hidden(no_signal, false);
+	if (fps_label)
+		lv_label_set_text(fps_label, "-- FPS");
+	if (frame_label)
+		lv_label_set_text(frame_label, "NO CAMERA DATA");
+	if (errors_label)
+		lv_label_set_text(errors_label, "CAM --   INFER --");
+}
+
 static void stream_disconnect(const char *status, uint32_t color)
 {
 	if (stream_fd >= 0)
@@ -126,6 +246,7 @@ static void stream_disconnect(const char *status, uint32_t color)
 	packet_header_length = 0;
 	frame_length = 0;
 	retry_at_ms = monotonic_ms() + CONNECT_RETRY_MS;
+	clear_camera_metrics();
 	set_connection(status, color);
 }
 
@@ -187,17 +308,49 @@ static void configure_box(lv_obj_t *box)
 	lv_obj_set_scrollable(box, false);
 	lv_obj_set_clickable(box, false);
 	lv_obj_set_style_bg_opa(box, LV_OPA_TRANSP, 0);
-	lv_obj_set_style_border_color(box, lv_color_hex(0xf59e0b), 0);
-	lv_obj_set_style_border_width(box, 3, 0);
-	lv_obj_set_style_radius(box, 2, 0);
+	lv_obj_set_style_border_width(box, 0, 0);
+	lv_obj_set_style_radius(box, 0, 0);
 	lv_obj_set_style_pad_all(box, 0, 0);
 	lv_obj_set_hidden(box, true);
+
+	const lv_align_t align[] = {
+		LV_ALIGN_TOP_MID, LV_ALIGN_BOTTOM_MID,
+		LV_ALIGN_LEFT_MID, LV_ALIGN_RIGHT_MID,
+	};
+	for (size_t i = 0; i < sizeof(align) / sizeof(align[0]); i++) {
+		lv_obj_t *edge = lv_obj_create(box);
+		bool horizontal = i < 2;
+
+		lv_obj_set_size(edge, horizontal ? lv_pct(100) : 3,
+				horizontal ? 3 : lv_pct(100));
+		lv_obj_set_style_bg_color(edge, lv_color_hex(0xf59e0b), 0);
+		lv_obj_set_style_bg_opa(edge, LV_OPA_COVER, 0);
+		lv_obj_set_style_border_width(edge, 0, 0);
+		lv_obj_set_style_radius(edge, 0, 0);
+		lv_obj_set_style_pad_all(edge, 0, 0);
+		lv_obj_set_scrollable(edge, false);
+		lv_obj_set_clickable(edge, false);
+		lv_obj_align(edge, align[i], 0, 0);
+	}
 }
 
 static void update_detection_boxes(const struct human_detect_gray_header *header)
 {
 	uint32_t shown = header->box_count > HUMAN_DETECT_PREVIEW_BOXES ?
 		HUMAN_DETECT_PREVIEW_BOXES : header->box_count;
+	bool changed = shown != last_box_count;
+
+	if (!changed) {
+		for (uint32_t i = 0; i < shown; i++) {
+			if (memcmp(&last_boxes[i], &header->boxes[i],
+				   sizeof(last_boxes[i]))) {
+				changed = true;
+				break;
+			}
+		}
+	}
+	if (!changed)
+		return;
 
 	for (uint32_t i = 0; i < HUMAN_DETECT_PREVIEW_BOXES; i++) {
 		const struct human_detect_preview_box *box;
@@ -224,30 +377,73 @@ static void update_detection_boxes(const struct human_detect_gray_header *header
 		lv_obj_set_hidden(detection_boxes[i], false);
 		lv_obj_move_foreground(detection_boxes[i]);
 	}
+	memset(last_boxes, 0, sizeof(last_boxes));
+	if (shown)
+		memcpy(last_boxes, header->boxes, shown * sizeof(last_boxes[0]));
+	last_box_count = boxes_visible ? shown : 0;
 }
 
 static void update_metrics(const struct human_detect_gray_header *header)
 {
 	uint32_t boxes = header->box_count > HUMAN_DETECT_PREVIEW_BOXES ?
 		HUMAN_DETECT_PREVIEW_BOXES : header->box_count;
+	bool was_inference_enabled = inference_enabled;
+	const char *person;
+	uint32_t person_color;
+	char text[64];
+	uint64_t now = monotonic_ms();
 
-	lv_label_set_text(person_label,
-			  header->human_present ? "PERSON DETECTED" : "NO PERSON");
-	lv_obj_set_style_text_color(person_label,
-		lv_color_hex(header->human_present ? 0xfbbf24 : 0x4ade80), 0);
-	lv_label_set_text_fmt(fps_label, "%u.%02u FPS",
-			      header->inference_fps_x100 / 100,
-			      header->inference_fps_x100 % 100);
-	lv_label_set_text_fmt(timing_label, "%u ms prep  /  %u ms infer",
-			      (header->prepare_us + 500) / 1000,
-			      (header->inference_us + 500) / 1000);
-	lv_label_set_text_fmt(boxes_label, "%u DETECTION%s", boxes,
-			      boxes == 1 ? "" : "S");
-	lv_label_set_text_fmt(frame_label, "%llu  /  age %u ms",
-			      (unsigned long long)header->frames,
-			      header->frame_age_ms);
-	lv_label_set_text_fmt(errors_label, "CAM %u   INFER %u",
-			      header->camera_errors, header->inference_errors);
+	inference_enabled = header->inference_enabled != 0;
+	if (inference_enabled != was_inference_enabled) {
+		lv_label_set_text(inference_button_label,
+				  inference_enabled ? "INFERENCE ON" : "INFERENCE OFF");
+	}
+	person = !inference_enabled ? "INFERENCE OFF" :
+		(header->human_present ? "PERSON DETECTED" : "NO PERSON");
+	person_color = !inference_enabled ? 0x8b98a5 :
+		(header->human_present ? 0xfbbf24 : 0x4ade80);
+	if (strcmp(lv_label_get_text(person_label), person)) {
+		lv_label_set_text(person_label, person);
+		lv_obj_set_style_text_color(person_label,
+					   lv_color_hex(person_color), 0);
+	}
+
+	if (!inference_enabled) {
+		snprintf(text, sizeof(text), "CAMERA PREVIEW ONLY");
+		if (strcmp(lv_label_get_text(timing_label), text))
+			lv_label_set_text(timing_label, text);
+		snprintf(text, sizeof(text), "DETECTION OFF");
+		if (strcmp(lv_label_get_text(boxes_label), text))
+			lv_label_set_text(boxes_label, text);
+	} else {
+		snprintf(text, sizeof(text), "%u ms prep  /  %u ms infer",
+			 (header->prepare_us + 500) / 1000,
+			 (header->inference_us + 500) / 1000);
+		if (strcmp(lv_label_get_text(timing_label), text))
+			lv_label_set_text(timing_label, text);
+		snprintf(text, sizeof(text), "%u DETECTION%s", boxes,
+			 boxes == 1 ? "" : "S");
+		if (strcmp(lv_label_get_text(boxes_label), text))
+			lv_label_set_text(boxes_label, text);
+	}
+
+	if (!last_metrics_update_ms || now - last_metrics_update_ms >= 1000) {
+		snprintf(text, sizeof(text), "%u.%02u FPS",
+			 header->camera_fps_x100 / 100,
+			 header->camera_fps_x100 % 100);
+		if (strcmp(lv_label_get_text(fps_label), text))
+			lv_label_set_text(fps_label, text);
+		snprintf(text, sizeof(text), "%llu  /  age %u ms",
+			 (unsigned long long)header->camera_frames,
+			 header->frame_age_ms);
+		if (strcmp(lv_label_get_text(frame_label), text))
+			lv_label_set_text(frame_label, text);
+		snprintf(text, sizeof(text), "CAM %u   INFER %u",
+			 header->camera_errors, header->inference_errors);
+		if (strcmp(lv_label_get_text(errors_label), text))
+			lv_label_set_text(errors_label, text);
+		last_metrics_update_ms = now;
+	}
 	update_detection_boxes(header);
 }
 
@@ -316,13 +512,14 @@ static int consume_stream_bytes(const uint8_t *data, size_t length)
 			if (packet_header_length == sizeof(packet_header))
 				stream_stage = STREAM_BODY;
 		} else if (stream_stage == STREAM_BODY) {
-			size_t room = sizeof(gray_frame) - frame_length;
+			size_t room = FRAME_WIDTH * FRAME_HEIGHT - frame_length;
 			size_t take = available < room ? available : room;
 
 			memcpy(gray_frame + frame_length, data + offset, take);
 			frame_length += take;
 			offset += take;
-			if (frame_length == sizeof(gray_frame) && finish_packet() < 0)
+			if (frame_length == FRAME_WIDTH * FRAME_HEIGHT &&
+			    finish_packet() < 0)
 				return -1;
 		} else {
 			return -1;
@@ -333,7 +530,7 @@ static int consume_stream_bytes(const uint8_t *data, size_t length)
 
 static void stream_poll(uint64_t now)
 {
-	uint8_t receive_buffer[1024];
+	uint8_t receive_buffer[RECEIVE_BUFFER_SIZE];
 
 	if (paused)
 		return;
@@ -378,7 +575,7 @@ static void stream_poll(uint64_t now)
 		stream_stage = STREAM_HTTP;
 	}
 
-	for (int pass = 0; pass < 8; pass++) {
+	for (int pass = 0; pass < RECEIVE_PASS_LIMIT; pass++) {
 		ssize_t received = recv(stream_fd, receive_buffer,
 					sizeof(receive_buffer), 0);
 
@@ -420,6 +617,37 @@ static void pause_event_cb(lv_event_t *event)
 	fflush(stdout);
 }
 
+static void inference_event_cb(lv_event_t *event)
+{
+	bool enabled;
+
+	if (lv_event_get_code(event) != LV_EVENT_CLICKED)
+		return;
+	enabled = !inference_enabled;
+	if (!set_inference_on_board(enabled)) {
+		printf("human-detect-ui: inference switch failed\n");
+		fflush(stdout);
+		return;
+	}
+	inference_enabled = enabled;
+	lv_label_set_text(inference_button_label,
+			  inference_enabled ? "INFERENCE ON" : "INFERENCE OFF");
+	if (!inference_enabled) {
+		lv_label_set_text(person_label, "INFERENCE OFF");
+		lv_obj_set_style_text_color(person_label, lv_color_hex(0x8b98a5), 0);
+		lv_label_set_text(boxes_label, "DETECTION OFF");
+		for (uint32_t i = 0; i < HUMAN_DETECT_PREVIEW_BOXES; i++)
+			lv_obj_set_hidden(detection_boxes[i], true);
+	} else {
+		lv_label_set_text(person_label, "WAITING");
+		lv_obj_set_style_text_color(person_label, lv_color_hex(0x38bdff), 0);
+		lv_label_set_text(boxes_label, "0 DETECTIONS");
+	}
+	printf("human-detect-ui: inference %s\n",
+	       inference_enabled ? "enabled" : "disabled");
+	fflush(stdout);
+}
+
 static void boxes_event_cb(lv_event_t *event)
 {
 	if (lv_event_get_code(event) != LV_EVENT_CLICKED)
@@ -430,6 +658,8 @@ static void boxes_event_cb(lv_event_t *event)
 		if (!boxes_visible)
 			lv_obj_set_hidden(detection_boxes[i], true);
 	}
+	if (!boxes_visible)
+		last_box_count = 0;
 	if (boxes_visible && received_packets)
 		update_detection_boxes(
 			(const struct human_detect_gray_header *)packet_header);
@@ -456,19 +686,48 @@ static lv_obj_t *make_panel(lv_obj_t *parent, int32_t x, int32_t y,
 	lv_obj_set_style_bg_color(panel, lv_color_hex(0x0d1822), 0);
 	lv_obj_set_style_bg_opa(panel, LV_OPA_COVER, 0);
 	lv_obj_set_style_border_color(panel, lv_color_hex(0x223447), 0);
-	lv_obj_set_style_border_width(panel, 1, 0);
-	lv_obj_set_style_radius(panel, 8, 0);
+	lv_obj_set_style_border_width(panel, 0, 0);
+	lv_obj_set_style_radius(panel, 0, 0);
 	lv_obj_set_style_pad_all(panel, 0, 0);
 	lv_obj_set_scrollable(panel, false);
 	return panel;
 }
 
-static lv_obj_t *make_button(lv_obj_t *parent, int32_t x, const char *text,
+static void add_panel_edge(lv_obj_t *panel, int32_t x, int32_t y,
+			   int32_t width, int32_t height, uint32_t color)
+{
+	lv_obj_t *edge = lv_obj_create(panel);
+
+	lv_obj_set_pos(edge, x, y);
+	lv_obj_set_size(edge, width, height);
+	lv_obj_set_style_bg_color(edge, lv_color_hex(color), 0);
+	lv_obj_set_style_bg_opa(edge, LV_OPA_COVER, 0);
+	lv_obj_set_style_border_width(edge, 0, 0);
+	lv_obj_set_style_radius(edge, 0, 0);
+	lv_obj_set_style_pad_all(edge, 0, 0);
+	lv_obj_set_scrollable(edge, false);
+	lv_obj_set_clickable(edge, false);
+}
+
+static void add_panel_frame(lv_obj_t *panel)
+{
+	int32_t width = lv_obj_get_width(panel);
+	int32_t height = lv_obj_get_height(panel);
+	const uint32_t color = 0x31536d;
+
+	add_panel_edge(panel, 0, 0, width, 1, color);
+	add_panel_edge(panel, 0, height - 1, width, 1, color);
+	add_panel_edge(panel, 0, 1, 1, height - 2, color);
+	add_panel_edge(panel, width - 1, 1, 1, height - 2, color);
+}
+
+static lv_obj_t *make_button(lv_obj_t *parent, int32_t x, int32_t width,
+			     const char *text,
 			     lv_event_cb_t callback, lv_obj_t **label_out)
 {
 	lv_obj_t *button = lv_button_create(parent);
 	lv_obj_set_pos(button, x, 322);
-	lv_obj_set_size(button, 180, 48);
+	lv_obj_set_size(button, width, 48);
 	lv_obj_set_style_bg_color(button, lv_color_hex(0x193247), 0);
 	lv_obj_set_style_bg_color(button, lv_color_hex(0x244b68),
 				  LV_STATE_PRESSED);
@@ -489,6 +748,7 @@ static bool build_ui(void)
 	lv_obj_t *info_panel;
 	lv_obj_t *label;
 	lv_obj_t *pause_button;
+	lv_obj_t *inference_button;
 	lv_obj_t *boxes_button;
 
 	if (!screen) {
@@ -521,6 +781,7 @@ static bool build_ui(void)
 	}
 	lv_obj_set_style_bg_color(preview_panel, lv_color_hex(0x020406), 0);
 	lv_obj_set_style_border_color(preview_panel, lv_color_hex(0x31536d), 0);
+	add_panel_frame(preview_panel);
 	canvas = lv_canvas_create(preview_panel);
 	if (!canvas) {
 		fprintf(stderr, "human-detect-ui: cannot allocate preview canvas\n");
@@ -553,6 +814,7 @@ static bool build_ui(void)
 		fprintf(stderr, "human-detect-ui: cannot allocate info panel\n");
 		return false;
 	}
+	add_panel_frame(info_panel);
 	label = make_label(info_panel, "PRESENCE", &lv_font_montserrat_14,
 			   0x7f93a8);
 	lv_obj_set_pos(label, 24, 20);
@@ -560,7 +822,7 @@ static bool build_ui(void)
 				  0x7f93a8);
 	lv_obj_set_pos(person_label, 24, 44);
 
-	label = make_label(info_panel, "INFERENCE RATE", &lv_font_montserrat_14,
+	label = make_label(info_panel, "CAMERA RATE", &lv_font_montserrat_14,
 			   0x7f93a8);
 	lv_obj_set_pos(label, 24, 88);
 	fps_label = make_label(info_panel, "0.00 FPS", &lv_font_montserrat_26,
@@ -595,11 +857,14 @@ static bool build_ui(void)
 				  &lv_font_montserrat_14, 0x8b98a5);
 	lv_obj_set_pos(errors_label, 104, 262);
 
-	pause_button = make_button(info_panel, 16, "PAUSE", pause_event_cb,
+	pause_button = make_button(info_panel, 16, 120, "PAUSE", pause_event_cb,
 				   &pause_button_label);
-	boxes_button = make_button(info_panel, 214, "BOXES ON", boxes_event_cb,
+	inference_button = make_button(info_panel, 144, 128, "INFERENCE OFF",
+				       inference_event_cb, &inference_button_label);
+	boxes_button = make_button(info_panel, 280, 120, "BOXES ON", boxes_event_cb,
 				   &boxes_button_label);
 	(void)pause_button;
+	(void)inference_button;
 	(void)boxes_button;
 
 	label = make_label(screen, "320x240 L8 / LOCAL SOCKET / TAP TO CONTROL",
@@ -612,7 +877,7 @@ static void print_usage(const char *program)
 {
 	printf("usage: %s [-s /run/human-detect.sock]"
 	       " [-d /dev/fb0|/dev/dri/cardN] [-g auto|none|/dev/dri/cardN]"
-	       " [-i /dev/input/eventN|none] [-f 3..5] [-t seconds]\n",
+	       " [-i /dev/input/eventN|none] [-f 3..15] [-t seconds]\n",
 	       program);
 }
 
@@ -631,6 +896,7 @@ int main(int argc, char **argv)
 	char found_gpu[64] = "";
 	int seconds = 0;
 	int opt;
+	int exit_status = 1;
 	uint32_t started;
 	lv_indev_t *indev = NULL;
 
@@ -662,8 +928,8 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
-	if (preview_fps < 3 || preview_fps > 5 || seconds < 0) {
-		fprintf(stderr, "human-detect-ui: fps must be 3..5 and time >= 0\n");
+	if (preview_fps < 3 || preview_fps > 15 || seconds < 0) {
+		fprintf(stderr, "human-detect-ui: fps must be 3..15 and time >= 0\n");
 		return 1;
 	}
 
@@ -692,6 +958,10 @@ int main(int argc, char **argv)
 			display_device = found_lcdc;
 	}
 
+	if (set_display_blank(false))
+		fprintf(stderr, "human-detect-ui: cannot unblank %s\n",
+			DISPLAY_BLANK_PATH);
+
 	if (!gpu_backend) {
 		/* The GPU backend needs a second full-screen DMA buffer. On a busy
 		 * no-MMU system that allocation may fail after boot; fbdev already
@@ -705,7 +975,7 @@ int main(int argc, char **argv)
 					LV_RESULT_OK) {
 				fprintf(stderr, "human-detect-ui: cannot initialize %s\n",
 					display_device);
-				return 1;
+				goto out;
 			}
 		} else {
 			display = lv_linux_fbdev_create();
@@ -714,7 +984,7 @@ int main(int argc, char **argv)
 					LV_RESULT_OK) {
 				fprintf(stderr, "human-detect-ui: cannot initialize %s\n",
 					display_device);
-				return 1;
+				goto out;
 			}
 		}
 	}
@@ -725,15 +995,18 @@ int main(int argc, char **argv)
 		if (!indev) {
 			fprintf(stderr, "human-detect-ui: cannot open %s\n",
 				input_device);
-			return 1;
+			goto out;
 		}
 		lv_indev_set_display(indev, display);
 		lv_timer_set_period(lv_indev_get_read_timer(indev), 10);
 	}
-	lv_timer_set_period(lv_display_get_refr_timer(display), 50);
+	/* Keep display updates paced with the preview rather than running an
+	 * independent 12.5 Hz timer.  LVGL still skips work when nothing changed. */
+	lv_timer_set_period(lv_display_get_refr_timer(display),
+			    1000U / (uint32_t)preview_fps);
 
 	if (!build_ui())
-		return 1;
+		goto out;
 	printf("human-detect-ui: controls ready\n");
 	started = lv_tick_get();
 	printf("human-detect-ui: display=%s gpu=%s input=%s socket=%s fps=%d\n",
@@ -750,12 +1023,22 @@ int main(int argc, char **argv)
 				   (uint32_t)seconds * 1000U)
 			break;
 	}
+	exit_status = 0;
 
+out:
 	if (stream_fd >= 0)
 		close(stream_fd);
 	printf("human-detect-ui: received %llu frames\n",
 	       (unsigned long long)received_packets);
-	if (gpu_backend)
+	if (gpu_backend) {
 		lvgl_gpu_display_destroy(gpu_backend);
-	return 0;
+		gpu_backend = NULL;
+	} else if (display) {
+		lv_display_delete(display);
+		display = NULL;
+	}
+	if (set_display_blank(true))
+		fprintf(stderr, "human-detect-ui: cannot blank %s\n",
+			DISPLAY_BLANK_PATH);
+	return exit_status;
 }

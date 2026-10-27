@@ -57,10 +57,33 @@
 #     /system 下建目录。var/ 目录请勿占用，那是板子自己的持久状态
 #     （ssh 主机密钥）。
 
-export PATH=/system/bin:/bin:/sbin
+export PATH=/system/bin:/bin:/sbin:/usr/bin
 export LD_LIBRARY_PATH=/system/lib:/lib
 
-# Add real services here, for example:
-# 在这里添加真正的服务，例如：
-#   [ -x /system/bin/app ] && /system/bin/app &
+# The three board LEDs use the standard LED class.  Start them dark; write 1
+# to brightness to turn one on.
+#
+# 三路板载 LED 由标准 LED class 管理。启动时保持熄灭，写入 1 即可点亮。
+for led in red green blue; do
+  [ -w /sys/class/leds/$led/brightness ] &&
+    echo 0 > /sys/class/leds/$led/brightness
+done
+
+# Optional camera applications. The detector owns /dev/video0; the UI must
+# start first because loading its larger FDPIC image is easier before the
+# detector allocates its model arena and camera buffers.
+# 可选的摄像头程序。检测服务独占 /dev/video0；UI 必须优先启动，因为检测
+# 服务分配模型和相机缓冲后，no-MMU 系统可能没有足够连续内存加载 UI。
+if [ -x /system/bin/human-detect-ui ]; then
+  echo 3 > /proc/sys/vm/drop_caches 2>/dev/null
+  setsid /system/bin/human-detect-ui -s /run/human-detect.sock \
+    -i /dev/input/event0 -f 15 >>/tmp/human-detect-ui.log 2>&1 </dev/null &
+  sleep 1
+fi
+if [ -x /system/bin/human-detect ]; then
+  rm -f /run/human-detect.sock
+  setsid /system/bin/human-detect --socket /run/human-detect.sock \
+    --http-port 8080 >>/tmp/human-detect.log 2>&1 </dev/null &
+fi
+
 echo "init.sh ran at $(cat /proc/uptime)" >>/tmp/init.log
