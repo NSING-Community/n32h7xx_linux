@@ -1101,19 +1101,19 @@
         ]
       ],
       "verification_files": {
-        "sdk/optional/weniclaw/weniclaw": "72377a512a08d17038b15be1626ecf66a9a34b98920aa9393147d831470a54b8",
-        "sdk/optional/weniclaw/README.md": "716e0e57d04e87d1ab16db19039bb375d69b98f1bcbac1e102a47e8ab1642a03",
+        "sdk/optional/weniclaw/weniclaw": "12c5d01f7de087fd6899ee1558ba3ee73de77fc3f52e03d68424f64bb56efc87",
+        "sdk/optional/weniclaw/README.md": "f9e4bbf5551a507946c3936f7086fab7eef431fabb8e007892986db2567b3d7e",
         "sdk/optional/weniclaw/LICENSE": "15b01026094b88464552598b0cb52f3a2036f6781572d49081203be7949c07ba",
         "sdk/optional/weniclaw/THIRD_PARTY_NOTICES.md": "feb87b288ea00cc8b95e173aca67304da5c4a60dde61a4228a847270f2a173ca",
         "sdk/optional/weniclaw/licenses/Zig-MIT.txt": "5c537d6853e005298a285d508cff9ac7192cea23576c840d485b2b586a7ff177",
         "sdk/optional/weniclaw/licenses/musl-headers-COPYRIGHT.txt": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
         "sdk/optional/weniclaw/licenses/curl-COPYING.txt": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
         "sdk/optional/weniclaw/skills/audio/SKILL.md": "144d3576a8c645a74e2e0c12c815bffcad46a70a3d6a0638c7b81b340189cfc3",
-        "sdk/optional/weniclaw/skills/camera/SKILL.md": "7d09555770ecc444b3b2a3c4981338f5d59476fa7fbbb5746331469c8f104281",
-        "sdk/optional/weniclaw/skills/gpio-led/SKILL.md": "b2c4c9a00865e41c6d18cf4d4d70de247b6f5efecae75586bdbc81bf4d8683b5",
-        "sdk/optional/weniclaw/skills/human-service/SKILL.md": "a484f506d01fb1f3b2e58acbfd5c888e5e917b8ed5f1d0e34ab76be67172a84f",
-        "sdk/optional/weniclaw/skills/storage/SKILL.md": "703568d1e9422edebad4026b05ab2ce5e8e85e67d538f4f0c03d5f1b10a70e6d",
-        "licenses/evidence/weniclaw.json": "f4d38230698b431fcf2277d756b0507d4cc81ff3d958e8bc3992c8a31f74ffa4"
+        "sdk/optional/weniclaw/skills/camera/SKILL.md": "3378b6f07612a0b3694dffe332fe91c0dc41bca45187309b053374b758c5ef81",
+        "sdk/optional/weniclaw/skills/gpioctl/SKILL.md": "56acba2ee7d5e001ada3f20ba015b83054598ef5b577b4d5b1893db5e0e89ccc",
+        "sdk/optional/weniclaw/skills/human-service/SKILL.md": "7f8468ba21618ed2d8380f83a112230ba147769156aa6ca7cf0c291d7225aac2",
+        "sdk/optional/weniclaw/skills/storage/SKILL.md": "2bfc1a65f2b5c72c0aab4b93129c9f734aa82ef6f80b17da35bfcd81687bfa40",
+        "licenses/evidence/weniclaw.json": "01ed85587d612f3ae8fb67f25a06626236878a9c57a18f24c68b32fb55452dcf"
       },
       "copyright": "Copyright (c) 2026 Nsing Technologies Inc. for WeniClaw; Zig contributors and musl contributors for the build-time runtime and headers."
     },
@@ -5049,7 +5049,7 @@
     "rootfs/usr/sbin/dropbear": "4e9410005a042efe084f547ceca8926a2460e086dfdec8eda3d4380f4e07b229",
     "rootfs/usr/sbin/dropbearkey": "70121ab20c215144223135ded874d7ba55d19d971875789bb4f7e56da44c2b1c",
     "sdk/optional/espeak-ng/espeak-ng": "193f8fb01e377774fe8417521c343a9323d1a9c9bf9fcdf9e2ce252821f17548",
-    "sdk/optional/weniclaw/weniclaw": "72377a512a08d17038b15be1626ecf66a9a34b98920aa9393147d831470a54b8",
+    "sdk/optional/weniclaw/weniclaw": "12c5d01f7de087fd6899ee1558ba3ee73de77fc3f52e03d68424f64bb56efc87",
     "sdk/optional/human-detect/human-detect": "6b0074da0e49f3d47a5f1b376d652017fd9811b323ca53bd38e76fd158e9b0ba",
     "sdk/n32jpeg/libn32jpeg.a": "c939fa199c1cd4a37f9d4d52e522da6489a22f20cb86112d11c16df32f625ae0",
     "sdk/n32jpeg/libn32jpeg.so": "c56da7d5267ef45fc65e3b8b2dd633f8b190646ba4cf20f823fdb4febcf7fe07",
@@ -5183,15 +5183,15 @@
       "files": 7
     },
     "sdk/optional-src": {
-      "sha256": "2b340970be8b004d2b65f0f97ca894a353dd5691c474ce254649147475e83a9f",
-      "files": 2371
+      "sha256": "dfa77a6c52ad9c4446faed4e31e6a765e8cb4c0e4a2c686014b386cfa3070f95",
+      "files": 2387
     },
     "sdk/toolchain/patches": {
       "sha256": "460bc1015f3f7bbe837aef41ffeb69bba4924182907644295dd7128a171779ca",
       "files": 3
     },
     "Makefile": {
-      "sha256": "007b9e592b40a3003c935eb7996ce0212e8966d0ae91b3224cb65810aaf99d84",
+      "sha256": "7bdae60c55da193f65e35df9337ddb2fee7322abb7f01622b33e7245774774aa",
       "files": 1
     },
     "bootloader/Makefile": {
