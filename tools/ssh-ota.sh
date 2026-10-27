@@ -85,7 +85,7 @@ echo "    sha256 $local_sha"
 tool=$(remote_run 'for p in /sbin/n32-flash /system/bin/n32-flash; do
 	[ -x $p ] && { echo $p; break; }; done')
 [ -n "$tool" ] || {
-	echo "$0: no n32-flash on the board; run 'make tools' and get it there" >&2
+	echo "$0: n32-flash is missing on the board; restore /sbin/n32-flash from the released rootfs" >&2
 	exit 1
 }
 

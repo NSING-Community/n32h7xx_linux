@@ -94,8 +94,14 @@ def open_serial(device: str, baud: int) -> int:
     return fd
 
 
-def write_text(fd: int, text: str, newline: bool = True) -> None:
+def write_text(fd: int, text: str, newline: bool = True,
+               char_delay: float = 0.0) -> None:
     payload = text.encode("utf-8") + (b"\n" if newline else b"")
+    if char_delay > 0:
+        for byte in payload:
+            os.write(fd, bytes((byte,)))
+            time.sleep(char_delay)
+        return
     view = memoryview(payload)
     while view:
         written = os.write(fd, view)
@@ -166,6 +172,9 @@ def add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--device", default=DEFAULT_DEVICE,
                         help="serial port; default auto-detects the CMSIS-DAP console")
     parser.add_argument("--baud", type=int, default=DEFAULT_BAUD)
+    parser.add_argument(
+        "--char-delay", type=float, default=0.0, metavar="SECONDS",
+        help="delay between transmitted characters (0 = write the line at once)")
 
 
 def main() -> int:
@@ -207,10 +216,10 @@ def main() -> int:
             read_for(fd, args.seconds, args.output)
             return 0
         if args.action == "send":
-            write_text(fd, args.text, not args.no_newline)
+            write_text(fd, args.text, not args.no_newline, args.char_delay)
             return 0
         if args.action == "run":
-            write_text(fd, args.text)
+            write_text(fd, args.text, char_delay=args.char_delay)
             read_for(fd, args.seconds, args.output)
             return 0
         return expect(fd, args.pattern, args.timeout, args.output)
