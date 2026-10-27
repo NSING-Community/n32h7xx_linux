@@ -25,6 +25,12 @@ set -e
 here=$(dirname "$0")
 board=${BOARD:-}
 use=${USE:-adb}
+gpioctl="$here/../example/gpioctl"
+
+if [ ! -x "$gpioctl" ]; then
+	echo "install.sh: gpioctl not built; run: make -C sdk/example gpioctl" >&2
+	exit 2
+fi
 
 case "$use" in
 ssh)
@@ -54,17 +60,47 @@ adb)
 esac
 
 if [ "$use" = adb ]; then
+	weniclaw_was_running=false
+	if adb shell 'pidof weniclaw >/dev/null 2>&1'; then
+		weniclaw_was_running=true
+	fi
 	adb push "$here/espeak-ng" /system/
 	adb push "$here/ns-flash/ns-flash" /system/bin/
-	adb push "$here/weniclaw/weniclaw" /system/bin/
+	adb push "$here/weniclaw/weniclaw" /system/bin/.weniclaw.new
+	adb push "$gpioctl" /system/bin/.gpioctl.new
 	adb shell mkdir -p /system/weniclaw/workspace
+	adb shell 'rm -f /system/weniclaw/workspace/skills/gpio-led/SKILL.md; rmdir /system/weniclaw/workspace/skills/gpio-led 2>/dev/null || true'
 	adb push "$here/weniclaw/skills" /system/weniclaw/workspace/
+	adb shell 'killall weniclaw 2>/dev/null || true; killall gpioctl 2>/dev/null || true'
+	adb shell 'chmod 0755 /system/bin/.weniclaw.new /system/bin/.gpioctl.new; mv -f /system/bin/.weniclaw.new /system/bin/weniclaw; mv -f /system/bin/.gpioctl.new /system/bin/gpioctl'
+	adb shell 'test -x /system/bin/gpioctl && test -r /system/weniclaw/workspace/skills/gpioctl/SKILL.md'
+	if [ "$weniclaw_was_running" = true ]; then
+		adb shell 'setsid nice -n 10 /system/bin/weniclaw --config /system/weniclaw/weniclaw.json wechat run >> /system/weniclaw/wechat.log 2>&1 </dev/null &'
+		sleep 1
+		adb shell 'pidof weniclaw >/dev/null'
+	fi
 else
+	weniclaw_was_running=false
+	if $ssh "root@$board" 'pidof weniclaw >/dev/null 2>&1'; then
+		weniclaw_was_running=true
+	fi
 	$scp -r "$here/espeak-ng" "root@$board:/system/"
 	$scp "$here/ns-flash/ns-flash" "root@$board:/system/bin/"
-	$scp "$here/weniclaw/weniclaw" "root@$board:/system/bin/"
+	$scp "$here/weniclaw/weniclaw" "root@$board:/system/bin/.weniclaw.new"
+	$scp "$gpioctl" "root@$board:/system/bin/.gpioctl.new"
 	$ssh "root@$board" "mkdir -p /system/weniclaw/workspace"
+	$ssh "root@$board" "rm -f /system/weniclaw/workspace/skills/gpio-led/SKILL.md; rmdir /system/weniclaw/workspace/skills/gpio-led 2>/dev/null || true"
 	$scp -r "$here/weniclaw/skills" "root@$board:/system/weniclaw/workspace/"
+	$ssh "root@$board" "killall weniclaw 2>/dev/null || true; killall gpioctl 2>/dev/null || true"
+	$ssh "root@$board" "chmod 0755 /system/bin/.weniclaw.new /system/bin/.gpioctl.new; mv -f /system/bin/.weniclaw.new /system/bin/weniclaw; mv -f /system/bin/.gpioctl.new /system/bin/gpioctl"
+	$ssh "root@$board" "test -x /system/bin/gpioctl && test -r /system/weniclaw/workspace/skills/gpioctl/SKILL.md"
+	if [ "$weniclaw_was_running" = true ]; then
+		$ssh "root@$board" "setsid nice -n 10 /system/bin/weniclaw --config /system/weniclaw/weniclaw.json wechat run >> /system/weniclaw/wechat.log 2>&1 </dev/null &"
+		sleep 1
+		$ssh "root@$board" "pidof weniclaw >/dev/null"
+	fi
 fi
+
+echo "install.sh: WeniClaw and gpioctl skill installed" >&2
 
 USE="$use" BOARD="$board" sh "$here/human-detect/install.sh"

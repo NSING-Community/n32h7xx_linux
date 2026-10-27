@@ -33,6 +33,15 @@ pidof human-detect >/dev/null
 `160x120 176x144 320x240 640x480 720x480 720x576 1024x768 1280x720 1920x1080 2592x1944`
 
 抓图成功后服务会自动恢复 GREY 检测。需要预览模型实际看到的画面时，用
-`http://<板子IP>:8080/preview.mjpg?fps=5&duration=30`；预览固定为
+`http://<板子IP>:8080/preview.mjpg?fps=15&duration=30`；预览固定为
 320x240 灰度并带检测框，同时只允许一个客户端。HTTP 非 2xx、空文件或 socket
 不存在时直接报告服务不可用，不要改走 V4L2。
+
+## 通知开关
+
+用户说“别再发人员检测通知”“关闭人形检测提醒”时，调用
+`event_notifications`，参数为 `action=disable`、`source=human-detect`。用户
+要求恢复时用 `enable`，询问是否开启时用 `status` 并带上同一个 `source`。关闭
+只会停止 `human-detect` 程序的直发微信文字和照片；检测、最近事件上下文和
+照片文件仍会更新。重新开启后不补发关闭期间的事件，也不要用其他硬件动作或杀
+进程代替这个开关。

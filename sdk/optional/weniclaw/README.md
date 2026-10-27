@@ -5,14 +5,19 @@
 OpenAI 兼容的对话接口，也可以通过腾讯 iLink Claw 通道与微信配对，回复私聊
 文本消息。
 
+通过微信控制板载外设、执行任务和查询系统状态的示例：
+
+<a href="assets/wechat-control.jpg"><img src="assets/wechat-control.jpg" alt="WeniClaw 微信控制示例" width="320"></a>
+
 **本组件不属于任何镜像。** 它不在 `rootfs/` 里，`make` 不会编译或安装它，
 `make flash-image` 也不会把它带进板子；它在 `/system` 下写入的配置和配对
 状态同样不属于任何镜像。是否安装、装到哪里，由你自己决定。
 
 | 文件 | 说明 |
 | --- | --- |
-| `weniclaw` | ARM 二进制（已 strip，243504 字节） |
-| `skills/` | 五份现成外设技能（拍照、人形检测服务、录音放音、点灯、存储位置） |
+| `weniclaw` | ARM 二进制（已 strip，253512 字节） |
+| `skills/` | 五份现成外设技能（拍照、人形检测服务、录音放音、GPIO、存储位置） |
+| `assets/` | README 中的微信控制示例图片 |
 | `LICENSE`、`THIRD_PARTY_NOTICES.md`、`licenses/` | 随二进制附带的声明文本 |
 
 ## 运行要求
@@ -31,9 +36,10 @@ OpenAI 兼容的对话接口，也可以通过腾讯 iLink Claw 通道与微信�
 供模型调用的 shell 命令工具。
 
 内存方面：二进制是 FDPIC，no-MMU 加载器按段分别映射，不需要几 MB 的连续
-内存。本版 ELF 的最大单块映射为 229376 字节（224 KiB），进程栈上限为
+内存。本版 ELF 的最大单块映射为 241664 字节（236 KiB），进程栈上限为
 131072 字节（128 KiB）。公共 libcurl 本身的最大单段为 346176 字节，需要
-一块 512 KiB 的 Buddy 块；TLS 握手和运行期缓冲区还会另外占用内存。
+一块 512 KiB 的 Buddy 块；微信通道还会创建一个固定 64 KiB 栈的调度工作线程，
+TLS 握手和运行期缓冲区还会另外占用内存。
 
 ## 安装
 
@@ -124,10 +130,13 @@ reboot
 ```sh
 if [ -x /system/bin/weniclaw ]; then
   mkdir -p /system/weniclaw
-  setsid /system/bin/weniclaw --config /system/weniclaw/weniclaw.json wechat run \
+  setsid nice -n 10 /system/bin/weniclaw --config /system/weniclaw/weniclaw.json wechat run \
     >> /system/weniclaw/wechat.log 2>&1 </dev/null &
 fi
 ```
+
+`nice` 让微信后台通道在同时运行摄像头、检测或界面时主动让出 CPU。任务与
+定时表每秒扫描一次；本机接口提交的新任务仍会立即执行。
 
 本板 no-MMU 的 shell 只能后台化真正的可执行文件，请保持这个写法，不要包成
 复合命令。启动脚本退出时可以保留的常驻服务应使用 `setsid`，不要只依赖
@@ -156,16 +165,19 @@ fi
 | --- | --- | --- |
 | 一次性延迟 | `in: 30m` | 最短 10 秒 |
 | 一次性绝对时间 | `at: 2026-10-23T09:00:00+08:00` | RFC3339；AI 会先读取当前时间 |
-| 固定间隔 | `every: 2h` | 最短 60 秒 |
+| 固定间隔 | `every: 30s` | 最短 30 秒 |
 
 `list` 只返回当前任务；已执行、最终失败和已取消的任务会进入历史记录，需用
 `history` 查看。历史记录用于诊断并受 32 条总记录上限约束，任务完成后即使
 记录仍在，也不会再次触发。
 
 到期任务使用一次全新的、无历史 Agent 会话执行，因此仍可调用命令、文件和微信
-发送工具；执行结束后立即释放该会话。结果会主动发送到已经配对的微信私聊。
-任务不会另起进程或线程，调度循环复用 `wechat run` 本身；所以 `wechat run`
-必须保持运行，设备关机期间不会执行任务。
+发送工具；执行结束后立即释放该会话。任务要求通知时，结果会主动发送到已经配对
+的微信私聊；任务明确要求本轮不通知时，调度器会正常记录本次执行但不发送消息。
+进入 `wechat run` 时会创建一个固定 64 KiB 栈的调度工作线程。工作槽容量为 1，
+同一个任务不会重叠，两个任务也不会并发；工作线程运行期间，微信长轮询、聊天
+回复和本机接口仍由主线程继续处理。不会为每个任务另起进程或线程，但
+`wechat run` 必须保持运行，设备关机期间不会执行任务。
 
 执行失败最多重试 3 次，间隔约 30 秒、5 分钟，最终失败会发送一条微信通知。
 重启后，未到期的一次性任务会继续等待；周期任务不会补跑关机期间错过的全部
@@ -179,7 +191,7 @@ fi
 ## 本机任务接口
 
 `wechat run` 运行期间还会在 `/run/weniclaw/control.sock` 提供一个仅本机使用
-的 HTTP/JSON 接口。它复用同一个 WeniClaw 进程，不会另起常驻进程或线程；
+的 HTTP/JSON 接口。它在微信主线程的服务循环中处理，不会为每个请求另起进程；
 参数由配置文件中的 `control_socket` 修改。socket 权限为 0600，仅 root 可访问。
 
 接口：
@@ -255,8 +267,9 @@ fi
 
 任务做的是至少一次投递，不是严格恰好一次：微信发送成功之后，如果进程在保存
 完成状态前掉电，重启后仍可能再发送一次。对重复敏感的业务应把
-`idempotency_key` 设置为稳定值，并自行处理极小概率的重复通知。任务在现有
-微信循环中串行执行，不要用它承载高频或长时间计算。
+`idempotency_key` 设置为稳定值，并自行处理极小概率的重复通知。本机队列在微信
+主线程按顺序处理；AI 定时任务在独立工作线程中串行执行。两者都不要承载高频
+或长时间计算。
 
 ## 相机服务
 
@@ -289,6 +302,13 @@ killall human-detect
 不可用时，检测服务每 30 秒重试，摄像头检测和预览仍可正常使用。可用
 `--task-socket PATH` 修改接口路径。
 
+可以直接对微信机器人说“关闭人员检测通知”或“恢复人员检测通知”。模型调用
+`event_notifications`，按任务来源（`source`）持久化开关，重启后仍有效。关闭
+`source=human-detect` 后不发送该程序直发微信的文字和照片，但检测、最近事件
+上下文和事件图片仍继续更新；重新开启不会补发关闭期间的通知。普通聊天、定时
+任务和其他来源程序不受影响。状态保存在配置目录的
+`event-notifications.json`（默认 0600）。
+
 ## 技能：外设操作说明
 
 技能是纯文本 Markdown，一个技能一个目录，位置固定在 workspace 下：
@@ -299,8 +319,8 @@ killall human-detect
 
 （workspace 取自配置文件的 `workspace` 字段；标准安装即
 `/system/weniclaw/workspace`。）本目录的 `skills/` 里有五份现成技能：
-拍照 `camera`、人形检测服务 `human-service`、录音放音 `audio`、点灯
-`gpio-led`、存储位置 `storage`。
+拍照 `camera`、人形检测服务 `human-service`、录音放音 `audio`、GPIO
+`gpioctl`、存储位置 `storage`。
 
 `../install.sh` 会自动安装技能；手动安装就是拷贝这个目录：
 
@@ -308,6 +328,11 @@ killall human-detect
 mkdir -p /system/weniclaw/workspace
 scp -r sdk/optional/weniclaw/skills root@<板子IP>:/system/weniclaw/workspace/
 ```
+
+板载 LED 通过标准 `/sys/class/leds` 控制，不需要额外程序；其他调试 GPIO
+使用技能中说明的 `/system/bin/gpioctl`。只复制技能文件而不安装这个程序时，
+普通 GPIO 无法执行；优先使用 `sdk/optional/install.sh`，它会同时部署并检查
+程序和技能。
 
 加自己的技能：在 `skills/` 下新建 `<名称>/SKILL.md`，可以在这里编辑好后
 拷到板上，也可以让 agent 用 write_file 直接写。名称只用字母、数字、`_`、
