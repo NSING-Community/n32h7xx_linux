@@ -216,17 +216,25 @@ static void list_controls(int fd)
 
 	printf("controls:\n");
 	while (ioctl(fd, VIDIOC_QUERY_EXT_CTRL, &q) == 0) {
+		struct v4l2_control c = {
+			.id = q.id,
+		};
+		long long current = q.default_value;
+
+		if (ioctl(fd, VIDIOC_G_CTRL, &c) == 0)
+			current = c.value;
 		if (q.type == V4L2_CTRL_TYPE_MENU) {
 			char label[48];
 
-			menu_label(fd, q.id, q.default_value, label,
+			menu_label(fd, q.id, current, label,
 				   sizeof(label));
-			printf("  %-24s = %lld .. %lld  (menu: %s)\n", q.name,
-			       (long long)q.minimum, (long long)q.maximum,
-			       label);
+			printf("  %-24s = %lld .. %lld  current: %lld (%s)\n",
+			       q.name, (long long)q.minimum,
+			       (long long)q.maximum, current, label);
 		} else {
-			printf("  %-24s = %lld .. %lld\n", q.name,
-			       (long long)q.minimum, (long long)q.maximum);
+			printf("  %-24s = %lld .. %lld  current: %lld\n", q.name,
+			       (long long)q.minimum, (long long)q.maximum,
+			       current);
 		}
 		n++;
 		q.id |= V4L2_CTRL_FLAG_NEXT_CTRL;
@@ -728,6 +736,11 @@ int main(int argc, char **argv)
 			break;
 		}
 	}
+
+	if (settle.live)
+		fprintf(stderr,
+			"%s: final auto exposure: exposure=%ld, analogue gain=%ld\n",
+			progname, settle.exposure, settle.gain);
 
 	if (ioctl(fd, VIDIOC_STREAMOFF, &type) < 0)
 		perror("VIDIOC_STREAMOFF");
