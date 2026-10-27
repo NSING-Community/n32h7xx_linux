@@ -24,7 +24,7 @@ LDFLAGS += -Wl,-rpath,$(RUNTIME_LIBDIR)
 LDLIBS ?=
 .PHONY: all
 all: hello pthread-app hello-cxx libgreeting.so shared-app leds net-echo \
-	v4l2-capture camera-matrix
+	gpioctl v4l2-capture camera-matrix
 
 # The examples are sources; the ELF files next to them are build output and are
 # not tracked.
@@ -33,6 +33,7 @@ clean:
 	rm -f hello pthread-app hello-cxx shared-app libgreeting.so leds net-echo
 	rm -f v4l2-capture
 	rm -f camera-matrix
+	rm -f gpioctl
 	rm -f *.o
 hello: hello.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
@@ -45,10 +46,16 @@ libgreeting.so: greeting.c
 shared-app: shared.c libgreeting.so
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $< -L. -lgreeting $(LDLIBS) -o $@
 
-# Board LED marquee on PB3 / PF10 / PI8 through /sys/class/gpio.  It looks the
-# GPIO bank base numbers up at runtime instead of hard-coding them, and
-# releases the lines it exported when it exits.
+# Board LED marquee on PB3 / PF10 / PI8 through the standard LED class.  The
+# active-low polarity is handled by the board DTS, so userspace writes logical
+# on/off values to /sys/class/leds/{red,green,blue}/brightness.
 leds: leds.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
+
+# General GPIO/LED command.  Exact LED labels use /sys/class/leds, while other
+# targets use the Linux GPIO character-device ABI v2.  Both share monotonic
+# timers, software PWM and a breathing-light waveform.
+gpioctl: gpioctl.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $< $(LDLIBS) -o $@
 
 # TCP echo server: the board side of a network application.  One poll() loop
