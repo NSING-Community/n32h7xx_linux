@@ -21,7 +21,7 @@
 
 PORT := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 TOP  := $(abspath $(PORT)/../../..)
-SRC  ?= $(TOP)/sdk-src/sources/espeak-ng
+SRC  ?=
 OUT  ?= $(TOP)/out/work/espeak-ng
 
 # Which languages get a compiled dictionary.  Every entry costs its own
@@ -32,17 +32,16 @@ LANGS ?= en
 # ------------------------------------------------------------ pcaudiolib -----
 
 # espeak-ng's audio output goes through pcaudiolib, which is a port of its own
-# with a TinyALSA backend - see sdk-src/project/pcaudiolib/README.md for why
-# the board needs a new backend and why USE_LIBPCAUDIO is only on for the
-# target.  Both archives are prerequisites the same way TinyALSA is for
-# pcaudiolib itself: named here, built elsewhere, and a clear error if missing.
-PCAUDIO_PORT ?= $(TOP)/sdk-src/project/pcaudiolib
-PCAUDIO_SRC  ?= $(TOP)/sdk-src/sources/pcaudiolib
+# with a TinyALSA backend.  Both archives are prerequisites the same way
+# TinyALSA is for pcaudiolib itself: named here, built elsewhere, and a clear
+# error if missing.
+PCAUDIO_PORT ?= $(TOP)/sdk/optional-src/pcaudiolib
+PCAUDIO_SRC  ?=
 PCAUDIO_OUT  ?= $(TOP)/out/work/pcaudiolib
 PCAUDIO_INC  := $(PCAUDIO_SRC)/src/include
 PCAUDIO_LIB  := $(PCAUDIO_OUT)/cross/lib/libpcaudio.a
 
-TINYALSA_SRC ?= $(TOP)/sdk-src/sources/tinyalsa
+TINYALSA_SRC ?=
 TINYALSA_LIB := $(TINYALSA_SRC)/src/libtinyalsa.a
 
 # ---------------------------------------------------------------- sources ---
@@ -143,13 +142,21 @@ DATA_STAMP := $(OUT)/.data-stamp
 
 # --------------------------------------------------------------- targets ----
 
-.PHONY: all native cross data clean
+.PHONY: all native cross data check-sources clean
 all: native cross data
 
-native: $(NATIVE_BIN)
-cross:  $(CROSS_BIN)
+check-sources:
+	@test -n "$(strip $(SRC))" || { \
+		echo "espeak-ng: set SRC=/path/to/espeak-ng source checkout" >&2; exit 2; }
+	@test -n "$(strip $(PCAUDIO_SRC))" || { \
+		echo "espeak-ng: set PCAUDIO_SRC=/path/to/pcaudiolib source checkout" >&2; exit 2; }
+	@test -n "$(strip $(TINYALSA_SRC))" || { \
+		echo "espeak-ng: set TINYALSA_SRC=/path/to/tinyalsa source checkout" >&2; exit 2; }
 
-data: $(DATA_STAMP)
+native: check-sources $(NATIVE_BIN)
+cross: check-sources $(CROSS_BIN)
+
+data: check-sources $(DATA_STAMP)
 
 $(NATIVE_OUT)/lib $(NATIVE_OBJ) $(CROSS_OUT)/lib $(CROSS_OBJ) $(DATA_ROOT):
 	mkdir -p $@
@@ -208,12 +215,12 @@ $(CROSS_BIN): $(CROSS_CLI_OBJS) $(CROSS_COMPAT_OBJS) $(CROSS_LIB_OBJS) $(CROSS_U
 # Both archives are built by their own ports; neither is reimplemented here.
 $(PCAUDIO_LIB):
 	@echo "espeak-ng: $(PCAUDIO_LIB) is missing" >&2
-	@echo "espeak-ng: run 'make pcaudiolib' first" >&2
+	@echo "espeak-ng: build pcaudiolib first and set PCAUDIO_OUT to its output" >&2
 	@exit 1
 
 $(TINYALSA_LIB):
 	@echo "espeak-ng: $(TINYALSA_LIB) is missing" >&2
-	@echo "espeak-ng: run 'make tinyalsa' first" >&2
+	@echo "espeak-ng: build TinyALSA first and set TINYALSA_SRC=/path/to/tinyalsa" >&2
 	@exit 1
 
 # -- voice data ---------------------------------------------------------------

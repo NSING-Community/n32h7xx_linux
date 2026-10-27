@@ -41,8 +41,8 @@
  * mbrola a different synth, sPlayer an external player).  Without it
  * "just speak" is a silent success: dispatch_audio()'s SPEAK_AUDIO arm is
  * entirely inside #if USE_LIBPCAUDIO, so the CLI returns 0 having made no
- * sound at all.  The port ships a pcaudiolib with a TinyALSA backend (see
- * sdk-src/project/pcaudiolib/), and the cross build links it.
+ * sound at all.  The optional source tree ships a pcaudiolib port with a
+ * TinyALSA backend, and the cross build links it.
  *
  * The host build must NOT set it: that build exists only to run
  * --compile-phonemes/--compile-intonations/--compile=<lang> and has no audio

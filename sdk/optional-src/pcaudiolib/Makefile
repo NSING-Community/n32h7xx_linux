@@ -15,17 +15,15 @@
 #
 # The upstream checkout this builds is *not* pristine: this port applies a
 # three-hunk patch so create_audio_device_object() knows about the new backend.
-# The patch is recorded at sdk-src/patches/pcaudiolib-tinyalsa-backend.patch.
+# The patch ships next to this Makefile.
 
 PORT := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 TOP  := $(abspath $(PORT)/../../..)
-SRC  ?= $(TOP)/sdk-src/sources/pcaudiolib
+SRC  ?=
 OUT  ?= $(TOP)/out/work/pcaudiolib
 
-# TinyALSA is not built here; it is a prerequisite, produced by
-# sdk-src/scripts/install-tinyalsa.sh.  Only its header directory and its
-# archive are used.
-TINYALSA ?= $(TOP)/sdk-src/sources/tinyalsa
+# TinyALSA is not built here.  Only its header directory and archive are used.
+TINYALSA ?=
 TINYALSA_ARCHIVE := $(TINYALSA)/src/libtinyalsa.a
 TINYALSA_INC := $(TINYALSA)/include
 
@@ -68,14 +66,20 @@ ALL_PIC      := $(UPSTREAM_PIC) $(PORT_PIC)
 CROSS_LIB := $(CROSS_OUT)/lib/libpcaudio.a
 CROSS_SO  := $(CROSS_OUT)/lib/libpcaudio.so
 
-.PHONY: all static shared check clean
+.PHONY: all static shared check check-sources clean
 
 all: static
 
-static: $(CROSS_LIB)
-shared: $(CROSS_SO)
+check-sources:
+	@test -n "$(strip $(SRC))" || { \
+		echo "pcaudio: set SRC=/path/to/pcaudiolib source checkout" >&2; exit 2; }
+	@test -n "$(strip $(TINYALSA))" || { \
+		echo "pcaudio: set TINYALSA=/path/to/tinyalsa source checkout" >&2; exit 2; }
 
-check: $(CROSS_LIB) $(CROSS_SO)
+static: check-sources $(CROSS_LIB)
+shared: check-sources $(CROSS_SO)
+
+check: check-sources $(CROSS_LIB) $(CROSS_SO)
 	@echo "pcaudio: $$( $(CROSS_AR) t $(CROSS_LIB) | tr '\n' ' ')"
 	@readelf -d $(CROSS_SO) | grep -q TEXTREL && \
 		{ echo "pcaudio: libpcaudio.so has a TEXTREL segment" >&2; exit 1; } \
@@ -87,7 +91,8 @@ $(CROSS_OBJ) $(CROSS_OUT)/lib:
 
 # Failing here rather than at link time, so the message says what to run.
 $(TINYALSA_ARCHIVE):
-	@echo "pcaudio: $(TINYALSA_ARCHIVE) is missing; run 'make tinyalsa' first" >&2
+	@echo "pcaudio: TinyALSA archive not found: $(TINYALSA_ARCHIVE)" >&2
+	@echo "pcaudio: build TinyALSA and pass TINYALSA=/path/to/tinyalsa" >&2
 	@exit 1
 
 $(UPSTREAM_OBJS): $(CROSS_OBJ)/%.o: $(SRC)/src/%.c | $(CROSS_OBJ)
