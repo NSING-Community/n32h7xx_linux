@@ -78,7 +78,7 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
       <div class="section-head">
         <div><span class="eyebrow">实时预览</span><h2>检测画面</h2></div>
         <div class="actions">
-          <button id="inferenceToggle" type="button">开启大模型检测</button>
+          <button id="inferenceToggle" type="button">打开端侧人员检测模型</button>
           <button id="reconnect" type="button">重新连接</button>
         </div>
       </div>
@@ -161,7 +161,7 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
     var list=$("boxList");
     while(list.firstChild) list.removeChild(list.firstChild);
     if(!s.inference_enabled){
-      $("boxCount").textContent="大模型检测已关闭";
+      $("boxCount").textContent="端侧人员检测模型已关闭";
       var paused=document.createElement("div");paused.className="empty";paused.textContent="摄像头预览仍在运行";list.appendChild(paused);return;
     }
     var boxes=Array.isArray(s.boxes)?s.boxes:[];
@@ -182,9 +182,9 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
     $("connection").className="connection "+(online?"online":"offline");
     $("connectionText").textContent=online?"已连接":"相机不可用";
     $("camera").textContent=online?"在线":"离线";
-    $("person").textContent=!inferenceEnabled?"大模型检测已关闭":(s.have_result===false?"等待首帧":(s.human_detected?"检测到人物":"画面无人"));
+    $("person").textContent=!inferenceEnabled?"端侧人员检测模型已关闭":(s.have_result===false?"等待首帧":(s.human_detected?"检测到人物":"画面无人"));
     $("person").className="person-state "+(!inferenceEnabled?"paused":(s.human_detected?"alert":"clear"));
-    $("inferenceToggle").textContent=inferenceEnabled?"关闭大模型检测":"开启大模型检测";
+    $("inferenceToggle").textContent=inferenceEnabled?"关闭端侧人员检测模型":"打开端侧人员检测模型";
     $("inferenceToggle").dataset.enabled=inferenceEnabled?"true":"false";
     $("fps").textContent=Number.isFinite(Number(s.camera_fps))?Number(s.camera_fps).toFixed(2):"--";
     $("inferTime").textContent=inferenceEnabled&&Number.isFinite(Number(s.inference_us))?Math.round(Number(s.inference_us)/100)/10+" ms":"--";
@@ -231,7 +231,7 @@ footer{max-width:1160px;margin:auto;padding:0 24px 24px;color:var(--muted);font-
       var status=await fetch("/status",{cache:"no-store"});
       if(status.ok) render(await status.json());
     }catch(error){
-      $("updated").textContent="大模型检测开关切换失败";
+      $("updated").textContent="端侧人员检测模型开关切换失败";
     }finally{
       inferenceBusy=false;
       this.disabled=false;

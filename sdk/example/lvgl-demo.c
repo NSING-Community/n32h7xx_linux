@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/resource.h>
 
 #include "lvgl.h"
 #include "lvgl-gpu-backend.h"
@@ -266,23 +267,25 @@ static void print_memory(void)
     fclose(f);
 }
 
+static struct rusage cpu_start;
+static bool cpu_start_valid;
+
 static void print_cpu(void)
 {
-    FILE *f = fopen("/proc/self/stat", "r");
-    unsigned long utime = 0;
-    unsigned long stime = 0;
-    long hz = sysconf(_SC_CLK_TCK);
+    struct rusage now;
+    int64_t user_us, system_us;
 
-    if (f == NULL)
+    if (!cpu_start_valid || getrusage(RUSAGE_SELF, &now))
         return;
-
-    /* Skip pid..cmajflt; the process name has no spaces or parentheses. */
-    if (fscanf(f, "%*d %*s %*c %*d %*d %*d %*d %*d %*u %*u %*u %*u %*u %lu %lu",
-               &utime, &stime) == 2 && hz > 0)
-        printf("lvgl: cpu user %lu ms, system %lu ms\n",
-               utime * 1000UL / (unsigned long)hz,
-               stime * 1000UL / (unsigned long)hz);
-    fclose(f);
+    user_us = (now.ru_utime.tv_sec - cpu_start.ru_utime.tv_sec) * 1000000LL +
+              now.ru_utime.tv_usec - cpu_start.ru_utime.tv_usec;
+    system_us = (now.ru_stime.tv_sec - cpu_start.ru_stime.tv_sec) * 1000000LL +
+                now.ru_stime.tv_usec - cpu_start.ru_stime.tv_usec;
+    if (user_us < 0 || system_us < 0)
+        return;
+    printf("lvgl: cpu user %llu ms, system %llu ms\n",
+           (unsigned long long)(user_us / 1000),
+           (unsigned long long)(system_us / 1000));
 }
 
 int main(int argc, char **argv)
@@ -300,6 +303,7 @@ int main(int argc, char **argv)
     lv_indev_t *indev;
     lv_timer_t *refr_timer;
     int opt;
+    int exit_status = 0;
     uint32_t start;
 
     while ((opt = getopt(argc, argv, "d:g:i:t:r:sh")) != -1) {
@@ -435,11 +439,23 @@ int main(int argc, char **argv)
     if (stress_mode)
         printf("lvgl: full-screen stress mode\n");
 
+    /* Match CPU usage to the same main-loop window as elapsed time/FPS. */
+    cpu_start_valid = getrusage(RUSAGE_SELF, &cpu_start) == 0;
     start = lv_tick_get();
 
     while (running) {
-        lv_timer_handler();
-        usleep(5000);
+        uint32_t delay = lv_timer_handler();
+
+        if (lvgl_gpu_error(gpu_backend)) {
+            exit_status = 1;
+            break;
+        }
+
+        /* A long render can leave the next timer due already. */
+        if (delay > 20)
+            delay = 20;
+        if (delay)
+            usleep(delay * 1000U);
         if (seconds > 0 && (uint32_t)(lv_tick_get() - start) >= (uint32_t)seconds * 1000U)
             break;
     }
@@ -450,5 +466,5 @@ int main(int argc, char **argv)
     if (gpu_backend)
         lvgl_gpu_display_destroy(gpu_backend);
 
-    return 0;
+    return exit_status;
 }

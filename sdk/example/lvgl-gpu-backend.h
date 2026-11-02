@@ -15,6 +15,9 @@ lvgl_gpu_backend_t *lvgl_gpu_display_create(lv_display_t **display,
                                             const char *lcdc_node,
                                             const char *gpu_node);
 void lvgl_gpu_display_destroy(lvgl_gpu_backend_t *backend);
+/* Check after lv_timer_handler(): a nonzero errno means drawing was stopped.
+ * Leave the event loop and destroy the backend rather than reusing its BOs. */
+int lvgl_gpu_error(const lvgl_gpu_backend_t *backend);
 const char *lvgl_gpu_lcdc_device(const lvgl_gpu_backend_t *backend);
 const char *lvgl_gpu_gpu_device(const lvgl_gpu_backend_t *backend);
 uint32_t lvgl_gpu_fill_count(const lvgl_gpu_backend_t *backend);

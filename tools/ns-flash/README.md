@@ -11,7 +11,7 @@
 | `n32h787-xspi2.nsalgo` | N32H787 / XSPI2 / W25Q128（16 MiB）外部 SPI NOR 算法 |
 | `ns-link.bin` | NS-Link 调试器固件；用于网页在线升级或 ROM DFU 恢复 |
 
-版本：`0.1.6`。`ns-flash-linux` 没有动态库依赖，可直接运行。
+版本：`0.1.7`。`ns-flash-linux` 没有动态库依赖，可直接运行。
 
 探针只按 VID/PID 识别。固件 revision（`bcdDevice`）、接口类型和端点编号
 与内置表不完全一致时，工具会优先选择最接近的接口继续连接，并采用探针
@@ -149,6 +149,38 @@ tools/ns-flash/ns-flash-linux \
 ```
 
 没有接 NRST 跳线却加 `--nrst`，复位会失败，工具在擦除前停止。
+
+## 脚本调用：JSON 输出
+
+`--json` 适用于芯片识别、探针列表、片内/外部 Flash 烧写，以及全部 DFU 命令。
+stdout 只输出一个 JSON 文档。命令成功或失败都会输出，`ok`、`error.kind` 与进程退出码一致。
+默认不再在 stderr 重复人类可读错误，脚本只看 stdout 即可；stderr 只保留警告。
+需要排查时加 `--verbose`，恢复进度、日志和详细错误报告。
+
+```sh
+# 探针列表
+tools/ns-flash/ns-flash-linux --list-dap --json
+
+# 识别芯片
+tools/ns-flash/ns-flash-linux --detect --json
+
+# 烧写片内 Flash
+tools/ns-flash/ns-flash-linux --json bin/bootloader.bin
+
+# 烧写外部 SPI NOR
+tools/ns-flash/ns-flash-linux --json \
+    --algorithm tools/ns-flash/n32h787-xspi2.nsalgo bin/spi-nor-boot.img
+
+# ROM DFU 升级调试器
+tools/ns-flash/ns-flash-linux --dfu --json tools/ns-flash/ns-link.bin
+```
+
+顶层字段固定为 `schema`、`command`、`ok`、`tool`、`probe`、`target`、
+`flash`、`external_flash` 和 `error`。烧写结果在 `flash`（`completed`、
+`verify`、`timings_ms`），外部算法信息在 `external_flash`（容量与 JEDEC
+来自所选算法包，`source` 为 `algorithm`），DFU 结果在 `dfu`。`target.internal_flash.source` 为 `dbg_id` 或 `table`；无法确认的
+容量返回 `null`，不会用算法缓冲区大小代替芯片 RAM。`19F5:3106` 只表示
+探针存在，不能据此推断开发板型号。
 
 ## 常用选项
 

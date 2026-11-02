@@ -1018,6 +1018,8 @@ int main(int argc, char **argv)
 	while (running) {
 		stream_poll(monotonic_ms());
 		lv_timer_handler();
+		if (lvgl_gpu_error(gpu_backend))
+			goto out;
 		usleep(10000);
 		if (seconds > 0 && (uint32_t)(lv_tick_get() - started) >=
 				   (uint32_t)seconds * 1000U)

@@ -3131,68 +3131,85 @@ static unsigned int blit_matrix(int gpu, uint32_t src_handle, void *smap,
 		{ "2x up to xrgb8888",	64, 48, 128, 96, 0, DRM_FORMAT_XRGB8888 },
 	};
 	struct drm_n32h7xx_blit blit = { 0 };
-	unsigned int bad = 0, i, x, y;
+	unsigned int bad = 0, i, x, y, offset;
 
 	for (i = 0; i < max_w * max_h; i++)
 		((uint16_t *)smap)[i] = blit_pattern(i % max_w, i / max_w);
 
-	for (i = 0; i < ARRAY_SIZE(cases); i++) {
-		const struct blit_case *c = &cases[i];
-		unsigned int cpp = fourcc_cpp(c->dst_format);
-		unsigned int wrong = 0;
-		uint16_t *s = smap;
+	/* Exercise every RGB565 alignment within the 8-byte FBC address. */
+	for (offset = 0; offset < 4; offset++) {
+		for (i = 0; i < ARRAY_SIZE(cases); i++) {
+			const struct blit_case *c = &cases[i];
+			unsigned int cpp = fourcc_cpp(c->dst_format);
+			unsigned int wrong = 0;
+			unsigned int ox = offset, oy = offset ? 4 : 0;
+			uint16_t *s = smap;
 
-		memset(dmap, 0x5a, (size_t)max_w * max_h * 4);
-		memset(&blit, 0, sizeof(blit));
-		blit.src_handle = src_handle;
-		blit.src_format = DRM_FORMAT_RGB565;
-		blit.src_pitch = max_w * 2;
-		blit.src_width = c->sw;
-		blit.src_height = c->sh;
-		blit.dst_handle = dst_handle;
-		blit.dst_format = c->dst_format;
-		blit.dst_pitch = max_w * cpp;
-		blit.width = c->dw;
-		blit.height = c->dh;
-		blit.rotation = c->rotation;
-		if (ioctl(gpu, DRM_IOCTL_N32H7XX_BLIT, &blit)) {
-			printf("blit %-22s: %s\n", c->name, strerror(errno));
-			bad++;
-			continue;
-		}
-		for (y = 0; y < max_h; y++)
-			for (x = 0; x < max_w; x++) {
-				uint32_t want, got;
-				unsigned int sx, sy;
-
-				if (cpp == 2)
-					got = ((uint16_t *)dmap)[y * max_w + x];
-				else
-					got = ((uint32_t *)dmap)[y * max_w + x];
-				if (x >= c->dw || y >= c->dh) {
-					if (got != (cpp == 2 ? 0x5a5a : 0x5a5a5a5a))
-						wrong++;
-					continue;
-				}
-				blit_src_texel(x, y, c->sw, c->sh, c->dw, c->dh,
-					       c->rotation, &sx, &sy);
-				want = blit_convert565(s[sy * max_w + sx], c->dst_format);
-				if (cpp == 4)
-					want |= 0xff000000u;
-				else
-					want &= 0xffff;
-				if (got != want) {
-					if (wrong < 3)
-						printf("  %s: %u,%u got %08x want %08x\n",
-						       c->name, x, y, got, want);
-					wrong++;
-				}
+			if (c->sw > max_w || c->sh > max_h ||
+			    c->dw + ox > max_w || c->dh + oy > max_h) {
+				printf("blit %s at %u,%u: surface too small\n",
+				       c->name, ox, oy);
+				bad++;
+				continue;
 			}
-		if (wrong)
-			bad++;
-		printf("blit %-22s %3ux%-3u -> %3ux%-3u rot %02x: %u wrong\n",
-		       c->name, c->sw, c->sh, c->dw, c->dh, c->rotation, wrong);
+
+			memset(dmap, 0x5a, (size_t)max_w * max_h * 4);
+			memset(&blit, 0, sizeof(blit));
+			blit.src_handle = src_handle;
+			blit.src_format = DRM_FORMAT_RGB565;
+			blit.src_pitch = max_w * 2;
+			blit.src_width = c->sw;
+			blit.src_height = c->sh;
+			blit.dst_handle = dst_handle;
+			blit.dst_format = c->dst_format;
+			blit.dst_pitch = max_w * cpp;
+			blit.dst_offset = (oy * max_w + ox) * cpp;
+			blit.width = c->dw;
+			blit.height = c->dh;
+			blit.rotation = c->rotation;
+			if (ioctl(gpu, DRM_IOCTL_N32H7XX_BLIT, &blit)) {
+				printf("blit %-22s: %s\n", c->name, strerror(errno));
+				bad++;
+				continue;
+			}
+			for (y = 0; y < max_h; y++)
+				for (x = 0; x < max_w; x++) {
+					uint32_t want, got;
+					unsigned int sx, sy;
+
+					if (cpp == 2)
+						got = ((uint16_t *)dmap)[y * max_w + x];
+					else
+						got = ((uint32_t *)dmap)[y * max_w + x];
+					if (x < ox || y < oy || x >= ox + c->dw ||
+					    y >= oy + c->dh) {
+						if (got != (cpp == 2 ? 0x5a5a : 0x5a5a5a5a))
+							wrong++;
+						continue;
+					}
+					blit_src_texel(x - ox, y - oy, c->sw, c->sh,
+						       c->dw, c->dh,
+						       c->rotation, &sx, &sy);
+					want = blit_convert565(s[sy * max_w + sx], c->dst_format);
+					if (cpp == 4)
+						want |= 0xff000000u;
+					else
+						want &= 0xffff;
+					if (got != want) {
+						if (wrong < 3)
+							printf("  %s: %u,%u got %08x want %08x\n",
+							       c->name, x, y, got, want);
+						wrong++;
+					}
+				}
+			if (wrong)
+				bad++;
+			printf("blit %-22s %3ux%-3u -> %3ux%-3u rot %02x at %u,%u: %u wrong\n",
+			       c->name, c->sw, c->sh, c->dw, c->dh, c->rotation,
+			       ox, oy, wrong);
+		}
 	}
+
 	return bad;
 }
 
@@ -5061,6 +5078,119 @@ static int compat_test(int fd, const char *gpu_node)
 	return ret;
 }
 
+/* Compare clipped rendering with a crop of the unchanged full GPU result. */
+static int poly_clip_test(int fd)
+{
+	static const uint32_t roi[][4] = {
+		{ 50, 50, 131, 131 }, { 90, 30, 41, 191 },
+		{ 3, 80, 248, 61 }, { 100, 110, 101, 101 },
+		{ 20, 20, 76, 76 }, { 180, 180, 61, 61 },
+		{ 100, 100, 2, 2 }, { 40, 0, 31, 256 }, { 0, 0, 3, 3 },
+	};
+	static const int32_t vx[2][6] = {
+		{ 25, 220, 209, 37 }, { 210, 165, 75, 30, 75, 165 },
+	};
+	static const int32_t vy[2][6] = {
+		{ 43, 67, 220, 198 }, { 128, 207, 207, 128, 49, 49 },
+	};
+	struct drm_n32h7xx_create bo[2] = { { .size = 262144 }, { .size = 262144 } };
+	struct drm_gem_close close_bo = { 0 };
+	uint8_t *map[2] = { NULL, NULL };
+	unsigned int format, aa, shape, k, i, x, y, checked = 0;
+	int ret = -1;
+
+	for (i = 0; i < 2; i++) {
+		if (ioctl(fd, DRM_IOCTL_N32H7XX_CREATE, &bo[i])) {
+			perror("polygon clip allocation");
+			goto out;
+		}
+		map[i] = mmap(NULL, bo[i].size, PROT_READ | PROT_WRITE,
+			      MAP_SHARED, fd, bo[i].mmap_offset);
+		if (map[i] == MAP_FAILED) {
+			map[i] = NULL;
+			perror("polygon clip mmap");
+			goto out;
+		}
+	}
+	for (format = 0; format < 2; format++) {
+		unsigned int cpp = format ? 4 : 2;
+
+		for (aa = 0; aa < 2; aa++) {
+			for (shape = 0; shape < 2; shape++) {
+				struct drm_n32h7xx_poly poly = {
+					.handle = bo[0].handle,
+					.format = format ? DRM_FORMAT_XRGB8888 : DRM_FORMAT_RGB565,
+					.pitch = 256 * cpp,
+					.color = 0xff37bd91,
+					.vertex_count = shape ? 6 : 4,
+					.flags = aa ? DRM_N32H7XX_POLY_NO_AA : 0,
+				};
+
+				for (i = 0; i < poly.vertex_count; i++) {
+					poly.x[i] = vx[shape][i] * 65536 + i * 1234;
+					poly.y[i] = vy[shape][i] * 65536 + i * 987;
+				}
+				memset(map[0], 0x5a, bo[0].size);
+				if (ioctl(fd, DRM_IOCTL_N32H7XX_POLY, &poly)) {
+					perror("polygon clip reference");
+					goto out;
+				}
+				poly.handle = bo[1].handle;
+				for (k = 0; k < ARRAY_SIZE(roi); k++) {
+					struct drm_n32h7xx_poly_clip_batch clip = {
+						.handle = bo[1].handle, .count = 1,
+						.polys = (uint64_t)(uintptr_t)&poly,
+						.x = roi[k][0], .y = roi[k][1],
+						.width = roi[k][2], .height = roi[k][3],
+					};
+
+					memset(map[1], 0x5a, bo[1].size);
+					if (ioctl(fd, DRM_IOCTL_N32H7XX_POLY_CLIP_BATCH, &clip)) {
+						perror("POLY_CLIP_BATCH");
+						goto out;
+					}
+					for (y = 0; y < 256; y++) {
+						for (x = 0; x < 256; x++) {
+							uint32_t got = 0, want = 0;
+							size_t offset = (y * 256 + x) * cpp;
+
+							memcpy(&got, map[1] + offset, cpp);
+							if (x >= clip.x && x < clip.x + clip.width &&
+							    y >= clip.y && y < clip.y + clip.height)
+								memcpy(&want, map[0] + offset, cpp);
+							else
+								want = cpp == 2 ? 0x5a5a : 0x5a5a5a5a;
+							if (got != want) {
+								fprintf(stderr, "polygon clip mismatch at %u,%u: %08x != %08x\n",
+									x, y, got, want);
+								goto out;
+							}
+						}
+					}
+					for (i = 256 * 256 * cpp; i < bo[1].size; i++)
+						if (map[1][i] != 0x5a) {
+							fprintf(stderr, "polygon clip tail guard changed\n");
+							goto out;
+						}
+					checked++;
+				}
+			}
+		}
+	}
+	printf("polygon clip: %u cases, full GPU crop and outside guards PASS\n", checked);
+	ret = 0;
+out:
+	for (i = 0; i < 2; i++) {
+		if (map[i])
+			munmap(map[i], bo[i].size);
+		if (bo[i].handle) {
+			close_bo.handle = bo[i].handle;
+			ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
+		}
+	}
+	return ret;
+}
+
 int main(int argc, char **argv)
 {
 	unsigned int hold;
@@ -5075,7 +5205,7 @@ int main(int argc, char **argv)
 	     strcmp(argv[1], "verify") && strcmp(argv[1], "panel") &&
 	     strcmp(argv[1], "rect") && strcmp(argv[1], "blend") &&
 	     strcmp(argv[1], "blit") && strcmp(argv[1], "batch") &&
-	     strcmp(argv[1], "poly") &&
+	     strcmp(argv[1], "poly") && strcmp(argv[1], "poly-clip") &&
 	     strcmp(argv[1], "curve") && strcmp(argv[1], "formats") &&
 	     strcmp(argv[1], "compat") && strcmp(argv[1], "dither") &&
 	     strcmp(argv[1], "profile")) ||
@@ -5107,6 +5237,7 @@ int main(int argc, char **argv)
 			"       %s batch <GPU DRM node> [width height [rect-w rect-h]]\n"
 			"       %s blit <GPU DRM node> <width> <height> [iters]\n"
 			"       %s poly <GPU DRM node> <width> <height> [iters]\n"
+			"       %s poly-clip <GPU DRM node>\n"
 			"       %s curve <GPU DRM node> <width> <height> [iters]\n"
 "       %s formats <GPU DRM node>\n"
 			"       %s dither <GPU DRM node>\n"
@@ -5116,7 +5247,7 @@ int main(int argc, char **argv)
 			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0],
 			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0],
 			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0],
-			argv[0], argv[0]);
+			argv[0], argv[0], argv[0]);
 		return 2;
 	}
 	fd = open(argv[2], O_RDWR | O_CLOEXEC);
@@ -5162,6 +5293,8 @@ int main(int argc, char **argv)
 		ret = poly_test(fd, strtoul(argv[3], NULL, 0),
 				strtoul(argv[4], NULL, 0),
 				argc > 5 ? strtoul(argv[5], NULL, 0) : 50);
+	} else if (!strcmp(argv[1], "poly-clip")) {
+		ret = poly_clip_test(fd);
 	} else if (!strcmp(argv[1], "curve")) {
 		ret = curve_test(fd, strtoul(argv[3], NULL, 0),
 				 strtoul(argv[4], NULL, 0),

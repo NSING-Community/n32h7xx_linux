@@ -309,6 +309,12 @@ killall human-detect
 任务和其他来源程序不受影响。状态保存在配置目录的
 `event-notifications.json`（默认 0600）。
 
+人形推理也支持运行时开关，默认关闭。用户说“打开端侧人员检测”时，技能通过
+`POST /inference?enabled=1` 开启模型执行，并用 `/status` 的
+`inference_enabled`、`frames` 和 `have_result` 确认；要求关闭时使用
+`enabled=0`。该开关控制模型推理，不等于微信通知开关，也不会停止相机或
+`human-detect` 进程。
+
 ## 技能：外设操作说明
 
 技能是纯文本 Markdown，一个技能一个目录，位置固定在 workspace 下：
@@ -319,7 +325,7 @@ killall human-detect
 
 （workspace 取自配置文件的 `workspace` 字段；标准安装即
 `/system/weniclaw/workspace`。）本目录的 `skills/` 里有五份现成技能：
-拍照 `camera`、人形检测服务 `human-service`、录音放音 `audio`、GPIO
+拍照 `camera`、端侧人员检测 `human-detect`、录音放音 `audio`、GPIO
 `gpioctl`、存储位置 `storage`。
 
 `../install.sh` 会自动安装技能；手动安装就是拷贝这个目录：

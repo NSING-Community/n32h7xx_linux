@@ -1,6 +1,7 @@
 # 人形检测服务
 
-触发：用户询问是否有人、查看检测状态或抓取彩色画面时读本技能。
+触发：用户说“打开端侧人员检测”“关闭端侧人员检测”，或要求开启/关闭人形
+推理、询问是否有人、查看检测状态、抓取彩色画面时读本技能。
 
 后台服务独占 `/dev/video0`，周期以 320x240 GREY 做带位置框的人形检测，
 同时提供本地 Unix socket。不要直接访问 `/dev/video0`，也不要启动
@@ -22,6 +23,28 @@ pidof human-detect >/dev/null
 
 `human_detected` 表示最近一帧是否检测到人，`frames` 应持续增长；返回的
 `boxes` 是相对整幅画面的 16 位坐标。查看实时彩色画面时抓一张 JPEG：
+
+## 推理开关
+
+用户说“打开端侧人员检测”“打开人形检测、开启人员推理、开始识别是否有人”
+时，开启推理并立即复查状态：
+
+```sh
+/usr/bin/curl --unix-socket /run/human-detect.sock -fsS -X POST \
+  'http://localhost/inference?enabled=1'
+sleep 2
+/usr/bin/curl --unix-socket /run/human-detect.sock -fsS \
+  http://localhost/status
+```
+
+用户说“关闭端侧人员检测、关闭人形推理、停止人员识别”时，把 `enabled=1`
+改成 `enabled=0`。
+成功条件是响应和随后 `/status` 都显示 `inference_enabled` 为目标值；开启后
+还应看到 `frames` 增长，`have_result` 变为 `true`。只有
+`camera_frames` 增长而 `frames` 不变，表示相机仍在出图但推理没有运行。
+
+推理开关只控制模型是否执行。关闭推理不关闭相机、预览或人形事件通知；停止
+进程才使用 `killall human-detect`，不要混用这三个操作。
 
 ```sh
 /usr/bin/curl --unix-socket /run/human-detect.sock -fsS \

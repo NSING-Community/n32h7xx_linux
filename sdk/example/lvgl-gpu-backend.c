@@ -2,10 +2,11 @@
 /*
  * LVGL display and draw-unit backend for the N32H787 D/AVE HD GPU.
  *
- * LVGL uses two GPU-owned full-screen buffers in DIRECT mode.  The GPU draws
+ * LVGL uses two GPU-accessible full-screen buffers in DIRECT mode.  The GPU draws
  * supported fills into the current buffer, then the buffer is imported into
- * LCDC through PRIME and presented with a KMS page flip.  Unsupported tasks
- * remain assigned to LVGL's software draw unit.
+ * LCDC through PRIME and presented with a KMS page flip.  Flush queues the
+ * flip; LVGL's flush-wait callback waits before either buffer is reused.
+ * Unsupported tasks remain assigned to LVGL's software draw unit.
  */
 
 #include "lvgl-gpu-backend.h"
@@ -33,6 +34,7 @@
 #include "include/lvgl/draw/lv_draw_rect.h"
 #include "include/lvgl/draw/lv_draw_triangle.h"
 #include "src/draw/lv_draw_private.h"
+#include "src/core/lv_refr_private.h"
 #include "src/misc/lv_area_private.h"
 
 #define GPU_DRAW_UNIT_ID 240
@@ -50,6 +52,8 @@
  */
 #define GPU_MIN_PLAIN_FILL_PIXELS 16384
 #define GPU_MAX_PLAIN_FILL_PIXELS 131072
+#define GPU_SYNC_MIN_BYTES 4096
+#define GPU_MIN_CLIPPED_POLY_PIXELS 4096
 
 struct gpu_buffer {
     uint32_t handle;
@@ -61,6 +65,32 @@ struct gpu_buffer {
     uint64_t size;
     uint8_t *map;
     int owns_fb;
+    bool clipping;
+};
+
+enum gpu_profile_stage {
+    GPU_PROFILE_REFRESH,
+    GPU_PROFILE_RENDER,
+    GPU_PROFILE_FILL,
+    GPU_PROFILE_RECT,
+    GPU_PROFILE_POLY,
+    GPU_PROFILE_SYNC,
+    GPU_PROFILE_FLIP_SUBMIT,
+    GPU_PROFILE_FLIP_WAIT,
+    GPU_PROFILE_COUNT
+};
+
+struct gpu_profile_stamp {
+    uint64_t wall;
+    uint64_t cpu;
+};
+
+struct gpu_profile_metric {
+    uint64_t calls;
+    uint64_t wall;
+    uint64_t cpu;
+    uint64_t max;
+    uint64_t histogram[32];
 };
 
 struct lvgl_gpu_backend {
@@ -76,6 +106,7 @@ struct lvgl_gpu_backend {
     struct drm_mode_modeinfo mode;
     struct gpu_buffer buffers[GPU_BUFFER_COUNT];
     uint32_t scanout_buffer;
+    int pending_buffer;
     bool master;
     uint32_t fills;
     uint32_t batches;
@@ -89,12 +120,231 @@ struct lvgl_gpu_backend {
     uint32_t large_fill_fallbacks;
     uint32_t max_plain_fill_pixels;
     bool disable_acceleration;
+    bool gpu_sync;
+    bool clipping;
+    int error;
+    uint64_t gpu_sync_bytes;
+    uint64_t cpu_sync_bytes;
+    uint32_t sync_fallbacks;
+    bool profile_enabled;
+    struct gpu_profile_metric profile[GPU_PROFILE_COUNT];
+    struct gpu_profile_stamp refresh_start;
+    struct gpu_profile_stamp render_start;
+    uint64_t sync_bytes;
+    uint64_t profile_cpu_resolution_ns;
 };
 
 typedef struct {
     lv_draw_unit_t base;
     lvgl_gpu_backend_t *backend;
 } gpu_draw_unit_t;
+
+static uint64_t profile_clock(clockid_t clock)
+{
+    struct timespec ts;
+
+    if (clock_gettime(clock, &ts))
+        return 0;
+    return (uint64_t)ts.tv_sec * 1000000000ULL + (uint64_t)ts.tv_nsec;
+}
+
+static struct gpu_profile_stamp profile_begin(lvgl_gpu_backend_t *backend)
+{
+    struct gpu_profile_stamp stamp = { 0 };
+
+    if (backend->profile_enabled) {
+        stamp.wall = profile_clock(CLOCK_MONOTONIC);
+        stamp.cpu = profile_clock(CLOCK_THREAD_CPUTIME_ID);
+    }
+    return stamp;
+}
+
+static void profile_end(lvgl_gpu_backend_t *backend,
+                         enum gpu_profile_stage stage,
+                         struct gpu_profile_stamp start)
+{
+    struct gpu_profile_metric *metric;
+    uint64_t wall, cpu, us;
+    unsigned int bucket = 0;
+
+    if (!backend->profile_enabled)
+        return;
+    wall = profile_clock(CLOCK_MONOTONIC) - start.wall;
+    cpu = profile_clock(CLOCK_THREAD_CPUTIME_ID) - start.cpu;
+    metric = &backend->profile[stage];
+    metric->calls++;
+    metric->wall += wall;
+    metric->cpu += cpu;
+    if (wall > metric->max)
+        metric->max = wall;
+    us = (wall + 999) / 1000;
+    while (us > 1 && bucket < 31) {
+        us = (us + 1) / 2;
+        bucket++;
+    }
+    metric->histogram[bucket]++;
+}
+
+static int gpu_ioctl(lvgl_gpu_backend_t *backend, unsigned long request,
+                      void *args, enum gpu_profile_stage stage)
+{
+    struct gpu_profile_stamp start = profile_begin(backend);
+    int ret = ioctl(backend->gpu_fd, request, args);
+    int saved_errno = errno;
+
+    profile_end(backend, stage, start);
+    errno = saved_errno;
+    return ret;
+}
+
+static void profile_display_event(lv_event_t *event)
+{
+    lvgl_gpu_backend_t *backend = lv_event_get_user_data(event);
+
+    switch (lv_event_get_code(event)) {
+    case LV_EVENT_REFR_START:
+        backend->refresh_start = profile_begin(backend);
+        break;
+    case LV_EVENT_REFR_READY:
+        profile_end(backend, GPU_PROFILE_REFRESH, backend->refresh_start);
+        break;
+    case LV_EVENT_RENDER_START:
+        backend->render_start = profile_begin(backend);
+        break;
+    case LV_EVENT_RENDER_READY:
+        profile_end(backend, GPU_PROFILE_RENDER, backend->render_start);
+        break;
+    default:
+        break;
+    }
+}
+
+static void sync_failed(lvgl_gpu_backend_t *backend, lv_display_t *display,
+                         int error)
+{
+    /* A failed job may still hold DMA references. Cancel this refresh before
+     * rendering starts, and let the application leave its main loop. */
+    backend->error = error;
+    /* Invalidation uses a nesting counter, not a boolean. Ensure the clear
+     * is accepted, then disable every level for this terminal error. */
+    while (!lv_display_is_invalidation_enabled(display))
+        lv_display_enable_invalidation(display, true);
+    lv_inv_area(display, NULL);
+    while (lv_display_is_invalidation_enabled(display))
+        lv_display_enable_invalidation(display, false);
+    lv_timer_pause(lv_display_get_refr_timer(display));
+    fprintf(stderr, "lvgl-gpu: sync failed: %s; display stopped\n",
+            strerror(error));
+}
+
+static void sync_cb(lv_display_t *display, const lv_area_t *area)
+{
+    lvgl_gpu_backend_t *backend = lv_display_get_driver_data(display);
+    const struct gpu_buffer *front = &backend->buffers[backend->scanout_buffer];
+    lv_draw_buf_t *active = lv_display_get_buf_active(display);
+    const struct gpu_buffer *back = NULL;
+    struct gpu_profile_stamp start = profile_begin(backend);
+    uint64_t bytes;
+    lv_draw_buf_t source;
+
+    if (backend->error)
+        goto ready;
+    if (area->x1 < 0 || area->y1 < 0 || area->x2 < area->x1 ||
+        area->y2 < area->y1 || area->x2 >= (int32_t)front->width ||
+        area->y2 >= (int32_t)front->height ||
+        area->x2 >= (int32_t)active->header.w ||
+        area->y2 >= (int32_t)active->header.h) {
+        sync_failed(backend, display, EINVAL);
+        goto ready;
+    }
+    bytes = (uint64_t)lv_area_get_width(area) * lv_area_get_height(area) * 2U;
+    for (unsigned int i = 0; i < GPU_BUFFER_COUNT; i++)
+        if (backend->buffers[i].map == active->data)
+            back = &backend->buffers[i];
+    if (backend->gpu_sync && bytes >= GPU_SYNC_MIN_BYTES && back &&
+        back != front && area->x2 < (int32_t)back->width &&
+        area->y2 < (int32_t)back->height) {
+        struct drm_n32h7xx_blit blit = {
+            .src_handle = front->handle,
+            .dst_handle = back->handle,
+            .src_format = DRM_FORMAT_RGB565,
+            .dst_format = DRM_FORMAT_RGB565,
+            .src_offset = (uint32_t)area->y1 * front->pitch + (uint32_t)area->x1 * 2U,
+            .dst_offset = (uint32_t)area->y1 * back->pitch + (uint32_t)area->x1 * 2U,
+            .src_pitch = front->pitch,
+            .dst_pitch = back->pitch,
+            .src_width = (uint32_t)lv_area_get_width(area),
+            .src_height = (uint32_t)lv_area_get_height(area),
+            .width = (uint32_t)lv_area_get_width(area),
+            .height = (uint32_t)lv_area_get_height(area),
+        };
+
+        if (!ioctl(backend->gpu_fd, DRM_IOCTL_N32H7XX_BLIT, &blit)) {
+            backend->gpu_sync_bytes += bytes;
+            goto copied;
+        }
+        /* These errors occur before a job can start. Other errors must not
+         * trigger a CPU write to buffers whose DMA state is unknown. */
+        if (errno != EINVAL && errno != ENOTTY && errno != EOPNOTSUPP &&
+            errno != ENOMEM) {
+            sync_failed(backend, display, errno);
+            goto ready;
+        }
+        backend->gpu_sync = false;
+        backend->sync_fallbacks++;
+        fprintf(stderr, "lvgl-gpu: sync unavailable; using CPU copy\n");
+    }
+    lv_draw_buf_init(&source, front->width, front->height,
+                     LV_COLOR_FORMAT_RGB565, front->pitch,
+                     front->map, (uint32_t)front->size);
+    lv_draw_buf_copy(active, area, &source, area);
+    backend->cpu_sync_bytes += bytes;
+copied:
+    backend->sync_bytes += bytes;
+ready:
+    profile_end(backend, GPU_PROFILE_SYNC, start);
+    lv_display_sync_ready(display);
+}
+
+static void profile_dump(const lvgl_gpu_backend_t *backend)
+{
+    static const char *const names[] = {
+        "refresh", "render", "fill_ioctl", "rect_ioctl", "poly_ioctl",
+        "sync_copy", "flip_submit", "flip_wait"
+    };
+
+    if (!backend->profile_enabled)
+        return;
+    puts("gpu-profile: nested wall/CPU totals; ioctl time includes completion wait");
+    printf("gpu-profile: cpu_clock_resolution_us=%llu\n",
+           (unsigned long long)((backend->profile_cpu_resolution_ns + 999) / 1000));
+    for (unsigned int i = 0; i < GPU_PROFILE_COUNT; i++) {
+        const struct gpu_profile_metric *metric = &backend->profile[i];
+        uint64_t sum = 0, p95 = 0;
+
+        if (!metric->calls)
+            continue;
+        for (unsigned int bucket = 0; bucket < 32; bucket++) {
+            sum += metric->histogram[bucket];
+            if (sum >= (metric->calls * 95 + 99) / 100) {
+                p95 = 1ULL << bucket;
+                break;
+            }
+        }
+        printf("gpu-profile: %s calls=%llu wall_us=%llu cpu_us=%llu "
+               "max_us=%llu p95_us_upper=%llu\n", names[i],
+               (unsigned long long)metric->calls,
+               (unsigned long long)(metric->wall / 1000),
+               (unsigned long long)(metric->cpu / 1000),
+               (unsigned long long)((metric->max + 999) / 1000),
+               (unsigned long long)p95);
+    }
+    printf("gpu-profile: gpu_sync_bytes=%llu cpu_sync_bytes=%llu sync_fallbacks=%u\n",
+           (unsigned long long)backend->gpu_sync_bytes,
+           (unsigned long long)backend->cpu_sync_bytes, backend->sync_fallbacks);
+    printf("gpu-profile: sync_bytes=%llu completed_presents=%u\n",
+           (unsigned long long)backend->sync_bytes, backend->presents);
+}
 
 static uint32_t tick_get_cb(void)
 {
@@ -244,6 +494,7 @@ static int activate_crtc(lvgl_gpu_backend_t *backend)
         .crtc_id = backend->crtc_id,
         .fb_id = backend->old_fb,
         .mode = backend->mode,
+        .mode_valid = 1,
     };
 
     if (ioctl(backend->lcdc_fd, DRM_IOCTL_MODE_SETCRTC, &set)) {
@@ -374,6 +625,81 @@ static int import_existing_buffer(lvgl_gpu_backend_t *backend,
     return 0;
 }
 
+/* Check a known pattern at an unaligned destination before enabling sync.
+ * Older drivers accepted BLIT but sampled the wrong X origin there. */
+static int probe_gpu_sync(lvgl_gpu_backend_t *backend)
+{
+    struct drm_n32h7xx_create create = { .size = 4096 };
+    struct drm_gem_close close_bo = { 0 };
+    struct gpu_buffer *back = &backend->buffers[1];
+    uint16_t *source;
+    int supported = 0;
+
+    if (ioctl(backend->gpu_fd, DRM_IOCTL_N32H7XX_CREATE, &create))
+        return 0;
+    source = mmap(NULL, create.size, PROT_READ | PROT_WRITE, MAP_SHARED,
+                  backend->gpu_fd, create.mmap_offset);
+    if (source == MAP_FAILED)
+        goto close;
+    for (unsigned int i = 0; i < 8; i++)
+        source[i] = (uint16_t)(0x1230 + i * 137);
+    {
+        struct drm_n32h7xx_blit blit = {
+            .src_handle = create.handle, .dst_handle = back->handle,
+            .src_format = DRM_FORMAT_RGB565, .dst_format = DRM_FORMAT_RGB565,
+            .src_pitch = 16, .dst_pitch = back->pitch, .dst_offset = 6,
+            .src_width = 8, .src_height = 1, .width = 8, .height = 1,
+        };
+
+        if (ioctl(backend->gpu_fd, DRM_IOCTL_N32H7XX_BLIT, &blit)) {
+            if (errno != EINVAL && errno != ENOTTY && errno != EOPNOTSUPP &&
+                errno != ENOMEM)
+                supported = -1;
+        }
+        else {
+            supported = !memcmp(back->map + 6, source, 16);
+            memset(back->map + 6, 0, 16);
+        }
+    }
+    munmap(source, create.size);
+close:
+    close_bo.handle = create.handle;
+    ioctl(backend->gpu_fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
+    return supported;
+}
+
+static int probe_poly_clip(lvgl_gpu_backend_t *backend)
+{
+    struct gpu_buffer *back = &backend->buffers[1];
+    struct drm_n32h7xx_poly poly = {
+        .handle = back->handle, .format = DRM_FORMAT_RGB565,
+        .pitch = back->pitch, .color = 0xff00ff00,
+        .vertex_count = 4, .flags = DRM_N32H7XX_POLY_NO_AA,
+        .x = { 0, 8 * 65536, 8 * 65536, 0 },
+        .y = { 0, 0, 8 * 65536, 8 * 65536 },
+    };
+    struct drm_n32h7xx_poly_clip_batch clip = {
+        .handle = back->handle, .count = 1, .polys = (uint64_t)(uintptr_t)&poly,
+        .x = 3, .y = 3, .width = 2, .height = 2,
+    };
+    int supported = 1;
+
+    if (back->width < 8 || back->height < 8)
+        return 0;
+    if (ioctl(backend->gpu_fd, DRM_IOCTL_N32H7XX_POLY_CLIP_BATCH, &clip))
+        return (errno == EINVAL || errno == ENOTTY || errno == EOPNOTSUPP ||
+                errno == ENOMEM) ? 0 : -1;
+    for (unsigned int y = 0; y < 8; y++) {
+        uint16_t *row = (uint16_t *)(back->map + y * back->pitch);
+
+        for (unsigned int x = 0; x < 8; x++)
+            if (row[x] != ((x >= 3 && x < 5 && y >= 3 && y < 5) ? 0x07e0 : 0))
+                supported = 0;
+        memset(row, 0, 16);
+    }
+    return supported;
+}
+
 static int find_buffer(const lvgl_gpu_backend_t *backend, const void *pointer)
 {
     const uint8_t *p = pointer;
@@ -394,7 +720,10 @@ buffer_for_layer(const lvgl_gpu_backend_t *backend, const lv_layer_t *layer)
 {
     int index = find_buffer(backend, layer->draw_buf->data);
 
-    return index < 0 ? NULL : &backend->buffers[index];
+    /* Subviews need a separate BO offset; only whole mapped draw buffers
+     * are eligible for direct GPU commands. */
+    return index < 0 || layer->draw_buf->data != backend->buffers[index].map ?
+           NULL : &backend->buffers[index];
 }
 
 static int read_flip_event(lvgl_gpu_backend_t *backend)
@@ -404,20 +733,32 @@ static int read_flip_event(lvgl_gpu_backend_t *backend)
         .fd = backend->lcdc_fd,
         .events = POLLIN,
     };
+    struct gpu_profile_stamp start = profile_begin(backend);
+    ssize_t length;
+    int ret;
 
-    if (poll(&pfd, 1, 2000) != 1) {
+    do {
+        ret = poll(&pfd, 1, 2000);
+    } while (ret < 0 && errno == EINTR);
+    if (ret != 1) {
         fprintf(stderr, "lvgl-gpu: timed out waiting for flip completion\n");
+        profile_end(backend, GPU_PROFILE_FLIP_WAIT, start);
         return -1;
     }
-    if (read(backend->lcdc_fd, &event, sizeof(event)) != sizeof(event) ||
+    do {
+        length = read(backend->lcdc_fd, &event, sizeof(event));
+    } while (length < 0 && errno == EINTR);
+    if (length != sizeof(event) ||
         event.base.type != DRM_EVENT_FLIP_COMPLETE) {
         fprintf(stderr, "lvgl-gpu: invalid flip-complete event\n");
+        profile_end(backend, GPU_PROFILE_FLIP_WAIT, start);
         return -1;
     }
+    profile_end(backend, GPU_PROFILE_FLIP_WAIT, start);
     return 0;
 }
 
-static int flip_and_wait(lvgl_gpu_backend_t *backend, uint32_t fb_id)
+static int submit_flip(lvgl_gpu_backend_t *backend, uint32_t fb_id)
 {
     struct drm_mode_crtc_page_flip flip = {
         .crtc_id = backend->crtc_id,
@@ -425,10 +766,23 @@ static int flip_and_wait(lvgl_gpu_backend_t *backend, uint32_t fb_id)
         .flags = DRM_MODE_PAGE_FLIP_EVENT,
     };
 
-    if (ioctl(backend->lcdc_fd, DRM_IOCTL_MODE_PAGE_FLIP, &flip)) {
+    struct gpu_profile_stamp start = profile_begin(backend);
+    int ret = ioctl(backend->lcdc_fd, DRM_IOCTL_MODE_PAGE_FLIP, &flip);
+    int saved_errno = errno;
+
+    profile_end(backend, GPU_PROFILE_FLIP_SUBMIT, start);
+    errno = saved_errno;
+    if (ret) {
         perror("lvgl-gpu: page flip");
         return -1;
     }
+    return 0;
+}
+
+static int flip_and_wait(lvgl_gpu_backend_t *backend, uint32_t fb_id)
+{
+    if (submit_flip(backend, fb_id))
+        return -1;
     return read_flip_event(backend);
 }
 
@@ -452,12 +806,34 @@ static void flush_cb(lv_display_t *display, const lv_area_t *area,
         lv_display_flush_ready(display);
         return;
     }
-    if (index != (int)backend->scanout_buffer &&
-        !flip_and_wait(backend, backend->buffers[index].fb_id)) {
-        backend->scanout_buffer = index;
-        backend->presents++;
+    if (index != (int)backend->scanout_buffer) {
+        if (!submit_flip(backend, backend->buffers[index].fb_id)) {
+            backend->pending_buffer = index;
+            return;
+        }
     }
     lv_display_flush_ready(display);
+}
+
+static void finish_pending_flip(lvgl_gpu_backend_t *backend)
+{
+    if (backend->pending_buffer < 0)
+        return;
+    if (!read_flip_event(backend)) {
+        backend->scanout_buffer = (uint32_t)backend->pending_buffer;
+        backend->presents++;
+    }
+    backend->pending_buffer = -1;
+}
+
+static void flush_wait_cb(lv_display_t *display)
+{
+    lvgl_gpu_backend_t *backend = lv_display_get_driver_data(display);
+
+    /* LVGL waits here before syncing or reusing the old scanout buffer.
+     * Queueing the flip in flush_cb lets its vblank wait overlap the main
+     * loop's timer sleep instead of adding both delays to every frame. */
+    finish_pending_flip(backend);
 }
 
 static int64_t gpu_floor_q16(int64_t value)
@@ -509,6 +885,28 @@ static int gpu_area_in_bounds(const lv_draw_task_t *task)
            task->area.y1 >= visible.y1 && task->area.y2 <= visible.y2;
 }
 
+/* A clipped rounded fill is rectangular when it stays clear of all four
+ * corner boxes. Keep corner antialiasing on the existing rounded/SW paths. */
+static bool gpu_fill_rect_area(const lv_draw_task_t *task, lv_area_t *area)
+{
+    const lv_draw_fill_dsc_t *fill = task->draw_dsc;
+    lv_area_t visible;
+    int32_t radius;
+
+    gpu_visible_area(task, &visible);
+    if (!lv_area_intersect(area, &task->area, &visible))
+        return false;
+    radius = LV_MIN(fill->radius, LV_MIN(lv_area_get_width(&task->area),
+                                        lv_area_get_height(&task->area)) / 2);
+    if (radius < 0)
+        return false;
+    return !radius ||
+           (area->x1 >= task->area.x1 + radius &&
+            area->x2 <= task->area.x2 - radius) ||
+           (area->y1 >= task->area.y1 + radius &&
+            area->y2 <= task->area.y2 - radius);
+}
+
 static int gpu_box_in_bounds(const lv_draw_task_t *task,
                              int64_t min_x, int64_t max_x,
                              int64_t min_y, int64_t max_y)
@@ -524,7 +922,23 @@ static int gpu_box_in_bounds(const lv_draw_task_t *task,
            y0 >= visible.y1 && y1 <= visible.y2;
 }
 
+static int gpu_geometry_in_bounds(const lv_draw_task_t *task,
+                                   const struct gpu_buffer *buffer,
+                                   int64_t min_x, int64_t max_x,
+                                   int64_t min_y, int64_t max_y)
+{
+    const lv_area_t *area = &task->target_layer->buf_area;
+
+    if (!buffer->clipping)
+        return gpu_box_in_bounds(task, min_x, max_x, min_y, max_y);
+    return gpu_floor_q16(min_x) >= area->x1 &&
+           gpu_ceil_q16(max_x) - 1 <= area->x2 &&
+           gpu_floor_q16(min_y) >= area->y1 &&
+           gpu_ceil_q16(max_y) - 1 <= area->y2;
+}
+
 static int gpu_poly_in_bounds(const lv_draw_task_t *task,
+                              const struct gpu_buffer *buffer,
                               const int64_t *x, const int64_t *y, int count)
 {
     int64_t min_x = x[0], max_x = x[0];
@@ -536,7 +950,7 @@ static int gpu_poly_in_bounds(const lv_draw_task_t *task,
         min_y = LV_MIN(min_y, y[i]);
         max_y = LV_MAX(max_y, y[i]);
     }
-    return gpu_box_in_bounds(task, min_x, max_x, min_y, max_y);
+    return gpu_geometry_in_bounds(task, buffer, min_x, max_x, min_y, max_y);
 }
 
 static int gpu_area_primitive_in_bounds(const lv_draw_task_t *task,
@@ -560,7 +974,7 @@ static int gpu_add_fixed_poly(lv_draw_task_t *task,
     uint32_t offset;
     int i;
 
-    if (count < 3 || count > 6 || !gpu_poly_in_bounds(task, x, y, count))
+    if (count < 3 || count > 6 || !gpu_poly_in_bounds(task, buffer, x, y, count))
         return -1;
     for (i = 1; i < count; i++) {
         min_x = LV_MIN(min_x, x[i]);
@@ -569,12 +983,23 @@ static int gpu_add_fixed_poly(lv_draw_task_t *task,
         max_y = LV_MAX(max_y, y[i]);
     }
 
+    if (buffer->clipping) {
+        lv_area_t visible;
+
+        gpu_visible_area(task, &visible);
+        if (gpu_ceil_q16(max_x) < visible.x1 ||
+            gpu_floor_q16(min_x) > (int64_t)visible.x2 + 1 ||
+            gpu_ceil_q16(max_y) < visible.y1 ||
+            gpu_floor_q16(min_y) > (int64_t)visible.y2 + 1)
+            return 0;
+    }
+
     px0 = gpu_floor_q16(min_x);
     px1 = gpu_ceil_q16(max_x) - 1;
     py0 = gpu_floor_q16(min_y);
     py1 = gpu_ceil_q16(max_y) - 1;
-    origin_x = px0 - layer->buf_area.x1;
-    origin_y = py0 - layer->buf_area.y1;
+    origin_x = buffer->clipping ? 0 : px0 - layer->buf_area.x1;
+    origin_y = buffer->clipping ? 0 : py0 - layer->buf_area.y1;
     origin_x &= ~3LL; /* A 16-bit RGB565 row is 8-byte aligned every 4 pixels. */
     if (origin_x < 0 || origin_y < 0 ||
         px1 - layer->buf_area.x1 >= buffer->width ||
@@ -591,29 +1016,48 @@ static int gpu_add_fixed_poly(lv_draw_task_t *task,
     poly->color = color;
     poly->vertex_count = (uint32_t)count;
     for (i = 0; i < count; i++) {
-        poly->x[i] = (int32_t)(x[i] - (origin_x << 16));
-        poly->y[i] = (int32_t)(y[i] - (origin_y << 16));
+        poly->x[i] = (int32_t)(x[i] - (origin_x + layer->buf_area.x1) * 65536LL);
+        poly->y[i] = (int32_t)(y[i] - (origin_y + layer->buf_area.y1) * 65536LL);
     }
     return 1;
 }
 
-static int gpu_flush_polys(gpu_draw_unit_t *gpu,
+static int gpu_flush_polys(gpu_draw_unit_t *gpu, const lv_draw_task_t *task,
                            struct drm_n32h7xx_poly *polys, uint32_t count)
 {
     struct drm_n32h7xx_poly_batch batch = {
-        .handle = polys[0].handle,
         .count = count,
         .polys = (uint64_t)(uintptr_t)polys,
     };
 
     if (!count)
         return 0;
-    if (count == 1) {
-        if (ioctl(gpu->backend->gpu_fd, DRM_IOCTL_N32H7XX_POLY, polys))
+    batch.handle = polys[0].handle;
+    if (gpu->backend->clipping) {
+        lv_area_t area;
+        const lv_area_t *origin = &task->target_layer->buf_area;
+        struct drm_n32h7xx_poly_clip_batch clipped = {
+            .handle = polys[0].handle,
+            .count = count,
+            .polys = (uint64_t)(uintptr_t)polys,
+        };
+
+        gpu_visible_area(task, &area);
+        clipped.x = (uint32_t)(area.x1 - origin->x1);
+        clipped.y = (uint32_t)(area.y1 - origin->y1);
+        clipped.width = (uint32_t)lv_area_get_width(&area);
+        clipped.height = (uint32_t)lv_area_get_height(&area);
+        if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_POLY_CLIP_BATCH,
+                      &clipped, GPU_PROFILE_POLY))
             return -1;
     }
-    else if (ioctl(gpu->backend->gpu_fd, DRM_IOCTL_N32H7XX_POLY_BATCH,
-                   &batch)) {
+    else if (count == 1) {
+        if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_POLY, polys,
+                      GPU_PROFILE_POLY))
+            return -1;
+    }
+    else if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_POLY_BATCH, &batch,
+                      GPU_PROFILE_POLY)) {
         return -1;
     }
     gpu->backend->poly_batches++;
@@ -663,11 +1107,12 @@ static int gpu_flush_rects(gpu_draw_unit_t *gpu,
     if (!count)
         return 0;
     if (count == 1) {
-        if (ioctl(gpu->backend->gpu_fd, DRM_IOCTL_N32H7XX_RECT, rects))
+        if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_RECT, rects,
+                      GPU_PROFILE_RECT))
             return -1;
     }
-    else if (ioctl(gpu->backend->gpu_fd, DRM_IOCTL_N32H7XX_RECT_BATCH,
-                   &batch)) {
+    else if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_RECT_BATCH, &batch,
+                      GPU_PROFILE_RECT)) {
         return -1;
     }
     gpu->backend->batches++;
@@ -813,6 +1258,7 @@ static int gpu_add_line_segment(lv_draw_task_t *task,
 }
 
 static int gpu_line_segment_in_bounds(lv_draw_task_t *task,
+                                      const struct gpu_buffer *buffer,
                                       const lv_draw_line_dsc_t *dsc,
                                       lv_point_precise_t p1,
                                       lv_point_precise_t p2)
@@ -835,16 +1281,17 @@ static int gpu_line_segment_in_bounds(lv_draw_task_t *task,
     y[2] = ((int64_t)p2.y << 16) - off_y;
     x[3] = ((int64_t)p1.x << 16) - off_x;
     y[3] = ((int64_t)p1.y << 16) - off_y;
-    return gpu_poly_in_bounds(task, x, y, 4);
+    return gpu_poly_in_bounds(task, buffer, x, y, 4);
 }
 
 static int gpu_line_in_bounds(lv_draw_task_t *task,
+                              const struct gpu_buffer *buffer,
                               const lv_draw_line_dsc_t *dsc)
 {
     if (!dsc->points) {
         if (dsc->p1.x == dsc->p2.x && dsc->p1.y == dsc->p2.y)
             return 1;
-        return gpu_line_segment_in_bounds(task, dsc, dsc->p1, dsc->p2);
+        return gpu_line_segment_in_bounds(task, buffer, dsc, dsc->p1, dsc->p2);
     }
     if (!dsc->point_cnt || !dsc->points)
         return 0;
@@ -858,7 +1305,7 @@ static int gpu_line_in_bounds(lv_draw_task_t *task,
             p2.y == LV_DRAW_LINE_POINT_NONE)
             continue;
         if (p1.x != p2.x || p1.y != p2.y) {
-            if (!gpu_line_segment_in_bounds(task, dsc, p1, p2))
+            if (!gpu_line_segment_in_bounds(task, buffer, dsc, p1, p2))
                 return 0;
         }
     }
@@ -1000,25 +1447,53 @@ static int32_t gpu_evaluate(lv_draw_unit_t *unit, lv_draw_task_t *task)
 {
     gpu_draw_unit_t *gpu = (gpu_draw_unit_t *)unit;
     const struct gpu_buffer *buffer;
+    lv_area_t visible;
 
     if (gpu->backend->disable_acceleration)
         return 0;
     if (!task->target_layer || !task->target_layer->draw_buf ||
         task->target_layer->draw_buf->header.cf != LV_COLOR_FORMAT_RGB565 ||
-        task->opa != LV_OPA_COVER || !gpu_area_in_bounds(task))
+        task->opa != LV_OPA_COVER)
         return 0;
     buffer = buffer_for_layer(gpu->backend, task->target_layer);
     if (!buffer)
         return 0;
+    gpu_visible_area(task, &visible);
+    if (visible.x1 > visible.x2 || visible.y1 > visible.y2)
+        return 0;
+
+    if (task->type != LV_DRAW_TASK_TYPE_FILL && !gpu_area_in_bounds(task)) {
+        lv_area_t clipped;
+
+        /* Small strokes are cheaper in software. Tessellating a clipped arc
+         * also costs more CPU than its software path on this platform. */
+        if (!buffer->clipping ||
+            (task->type != LV_DRAW_TASK_TYPE_LINE &&
+             task->type != LV_DRAW_TASK_TYPE_TRIANGLE) ||
+            !lv_area_intersect(&clipped, &task->area, &visible) ||
+            (int64_t)lv_area_get_width(&clipped) * lv_area_get_height(&clipped) <
+                GPU_MIN_CLIPPED_POLY_PIXELS)
+            return 0;
+        if (task->type == LV_DRAW_TASK_TYPE_LINE) {
+            const lv_draw_line_dsc_t *line = task->draw_dsc;
+
+            if (!line->points &&
+                (line->p1.x == line->p2.x || line->p1.y == line->p2.y))
+                return 0;
+        }
+    }
 
     if (task->type == LV_DRAW_TASK_TYPE_FILL) {
         lv_draw_fill_dsc_t *fill = task->draw_dsc;
-        int32_t pixels = lv_area_get_width(&task->area) *
-                         lv_area_get_height(&task->area);
+        lv_area_t area;
+        int32_t pixels;
 
         if (fill->grad.dir != LV_GRAD_DIR_NONE ||
             fill->opa != LV_OPA_COVER || fill->radius < 0)
             return 0;
+        if (!gpu_fill_rect_area(task, &area) && !gpu_area_in_bounds(task))
+            return 0;
+        pixels = lv_area_get_width(&area) * lv_area_get_height(&area);
         if (pixels < GPU_MIN_PLAIN_FILL_PIXELS)
             return 0;
         if ((uint32_t)pixels > gpu->backend->max_plain_fill_pixels) {
@@ -1042,7 +1517,7 @@ static int32_t gpu_evaluate(lv_draw_unit_t *unit, lv_draw_task_t *task)
         if (line->width <= 0 || line->opa != LV_OPA_COVER ||
             line->round_start || line->round_end ||
             (line->dash_width && line->dash_gap) ||
-            !gpu_line_in_bounds(task, line))
+            !gpu_line_in_bounds(task, buffer, line))
             return 0;
     }
     else if (task->type == LV_DRAW_TASK_TYPE_ARC) {
@@ -1051,7 +1526,7 @@ static int32_t gpu_evaluate(lv_draw_unit_t *unit, lv_draw_task_t *task)
         if (arc->opa != LV_OPA_COVER || !arc->width ||
             arc->img_src || arc->width >= arc->radius ||
             arc->start_angle == arc->end_angle ||
-            !gpu_box_in_bounds(task,
+            !gpu_geometry_in_bounds(task, buffer,
                                ((int64_t)arc->center.x - arc->radius) << 16,
                                ((int64_t)arc->center.x + arc->radius + 1) << 16,
                                ((int64_t)arc->center.y - arc->radius) << 16,
@@ -1069,7 +1544,7 @@ static int32_t gpu_evaluate(lv_draw_unit_t *unit, lv_draw_task_t *task)
             x[i] = (int64_t)triangle->p[i].x << 16;
             y[i] = (int64_t)triangle->p[i].y << 16;
         }
-        if (!gpu_poly_in_bounds(task, x, y, 3))
+        if (!gpu_poly_in_bounds(task, buffer, x, y, 3))
             return 0;
     }
     else {
@@ -1105,8 +1580,7 @@ static int gpu_append_rect(lv_draw_task_t *task,
     ret = gpu_add_rect_primitive(task, buffer, area, color, &rects[*count]);
     if (ret < 0)
         return -1;
-    if (ret > 0)
-        (*count)++;
+    (*count)++;
     return 0;
 }
 
@@ -1124,8 +1598,8 @@ static int gpu_build_rounded_fill(lv_draw_task_t *task,
     uint32_t color = lv_color_to_u32(dsc->color);
     int ret;
 
-    if (!radius) {
-        if (gpu_append_rect(task, buffer, area, color, rects, rect_count) < 0)
+    if (gpu_fill_rect_area(task, &part)) {
+        if (gpu_append_rect(task, buffer, &part, color, rects, rect_count) < 0)
             return -1;
         return 0;
     }
@@ -1301,6 +1775,17 @@ static int gpu_build_border(lv_draw_task_t *task,
     return 0;
 }
 
+static bool gpu_same_clip(const lv_draw_task_t *a, const lv_draw_task_t *b)
+{
+    lv_area_t x, y;
+
+    gpu_visible_area(a, &x);
+    gpu_visible_area(b, &y);
+    return x.x1 == y.x1 && x.x2 == y.x2 && x.y1 == y.y1 && x.y2 == y.y2 &&
+           a->target_layer->buf_area.x1 == b->target_layer->buf_area.x1 &&
+           a->target_layer->buf_area.y1 == b->target_layer->buf_area.y1;
+}
+
 static int32_t gpu_dispatch_rect_tasks(gpu_draw_unit_t *gpu,
                                        lv_draw_unit_t *unit,
                                        lv_layer_t *layer,
@@ -1329,6 +1814,9 @@ static int32_t gpu_dispatch_rect_tasks(gpu_draw_unit_t *gpu,
                                                    GPU_DRAW_UNIT_ID);
             continue;
         }
+        if (gpu->backend->clipping && task_count &&
+            !gpu_same_clip(task, tasks[0]))
+            break;
         candidate = buffer_for_layer(gpu->backend, task->target_layer);
         if (!candidate || (buffer && candidate->handle != buffer->handle))
             break;
@@ -1377,7 +1865,8 @@ static int32_t gpu_dispatch_rect_tasks(gpu_draw_unit_t *gpu,
                 ((lv_draw_fill_dsc_t *)tasks[0]->draw_dsc)->color),
         };
 
-        if (ioctl(gpu->backend->gpu_fd, DRM_IOCTL_N32H7XX_FILL, &fill))
+        if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_FILL, &fill,
+                      GPU_PROFILE_FILL))
             err = errno;
         else
             gpu->backend->batches++;
@@ -1385,7 +1874,7 @@ static int32_t gpu_dispatch_rect_tasks(gpu_draw_unit_t *gpu,
     else if (gpu_flush_rects(gpu, rects, rect_count)) {
         err = errno;
     }
-    if (!err && gpu_flush_polys(gpu, polys, poly_count))
+    if (!err && gpu_flush_polys(gpu, tasks[0], polys, poly_count))
         err = errno;
     if (err) {
         if (err == EINVAL)
@@ -1427,8 +1916,7 @@ static int32_t gpu_dispatch_fill(gpu_draw_unit_t *gpu, lv_draw_unit_t *unit,
         int x;
         int y;
 
-        if (description->radius != 0 ||
-            !lv_area_intersect(&area, &task->area, &task->clip_area))
+        if (!gpu_fill_rect_area(task, &area))
             break;
         candidate = buffer_for_layer(gpu->backend, task->target_layer);
         if (!candidate || (buffer && candidate->handle != handle))
@@ -1472,7 +1960,8 @@ static int32_t gpu_dispatch_fill(gpu_draw_unit_t *gpu, lv_draw_unit_t *unit,
                 ((lv_draw_fill_dsc_t *)tasks[0]->draw_dsc)->color),
         };
 
-        if (ioctl(gpu->backend->gpu_fd, DRM_IOCTL_N32H7XX_FILL, &fill))
+        if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_FILL, &fill,
+                      GPU_PROFILE_FILL))
             err = errno;
         else
             gpu->backend->batches++;
@@ -1483,8 +1972,8 @@ static int32_t gpu_dispatch_fill(gpu_draw_unit_t *gpu, lv_draw_unit_t *unit,
         batch.rects = (uint64_t)(uintptr_t)rects;
         batch.reserved = 0;
         batch.pad = 0;
-        if (ioctl(gpu->backend->gpu_fd, DRM_IOCTL_N32H7XX_RECT_BATCH,
-                  &batch))
+        if (gpu_ioctl(gpu->backend, DRM_IOCTL_N32H7XX_RECT_BATCH, &batch,
+                      GPU_PROFILE_RECT))
             err = errno;
         else
             gpu->backend->batches++;
@@ -1524,7 +2013,7 @@ static int32_t gpu_dispatch_poly_task(gpu_draw_unit_t *gpu,
                 err = EINVAL;
             if (ret <= 0)
                 break;
-            if (gpu_flush_polys(gpu, polys, count)) {
+            if (gpu_flush_polys(gpu, task, polys, count)) {
                 err = errno;
                 break;
             }
@@ -1554,7 +2043,7 @@ static int32_t gpu_dispatch_poly_task(gpu_draw_unit_t *gpu,
         else if (ret < 0)
             err = EINVAL;
     }
-    if (!err && gpu_flush_polys(gpu, polys, count))
+    if (!err && gpu_flush_polys(gpu, task, polys, count))
         err = errno;
     if (err)
         perror("lvgl-gpu: polygon");
@@ -1596,6 +2085,9 @@ static int32_t gpu_dispatch_poly_tasks(gpu_draw_unit_t *gpu,
                                                    GPU_DRAW_UNIT_ID);
             continue;
         }
+        if (gpu->backend->clipping && task_count &&
+            !gpu_same_clip(task, tasks[0]))
+            break;
         candidate = buffer_for_layer(gpu->backend, task->target_layer);
         if (!candidate || (buffer && candidate->handle != buffer->handle))
             break;
@@ -1649,7 +2141,7 @@ static int32_t gpu_dispatch_poly_tasks(gpu_draw_unit_t *gpu,
 
     if (!task_count)
         return gpu_dispatch_poly_task(gpu, unit, task);
-    if (gpu_flush_polys(gpu, polys, poly_count))
+    if (gpu_flush_polys(gpu, tasks[0], polys, poly_count))
         err = errno;
     if (err)
         perror("lvgl-gpu: polygon batch");
@@ -1678,9 +2170,9 @@ static int32_t gpu_dispatch(lv_draw_unit_t *unit, lv_layer_t *layer)
     if (!task || task->preferred_draw_unit_id != GPU_DRAW_UNIT_ID)
         return LV_DRAW_UNIT_IDLE;
     if (task->type == LV_DRAW_TASK_TYPE_FILL) {
-        lv_draw_fill_dsc_t *dsc = task->draw_dsc;
+        lv_area_t area;
 
-        if (dsc->radius == 0)
+        if (gpu_fill_rect_area(task, &area))
             return gpu_dispatch_fill(gpu, unit, layer, task);
     }
     if (task->type == LV_DRAW_TASK_TYPE_FILL ||
@@ -1706,6 +2198,7 @@ lvgl_gpu_backend_t *lvgl_gpu_display_create(lv_display_t **display,
         return NULL;
     backend->lcdc_fd = -1;
     backend->gpu_fd = -1;
+    backend->pending_buffer = -1;
     backend->max_plain_fill_pixels = GPU_MAX_PLAIN_FILL_PIXELS;
     backend->disable_acceleration = getenv("LVGL_GPU_DISABLE_ACCEL") != NULL;
     {
@@ -1757,6 +2250,25 @@ lvgl_gpu_backend_t *lvgl_gpu_display_create(lv_display_t **display,
         fprintf(stderr, "lvgl-gpu: frame buffer allocation failed\n");
         goto fail;
     }
+    if (!backend->disable_acceleration &&
+        (!getenv("LVGL_GPU_SYNC") || strcmp(getenv("LVGL_GPU_SYNC"), "cpu"))) {
+        int supported = probe_gpu_sync(backend);
+
+        if (supported < 0) {
+            fprintf(stderr, "lvgl-gpu: sync probe failed\n");
+            goto fail;
+        }
+        backend->gpu_sync = supported > 0;
+    }
+    if (!backend->disable_acceleration) {
+        int supported = probe_poly_clip(backend);
+
+        if (supported < 0)
+            goto fail;
+        backend->clipping = supported > 0;
+        for (unsigned int i = 0; i < GPU_BUFFER_COUNT; i++)
+            backend->buffers[i].clipping = backend->clipping;
+    }
     if (import_buffer_to_lcdc(backend, &backend->buffers[1])) {
         fprintf(stderr, "lvgl-gpu: frame buffer import failed\n");
         goto fail;
@@ -1787,6 +2299,7 @@ lvgl_gpu_backend_t *lvgl_gpu_display_create(lv_display_t **display,
                                        LV_DISPLAY_RENDER_MODE_DIRECT);
     lv_display_set_driver_data(disp, backend);
     lv_display_set_flush_cb(disp, flush_cb);
+    lv_display_set_flush_wait_cb(disp, flush_wait_cb);
 
     unit = (gpu_draw_unit_t *)lv_draw_create_unit(sizeof(*unit));
     if (!unit)
@@ -1797,6 +2310,28 @@ lvgl_gpu_backend_t *lvgl_gpu_display_create(lv_display_t **display,
     unit->base.dispatch_cb = gpu_dispatch;
     unit->backend = backend;
 
+    backend->profile_enabled = getenv("LVGL_GPU_PROFILE") != NULL;
+    if (backend->profile_enabled) {
+        struct timespec ts;
+
+        if (clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts)) {
+            fprintf(stderr, "gpu-profile: thread CPU clock unavailable; "
+                    "profiling disabled\n");
+            backend->profile_enabled = false;
+        }
+        else if (!clock_getres(CLOCK_THREAD_CPUTIME_ID, &ts)) {
+            backend->profile_cpu_resolution_ns =
+                (uint64_t)ts.tv_sec * 1000000000ULL + (uint64_t)ts.tv_nsec;
+        }
+    }
+    if (backend->gpu_sync || backend->profile_enabled)
+        lv_display_set_sync_cb(disp, sync_cb);
+    fprintf(stderr, "lvgl-gpu: %s buffer sync, polygon clipping %s\n",
+            backend->gpu_sync ? "GPU" : "CPU", backend->clipping ? "on" : "off");
+    if (backend->profile_enabled) {
+        lv_display_add_event_cb(disp, profile_display_event,
+                                 LV_EVENT_ALL, backend);
+    }
     *display = disp;
     return backend;
 
@@ -1812,6 +2347,8 @@ void lvgl_gpu_display_destroy(lvgl_gpu_backend_t *backend)
     if (!backend)
         return;
 
+    finish_pending_flip(backend);
+    profile_dump(backend);
     if (backend->master && backend->scanout_buffer != 0 &&
         backend->buffers[0].fb_id)
         flip_and_wait(backend, backend->buffers[0].fb_id);
@@ -1905,4 +2442,9 @@ uint32_t lvgl_gpu_large_fill_fallback_count(const lvgl_gpu_backend_t *backend)
 uint32_t lvgl_gpu_max_fill_pixels(const lvgl_gpu_backend_t *backend)
 {
     return backend ? backend->max_plain_fill_pixels : 0;
+}
+
+int lvgl_gpu_error(const lvgl_gpu_backend_t *backend)
+{
+    return backend ? backend->error : 0;
 }

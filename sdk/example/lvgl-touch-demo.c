@@ -743,6 +743,7 @@ int main(int argc, char **argv)
     int period_ms = 5;
     int seconds = 0;
     int opt;
+    int exit_status = 0;
     uint32_t start;
     lv_display_t *display;
     lv_indev_t *indev = NULL;
@@ -917,6 +918,10 @@ int main(int argc, char **argv)
     while (running) {
         process_touch_samples();
         lv_timer_handler();
+        if (lvgl_gpu_error(gpu_backend)) {
+            exit_status = 1;
+            break;
+        }
         usleep(1000);
 
         if (verbose_stats && lv_tick_elaps(stats_tick) >= 1000) {
@@ -962,5 +967,5 @@ int main(int argc, char **argv)
     printf("touch-demo: last position %ld,%ld\n", (long)last_x, (long)last_y);
     if (gpu_backend)
         lvgl_gpu_display_destroy(gpu_backend);
-    return 0;
+    return exit_status;
 }
